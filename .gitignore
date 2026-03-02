@@ -10,6 +10,5 @@ build/
 *.pyc
 coverage.xml
 htmlcov/
-screenshoots/
-screenshots/
 evalforge.db
+*.egg-info/
