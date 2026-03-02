@@ -66,6 +66,20 @@ EvalForge addresses that by combining:
                                         SQLite or Postgres
 ```
 
+## Screenshots
+
+### API endpoints
+
+![Swagger endpoints](screenshots/swagger-endpoints.png)
+
+### Dashboard overview
+
+![Dashboard overview](screenshots/dashboard-overview.png)
+
+### Async jobs
+
+![Dashboard jobs](screenshots/dashboard-jobs.png)
+
 ## Stack
 
 - Backend: FastAPI, Pydantic, SQLAlchemy
