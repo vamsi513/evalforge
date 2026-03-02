@@ -29,17 +29,14 @@ class EvalService:
 
     def create_run(self, db: Session, payload: EvalRunCreate) -> EvalRunResponse:
         results, average_score = eval_runner.run(payload)
-        row = EvalRunRecord(
+        return self._persist_eval_run(
+            db=db,
             dataset_name=payload.dataset_name,
             prompt_version=payload.prompt_version,
             model_name=payload.model_name,
             average_score=average_score,
             results=[result.model_dump() for result in results],
         )
-        db.add(row)
-        db.commit()
-        db.refresh(row)
-        return self._to_response(row)
 
     def list_jobs(self, db: Session) -> list[AsyncEvalJobResponse]:
         rows = db.execute(select(EvalJobRecord).order_by(EvalJobRecord.created_at.desc())).scalars().all()
@@ -104,13 +101,21 @@ class EvalService:
         return eval_runner.compare(payload)
 
     def judge_run(self, db: Session, payload: JudgeEvalCreate) -> JudgeEvalResponse:
-        _ = db
-        return judge_client.evaluate(
+        response = judge_client.evaluate(
             dataset_name=payload.dataset_name,
             prompt_version=payload.prompt_version,
             model_name=payload.model_name,
             samples=payload.samples,
         )
+        self._persist_eval_run(
+            db=db,
+            dataset_name=response.dataset_name,
+            prompt_version=response.prompt_version,
+            model_name=response.model_name,
+            average_score=response.average_score,
+            results=[result.model_dump() for result in response.results],
+        )
+        return response
 
     def create_run_from_stored_cases(self, db: Session, payload: StoredEvalRunCreate) -> EvalRunResponse:
         stored_cases = asset_service.get_golden_cases(db, payload.dataset_name)
@@ -150,6 +155,28 @@ class EvalService:
             created_at=row.created_at,
             results=[EvalCaseResult(**EvalService._normalize_result(result)) for result in row.results],
         )
+
+    @staticmethod
+    def _persist_eval_run(
+        *,
+        db: Session,
+        dataset_name: str,
+        prompt_version: str,
+        model_name: str,
+        average_score: float,
+        results: list[dict],
+    ) -> EvalRunResponse:
+        row = EvalRunRecord(
+            dataset_name=dataset_name,
+            prompt_version=prompt_version,
+            model_name=model_name,
+            average_score=average_score,
+            results=results,
+        )
+        db.add(row)
+        db.commit()
+        db.refresh(row)
+        return EvalService._to_response(row)
 
     @staticmethod
     def _to_job_response(row: EvalJobRecord) -> AsyncEvalJobResponse:
