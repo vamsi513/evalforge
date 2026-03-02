@@ -275,33 +275,3 @@ For Postgres later, switch `.env` to a Postgres URL and set:
 ```env
 AUTO_CREATE_TABLES=false
 ```
-
-## Resume-ready impact
-
-- Built an end-to-end LLM evaluation platform with FastAPI, SQLAlchemy, Streamlit, and structured judge scoring instead of a thin API wrapper
-- Designed reusable prompt template, golden-case, and dataset bundle workflows for regression testing and environment portability
-- Implemented synchronous and asynchronous evaluation pipelines with persisted job state, polling, and dashboard observability
-- Added OpenAI-compatible structured judging with JSON-schema parsing and deterministic fallback behavior for reliability
-- Tracked evaluation quality alongside latency and cost to support production trade-off analysis
-
-## Demo talking points
-
-- "This project is about LLM reliability, not chat UX."
-- "I separated prompt assets, eval runs, job execution, judge scoring, and telemetry so the system can evolve independently."
-- "The async job layer shows how I would scale from interactive experimentation to batch regression runs."
-- "The live judge path uses structured outputs with fallback because production evaluation pipelines cannot assume perfect provider behavior."
-
-## Current limitations
-
-- Async execution currently uses FastAPI background tasks rather than Redis/Celery workers
-- Judge integration currently targets an OpenAI-compatible API shape only
-- There is no auth or workspace isolation yet
-- The training package is still scaffold-level and not yet integrated into the main scoring path
-
-## Next upgrades
-
-1. Replace in-process background jobs with Redis-backed workers
-2. Add a trained quality predictor and calibration layer
-3. Add CI regression gates for pull requests
-4. Add auth, workspaces, and experiment history
-5. Deploy API and dashboard publicly with managed Postgres
