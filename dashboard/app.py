@@ -10,7 +10,7 @@ st.set_page_config(page_title="EvalForge", page_icon="EF", layout="wide")
 st.title("EvalForge Dashboard")
 st.caption("Reliability, PromptOps, and evaluation telemetry for LLM systems.")
 
-base_url = st.sidebar.text_input("API Base URL", value="http://127.0.0.1:8000")
+base_url = st.sidebar.text_input("API Base URL", value="http://127.0.0.1:8001")
 refresh = st.sidebar.button("Refresh")
 
 client = EvalForgeClient(base_url)

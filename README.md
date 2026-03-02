@@ -86,7 +86,7 @@ EvalForge addresses that by combining:
 - Storage: SQLite by default, Postgres-ready config, Alembic migrations
 - LLM judge: OpenAI-compatible structured `chat/completions` path with fallback
 - Dashboard: Streamlit, pandas
-- Async processing: background job submission + persisted job status
+- Async processing: lightweight in-process background jobs with persisted job status
 - Packaging: editable Python package with `pyproject.toml`
 
 ## Project structure
@@ -113,7 +113,7 @@ evalforge/
 ## Quick start
 
 ```bash
-cd "/Users/vamsi/Documents/AI PROJECT /evalforge"
+cd evalforge
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
@@ -144,7 +144,7 @@ Open Swagger:
 Start the dashboard in a second terminal:
 
 ```bash
-cd "/Users/vamsi/Documents/AI PROJECT /evalforge"
+cd evalforge
 source .venv/bin/activate
 streamlit run dashboard/app.py --server.port 8502
 ```
@@ -259,7 +259,7 @@ The repo includes Alembic and a Postgres-ready Docker Compose file, but local SQ
 Install dependencies:
 
 ```bash
-cd "/Users/vamsi/Documents/AI PROJECT /evalforge"
+cd evalforge
 source .venv/bin/activate
 pip install -e '.[dev]'
 ```
