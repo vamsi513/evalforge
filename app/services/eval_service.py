@@ -1,7 +1,10 @@
+import json
 from datetime import datetime
 from typing import Optional
+from uuid import uuid4
 
-from sqlalchemy import select
+from sqlalchemy import select, text
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
 from app.db.models import EvalJobRecord, EvalRunRecord
@@ -24,17 +27,36 @@ from app.services.asset_service import asset_service
 
 class EvalService:
     def list_runs(self, db: Session) -> list[EvalRunResponse]:
-        rows = db.execute(select(EvalRunRecord).order_by(EvalRunRecord.created_at.desc())).scalars().all()
-        return [self._to_response(row) for row in rows]
+        try:
+            rows = db.execute(select(EvalRunRecord).order_by(EvalRunRecord.created_at.desc())).scalars().all()
+            return [self._to_response(row) for row in rows]
+        except OperationalError as exc:
+            if "experiment_name" not in str(exc):
+                raise
+            return self._list_legacy_runs(db)
+
+    def get_run_by_id(self, db: Session, run_id: str) -> Optional[EvalRunResponse]:
+        try:
+            row = db.execute(select(EvalRunRecord).where(EvalRunRecord.id == run_id)).scalar_one_or_none()
+            if row is None:
+                return None
+            return self._to_response(row)
+        except OperationalError as exc:
+            if "experiment_name" not in str(exc):
+                raise
+            return self._get_legacy_run_by_id(db, run_id)
 
     def create_run(self, db: Session, payload: EvalRunCreate) -> EvalRunResponse:
         results, average_score = eval_runner.run(payload)
         return self._persist_eval_run(
             db=db,
             dataset_name=payload.dataset_name,
+            experiment_name=payload.experiment_name,
             prompt_version=payload.prompt_version,
             model_name=payload.model_name,
+            evaluator_version=payload.evaluator_version,
             average_score=average_score,
+            run_metadata=payload.run_metadata,
             results=[result.model_dump() for result in results],
         )
 
@@ -81,6 +103,7 @@ class EvalService:
             row.updated_at = datetime.utcnow()
             db.commit()
         except Exception as exc:  # noqa: BLE001
+            db.rollback()
             failed_row = db.execute(
                 select(EvalJobRecord).where(EvalJobRecord.id == job_id)
             ).scalar_one_or_none()
@@ -93,11 +116,6 @@ class EvalService:
             db.close()
 
     def compare_runs(self, db: Session, payload: PairwiseEvalCreate) -> PairwiseEvalResponse:
-        dataset_exists = db.execute(
-            select(EvalRunRecord.id).where(EvalRunRecord.dataset_name == payload.dataset_name)
-        ).first()
-        if dataset_exists is None:
-            return eval_runner.compare(payload)
         return eval_runner.compare(payload)
 
     def judge_run(self, db: Session, payload: JudgeEvalCreate) -> JudgeEvalResponse:
@@ -110,9 +128,15 @@ class EvalService:
         self._persist_eval_run(
             db=db,
             dataset_name=response.dataset_name,
+            experiment_name="judge-evals",
             prompt_version=response.prompt_version,
             model_name=response.model_name,
+            evaluator_version=f"judge:{response.judge_provider}:{response.judge_model}",
             average_score=response.average_score,
+            run_metadata={
+                "judge_provider": response.judge_provider,
+                "judge_model": response.judge_model,
+            },
             results=[result.model_dump() for result in response.results],
         )
         return response
@@ -138,6 +162,7 @@ class EvalService:
             db,
             EvalRunCreate(
                 dataset_name=payload.dataset_name,
+                experiment_name="stored-case-runs",
                 prompt_version=payload.prompt_version,
                 model_name=payload.model_name,
                 samples=samples,
@@ -149,9 +174,12 @@ class EvalService:
         return EvalRunResponse(
             id=row.id,
             dataset_name=row.dataset_name,
+            experiment_name=row.experiment_name,
             prompt_version=row.prompt_version,
             model_name=row.model_name,
+            evaluator_version=row.evaluator_version,
             average_score=row.average_score,
+            run_metadata={str(key): str(value) for key, value in (row.run_metadata or {}).items()},
             created_at=row.created_at,
             results=[EvalCaseResult(**EvalService._normalize_result(result)) for result in row.results],
         )
@@ -161,21 +189,66 @@ class EvalService:
         *,
         db: Session,
         dataset_name: str,
+        experiment_name: str,
         prompt_version: str,
         model_name: str,
+        evaluator_version: str,
         average_score: float,
+        run_metadata: dict,
         results: list[dict],
     ) -> EvalRunResponse:
         row = EvalRunRecord(
             dataset_name=dataset_name,
+            experiment_name=experiment_name,
             prompt_version=prompt_version,
             model_name=model_name,
+            evaluator_version=evaluator_version,
             average_score=average_score,
+            run_metadata=run_metadata,
             results=results,
         )
         db.add(row)
-        db.commit()
-        db.refresh(row)
+        try:
+            db.commit()
+            db.refresh(row)
+        except OperationalError as exc:
+            db.rollback()
+            if "experiment_name" not in str(exc) and "evaluator_version" not in str(exc) and "run_metadata" not in str(exc):
+                raise
+
+            # Backward-compatibility path for legacy SQLite databases without the new columns.
+            legacy_id = str(uuid4())
+            created_at = datetime.utcnow()
+            db.execute(
+                text(
+                    """
+                    INSERT INTO eval_runs (id, dataset_name, prompt_version, model_name, average_score, results, created_at)
+                    VALUES (:id, :dataset_name, :prompt_version, :model_name, :average_score, :results, :created_at)
+                    """
+                ),
+                {
+                    "id": legacy_id,
+                    "dataset_name": dataset_name,
+                    "prompt_version": prompt_version,
+                    "model_name": model_name,
+                    "average_score": average_score,
+                    "results": json.dumps(results),
+                    "created_at": created_at,
+                },
+            )
+            db.commit()
+            return EvalRunResponse(
+                id=legacy_id,
+                dataset_name=dataset_name,
+                experiment_name=experiment_name,
+                prompt_version=prompt_version,
+                model_name=model_name,
+                evaluator_version=evaluator_version,
+                average_score=average_score,
+                run_metadata={str(key): str(value) for key, value in (run_metadata or {}).items()},
+                created_at=created_at,
+                results=[EvalCaseResult(**EvalService._normalize_result(result)) for result in results],
+            )
         return EvalService._to_response(row)
 
     @staticmethod
@@ -204,6 +277,56 @@ class EvalService:
         normalized.setdefault("criterion_scores", {})
         normalized.setdefault("feedback", "Loaded from legacy eval record.")
         return normalized
+
+    @staticmethod
+    def _list_legacy_runs(db: Session) -> list[EvalRunResponse]:
+        rows = db.execute(
+            text(
+                """
+                SELECT id, dataset_name, prompt_version, model_name, average_score, results, created_at
+                FROM eval_runs
+                ORDER BY created_at DESC
+                """
+            )
+        ).mappings()
+        return [EvalService._legacy_row_to_response(row) for row in rows]
+
+    @staticmethod
+    def _get_legacy_run_by_id(db: Session, run_id: str) -> Optional[EvalRunResponse]:
+        row = db.execute(
+            text(
+                """
+                SELECT id, dataset_name, prompt_version, model_name, average_score, results, created_at
+                FROM eval_runs
+                WHERE id = :run_id
+                """
+            ),
+            {"run_id": run_id},
+        ).mappings().first()
+        if row is None:
+            return None
+        return EvalService._legacy_row_to_response(row)
+
+    @staticmethod
+    def _legacy_row_to_response(row: dict) -> EvalRunResponse:
+        results = row["results"]
+        if isinstance(results, str):
+            results = json.loads(results)
+        created_at = row["created_at"]
+        if isinstance(created_at, str):
+            created_at = datetime.fromisoformat(created_at)
+        return EvalRunResponse(
+            id=row["id"],
+            dataset_name=row["dataset_name"],
+            experiment_name="",
+            prompt_version=row["prompt_version"],
+            model_name=row["model_name"],
+            evaluator_version="heuristic-v1",
+            average_score=row["average_score"],
+            run_metadata={},
+            created_at=created_at,
+            results=[EvalCaseResult(**EvalService._normalize_result(result)) for result in results],
+        )
 
 
 eval_service = EvalService()

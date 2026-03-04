@@ -23,9 +23,12 @@ class EvalRunRecord(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
     dataset_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    experiment_name: Mapped[str] = mapped_column(String(100), nullable=False, default="", index=True)
     prompt_version: Mapped[str] = mapped_column(String(50), nullable=False)
     model_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    evaluator_version: Mapped[str] = mapped_column(String(50), nullable=False, default="heuristic-v1")
     average_score: Mapped[float] = mapped_column(Float, nullable=False)
+    run_metadata: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     results: Mapped[list[dict]] = mapped_column(JSON, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
 
@@ -69,4 +72,18 @@ class GoldenCaseRecord(Base):
     reference_answer: Mapped[str] = mapped_column(Text, nullable=False, default="")
     rubric: Mapped[list[dict]] = mapped_column(JSON, nullable=False, default=list)
     tags: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class ReleaseGateDecisionRecord(Base):
+    __tablename__ = "release_gate_decisions"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    dataset_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    baseline_run_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
+    candidate_run_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
+    status: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
+    summary: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    metrics: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    failures: Mapped[list[dict]] = mapped_column(JSON, nullable=False, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
