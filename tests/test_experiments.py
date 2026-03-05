@@ -1,0 +1,251 @@
+from uuid import uuid4
+
+from fastapi.testclient import TestClient
+
+from app.main import app
+
+
+client = TestClient(app)
+
+
+def test_experiment_registry_tracks_workspace_and_run_count() -> None:
+    workspace_headers = {"X-Workspace-ID": "exp-team"}
+    dataset_name = f"experiment_dataset_{uuid4().hex[:8]}"
+    experiment_name = f"release-readiness-{uuid4().hex[:6]}"
+
+    create_dataset = client.post(
+        "/api/v1/datasets",
+        headers=workspace_headers,
+        json={
+            "name": dataset_name,
+            "description": "Dataset for experiment registry integration coverage.",
+            "owner": "test-suite",
+        },
+    )
+    assert create_dataset.status_code == 201
+
+    create_experiment = client.post(
+        "/api/v1/experiments",
+        headers=workspace_headers,
+        json={
+            "name": experiment_name,
+            "dataset_name": dataset_name,
+            "owner": "test-suite",
+            "status": "active",
+            "description": "Tracks candidate and baseline runs for release readiness.",
+            "experiment_metadata": {"release_track": "canary"},
+        },
+    )
+    assert create_experiment.status_code == 201
+    assert create_experiment.json()["workspace_id"] == "exp-team"
+    assert create_experiment.json()["run_count"] == 0
+
+    create_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "experiment-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause in one sentence.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert create_run.status_code == 201
+
+    list_experiments = client.get("/api/v1/experiments", headers=workspace_headers)
+    assert list_experiments.status_code == 200
+    experiment = next(item for item in list_experiments.json() if item["name"] == experiment_name)
+    assert experiment["dataset_name"] == dataset_name
+    assert experiment["workspace_id"] == "exp-team"
+    assert experiment["status"] == "active"
+    assert experiment["run_count"] == 1
+
+
+def test_release_gate_links_to_experiment_name() -> None:
+    workspace_headers = {"X-Workspace-ID": "exp-gates"}
+    dataset_name = f"experiment_gate_dataset_{uuid4().hex[:8]}"
+    experiment_name = f"gate-track-{uuid4().hex[:6]}"
+
+    create_dataset = client.post(
+        "/api/v1/datasets",
+        headers=workspace_headers,
+        json={
+            "name": dataset_name,
+            "description": "Dataset for experiment-linked release gate coverage.",
+            "owner": "test-suite",
+        },
+    )
+    assert create_dataset.status_code == 201
+
+    create_experiment = client.post(
+        "/api/v1/experiments",
+        headers=workspace_headers,
+        json={
+            "name": experiment_name,
+            "dataset_name": dataset_name,
+            "owner": "test-suite",
+            "status": "active",
+            "description": "Tracks release-gate outcomes for the experiment.",
+        },
+    )
+    assert create_experiment.status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    create_gate = client.post(
+        "/api/v1/release-gates",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -0.5,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 1,
+        },
+    )
+    assert create_gate.status_code == 201
+    assert create_gate.json()["experiment_name"] == experiment_name
+
+
+def test_experiment_report_includes_runs_and_release_history() -> None:
+    workspace_headers = {"X-Workspace-ID": "exp-report"}
+    dataset_name = f"experiment_report_dataset_{uuid4().hex[:8]}"
+    experiment_name = f"report-track-{uuid4().hex[:6]}"
+
+    assert client.post(
+        "/api/v1/datasets",
+        headers=workspace_headers,
+        json={
+            "name": dataset_name,
+            "description": "Dataset for experiment report coverage.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/experiments",
+        headers=workspace_headers,
+        json={
+            "name": experiment_name,
+            "dataset_name": dataset_name,
+            "owner": "test-suite",
+            "status": "active",
+            "description": "Experiment used to validate report history.",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    assert client.post(
+        "/api/v1/release-gates",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -0.5,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 1,
+        },
+    ).status_code == 201
+
+    report = client.get(f"/api/v1/experiments/{experiment_name}/report", headers=workspace_headers)
+    assert report.status_code == 200
+    payload = report.json()
+    assert payload["experiment"]["name"] == experiment_name
+    assert len(payload["recent_runs"]) == 2
+    assert len(payload["release_gates"]) == 1
+    assert payload["latest_gate_status"] in {"passed", "failed"}
+    assert len(payload["score_trend"]) == 2

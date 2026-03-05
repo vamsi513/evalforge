@@ -13,6 +13,11 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     openai_base_url: str = "https://api.openai.com/v1"
     judge_model: str = "gpt-4o-mini"
+    async_backend: str = "local"
+    redis_url: str = "redis://localhost:6379/0"
+    redis_queue_name: str = "evalforge:eval_jobs"
+    platform_api_key: str = ""
+    default_workspace_id: str = "default"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
