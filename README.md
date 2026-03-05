@@ -190,6 +190,8 @@ If API key protection is enabled, also set:
 - `POST /api/v1/evals/compare`
 - `GET /api/v1/release-gates`
 - `POST /api/v1/release-gates`
+- `GET /api/v1/release-gates/summary`
+- `GET /api/v1/release-gates/ci-decision`
 - `GET /api/v1/telemetry/summary`
 
 ## API protection and workspaces
@@ -218,6 +220,30 @@ Behavior:
 - if `PLATFORM_API_KEY` is empty, auth is disabled
 - if `X-Workspace-ID` is omitted, `DEFAULT_WORKSPACE_ID` is used
 - workspace scoping applies to newly created datasets and evaluation artifacts
+
+## CI release gate workflow
+
+This repo includes a GitHub Actions workflow:
+
+- `.github/workflows/release-gate-ci.yml`
+
+It queries:
+
+- `GET /api/v1/release-gates/ci-decision`
+
+and fails the workflow when `allow_deploy=false`.
+
+Configure repository **Variables**:
+
+- `EVALFORGE_API_URL` (example: `https://your-api-domain`)
+- `EVALFORGE_DATASET` (target dataset name)
+- `EVALFORGE_EXPERIMENT` (optional)
+- `EVALFORGE_WORKSPACE` (optional)
+- `EVALFORGE_REQUIRE_GATE_DECISION` (`true` by default)
+
+Configure repository **Secret**:
+
+- `EVALFORGE_API_KEY` (optional unless API key protection is enabled)
 
 ## Demo flow
 
