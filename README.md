@@ -245,6 +245,12 @@ Configure repository **Secret**:
 
 - `EVALFORGE_API_KEY` (optional unless API key protection is enabled)
 
+Local dry-run (without calling API) for CI decision payloads:
+
+```bash
+python scripts/ci/check_release_gate.py --input-file /path/to/decision.json
+```
+
 ## Demo flow
 
 For a clean demo, use this order:
