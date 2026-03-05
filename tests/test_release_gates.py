@@ -459,3 +459,124 @@ def test_release_gate_ci_decision_endpoint() -> None:
     assert payload["decision_id"] == gate.json()["id"]
     assert payload["allow_deploy"] is False
     assert "SCORE_DELTA_FAIL" in payload["reason_codes"] or "FAILED_CASE_DELTA_FAIL" in payload["reason_codes"]
+
+
+def test_release_gate_trends_endpoint() -> None:
+    dataset_name = f"release_gate_trends_{uuid4().hex[:8]}"
+    experiment_name = "trends-track"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for release gate trends testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_pass = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-pass",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_pass.status_code == 201
+
+    candidate_fail = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-fail",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by an infrastructure issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_fail.status_code == 201
+
+    pass_gate = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_pass.json()["id"],
+            "min_score_delta": -0.5,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 1,
+        },
+    )
+    assert pass_gate.status_code == 201
+    assert pass_gate.json()["status"] == "passed"
+
+    fail_gate = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_fail.json()["id"],
+            "min_score_delta": -0.01,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 0,
+        },
+    )
+    assert fail_gate.status_code == 201
+    assert fail_gate.json()["status"] == "failed"
+
+    trends = client.get(
+        "/api/v1/release-gates/trends",
+        params={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "lookback_days": 30,
+        },
+    )
+    assert trends.status_code == 200
+    payload = trends.json()
+    assert payload["total_decisions"] == 2
+    assert payload["overall_pass_rate"] == 0.5
+    assert len(payload["daily"]) >= 1
+    assert isinstance(payload["top_failure_codes"], list)

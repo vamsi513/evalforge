@@ -29,6 +29,7 @@ def load_snapshot(api_base_url: str, api_key_value: str, workspace: str) -> dict
         "runs": api.get_runs(),
         "jobs": api.get_jobs(),
         "release_gates": api.get_release_gates(),
+        "release_gate_trends": api.get_release_gate_trends(lookback_days=30),
         "model_routes": api.get_model_routes(),
     }
 
@@ -52,6 +53,7 @@ golden_cases = snapshot["golden_cases"]
 runs = snapshot["runs"]
 jobs = snapshot["jobs"]
 release_gates = snapshot["release_gates"]
+release_gate_trends = snapshot["release_gate_trends"]
 model_routes = snapshot["model_routes"]
 
 col1, col2, col3, col4 = st.columns(4)
@@ -191,6 +193,24 @@ with tab2:
 
 with tab3:
     st.subheader("Release Gate Decisions")
+    trend_col1, trend_col2 = st.columns(2)
+    with trend_col1:
+        st.metric("Gate Decisions (30d)", release_gate_trends.get("total_decisions", 0))
+        st.metric("Gate Pass Rate (30d)", release_gate_trends.get("overall_pass_rate", 0.0))
+    with trend_col2:
+        top_codes = release_gate_trends.get("top_failure_codes", [])
+        if top_codes:
+            st.markdown("**Top Failure Codes (30d)**")
+            st.dataframe(pd.DataFrame(top_codes), use_container_width=True)
+        else:
+            st.info("No blocking failure codes in the lookback window.")
+
+    daily_trends = release_gate_trends.get("daily", [])
+    if daily_trends:
+        trend_df = pd.DataFrame(daily_trends).set_index("date")
+        st.markdown("**Daily Gate Pass Rate (30d)**")
+        st.line_chart(trend_df[["pass_rate"]], use_container_width=True)
+
     if not release_gates:
         st.info("No release gate decisions found.")
     else:

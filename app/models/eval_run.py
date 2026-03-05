@@ -196,3 +196,22 @@ class ReleaseGateCiDecisionResponse(BaseModel):
     reason_codes: list[str] = Field(default_factory=list)
     summary: str = ""
     decided_at: Optional[datetime] = None
+
+
+class ReleaseGateTrendPoint(BaseModel):
+    date: str
+    total: int = 0
+    passed: int = 0
+    failed: int = 0
+    pass_rate: float = 0.0
+
+
+class ReleaseGateTrendsResponse(BaseModel):
+    dataset_name: str = ""
+    workspace_id: str = "default"
+    experiment_name: str = ""
+    lookback_days: int = 30
+    total_decisions: int = 0
+    overall_pass_rate: float = 0.0
+    top_failure_codes: list[dict[str, Any]] = Field(default_factory=list)
+    daily: list[ReleaseGateTrendPoint] = Field(default_factory=list)

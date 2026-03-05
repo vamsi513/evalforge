@@ -8,6 +8,7 @@ from app.models.eval_run import (
     ReleaseGateCreate,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
+    ReleaseGateTrendsResponse,
 )
 from app.services.release_gate_service import release_gate_service
 
@@ -48,6 +49,23 @@ async def get_release_gate_ci_decision(
         dataset_name=dataset_name,
         workspace_id=workspace_id,
         experiment_name=experiment_name,
+    )
+
+
+@router.get("/trends", response_model=ReleaseGateTrendsResponse)
+async def get_release_gate_trends(
+    dataset_name: str = "",
+    experiment_name: str = "",
+    lookback_days: int = 30,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ReleaseGateTrendsResponse:
+    return release_gate_service.get_trends(
+        db=db,
+        workspace_id=workspace_id,
+        dataset_name=dataset_name,
+        experiment_name=experiment_name,
+        lookback_days=lookback_days,
     )
 
 
