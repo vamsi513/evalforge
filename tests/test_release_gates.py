@@ -95,6 +95,7 @@ def test_release_gate_fails_on_score_and_failed_case_regression() -> None:
     assert payload["metrics"]["failed_case_delta"] > 0
     assert payload["metrics"]["scenario_metrics"][0]["scenario"] == "general"
     assert any(failure["metric"] == "score_delta" for failure in payload["failures"])
+    assert any(failure["code"] == "SCORE_DELTA_FAIL" for failure in payload["failures"])
 
     list_response = client.get("/api/v1/release-gates")
     assert list_response.status_code == 200
@@ -192,6 +193,7 @@ def test_release_gate_reports_scenario_level_regression() -> None:
     assert payload["metrics"]["scenario_failed_delta"] == 1
     assert payload["metrics"]["scenario_metrics"][0]["scenario"] == "incident_summary"
     assert any(failure["metric"] == "scenario_failed_delta" for failure in payload["failures"])
+    assert any(failure["code"] == "SCENARIO_FAILED_DELTA_FAIL" for failure in payload["failures"])
 
 
 def test_release_gate_respects_scenario_and_slice_threshold_overrides() -> None:
@@ -375,3 +377,4 @@ def test_release_gate_summary_endpoint_returns_latest_decision() -> None:
     assert payload["experiment_name"] == experiment_name
     assert payload["status"] in {"passed", "failed"}
     assert payload["decision_id"] == gate.json()["id"]
+    assert isinstance(payload["blocking_failure_codes"], list)
