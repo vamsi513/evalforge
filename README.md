@@ -86,7 +86,7 @@ EvalForge addresses that by combining:
 - Storage: SQLite by default, Postgres-ready config, Alembic migrations
 - LLM judge: OpenAI-compatible structured `chat/completions` path with fallback
 - Dashboard: Streamlit, pandas
-- Async processing: lightweight in-process background jobs with persisted job status
+- Async processing: local background execution by default, Redis-backed worker path for durable job dispatch
 - Packaging: editable Python package with `pyproject.toml`
 
 ## Project structure
@@ -129,6 +129,11 @@ JUDGE_PROVIDER=mock
 OPENAI_API_KEY=
 OPENAI_BASE_URL=https://api.openai.com/v1
 JUDGE_MODEL=gpt-4o-mini
+ASYNC_BACKEND=local
+REDIS_URL=redis://localhost:6379/0
+REDIS_QUEUE_NAME=evalforge:eval_jobs
+PLATFORM_API_KEY=
+DEFAULT_WORKSPACE_ID=default
 ```
 
 Start the API:
@@ -159,6 +164,11 @@ Set sidebar API URL to:
 http://127.0.0.1:8001
 ```
 
+If API key protection is enabled, also set:
+
+- `API Key`: your configured `PLATFORM_API_KEY`
+- `Workspace`: your target workspace, for example `default` or `team-a`
+
 ## Main API surface
 
 - `GET /health`
@@ -178,7 +188,36 @@ http://127.0.0.1:8001
 - `POST /api/v1/evals/stored`
 - `POST /api/v1/evals/judge`
 - `POST /api/v1/evals/compare`
+- `GET /api/v1/release-gates`
+- `POST /api/v1/release-gates`
 - `GET /api/v1/telemetry/summary`
+
+## API protection and workspaces
+
+EvalForge now supports a minimal platform-style access model:
+
+- optional API-key enforcement
+- workspace-scoped datasets, runs, jobs, telemetry, and release gates
+
+Enable API-key enforcement:
+
+```env
+PLATFORM_API_KEY=change-me
+DEFAULT_WORKSPACE_ID=default
+```
+
+Then send headers with requests:
+
+```text
+X-API-Key: change-me
+X-Workspace-ID: team-a
+```
+
+Behavior:
+
+- if `PLATFORM_API_KEY` is empty, auth is disabled
+- if `X-Workspace-ID` is omitted, `DEFAULT_WORKSPACE_ID` is used
+- workspace scoping applies to newly created datasets and evaluation artifacts
 
 ## Demo flow
 
@@ -239,6 +278,30 @@ The dashboard surfaces:
 - failed job count
 - per-job result payloads
 
+### Local mode
+
+Default local mode executes jobs with FastAPI background execution:
+
+```env
+ASYNC_BACKEND=local
+```
+
+### Redis-backed durable mode
+
+Enable Redis-backed dispatch:
+
+```env
+ASYNC_BACKEND=redis
+REDIS_URL=redis://localhost:6379/0
+REDIS_QUEUE_NAME=evalforge:eval_jobs
+```
+
+Run the worker:
+
+```bash
+python -m app.workers.redis_worker
+```
+
 ## Dataset portability
 
 Bundles let you move a dataset and its assets together:
@@ -252,9 +315,16 @@ Use:
 - `GET /api/v1/assets/bundles/{dataset_name}`
 - `POST /api/v1/assets/bundles/import`
 
-## Postgres and Alembic
+## Postgres, Redis, and Alembic
 
-The repo includes Alembic and a Postgres-ready Docker Compose file, but local SQLite is the default path.
+The repo includes Alembic plus a Docker Compose stack for:
+
+- Postgres
+- Redis
+- API
+- worker
+
+Local SQLite is still the default path for quick development.
 
 Install dependencies:
 

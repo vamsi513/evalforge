@@ -1,23 +1,43 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.dependencies import get_workspace_id
 from app.db.session import get_db
-from app.models.eval_run import ReleaseGateCreate, ReleaseGateResponse
+from app.models.eval_run import ReleaseGateCreate, ReleaseGateResponse, ReleaseGateSummaryResponse
 from app.services.release_gate_service import release_gate_service
 
 router = APIRouter()
 
 
 @router.get("", response_model=list[ReleaseGateResponse])
-async def list_release_gates(db: Session = Depends(get_db)) -> list[ReleaseGateResponse]:
-    return release_gate_service.list_decisions(db)
+async def list_release_gates(
+    workspace_id: str = Depends(get_workspace_id), db: Session = Depends(get_db)
+) -> list[ReleaseGateResponse]:
+    return release_gate_service.list_decisions(db, workspace_id=workspace_id)
+
+
+@router.get("/summary", response_model=ReleaseGateSummaryResponse)
+async def get_release_gate_summary(
+    dataset_name: str,
+    experiment_name: str = "",
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ReleaseGateSummaryResponse:
+    return release_gate_service.get_latest_summary(
+        db=db,
+        dataset_name=dataset_name,
+        workspace_id=workspace_id,
+        experiment_name=experiment_name,
+    )
 
 
 @router.post("", response_model=ReleaseGateResponse, status_code=201)
 async def create_release_gate(
-    payload: ReleaseGateCreate, db: Session = Depends(get_db)
+    payload: ReleaseGateCreate,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
 ) -> ReleaseGateResponse:
     try:
-        return release_gate_service.create_decision(db, payload)
+        return release_gate_service.create_decision(db, payload, workspace_id=workspace_id)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc

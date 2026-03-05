@@ -93,8 +93,285 @@ def test_release_gate_fails_on_score_and_failed_case_regression() -> None:
     assert payload["status"] == "failed"
     assert payload["metrics"]["score_delta"] < -0.01
     assert payload["metrics"]["failed_case_delta"] > 0
+    assert payload["metrics"]["scenario_metrics"][0]["scenario"] == "general"
     assert any(failure["metric"] == "score_delta" for failure in payload["failures"])
 
     list_response = client.get("/api/v1/release-gates")
     assert list_response.status_code == 200
     assert any(decision["id"] == payload["id"] for decision in list_response.json())
+
+
+def test_release_gate_reports_scenario_level_regression() -> None:
+    dataset_name = f"release_gate_scenario_{uuid4().hex[:8]}"
+    create_dataset_response = client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for scenario regression testing.",
+            "owner": "test-suite",
+        },
+    )
+    assert create_dataset_response.status_code == 201
+
+    baseline_run_response = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "baseline-scenario",
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause in one sentence.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "scenario": "incident_summary",
+                    "slice_name": "database_failover",
+                    "severity": "high",
+                    "reference_answer": "The outage happened because of a database failover issue.",
+                    "rubric": [
+                        {
+                            "name": "Root cause specificity",
+                            "description": "Mentions the concrete failing component.",
+                            "weight": 1.0,
+                            "required_terms": ["database", "failover"],
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    assert baseline_run_response.status_code == 201
+
+    candidate_run_response = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "candidate-scenario",
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause in one sentence.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by an infrastructure issue.",
+                    "scenario": "incident_summary",
+                    "slice_name": "database_failover",
+                    "severity": "high",
+                    "reference_answer": "The outage happened because of a database failover issue.",
+                    "rubric": [
+                        {
+                            "name": "Root cause specificity",
+                            "description": "Mentions the concrete failing component.",
+                            "weight": 1.0,
+                            "required_terms": ["database", "failover"],
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    assert candidate_run_response.status_code == 201
+
+    gate_response = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "baseline_run_id": baseline_run_response.json()["id"],
+            "candidate_run_id": candidate_run_response.json()["id"],
+            "min_score_delta": -0.01,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 1,
+            "max_scenario_failed_delta": 0,
+        },
+    )
+    assert gate_response.status_code == 201
+    payload = gate_response.json()
+    assert payload["status"] == "failed"
+    assert payload["metrics"]["scenario_failed_delta"] == 1
+    assert payload["metrics"]["scenario_metrics"][0]["scenario"] == "incident_summary"
+    assert any(failure["metric"] == "scenario_failed_delta" for failure in payload["failures"])
+
+
+def test_release_gate_respects_scenario_and_slice_threshold_overrides() -> None:
+    dataset_name = f"release_gate_overrides_{uuid4().hex[:8]}"
+    create_dataset_response = client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for release gate threshold override testing.",
+            "owner": "test-suite",
+        },
+    )
+    assert create_dataset_response.status_code == 201
+
+    baseline_run_response = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "baseline-overrides",
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause in one sentence.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "scenario": "incident_summary",
+                    "slice_name": "database_failover",
+                    "severity": "high",
+                    "reference_answer": "The outage happened because of a database failover issue.",
+                    "rubric": [
+                        {
+                            "name": "Root cause specificity",
+                            "description": "Mentions the concrete failing component.",
+                            "weight": 1.0,
+                            "required_terms": ["database", "failover"],
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    assert baseline_run_response.status_code == 201
+
+    candidate_run_response = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "candidate-overrides",
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause in one sentence.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by an infrastructure issue.",
+                    "scenario": "incident_summary",
+                    "slice_name": "database_failover",
+                    "severity": "high",
+                    "reference_answer": "The outage happened because of a database failover issue.",
+                    "rubric": [
+                        {
+                            "name": "Root cause specificity",
+                            "description": "Mentions the concrete failing component.",
+                            "weight": 1.0,
+                            "required_terms": ["database", "failover"],
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    assert candidate_run_response.status_code == 201
+
+    gate_response = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "baseline_run_id": baseline_run_response.json()["id"],
+            "candidate_run_id": candidate_run_response.json()["id"],
+            "min_score_delta": -1.0,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 10,
+            "max_scenario_failed_delta": 10,
+            "scenario_score_thresholds": {"incident_summary": -0.01},
+            "slice_score_thresholds": {"database_failover": -0.01},
+            "scenario_failed_case_thresholds": {"incident_summary": 0},
+            "slice_failed_case_thresholds": {"database_failover": 0},
+        },
+    )
+    assert gate_response.status_code == 201
+    payload = gate_response.json()
+    assert payload["status"] == "failed"
+    assert payload["metrics"]["slice_metrics"][0]["slice_name"] == "database_failover"
+    assert any(
+        failure["metric"] == "scenario_score_threshold:incident_summary"
+        for failure in payload["failures"]
+    )
+    assert any(
+        failure["metric"] == "slice_score_threshold:database_failover"
+        for failure in payload["failures"]
+    )
+
+
+def test_release_gate_summary_endpoint_returns_latest_decision() -> None:
+    dataset_name = f"release_gate_summary_{uuid4().hex[:8]}"
+    experiment_name = "summary-track"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for release summary endpoint testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -0.5,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 1,
+        },
+    )
+    assert gate.status_code == 201
+
+    summary = client.get(
+        "/api/v1/release-gates/summary",
+        params={"dataset_name": dataset_name, "experiment_name": experiment_name},
+    )
+    assert summary.status_code == 200
+    payload = summary.json()
+    assert payload["dataset_name"] == dataset_name
+    assert payload["experiment_name"] == experiment_name
+    assert payload["status"] in {"passed", "failed"}
+    assert payload["decision_id"] == gate.json()["id"]

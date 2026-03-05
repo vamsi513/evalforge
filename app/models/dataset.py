@@ -12,5 +12,5 @@ class DatasetCreate(BaseModel):
 
 class DatasetResponse(DatasetCreate):
     id: str = Field(default_factory=lambda: str(uuid4()))
+    workspace_id: str = "default"
     created_at: datetime = Field(default_factory=datetime.utcnow)
-

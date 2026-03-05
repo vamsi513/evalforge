@@ -25,6 +25,10 @@ class GoldenCaseCreate(BaseModel):
     input_prompt: str = Field(min_length=5, max_length=4000)
     expected_keyword: str = Field(min_length=1, max_length=200)
     reference_answer: str = Field(default="", max_length=4000)
+    scenario: str = Field(default="general", min_length=2, max_length=100)
+    slice_name: str = Field(default="default", min_length=2, max_length=100)
+    severity: str = Field(default="medium", pattern="^(low|medium|high|critical)$")
+    required_json_fields: list[str] = Field(default_factory=list, max_length=20)
     rubric: list[RubricCriterion] = Field(default_factory=list, max_length=10)
     tags: list[str] = Field(default_factory=list, max_length=20)
 
