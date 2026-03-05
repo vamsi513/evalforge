@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from app.db.models import ReleaseGateDecisionRecord
 from app.models.eval_run import (
     EvalRunResponse,
+    ReleaseGateCiDecisionResponse,
     ReleaseGateCreate,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
@@ -139,6 +140,31 @@ class ReleaseGateService:
             scenario_failed_delta=int(metrics.get("scenario_failed_delta", 0)),
             slice_failed_delta=int(metrics.get("slice_failed_delta", 0)),
             decided_at=row.created_at,
+        )
+
+    def get_ci_decision(
+        self,
+        db: Session,
+        dataset_name: str,
+        workspace_id: str = "default",
+        experiment_name: str = "",
+    ) -> ReleaseGateCiDecisionResponse:
+        summary = self.get_latest_summary(
+            db=db,
+            dataset_name=dataset_name,
+            workspace_id=workspace_id,
+            experiment_name=experiment_name,
+        )
+        return ReleaseGateCiDecisionResponse(
+            dataset_name=summary.dataset_name,
+            workspace_id=summary.workspace_id,
+            experiment_name=summary.experiment_name,
+            decision_id=summary.decision_id,
+            status=summary.status,
+            allow_deploy=summary.gate_passed,
+            reason_codes=summary.blocking_failure_codes,
+            summary=summary.summary,
+            decided_at=summary.decided_at,
         )
 
     @staticmethod

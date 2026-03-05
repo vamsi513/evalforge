@@ -184,3 +184,15 @@ class ReleaseGateSummaryResponse(BaseModel):
     scenario_failed_delta: int = 0
     slice_failed_delta: int = 0
     decided_at: Optional[datetime] = None
+
+
+class ReleaseGateCiDecisionResponse(BaseModel):
+    dataset_name: str
+    workspace_id: str = "default"
+    experiment_name: str = ""
+    decision_id: str = ""
+    status: str = "not_evaluated"
+    allow_deploy: bool = False
+    reason_codes: list[str] = Field(default_factory=list)
+    summary: str = ""
+    decided_at: Optional[datetime] = None

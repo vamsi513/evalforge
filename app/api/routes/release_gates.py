@@ -3,7 +3,12 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_workspace_id
 from app.db.session import get_db
-from app.models.eval_run import ReleaseGateCreate, ReleaseGateResponse, ReleaseGateSummaryResponse
+from app.models.eval_run import (
+    ReleaseGateCiDecisionResponse,
+    ReleaseGateCreate,
+    ReleaseGateResponse,
+    ReleaseGateSummaryResponse,
+)
 from app.services.release_gate_service import release_gate_service
 
 router = APIRouter()
@@ -24,6 +29,21 @@ async def get_release_gate_summary(
     db: Session = Depends(get_db),
 ) -> ReleaseGateSummaryResponse:
     return release_gate_service.get_latest_summary(
+        db=db,
+        dataset_name=dataset_name,
+        workspace_id=workspace_id,
+        experiment_name=experiment_name,
+    )
+
+
+@router.get("/ci-decision", response_model=ReleaseGateCiDecisionResponse)
+async def get_release_gate_ci_decision(
+    dataset_name: str,
+    experiment_name: str = "",
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ReleaseGateCiDecisionResponse:
+    return release_gate_service.get_ci_decision(
         db=db,
         dataset_name=dataset_name,
         workspace_id=workspace_id,
