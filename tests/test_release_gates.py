@@ -378,3 +378,84 @@ def test_release_gate_summary_endpoint_returns_latest_decision() -> None:
     assert payload["status"] in {"passed", "failed"}
     assert payload["decision_id"] == gate.json()["id"]
     assert isinstance(payload["blocking_failure_codes"], list)
+
+
+def test_release_gate_ci_decision_endpoint() -> None:
+    dataset_name = f"release_gate_ci_{uuid4().hex[:8]}"
+    experiment_name = "ci-track"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for CI decision endpoint testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by an infrastructure issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -0.01,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 0,
+        },
+    )
+    assert gate.status_code == 201
+
+    ci_decision = client.get(
+        "/api/v1/release-gates/ci-decision",
+        params={"dataset_name": dataset_name, "experiment_name": experiment_name},
+    )
+    assert ci_decision.status_code == 200
+    payload = ci_decision.json()
+    assert payload["dataset_name"] == dataset_name
+    assert payload["experiment_name"] == experiment_name
+    assert payload["decision_id"] == gate.json()["id"]
+    assert payload["allow_deploy"] is False
+    assert "SCORE_DELTA_FAIL" in payload["reason_codes"] or "FAILED_CASE_DELTA_FAIL" in payload["reason_codes"]
