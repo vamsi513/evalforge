@@ -56,3 +56,13 @@ class EvalForgeClient:
 
     def get_model_routes(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/model-routing")
+
+    def get_release_gate_trends(
+        self, dataset_name: str = "", experiment_name: str = "", lookback_days: int = 30
+    ) -> Dict[str, Any]:
+        query = f"/api/v1/release-gates/trends?lookback_days={lookback_days}"
+        if dataset_name:
+            query += f"&dataset_name={dataset_name}"
+        if experiment_name:
+            query += f"&experiment_name={experiment_name}"
+        return self._get(query)

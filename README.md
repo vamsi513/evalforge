@@ -192,6 +192,7 @@ If API key protection is enabled, also set:
 - `POST /api/v1/release-gates`
 - `GET /api/v1/release-gates/summary`
 - `GET /api/v1/release-gates/ci-decision`
+- `GET /api/v1/release-gates/trends`
 - `GET /api/v1/telemetry/summary`
 
 ## API protection and workspaces

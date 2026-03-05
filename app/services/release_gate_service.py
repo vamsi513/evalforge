@@ -1,4 +1,5 @@
-from datetime import datetime
+from collections import Counter
+from datetime import datetime, timedelta
 from statistics import mean
 from typing import Any, Union
 
@@ -13,6 +14,8 @@ from app.models.eval_run import (
     ReleaseGateCreate,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
+    ReleaseGateTrendPoint,
+    ReleaseGateTrendsResponse,
 )
 from app.services.eval_service import eval_service
 
@@ -165,6 +168,84 @@ class ReleaseGateService:
             reason_codes=summary.blocking_failure_codes,
             summary=summary.summary,
             decided_at=summary.decided_at,
+        )
+
+    def get_trends(
+        self,
+        db: Session,
+        workspace_id: str = "default",
+        dataset_name: str = "",
+        experiment_name: str = "",
+        lookback_days: int = 30,
+    ) -> ReleaseGateTrendsResponse:
+        cutoff = datetime.utcnow() - timedelta(days=max(1, lookback_days))
+        try:
+            query = select(ReleaseGateDecisionRecord).where(
+                ReleaseGateDecisionRecord.workspace_id == workspace_id,
+                ReleaseGateDecisionRecord.created_at >= cutoff,
+            )
+            if dataset_name:
+                query = query.where(ReleaseGateDecisionRecord.dataset_name == dataset_name)
+            if experiment_name:
+                query = query.where(ReleaseGateDecisionRecord.experiment_name == experiment_name)
+            rows = db.execute(query.order_by(ReleaseGateDecisionRecord.created_at.asc())).scalars().all()
+        except OperationalError as exc:
+            if "release_gate_decisions" not in str(exc) and "workspace_id" not in str(exc):
+                raise
+            self._ensure_legacy_table(db)
+            query = select(ReleaseGateDecisionRecord).where(
+                ReleaseGateDecisionRecord.workspace_id == workspace_id,
+                ReleaseGateDecisionRecord.created_at >= cutoff,
+            )
+            if dataset_name:
+                query = query.where(ReleaseGateDecisionRecord.dataset_name == dataset_name)
+            if experiment_name:
+                query = query.where(ReleaseGateDecisionRecord.experiment_name == experiment_name)
+            rows = db.execute(query.order_by(ReleaseGateDecisionRecord.created_at.asc())).scalars().all()
+
+        daily_buckets: dict[str, dict[str, int]] = {}
+        failure_codes: Counter[str] = Counter()
+
+        for row in rows:
+            day_key = row.created_at.date().isoformat()
+            bucket = daily_buckets.setdefault(day_key, {"total": 0, "passed": 0, "failed": 0})
+            bucket["total"] += 1
+            if row.status == "passed":
+                bucket["passed"] += 1
+            else:
+                bucket["failed"] += 1
+
+            for failure in row.failures or []:
+                code = str(failure.get("code", "")).strip()
+                if code:
+                    failure_codes[code] += 1
+
+        daily = [
+            ReleaseGateTrendPoint(
+                date=day,
+                total=values["total"],
+                passed=values["passed"],
+                failed=values["failed"],
+                pass_rate=round(values["passed"] / values["total"], 6) if values["total"] else 0.0,
+            )
+            for day, values in sorted(daily_buckets.items(), key=lambda item: item[0])
+        ]
+
+        total_decisions = len(rows)
+        passed_count = sum(1 for row in rows if row.status == "passed")
+        top_codes = [
+            {"code": code, "count": count}
+            for code, count in failure_codes.most_common(5)
+        ]
+        return ReleaseGateTrendsResponse(
+            dataset_name=dataset_name,
+            workspace_id=workspace_id,
+            experiment_name=experiment_name,
+            lookback_days=max(1, lookback_days),
+            total_decisions=total_decisions,
+            overall_pass_rate=round(passed_count / total_decisions, 6) if total_decisions else 0.0,
+            top_failure_codes=top_codes,
+            daily=daily,
         )
 
     @staticmethod
