@@ -105,6 +105,24 @@ col15, col16 = st.columns(2)
 col15.metric("Groundedness Avg", telemetry.get("groundedness_average", 1.0))
 col16.metric("Groundedness Failures", telemetry.get("groundedness_failure_count", 0))
 
+exp_rollups = telemetry.get("experiment_rollups", [])
+use_case_rollups = telemetry.get("use_case_rollups", [])
+if exp_rollups or use_case_rollups:
+    st.markdown("### Telemetry Rollups")
+    rollup_col1, rollup_col2 = st.columns(2)
+    with rollup_col1:
+        st.markdown("**By Experiment**")
+        if exp_rollups:
+            st.dataframe(pd.DataFrame(exp_rollups), use_container_width=True)
+        else:
+            st.info("No experiment rollups yet.")
+    with rollup_col2:
+        st.markdown("**By Use Case**")
+        if use_case_rollups:
+            st.dataframe(pd.DataFrame(use_case_rollups), use_container_width=True)
+        else:
+            st.info("No use-case rollups yet.")
+
 tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(
     [
         "Runs",
