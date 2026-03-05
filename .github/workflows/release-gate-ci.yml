@@ -1,0 +1,88 @@
+name: Release Gate Decision
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  evalgate-decision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check required CI variables
+        run: |
+          missing=0
+          if [ -z "${{ vars.EVALFORGE_API_URL }}" ]; then
+            echo "Missing repository variable: EVALFORGE_API_URL"
+            missing=1
+          fi
+          if [ -z "${{ vars.EVALFORGE_DATASET }}" ]; then
+            echo "Missing repository variable: EVALFORGE_DATASET"
+            missing=1
+          fi
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Fetch release-gate CI decision
+        env:
+          API_URL: ${{ vars.EVALFORGE_API_URL }}
+          DATASET_NAME: ${{ vars.EVALFORGE_DATASET }}
+          EXPERIMENT_NAME: ${{ vars.EVALFORGE_EXPERIMENT }}
+          WORKSPACE_ID: ${{ vars.EVALFORGE_WORKSPACE }}
+          API_KEY: ${{ secrets.EVALFORGE_API_KEY }}
+        run: |
+          set -euo pipefail
+          QUERY="dataset_name=${DATASET_NAME}"
+          if [ -n "${EXPERIMENT_NAME}" ]; then
+            QUERY="${QUERY}&experiment_name=${EXPERIMENT_NAME}"
+          fi
+          URL="${API_URL%/}/api/v1/release-gates/ci-decision?${QUERY}"
+
+          echo "Requesting CI decision from ${URL}"
+
+          EXTRA_HEADERS=()
+          if [ -n "${WORKSPACE_ID}" ]; then
+            EXTRA_HEADERS+=(-H "X-Workspace-ID: ${WORKSPACE_ID}")
+          fi
+          if [ -n "${API_KEY}" ]; then
+            EXTRA_HEADERS+=(-H "X-API-Key: ${API_KEY}")
+          fi
+
+          curl --fail --silent --show-error \
+            -H "Accept: application/json" \
+            "${EXTRA_HEADERS[@]}" \
+            "${URL}" \
+            -o release_gate_ci_decision.json
+
+      - name: Enforce release-gate decision
+        env:
+          REQUIRE_GATE_DECISION: ${{ vars.EVALFORGE_REQUIRE_GATE_DECISION }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+
+          with open("release_gate_ci_decision.json", "r", encoding="utf-8") as f:
+              payload = json.load(f)
+
+          allow_deploy = bool(payload.get("allow_deploy", False))
+          status = str(payload.get("status", "unknown"))
+          reason_codes = payload.get("reason_codes", [])
+          summary = str(payload.get("summary", ""))
+
+          require_gate = os.getenv("REQUIRE_GATE_DECISION", "true").lower() not in {"false", "0", "no"}
+          if status == "not_evaluated" and require_gate:
+              print("Release gate decision not found and EVALFORGE_REQUIRE_GATE_DECISION is enabled.")
+              sys.exit(1)
+
+          print(f"Release gate status: {status}")
+          print(f"Allow deploy: {allow_deploy}")
+          print(f"Reason codes: {reason_codes}")
+          print(f"Summary: {summary}")
+
+          if not allow_deploy:
+              sys.exit(1)
+          PY
+
