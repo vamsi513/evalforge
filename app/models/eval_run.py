@@ -177,6 +177,7 @@ class ReleaseGateSummaryResponse(BaseModel):
     status: str = "unknown"
     gate_passed: bool = False
     summary: str = ""
+    blocking_failure_codes: list[str] = Field(default_factory=list)
     blocking_failures: list[str] = Field(default_factory=list)
     score_delta: float = 0.0
     failed_case_delta: int = 0

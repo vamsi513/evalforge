@@ -132,6 +132,7 @@ class ReleaseGateService:
             status=row.status,
             gate_passed=row.status == "passed",
             summary=row.summary,
+            blocking_failure_codes=[failure.get("code", "") for failure in failures if failure.get("code")],
             blocking_failures=[failure.get("reason", "") for failure in failures if failure.get("reason")],
             score_delta=float(metrics.get("score_delta", 0.0)),
             failed_case_delta=int(metrics.get("failed_case_delta", 0)),
@@ -186,120 +187,113 @@ class ReleaseGateService:
     ) -> list[dict[str, str]]:
         failures: list[dict[str, str]] = []
 
+        def add_failure(code: str, metric: str, reason: str) -> None:
+            failures.append({"code": code, "metric": metric, "reason": reason})
+
         if float(metrics["score_delta"]) < payload.min_score_delta:
-            failures.append(
-                {
-                    "metric": "score_delta",
-                    "reason": (
-                        f"Candidate score delta {metrics['score_delta']} is below "
-                        f"minimum threshold {payload.min_score_delta}."
-                    ),
-                }
+            add_failure(
+                code="SCORE_DELTA_FAIL",
+                metric="score_delta",
+                reason=(
+                    f"Candidate score delta {metrics['score_delta']} is below "
+                    f"minimum threshold {payload.min_score_delta}."
+                ),
             )
         if float(metrics["latency_delta_ms"]) > payload.max_latency_regression_ms:
-            failures.append(
-                {
-                    "metric": "latency_delta_ms",
-                    "reason": (
-                        f"Candidate latency regression {metrics['latency_delta_ms']}ms exceeds "
-                        f"threshold {payload.max_latency_regression_ms}ms."
-                    ),
-                }
+            add_failure(
+                code="LATENCY_DELTA_FAIL",
+                metric="latency_delta_ms",
+                reason=(
+                    f"Candidate latency regression {metrics['latency_delta_ms']}ms exceeds "
+                    f"threshold {payload.max_latency_regression_ms}ms."
+                ),
             )
         if float(metrics["cost_delta_usd"]) > payload.max_cost_regression_usd:
-            failures.append(
-                {
-                    "metric": "cost_delta_usd",
-                    "reason": (
-                        f"Candidate cost regression {metrics['cost_delta_usd']} exceeds "
-                        f"threshold {payload.max_cost_regression_usd}."
-                    ),
-                }
+            add_failure(
+                code="COST_DELTA_FAIL",
+                metric="cost_delta_usd",
+                reason=(
+                    f"Candidate cost regression {metrics['cost_delta_usd']} exceeds "
+                    f"threshold {payload.max_cost_regression_usd}."
+                ),
             )
         if int(metrics["failed_case_delta"]) > payload.max_failed_case_delta:
-            failures.append(
-                {
-                    "metric": "failed_case_delta",
-                    "reason": (
-                        f"Candidate failed-case delta {metrics['failed_case_delta']} exceeds "
-                        f"threshold {payload.max_failed_case_delta}."
-                    ),
-                }
+            add_failure(
+                code="FAILED_CASE_DELTA_FAIL",
+                metric="failed_case_delta",
+                reason=(
+                    f"Candidate failed-case delta {metrics['failed_case_delta']} exceeds "
+                    f"threshold {payload.max_failed_case_delta}."
+                ),
             )
         if int(metrics["scenario_failed_delta"]) > payload.max_scenario_failed_delta:
-            failures.append(
-                {
-                    "metric": "scenario_failed_delta",
-                    "reason": (
-                        f"Scenario failed-case delta {metrics['scenario_failed_delta']} exceeds "
-                        f"threshold {payload.max_scenario_failed_delta}."
-                    ),
-                }
+            add_failure(
+                code="SCENARIO_FAILED_DELTA_FAIL",
+                metric="scenario_failed_delta",
+                reason=(
+                    f"Scenario failed-case delta {metrics['scenario_failed_delta']} exceeds "
+                    f"threshold {payload.max_scenario_failed_delta}."
+                ),
             )
         for scenario_metric in metrics.get("scenario_metrics", []):
             if float(scenario_metric["score_delta"]) < payload.min_score_delta:
-                failures.append(
-                    {
-                        "metric": f"scenario:{scenario_metric['scenario']}",
-                        "reason": (
-                            f"Scenario {scenario_metric['scenario']} score delta "
-                            f"{scenario_metric['score_delta']} is below threshold {payload.min_score_delta}."
-                        ),
-                    }
+                add_failure(
+                    code="SCENARIO_SCORE_DELTA_FAIL",
+                    metric=f"scenario:{scenario_metric['scenario']}",
+                    reason=(
+                        f"Scenario {scenario_metric['scenario']} score delta "
+                        f"{scenario_metric['score_delta']} is below threshold {payload.min_score_delta}."
+                    ),
                 )
         for scenario_metric in metrics.get("scenario_metrics", []):
             scenario_name = str(scenario_metric["scenario"])
             score_threshold = payload.scenario_score_thresholds.get(scenario_name)
             if score_threshold is not None and float(scenario_metric["score_delta"]) < score_threshold:
-                failures.append(
-                    {
-                        "metric": f"scenario_score_threshold:{scenario_name}",
-                        "reason": (
-                            f"Scenario {scenario_name} score delta {scenario_metric['score_delta']} "
-                            f"is below scenario threshold {score_threshold}."
-                        ),
-                    }
+                add_failure(
+                    code="SCENARIO_SCORE_THRESHOLD_FAIL",
+                    metric=f"scenario_score_threshold:{scenario_name}",
+                    reason=(
+                        f"Scenario {scenario_name} score delta {scenario_metric['score_delta']} "
+                        f"is below scenario threshold {score_threshold}."
+                    ),
                 )
             failed_threshold = payload.scenario_failed_case_thresholds.get(scenario_name)
             scenario_failed_delta = int(scenario_metric["candidate_failed_cases"]) - int(
                 scenario_metric["baseline_failed_cases"]
             )
             if failed_threshold is not None and scenario_failed_delta > failed_threshold:
-                failures.append(
-                    {
-                        "metric": f"scenario_failed_threshold:{scenario_name}",
-                        "reason": (
-                            f"Scenario {scenario_name} failed-case delta {scenario_failed_delta} "
-                            f"exceeds scenario threshold {failed_threshold}."
-                        ),
-                    }
+                add_failure(
+                    code="SCENARIO_FAILED_THRESHOLD_FAIL",
+                    metric=f"scenario_failed_threshold:{scenario_name}",
+                    reason=(
+                        f"Scenario {scenario_name} failed-case delta {scenario_failed_delta} "
+                        f"exceeds scenario threshold {failed_threshold}."
+                    ),
                 )
         for slice_metric in metrics.get("slice_metrics", []):
             slice_name = str(slice_metric["slice_name"])
             score_threshold = payload.slice_score_thresholds.get(slice_name)
             if score_threshold is not None and float(slice_metric["score_delta"]) < score_threshold:
-                failures.append(
-                    {
-                        "metric": f"slice_score_threshold:{slice_name}",
-                        "reason": (
-                            f"Slice {slice_name} score delta {slice_metric['score_delta']} "
-                            f"is below slice threshold {score_threshold}."
-                        ),
-                    }
+                add_failure(
+                    code="SLICE_SCORE_THRESHOLD_FAIL",
+                    metric=f"slice_score_threshold:{slice_name}",
+                    reason=(
+                        f"Slice {slice_name} score delta {slice_metric['score_delta']} "
+                        f"is below slice threshold {score_threshold}."
+                    ),
                 )
             failed_threshold = payload.slice_failed_case_thresholds.get(slice_name)
             slice_failed_delta = int(slice_metric["candidate_failed_cases"]) - int(
                 slice_metric["baseline_failed_cases"]
             )
             if failed_threshold is not None and slice_failed_delta > failed_threshold:
-                failures.append(
-                    {
-                        "metric": f"slice_failed_threshold:{slice_name}",
-                        "reason": (
-                            f"Slice {slice_name} failed-case delta {slice_failed_delta} "
-                            f"exceeds slice threshold {failed_threshold}."
-                        ),
-                    }
+                add_failure(
+                    code="SLICE_FAILED_THRESHOLD_FAIL",
+                    metric=f"slice_failed_threshold:{slice_name}",
+                    reason=(
+                        f"Slice {slice_name} failed-case delta {slice_failed_delta} "
+                        f"exceeds slice threshold {failed_threshold}."
+                    ),
                 )
         return failures
 
