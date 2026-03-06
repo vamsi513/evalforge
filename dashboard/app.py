@@ -28,6 +28,7 @@ def load_snapshot(api_base_url: str, api_key_value: str, workspace: str) -> dict
         "golden_cases": api.get_golden_cases(),
         "runs": api.get_runs(),
         "eval_calibration": api.get_eval_calibration(lookback_runs=30, bin_count=10),
+        "eval_scenario_calibration": api.get_eval_scenario_calibration(lookback_runs=30),
         "jobs": api.get_jobs(),
         "release_gates": api.get_release_gates(),
         "release_gate_schedules": api.get_release_gate_schedules(),
@@ -56,6 +57,7 @@ prompts = snapshot["prompts"]
 golden_cases = snapshot["golden_cases"]
 runs = snapshot["runs"]
 eval_calibration = snapshot["eval_calibration"]
+eval_scenario_calibration = snapshot["eval_scenario_calibration"]
 jobs = snapshot["jobs"]
 release_gates = snapshot["release_gates"]
 release_gate_schedules = snapshot["release_gate_schedules"]
@@ -163,6 +165,7 @@ with tab1:
                 "dataset": run["dataset_name"],
                 "prompt_version": run["prompt_version"],
                 "model": run["model_name"],
+                "profile": run.get("evaluator_profile", "balanced"),
                 "average_score": run["average_score"],
                 "structured_failures": sum(
                     1 for result in run["results"] if result.get("required_json_fields") and not result.get("structured_output_valid")
@@ -187,6 +190,11 @@ with tab1:
             calibration_df.set_index("upper_bound")[["avg_confidence", "empirical_pass_rate"]],
             use_container_width=True,
         )
+
+    scenario_rows = eval_scenario_calibration.get("scenarios", [])
+    if scenario_rows:
+        st.markdown("### Scenario Calibration")
+        st.dataframe(pd.DataFrame(scenario_rows), use_container_width=True)
 
 with tab2:
     st.subheader("Async Eval Jobs")

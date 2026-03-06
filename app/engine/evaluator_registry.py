@@ -40,6 +40,31 @@ class ScoreAccumulator:
             self.missing_terms.append(term)
 
 
+PROFILE_WEIGHTS: dict[str, dict[str, float]] = {
+    "strict": {
+        "keyword": 0.30,
+        "reference_overlap": 0.20,
+        "rubric": 0.20,
+        "structured_output": 0.15,
+        "groundedness": 0.15,
+    },
+    "balanced": {
+        "keyword": 0.40,
+        "reference_overlap": 0.25,
+        "rubric": 0.25,
+        "structured_output": 0.05,
+        "groundedness": 0.05,
+    },
+    "lenient": {
+        "keyword": 0.45,
+        "reference_overlap": 0.30,
+        "rubric": 0.20,
+        "structured_output": 0.025,
+        "groundedness": 0.025,
+    },
+}
+
+
 class BaseEvaluator:
     name = "base"
     kind = "heuristic"
@@ -55,10 +80,11 @@ class KeywordEvaluator(BaseEvaluator):
     def evaluate(self, context: ScoreContext, accumulator: ScoreAccumulator) -> None:
         keyword = context.expected_keyword.lower()
         if keyword in context.candidate_output.lower():
-            accumulator.score += 0.4
+            accumulator.criterion_scores["keyword"] = 1.0
             accumulator.add_match(context.expected_keyword)
             accumulator.feedback_messages.append("Matched expected keyword.")
         else:
+            accumulator.criterion_scores["keyword"] = 0.0
             accumulator.add_missing(context.expected_keyword)
             accumulator.feedback_messages.append("Missed expected keyword.")
 
@@ -69,10 +95,12 @@ class ReferenceOverlapEvaluator(BaseEvaluator):
 
     def evaluate(self, context: ScoreContext, accumulator: ScoreAccumulator) -> None:
         if not context.reference_answer:
+            accumulator.criterion_scores["reference_overlap"] = 1.0
             return
         reference_terms = {term.lower() for term in context.reference_answer.split() if len(term) > 4}
         overlap_hits = [term for term in reference_terms if term in context.candidate_output.lower()]
-        accumulator.score += min(0.3, len(overlap_hits) * 0.05)
+        overlap_ratio = min(1.0, len(overlap_hits) / max(1, len(reference_terms)))
+        accumulator.criterion_scores["reference_overlap"] = round(overlap_ratio, 4)
         for term in overlap_hits:
             accumulator.add_match(term)
         if overlap_hits:
@@ -101,7 +129,7 @@ class RubricCoverageEvaluator(BaseEvaluator):
             for term in required:
                 if term not in hits:
                     accumulator.add_missing(term)
-        accumulator.score += 0.3 * (weighted_score / total_weight)
+        accumulator.criterion_scores["rubric"] = round(weighted_score / total_weight, 4)
         accumulator.feedback_messages.append("Applied rubric coverage scoring.")
 
 
@@ -120,7 +148,6 @@ class StructuredOutputEvaluator(BaseEvaluator):
             accumulator.feedback_messages.append("Structured output validation failed.")
             accumulator.criterion_scores["structured_output"] = 0.0
             accumulator.add_missing("structured_output")
-            accumulator.score = max(0.0, accumulator.score - 0.1)
             return
         try:
             parsed = json.loads(output)
@@ -130,16 +157,12 @@ class StructuredOutputEvaluator(BaseEvaluator):
             accumulator.feedback_messages.append("Structured output parsing failed.")
             accumulator.criterion_scores["structured_output"] = 0.0
             accumulator.add_missing("structured_output")
-            if context.required_json_fields:
-                accumulator.score = max(0.0, accumulator.score - 0.1)
             return
         if not isinstance(parsed, dict):
             accumulator.structured_output_valid = False
             accumulator.structured_output_error = "Structured output must be a JSON object."
             accumulator.feedback_messages.append("Structured output must be a JSON object.")
             accumulator.criterion_scores["structured_output"] = 0.0
-            if context.required_json_fields:
-                accumulator.score = max(0.0, accumulator.score - 0.1)
             return
 
         missing_fields = [field for field in context.required_json_fields if field not in parsed]
@@ -150,13 +173,11 @@ class StructuredOutputEvaluator(BaseEvaluator):
             accumulator.criterion_scores["structured_output"] = 0.0
             for field in missing_fields:
                 accumulator.add_missing(field)
-            accumulator.score = max(0.0, accumulator.score - 0.1)
             return
 
         accumulator.structured_output_valid = True
         accumulator.structured_output_error = ""
-        accumulator.score += 0.05
-        accumulator.criterion_scores["structured_output"] = 0.05
+        accumulator.criterion_scores["structured_output"] = 1.0
         accumulator.feedback_messages.append("Structured output parsed successfully.")
         for field in context.required_json_fields:
             accumulator.add_match(field)
@@ -170,6 +191,7 @@ class GroundednessEvaluator(BaseEvaluator):
         if not context.reference_answer:
             accumulator.groundedness_score = 1.0
             accumulator.groundedness_feedback = "No reference answer provided for groundedness checks."
+            accumulator.criterion_scores["groundedness"] = 1.0
             return
 
         reference_terms = self._extract_terms(context.reference_answer)
@@ -179,7 +201,6 @@ class GroundednessEvaluator(BaseEvaluator):
             accumulator.groundedness_score = 1.0
             accumulator.groundedness_feedback = "Candidate output did not contain enough signal for groundedness checks."
             accumulator.criterion_scores["groundedness"] = 1.0
-            accumulator.score += 0.1
             return
 
         unsupported_terms = sorted(term for term in candidate_terms if term not in reference_terms)
@@ -200,10 +221,6 @@ class GroundednessEvaluator(BaseEvaluator):
         else:
             accumulator.feedback_messages.append("Groundedness check found no unsupported answer terms.")
             accumulator.groundedness_feedback = "All significant answer terms were grounded in the reference."
-
-        if groundedness_score < 0.5:
-            accumulator.score = max(0.0, accumulator.score - 0.1)
-        accumulator.score += 0.1 * groundedness_score
 
     @staticmethod
     def _extract_terms(text: str) -> set[str]:
@@ -234,7 +251,21 @@ class EvaluatorRegistry:
         accumulator = ScoreAccumulator()
         for evaluator in self._evaluators:
             evaluator.evaluate(context, accumulator)
+        accumulator.score = self.score_with_profile(accumulator, "balanced")
         return accumulator
+
+    @staticmethod
+    def score_with_profile(accumulator: ScoreAccumulator, profile_name: str) -> float:
+        profile_key = profile_name.strip().lower() or "balanced"
+        weights = PROFILE_WEIGHTS.get(profile_key, PROFILE_WEIGHTS["balanced"])
+        score = 0.0
+        for criterion, weight in weights.items():
+            score += weight * float(accumulator.criterion_scores.get(criterion, 1.0))
+        return max(0.0, min(1.0, score))
+
+    @staticmethod
+    def available_profiles() -> list[str]:
+        return sorted(PROFILE_WEIGHTS.keys())
 
 
 def build_default_registry() -> EvaluatorRegistry:
