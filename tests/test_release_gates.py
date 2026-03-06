@@ -3,6 +3,7 @@ from uuid import uuid4
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.services.release_gate_service import release_gate_service
 
 
 client = TestClient(app)
@@ -873,3 +874,81 @@ def test_release_gate_schedule_create_run_and_logs() -> None:
     log_rows = logs.json()
     assert len(log_rows) >= 1
     assert log_rows[0]["schedule_id"] == schedule_id
+
+
+def test_schedule_run_sends_alert_on_failed_gate(monkeypatch) -> None:
+    captured = []
+
+    def _capture_alert(**kwargs) -> None:
+        captured.append(kwargs)
+
+    monkeypatch.setattr(release_gate_service, "_send_schedule_alert", _capture_alert)
+
+    dataset_name = f"release_gate_alert_{uuid4().hex[:8]}"
+    experiment_name = "schedule-alert-track"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for schedule alert testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by an infrastructure issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    ).status_code == 201
+
+    create_schedule = client.post(
+        "/api/v1/release-gates/schedules",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "policy_name": "strict",
+            "cron_expression": "0 2 * * *",
+            "enabled": True,
+        },
+    )
+    assert create_schedule.status_code == 201
+    schedule_id = create_schedule.json()["id"]
+
+    run_now = client.post(f"/api/v1/release-gates/schedules/{schedule_id}/run")
+    assert run_now.status_code == 201
+    assert run_now.json()["status"] == "completed"
+    assert len(captured) == 1
+    assert captured[0]["event_type"] == "release_gate_failed"

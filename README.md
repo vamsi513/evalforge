@@ -134,6 +134,7 @@ REDIS_URL=redis://localhost:6379/0
 REDIS_QUEUE_NAME=evalforge:eval_jobs
 PLATFORM_API_KEY=
 DEFAULT_WORKSPACE_ID=default
+RELEASE_GATE_ALERT_WEBHOOK_URL=
 ```
 
 Start the API:
