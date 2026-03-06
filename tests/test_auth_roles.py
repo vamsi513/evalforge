@@ -28,6 +28,28 @@ def test_viewer_cannot_call_mutating_endpoints(monkeypatch) -> None:
     )
     assert create_dataset.status_code == 403
 
+    compare_eval = client.post(
+        "/api/v1/evals/compare",
+        headers=headers,
+        json={
+            "dataset_name": "dummy-dataset",
+            "prompt_version_a": "a",
+            "prompt_version_b": "b",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize outage root cause.",
+                    "candidate_a": "Database failover caused outage.",
+                    "candidate_b": "Infrastructure issue caused outage.",
+                    "expected_keyword": "database",
+                    "reference_answer": "Database failover caused outage.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert compare_eval.status_code == 403
+
 
 def test_editor_can_mutate_but_cannot_call_admin_endpoints(monkeypatch) -> None:
     monkeypatch.setattr(settings, "platform_api_key", "secret-key")

@@ -37,6 +37,8 @@ def _require_min_role(min_role: str):
     min_rank = _ROLE_RANK[min_role]
 
     async def _checker(role: str = Header(default="", alias="X-User-Role")) -> None:
+        if not settings.platform_api_key:
+            return
         resolved = (role or settings.default_user_role or "viewer").strip().lower()
         if resolved not in _ROLE_RANK:
             raise HTTPException(status_code=400, detail="Invalid X-User-Role. Use viewer, editor, or admin.")

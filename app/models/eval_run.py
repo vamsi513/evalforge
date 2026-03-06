@@ -48,6 +48,11 @@ class EvalCaseResult(EvalSample):
     structured_output_error: str = ""
     groundedness_score: float = 1.0
     groundedness_feedback: str = ""
+    judge_provider: str = ""
+    judge_model: str = ""
+    judge_score: Optional[float] = None
+    judge_reasoning: str = ""
+    used_fallback: bool = False
     feedback: str
 
 
