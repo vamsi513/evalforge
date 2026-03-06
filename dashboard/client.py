@@ -81,6 +81,20 @@ class EvalForgeClient:
     def get_jobs(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/evals/jobs")
 
+    def get_eval_calibration(
+        self,
+        dataset_name: str = "",
+        experiment_name: str = "",
+        lookback_runs: int = 30,
+        bin_count: int = 10,
+    ) -> Dict[str, Any]:
+        query = f"/api/v1/evals/calibration?lookback_runs={lookback_runs}&bin_count={bin_count}"
+        if dataset_name:
+            query += f"&dataset_name={dataset_name}"
+        if experiment_name:
+            query += f"&experiment_name={experiment_name}"
+        return self._get(query)
+
     def get_release_gates(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/release-gates")
 

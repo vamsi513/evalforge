@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from math import floor
 from typing import Optional
 
 from sqlalchemy import inspect, select, text
@@ -13,6 +14,8 @@ from app.engine.judge import judge_client
 from app.models.assets import StoredEvalRunCreate
 from app.models.eval_run import (
     AsyncEvalJobResponse,
+    EvalCalibrationBin,
+    EvalCalibrationResponse,
     EvalCaseResult,
     EvalRunCreate,
     EvalRunResponse,
@@ -177,6 +180,91 @@ class EvalService:
 
     def compare_runs(self, db: Session, payload: PairwiseEvalCreate) -> PairwiseEvalResponse:
         return eval_runner.compare(payload)
+
+    def get_calibration_report(
+        self,
+        db: Session,
+        workspace_id: str = "default",
+        dataset_name: str = "",
+        experiment_name: str = "",
+        lookback_runs: int = 30,
+        bin_count: int = 10,
+    ) -> EvalCalibrationResponse:
+        runs = self.list_runs(db, workspace_id=workspace_id)
+        if dataset_name:
+            runs = [run for run in runs if run.dataset_name == dataset_name]
+        if experiment_name:
+            runs = [run for run in runs if run.experiment_name == experiment_name]
+        runs = sorted(runs, key=lambda run: run.created_at, reverse=True)[: max(1, lookback_runs)]
+
+        confidences: list[float] = []
+        outcomes: list[float] = []
+        for run in runs:
+            for result in run.results:
+                confidence = float(result.judge_score) if hasattr(result, "judge_score") else float(result.score)
+                confidence = min(1.0, max(0.0, confidence))
+                confidences.append(confidence)
+                outcomes.append(1.0 if result.passed else 0.0)
+
+        total_cases = len(confidences)
+        if total_cases == 0:
+            return EvalCalibrationResponse(
+                workspace_id=workspace_id,
+                dataset_name=dataset_name,
+                experiment_name=experiment_name,
+                lookback_runs=max(1, lookback_runs),
+            )
+
+        safe_bins = max(2, min(20, bin_count))
+        buckets: dict[int, dict[str, float]] = {
+            index: {"count": 0.0, "conf_sum": 0.0, "outcome_sum": 0.0}
+            for index in range(safe_bins)
+        }
+
+        for confidence, outcome in zip(confidences, outcomes):
+            bin_index = min(safe_bins - 1, floor(confidence * safe_bins))
+            buckets[bin_index]["count"] += 1.0
+            buckets[bin_index]["conf_sum"] += confidence
+            buckets[bin_index]["outcome_sum"] += outcome
+
+        calibration_bins: list[EvalCalibrationBin] = []
+        ece = 0.0
+        for index in range(safe_bins):
+            bucket = buckets[index]
+            count = int(bucket["count"])
+            if count == 0:
+                continue
+            avg_conf = bucket["conf_sum"] / count
+            empirical_pass_rate = bucket["outcome_sum"] / count
+            gap = abs(avg_conf - empirical_pass_rate)
+            ece += (count / total_cases) * gap
+            calibration_bins.append(
+                EvalCalibrationBin(
+                    lower_bound=round(index / safe_bins, 4),
+                    upper_bound=round((index + 1) / safe_bins, 4),
+                    case_count=count,
+                    avg_confidence=round(avg_conf, 4),
+                    empirical_pass_rate=round(empirical_pass_rate, 4),
+                    gap=round(gap, 4),
+                )
+            )
+
+        avg_confidence = sum(confidences) / total_cases
+        empirical_pass_rate = sum(outcomes) / total_cases
+        brier_score = sum((confidence - outcome) ** 2 for confidence, outcome in zip(confidences, outcomes)) / total_cases
+
+        return EvalCalibrationResponse(
+            workspace_id=workspace_id,
+            dataset_name=dataset_name,
+            experiment_name=experiment_name,
+            lookback_runs=max(1, lookback_runs),
+            total_cases=total_cases,
+            avg_confidence=round(avg_confidence, 4),
+            empirical_pass_rate=round(empirical_pass_rate, 4),
+            expected_calibration_error=round(ece, 4),
+            brier_score=round(brier_score, 4),
+            bins=calibration_bins,
+        )
 
     def judge_run(self, db: Session, payload: JudgeEvalCreate, workspace_id: str = "default") -> JudgeEvalResponse:
         response = judge_client.evaluate(

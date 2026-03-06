@@ -139,6 +139,28 @@ class AsyncEvalJobResponse(BaseModel):
     result: Optional[EvalRunResponse] = None
 
 
+class EvalCalibrationBin(BaseModel):
+    lower_bound: float
+    upper_bound: float
+    case_count: int
+    avg_confidence: float
+    empirical_pass_rate: float
+    gap: float
+
+
+class EvalCalibrationResponse(BaseModel):
+    workspace_id: str = "default"
+    dataset_name: str = ""
+    experiment_name: str = ""
+    lookback_runs: int = 30
+    total_cases: int = 0
+    avg_confidence: float = 0.0
+    empirical_pass_rate: float = 0.0
+    expected_calibration_error: float = 0.0
+    brier_score: float = 0.0
+    bins: list[EvalCalibrationBin] = Field(default_factory=list)
+
+
 class ReleaseGateCreate(BaseModel):
     dataset_name: str = Field(min_length=3, max_length=100)
     experiment_name: str = Field(default="", max_length=100)

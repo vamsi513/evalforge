@@ -1,4 +1,5 @@
 import json
+import re
 from statistics import mean
 from typing import Any, Dict, List, Optional
 
@@ -124,6 +125,8 @@ class JudgeClient:
         matched_terms = [str(term).lower() for term in parsed.get("matched_terms", [])]
         missing_terms = [str(term).lower() for term in parsed.get("missing_terms", [])]
         score = round(float(parsed["score"]), 4)
+        groundedness_score, unsupported_terms, groundedness_feedback = self._groundedness_snapshot(sample)
+        criterion_scores.setdefault("groundedness", groundedness_score)
 
         return JudgeCaseResult(
             prompt=sample.prompt,
@@ -137,7 +140,10 @@ class JudgeClient:
             passed=bool(parsed.get("passed", score >= 0.7)),
             matched_terms=matched_terms,
             missing_terms=missing_terms,
+            unsupported_terms=unsupported_terms,
             criterion_scores=criterion_scores,
+            groundedness_score=groundedness_score,
+            groundedness_feedback=groundedness_feedback,
             feedback=str(parsed.get("feedback", "Structured LLM judge completed scoring.")),
             judge_provider="openai",
             judge_model=settings.judge_model,
@@ -212,6 +218,8 @@ class JudgeClient:
             matched_terms.append(sample.expected_keyword.lower())
         if not keyword_hit:
             missing_terms.append(sample.expected_keyword.lower())
+        groundedness_score, unsupported_terms, groundedness_feedback = JudgeClient._groundedness_snapshot(sample)
+        criterion_scores.setdefault("groundedness", groundedness_score)
 
         return JudgeCaseResult(
             prompt=sample.prompt,
@@ -225,7 +233,10 @@ class JudgeClient:
             passed=score >= 0.7,
             matched_terms=matched_terms,
             missing_terms=missing_terms,
+            unsupported_terms=unsupported_terms,
             criterion_scores=criterion_scores,
+            groundedness_score=groundedness_score,
+            groundedness_feedback=groundedness_feedback,
             feedback="Mock judge completed rubric-based scoring.",
             judge_provider="mock",
             judge_model="heuristic-judge-v1",
@@ -304,6 +315,36 @@ class JudgeClient:
                 "cost_usd",
             ],
             "additionalProperties": False,
+        }
+
+    @staticmethod
+    def _groundedness_snapshot(sample: EvalSample) -> tuple[float, list[str], str]:
+        if not sample.reference_answer:
+            return 1.0, [], "No reference answer provided for groundedness checks."
+
+        reference_terms = JudgeClient._extract_terms(sample.reference_answer)
+        candidate_terms = JudgeClient._extract_terms(sample.candidate_output)
+        if not candidate_terms:
+            return 1.0, [], "Candidate output did not contain enough signal for groundedness checks."
+
+        unsupported_terms = sorted(term for term in candidate_terms if term not in reference_terms)
+        overlap_terms = [term for term in candidate_terms if term in reference_terms]
+        groundedness_score = len(overlap_terms) / (len(candidate_terms) + (2 * len(unsupported_terms)))
+        rounded_score = round(max(0.0, min(1.0, groundedness_score)), 4)
+        if unsupported_terms:
+            return (
+                rounded_score,
+                unsupported_terms,
+                f"Unsupported terms detected: {', '.join(unsupported_terms[:5])}.",
+            )
+        return rounded_score, [], "All significant answer terms were grounded in the reference."
+
+    @staticmethod
+    def _extract_terms(text: str) -> set[str]:
+        return {
+            token
+            for token in re.findall(r"[a-zA-Z][a-zA-Z0-9_-]{4,}", text.lower())
+            if token not in {"issue", "summary", "response", "result"}
         }
 
 
