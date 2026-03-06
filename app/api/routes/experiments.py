@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
-from app.api.dependencies import get_workspace_id
+from app.api.dependencies import get_workspace_id, require_editor_role
 from app.db.session import get_db
 from app.models.experiment import (
     ExperimentCreate,
@@ -23,7 +23,7 @@ async def list_experiments(
     return experiment_service.list_experiments(db, workspace_id)
 
 
-@router.post("", response_model=ExperimentResponse, status_code=201)
+@router.post("", response_model=ExperimentResponse, status_code=201, dependencies=[Depends(require_editor_role)])
 async def create_experiment(
     payload: ExperimentCreate,
     workspace_id: str = Depends(get_workspace_id),
@@ -46,7 +46,11 @@ async def get_experiment_report(
     return report
 
 
-@router.post("/{experiment_name}/promote", response_model=ExperimentPromoteResponse)
+@router.post(
+    "/{experiment_name}/promote",
+    response_model=ExperimentPromoteResponse,
+    dependencies=[Depends(require_editor_role)],
+)
 async def promote_experiment_candidate(
     experiment_name: str,
     payload: ExperimentPromoteRequest,

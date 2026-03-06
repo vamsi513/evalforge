@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.dependencies import get_workspace_id
+from app.api.dependencies import get_workspace_id, require_admin_role
 from app.db.session import get_db
 from app.models.model_routing import (
     ModelRoutingPolicyCreate,
@@ -21,7 +21,12 @@ async def list_model_routing_policies(
     return model_routing_service.list_policies(db, workspace_id)
 
 
-@router.post("", response_model=ModelRoutingPolicyResponse, status_code=201)
+@router.post(
+    "",
+    response_model=ModelRoutingPolicyResponse,
+    status_code=201,
+    dependencies=[Depends(require_admin_role)],
+)
 async def create_model_routing_policy(
     payload: ModelRoutingPolicyCreate,
     workspace_id: str = Depends(get_workspace_id),
@@ -39,4 +44,3 @@ async def resolve_model_route(
     db: Session = Depends(get_db),
 ) -> ModelRoutingResolutionResponse:
     return model_routing_service.resolve_use_case(db, workspace_id, use_case)
-

@@ -135,6 +135,7 @@ REDIS_QUEUE_NAME=evalforge:eval_jobs
 PLATFORM_API_KEY=
 DEFAULT_WORKSPACE_ID=default
 RELEASE_GATE_ALERT_WEBHOOK_URL=
+DEFAULT_USER_ROLE=admin
 ```
 
 Start the API:
@@ -228,12 +229,14 @@ Then send headers with requests:
 ```text
 X-API-Key: change-me
 X-Workspace-ID: team-a
+X-User-Role: editor
 ```
 
 Behavior:
 
 - if `PLATFORM_API_KEY` is empty, auth is disabled
 - if `X-Workspace-ID` is omitted, `DEFAULT_WORKSPACE_ID` is used
+- `X-User-Role` supports `viewer`, `editor`, `admin` (defaults from `DEFAULT_USER_ROLE`)
 - workspace scoping applies to newly created datasets and evaluation artifacts
 
 ## CI release gate workflow
