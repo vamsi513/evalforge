@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     redis_queue_name: str = "evalforge:eval_jobs"
     platform_api_key: str = ""
     default_workspace_id: str = "default"
+    release_gate_alert_webhook_url: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

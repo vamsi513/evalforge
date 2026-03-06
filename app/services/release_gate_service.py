@@ -1,12 +1,14 @@
 from collections import Counter
 from datetime import datetime, timedelta
 from statistics import mean
-from typing import Any, Union
+from typing import Any, Optional, Union
 
+import httpx
 from sqlalchemy import inspect, select, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.db.models import (
     ReleaseGateDecisionRecord,
     ReleaseGateScheduleRecord,
@@ -179,12 +181,20 @@ class ReleaseGateService:
             )
             run_log.status = "completed"
             run_log.decision_id = decision.id
-            run_log.message = f"Created release gate decision {decision.id}."
+            run_log.message = f"Created release gate decision {decision.id} with status {decision.status}."
             schedule.last_run_at = datetime.utcnow()
             schedule.next_run_at = None
             schedule.updated_at = datetime.utcnow()
             db.commit()
             db.refresh(run_log)
+            if decision.status != "passed":
+                self._send_schedule_alert(
+                    event_type="release_gate_failed",
+                    workspace_id=workspace_id,
+                    schedule=schedule,
+                    run_log=run_log,
+                    decision=decision,
+                )
         except ValueError as exc:
             run_log.status = "failed"
             run_log.message = str(exc)
@@ -192,6 +202,13 @@ class ReleaseGateService:
             schedule.updated_at = datetime.utcnow()
             db.commit()
             db.refresh(run_log)
+            self._send_schedule_alert(
+                event_type="schedule_execution_failed",
+                workspace_id=workspace_id,
+                schedule=schedule,
+                run_log=run_log,
+                decision=None,
+            )
         return self._to_schedule_run_response(run_log)
 
     def list_schedule_runs(
@@ -739,6 +756,40 @@ class ReleaseGateService:
                 f"Unknown policy_name '{policy_name}'. Supported values: {', '.join(sorted(self._POLICY_PRESETS))}"
             )
         return self._POLICY_PRESETS[normalized]
+
+    @staticmethod
+    def _send_schedule_alert(
+        *,
+        event_type: str,
+        workspace_id: str,
+        schedule: ReleaseGateScheduleRecord,
+        run_log: ReleaseGateScheduleRunRecord,
+        decision: Optional[ReleaseGateResponse],
+    ) -> None:
+        webhook_url = settings.release_gate_alert_webhook_url.strip()
+        if not webhook_url:
+            return
+
+        payload = {
+            "event_type": event_type,
+            "workspace_id": workspace_id,
+            "schedule_id": schedule.id,
+            "dataset_name": schedule.dataset_name,
+            "experiment_name": schedule.experiment_name,
+            "policy_name": schedule.policy_name,
+            "run_id": run_log.id,
+            "run_status": run_log.status,
+            "message": run_log.message,
+            "decision_id": decision.id if decision else "",
+            "decision_status": decision.status if decision else "",
+            "created_at": run_log.created_at.isoformat(),
+        }
+        try:
+            with httpx.Client(timeout=5.0) as client:
+                client.post(webhook_url, json=payload)
+        except Exception:
+            # Alerts are best-effort and must never fail scheduling flow.
+            return
 
     @staticmethod
     def _to_schedule_response(row: ReleaseGateScheduleRecord) -> ReleaseGateScheduleResponse:
