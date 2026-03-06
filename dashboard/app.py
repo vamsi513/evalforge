@@ -27,6 +27,7 @@ def load_snapshot(api_base_url: str, api_key_value: str, workspace: str) -> dict
         "prompts": api.get_prompt_templates(),
         "golden_cases": api.get_golden_cases(),
         "runs": api.get_runs(),
+        "eval_calibration": api.get_eval_calibration(lookback_runs=30, bin_count=10),
         "jobs": api.get_jobs(),
         "release_gates": api.get_release_gates(),
         "release_gate_schedules": api.get_release_gate_schedules(),
@@ -54,6 +55,7 @@ experiments = snapshot["experiments"]
 prompts = snapshot["prompts"]
 golden_cases = snapshot["golden_cases"]
 runs = snapshot["runs"]
+eval_calibration = snapshot["eval_calibration"]
 jobs = snapshot["jobs"]
 release_gates = snapshot["release_gates"]
 release_gate_schedules = snapshot["release_gate_schedules"]
@@ -113,6 +115,10 @@ col15, col16 = st.columns(2)
 col15.metric("Groundedness Avg", telemetry.get("groundedness_average", 1.0))
 col16.metric("Groundedness Failures", telemetry.get("groundedness_failure_count", 0))
 
+col17, col18 = st.columns(2)
+col17.metric("Calibration ECE", eval_calibration.get("expected_calibration_error", 0.0))
+col18.metric("Calibration Brier", eval_calibration.get("brier_score", 0.0))
+
 exp_rollups = telemetry.get("experiment_rollups", [])
 use_case_rollups = telemetry.get("use_case_rollups", [])
 if exp_rollups or use_case_rollups:
@@ -171,6 +177,16 @@ with tab1:
         selected_run_id = st.selectbox("Inspect run", [run["id"] for run in runs])
         selected_run = next(run for run in runs if run["id"] == selected_run_id)
         st.json(selected_run)
+
+    calibration_bins = eval_calibration.get("bins", [])
+    if calibration_bins:
+        st.markdown("### Score Calibration")
+        calibration_df = pd.DataFrame(calibration_bins)
+        st.dataframe(calibration_df, use_container_width=True)
+        st.line_chart(
+            calibration_df.set_index("upper_bound")[["avg_confidence", "empirical_pass_rate"]],
+            use_container_width=True,
+        )
 
 with tab2:
     st.subheader("Async Eval Jobs")

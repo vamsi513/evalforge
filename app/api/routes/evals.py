@@ -7,6 +7,7 @@ from app.db.session import get_db
 from app.models.assets import StoredEvalRunCreate
 from app.models.eval_run import (
     AsyncEvalJobResponse,
+    EvalCalibrationResponse,
     EvalRunCreate,
     EvalRunResponse,
     JudgeEvalCreate,
@@ -25,6 +26,25 @@ async def list_eval_runs(
     workspace_id: str = Depends(get_workspace_id), db: Session = Depends(get_db)
 ) -> list[EvalRunResponse]:
     return eval_service.list_runs(db, workspace_id=workspace_id)
+
+
+@router.get("/calibration", response_model=EvalCalibrationResponse)
+async def get_eval_calibration_report(
+    dataset_name: str = "",
+    experiment_name: str = "",
+    lookback_runs: int = 30,
+    bin_count: int = 10,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> EvalCalibrationResponse:
+    return eval_service.get_calibration_report(
+        db=db,
+        workspace_id=workspace_id,
+        dataset_name=dataset_name,
+        experiment_name=experiment_name,
+        lookback_runs=lookback_runs,
+        bin_count=bin_count,
+    )
 
 
 @router.get("/jobs", response_model=list[AsyncEvalJobResponse])
