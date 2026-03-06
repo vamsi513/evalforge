@@ -193,6 +193,53 @@ with tab2:
 
 with tab3:
     st.subheader("Release Gate Decisions")
+    st.markdown("### Evaluate Latest Runs")
+    dataset_options = [dataset.get("name", "") for dataset in datasets if dataset.get("name")]
+    default_dataset = dataset_options[0] if dataset_options else ""
+    with st.form("evaluate_latest_gate_form", clear_on_submit=False):
+        selected_dataset = st.selectbox(
+            "Dataset",
+            options=dataset_options if dataset_options else [""],
+            index=0,
+        )
+        experiment_name = st.text_input("Experiment (optional)", value="")
+        threshold_col1, threshold_col2, threshold_col3, threshold_col4 = st.columns(4)
+        min_score_delta = threshold_col1.number_input(
+            "Min score delta", value=-0.02, min_value=-1.0, max_value=1.0, step=0.01
+        )
+        max_latency_regression_ms = threshold_col2.number_input(
+            "Max latency regression (ms)", value=25.0, min_value=0.0, step=1.0
+        )
+        max_cost_regression_usd = threshold_col3.number_input(
+            "Max cost regression (USD)", value=0.001, min_value=0.0, step=0.001, format="%.6f"
+        )
+        max_failed_case_delta = int(
+            threshold_col4.number_input("Max failed-case delta", value=0, min_value=0, step=1)
+        )
+        submit_evaluate_latest = st.form_submit_button("Run Evaluate-Latest Gate")
+
+    if submit_evaluate_latest:
+        if not selected_dataset and not default_dataset:
+            st.error("Create at least one dataset before running evaluate-latest gate.")
+        else:
+            evaluate_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
+            try:
+                created_gate = evaluate_api.evaluate_latest_release_gate(
+                    {
+                        "dataset_name": selected_dataset or default_dataset,
+                        "experiment_name": experiment_name.strip(),
+                        "min_score_delta": min_score_delta,
+                        "max_latency_regression_ms": max_latency_regression_ms,
+                        "max_cost_regression_usd": max_cost_regression_usd,
+                        "max_failed_case_delta": max_failed_case_delta,
+                    }
+                )
+                st.success("Release gate created from latest runs.")
+                st.json(created_gate)
+                load_snapshot.clear()
+            except HTTPError as exc:
+                st.error(f"Failed to run evaluate-latest gate: {exc}")
+
     trend_col1, trend_col2 = st.columns(2)
     with trend_col1:
         st.metric("Gate Decisions (30d)", release_gate_trends.get("total_decisions", 0))
