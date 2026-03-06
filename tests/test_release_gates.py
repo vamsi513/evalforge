@@ -580,3 +580,116 @@ def test_release_gate_trends_endpoint() -> None:
     assert payload["overall_pass_rate"] == 0.5
     assert len(payload["daily"]) >= 1
     assert isinstance(payload["top_failure_codes"], list)
+
+
+def test_release_gate_evaluate_latest_endpoint() -> None:
+    dataset_name = f"release_gate_latest_{uuid4().hex[:8]}"
+    experiment_name = "latest-track"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for evaluate-latest testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    older_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert older_run.status_code == 201
+
+    newer_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by an infrastructure issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert newer_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates/evaluate-latest",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "min_score_delta": -0.01,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 0,
+        },
+    )
+    assert gate.status_code == 201
+    payload = gate.json()
+    assert payload["dataset_name"] == dataset_name
+    assert payload["experiment_name"] == experiment_name
+    assert payload["baseline_run_id"] == older_run.json()["id"]
+    assert payload["candidate_run_id"] == newer_run.json()["id"]
+
+
+def test_release_gate_evaluate_latest_requires_two_runs() -> None:
+    dataset_name = f"release_gate_latest_missing_{uuid4().hex[:8]}"
+    experiment_name = "latest-missing"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for evaluate-latest missing-runs testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    single_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "only-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert single_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates/evaluate-latest",
+        json={"dataset_name": dataset_name, "experiment_name": experiment_name},
+    )
+    assert gate.status_code == 400
+    assert "At least two eval runs are required" in gate.json()["detail"]
