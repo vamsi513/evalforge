@@ -21,6 +21,12 @@ class EvalForgeClient:
             response.raise_for_status()
             return response.json()
 
+    def _post(self, path: str, payload: Dict[str, Any]) -> Any:
+        with httpx.Client(base_url=self.base_url, timeout=20.0) as client:
+            response = client.post(path, json=payload, headers=self._headers())
+            response.raise_for_status()
+            return response.json()
+
     def get_health(self) -> Dict[str, Any]:
         return self._get("/health")
 
@@ -53,6 +59,9 @@ class EvalForgeClient:
 
     def get_release_gates(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/release-gates")
+
+    def evaluate_latest_release_gate(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._post("/api/v1/release-gates/evaluate-latest", payload)
 
     def get_model_routes(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/model-routing")
