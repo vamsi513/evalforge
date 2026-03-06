@@ -545,3 +545,108 @@ def test_release_history_includes_promotion_events() -> None:
     assert events[0]["experiment_name"] == experiment_name
     assert events[0]["gate_id"] == gate.json()["id"]
     assert events[0]["promoted_run_id"] == candidate_run.json()["id"]
+
+
+def test_release_history_csv_export() -> None:
+    workspace_headers = {"X-Workspace-ID": "exp-history-csv"}
+    dataset_name = f"experiment_history_csv_dataset_{uuid4().hex[:8]}"
+    experiment_name = f"history-csv-{uuid4().hex[:6]}"
+
+    assert client.post(
+        "/api/v1/datasets",
+        headers=workspace_headers,
+        json={
+            "name": dataset_name,
+            "description": "Dataset for promotion history csv export testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/experiments",
+        headers=workspace_headers,
+        json={
+            "name": experiment_name,
+            "dataset_name": dataset_name,
+            "owner": "test-suite",
+            "status": "active",
+            "description": "Experiment for csv export history coverage.",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -0.5,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 1,
+        },
+    )
+    assert gate.status_code == 201
+
+    promote = client.post(
+        f"/api/v1/experiments/{experiment_name}/promote",
+        headers=workspace_headers,
+        json={"candidate_run_id": "", "require_latest_gate_passed": True},
+    )
+    assert promote.status_code == 200
+
+    history_csv = client.get(
+        f"/api/v1/experiments/{experiment_name}/release-history/export.csv",
+        headers=workspace_headers,
+    )
+    assert history_csv.status_code == 200
+    assert history_csv.headers["content-type"].startswith("text/csv")
+    assert "attachment;" in history_csv.headers.get("content-disposition", "")
+    body = history_csv.text
+    assert "experiment_name,dataset_name,gate_id" in body
+    assert experiment_name in body
+    assert gate.json()["id"] in body

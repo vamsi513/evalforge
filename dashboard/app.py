@@ -358,6 +358,17 @@ with tab4:
         if release_history_events:
             st.markdown("**Promotion Audit Log**")
             st.dataframe(pd.DataFrame(release_history_events), use_container_width=True)
+            try:
+                csv_payload = experiment_api.get_experiment_release_history_csv(selected_experiment["name"])
+                st.download_button(
+                    label="Download Promotion Audit CSV",
+                    data=csv_payload,
+                    file_name=f"{selected_experiment['name']}_release_history.csv",
+                    mime="text/csv",
+                    key=f"download_release_history_{selected_experiment_id}",
+                )
+            except HTTPError as exc:
+                st.warning(f"Could not generate release history CSV: {exc}")
 
         score_trend = experiment_report.get("score_trend", [])
         if score_trend:

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_workspace_id
@@ -83,3 +83,24 @@ async def list_experiment_release_history(
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.get("/{experiment_name}/release-history/export.csv")
+async def export_experiment_release_history_csv(
+    experiment_name: str,
+    limit: int = 200,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> Response:
+    try:
+        csv_payload = experiment_service.export_promotion_events_csv(
+            db=db,
+            name=experiment_name,
+            workspace_id=workspace_id,
+            limit=limit,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    filename = f"{experiment_name}_release_history.csv"
+    headers = {"Content-Disposition": f'attachment; filename="{filename}"'}
+    return Response(content=csv_payload, media_type="text/csv", headers=headers)

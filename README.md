@@ -190,6 +190,7 @@ If API key protection is enabled, also set:
 - `GET /api/v1/experiments/{experiment_name}/report`
 - `POST /api/v1/experiments/{experiment_name}/promote`
 - `GET /api/v1/experiments/{experiment_name}/release-history`
+- `GET /api/v1/experiments/{experiment_name}/release-history/export.csv`
 - `POST /api/v1/evals/stored`
 - `POST /api/v1/evals/judge`
 - `POST /api/v1/evals/compare`
