@@ -33,6 +33,15 @@ def get_db() -> Generator[Session, None, None]:
         db.close()
 
 
+def check_db_connection() -> bool:
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        return True
+    except Exception:
+        return False
+
+
 def _ensure_sqlite_runtime_compatibility() -> None:
     if not settings.database_url.startswith("sqlite"):
         return
