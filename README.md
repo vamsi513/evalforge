@@ -80,6 +80,12 @@ EvalForge addresses that by combining:
 
 ![Dashboard jobs](screenshots/dashboard-jobs.png)
 
+## Recruiter demo pack
+
+- 5-minute walkthrough: `docs/RECRUITER_DEMO_WALKTHROUGH.md`
+- System diagram: `docs/ARCHITECTURE_DIAGRAM.md`
+- Metrics report template: `docs/METRICS_SUMMARY_TEMPLATE.md`
+
 ## Stack
 
 - Backend: FastAPI, Pydantic, SQLAlchemy
@@ -291,6 +297,10 @@ For a clean demo, use this order:
 7. Run `POST /api/v1/evals/async`
 8. Poll `GET /api/v1/evals/jobs/{job_id}`
 9. Open the dashboard and show Runs + Jobs + Telemetry
+
+For a timed script, use:
+
+- `docs/RECRUITER_DEMO_WALKTHROUGH.md`
 
 ## Judge modes
 
