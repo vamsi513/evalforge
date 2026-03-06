@@ -5,6 +5,7 @@ from app.api.dependencies import get_workspace_id
 from app.db.session import get_db
 from app.models.experiment import (
     ExperimentCreate,
+    ExperimentPromotionEvent,
     ExperimentPromoteRequest,
     ExperimentPromoteResponse,
     ExperimentReport,
@@ -64,3 +65,21 @@ async def promote_experiment_candidate(
         if detail == "Experiment not found":
             raise HTTPException(status_code=404, detail=detail) from exc
         raise HTTPException(status_code=400, detail=detail) from exc
+
+
+@router.get("/{experiment_name}/release-history", response_model=list[ExperimentPromotionEvent])
+async def list_experiment_release_history(
+    experiment_name: str,
+    limit: int = 50,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> list[ExperimentPromotionEvent]:
+    try:
+        return experiment_service.list_promotion_events(
+            db=db,
+            name=experiment_name,
+            workspace_id=workspace_id,
+            limit=limit,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc

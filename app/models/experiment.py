@@ -63,3 +63,16 @@ class ExperimentPromoteResponse(BaseModel):
     gate_status: str
     message: str
     updated_experiment: ExperimentResponse
+
+
+class ExperimentPromotionEvent(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid4()))
+    workspace_id: str = "default"
+    experiment_name: str
+    dataset_name: str
+    gate_id: str
+    promoted_run_id: str
+    actor: str = "system"
+    note: str = ""
+    event_metadata: dict[str, str] = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=datetime.utcnow)

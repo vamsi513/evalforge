@@ -59,6 +59,9 @@ class EvalForgeClient:
             },
         )
 
+    def get_experiment_release_history(self, experiment_name: str, limit: int = 20) -> List[Dict[str, Any]]:
+        return self._get(f"/api/v1/experiments/{experiment_name}/release-history?limit={limit}")
+
     def get_prompt_templates(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/assets/prompts")
 

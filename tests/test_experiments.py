@@ -441,3 +441,107 @@ def test_promote_candidate_blocked_when_latest_gate_failed() -> None:
     )
     assert promote.status_code == 400
     assert "Latest release gate did not pass" in promote.json()["detail"]
+
+
+def test_release_history_includes_promotion_events() -> None:
+    workspace_headers = {"X-Workspace-ID": "exp-history"}
+    dataset_name = f"experiment_history_dataset_{uuid4().hex[:8]}"
+    experiment_name = f"history-track-{uuid4().hex[:6]}"
+
+    assert client.post(
+        "/api/v1/datasets",
+        headers=workspace_headers,
+        json={
+            "name": dataset_name,
+            "description": "Dataset for promotion history endpoint testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/experiments",
+        headers=workspace_headers,
+        json={
+            "name": experiment_name,
+            "dataset_name": dataset_name,
+            "owner": "test-suite",
+            "status": "active",
+            "description": "Experiment for immutable promotion event history.",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -0.5,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 1,
+        },
+    )
+    assert gate.status_code == 201
+
+    promote = client.post(
+        f"/api/v1/experiments/{experiment_name}/promote",
+        headers=workspace_headers,
+        json={"candidate_run_id": "", "require_latest_gate_passed": True},
+    )
+    assert promote.status_code == 200
+
+    history = client.get(
+        f"/api/v1/experiments/{experiment_name}/release-history",
+        headers=workspace_headers,
+    )
+    assert history.status_code == 200
+    events = history.json()
+    assert len(events) >= 1
+    assert events[0]["experiment_name"] == experiment_name
+    assert events[0]["gate_id"] == gate.json()["id"]
+    assert events[0]["promoted_run_id"] == candidate_run.json()["id"]
