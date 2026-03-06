@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.dependencies import get_workspace_id
+from app.api.dependencies import get_workspace_id, require_editor_role
 from app.db.session import get_db
 from app.models.eval_run import (
     ReleaseGateCiDecisionResponse,
@@ -40,6 +40,7 @@ async def create_release_gate_schedule(
     payload: ReleaseGateScheduleCreate,
     workspace_id: str = Depends(get_workspace_id),
     db: Session = Depends(get_db),
+    _: None = Depends(require_editor_role),
 ) -> ReleaseGateScheduleResponse:
     try:
         return release_gate_service.create_schedule(db, payload, workspace_id=workspace_id)
@@ -52,6 +53,7 @@ async def run_release_gate_schedule(
     schedule_id: str,
     workspace_id: str = Depends(get_workspace_id),
     db: Session = Depends(get_db),
+    _: None = Depends(require_editor_role),
 ) -> ReleaseGateScheduleRunResponse:
     try:
         return release_gate_service.run_schedule_now(db, schedule_id=schedule_id, workspace_id=workspace_id)
@@ -145,7 +147,7 @@ async def get_release_gate_trends(
     )
 
 
-@router.post("", response_model=ReleaseGateResponse, status_code=201)
+@router.post("", response_model=ReleaseGateResponse, status_code=201, dependencies=[Depends(require_editor_role)])
 async def create_release_gate(
     payload: ReleaseGateCreate,
     workspace_id: str = Depends(get_workspace_id),
@@ -162,6 +164,7 @@ async def create_release_gate_from_latest(
     payload: ReleaseGateEvaluateLatestCreate,
     workspace_id: str = Depends(get_workspace_id),
     db: Session = Depends(get_db),
+    _: None = Depends(require_editor_role),
 ) -> ReleaseGateResponse:
     try:
         return release_gate_service.create_decision_from_latest(db, payload, workspace_id=workspace_id)

@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from app.api.dependencies import get_workspace_id
+from app.api.dependencies import get_workspace_id, require_editor_role
 from app.db.session import get_db
 from app.models.assets import (
     DatasetBundle,
@@ -27,7 +27,12 @@ async def list_prompt_templates(
     return asset_service.list_prompt_templates(db, dataset_name=dataset_name, workspace_id=workspace_id)
 
 
-@router.post("/prompts", response_model=PromptTemplateResponse, status_code=201)
+@router.post(
+    "/prompts",
+    response_model=PromptTemplateResponse,
+    status_code=201,
+    dependencies=[Depends(require_editor_role)],
+)
 async def create_prompt_template(
     payload: PromptTemplateCreate,
     workspace_id: str = Depends(get_workspace_id),
@@ -50,7 +55,12 @@ async def list_golden_cases(
     return asset_service.list_golden_cases(db, dataset_name=dataset_name, workspace_id=workspace_id)
 
 
-@router.post("/golden-cases", response_model=GoldenCaseResponse, status_code=201)
+@router.post(
+    "/golden-cases",
+    response_model=GoldenCaseResponse,
+    status_code=201,
+    dependencies=[Depends(require_editor_role)],
+)
 async def create_golden_case(
     payload: GoldenCaseCreate,
     workspace_id: str = Depends(get_workspace_id),
@@ -74,7 +84,12 @@ async def export_dataset_bundle(
     return bundle
 
 
-@router.post("/bundles/import", response_model=DatasetBundle, status_code=201)
+@router.post(
+    "/bundles/import",
+    response_model=DatasetBundle,
+    status_code=201,
+    dependencies=[Depends(require_editor_role)],
+)
 async def import_dataset_bundle(
     payload: DatasetBundleImport,
     workspace_id: str = Depends(get_workspace_id),

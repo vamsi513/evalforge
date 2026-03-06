@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.dependencies import get_workspace_id
+from app.api.dependencies import get_workspace_id, require_editor_role
 from app.db.session import get_db
 from app.models.dataset import DatasetCreate, DatasetResponse
 from app.services.dataset_service import dataset_service
@@ -16,7 +16,7 @@ async def list_datasets(
     return dataset_service.list_datasets(db, workspace_id)
 
 
-@router.post("", response_model=DatasetResponse, status_code=201)
+@router.post("", response_model=DatasetResponse, status_code=201, dependencies=[Depends(require_editor_role)])
 async def create_dataset(
     payload: DatasetCreate,
     workspace_id: str = Depends(get_workspace_id),
