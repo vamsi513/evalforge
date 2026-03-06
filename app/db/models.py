@@ -157,3 +157,18 @@ class ReleaseGateDecisionRecord(Base):
     metrics: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     failures: Mapped[list[dict]] = mapped_column(JSON, nullable=False, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class ExperimentPromotionEventRecord(Base):
+    __tablename__ = "experiment_promotion_events"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    workspace_id: Mapped[str] = mapped_column(String(100), nullable=False, default="default", index=True)
+    experiment_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    dataset_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    gate_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
+    promoted_run_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
+    actor: Mapped[str] = mapped_column(String(100), nullable=False, default="system")
+    note: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    event_metadata: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False, index=True)

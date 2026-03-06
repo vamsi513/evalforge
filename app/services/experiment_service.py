@@ -5,10 +5,16 @@ from sqlalchemy import func, inspect, select, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
-from app.db.models import EvalRunRecord, ExperimentRecord, ReleaseGateDecisionRecord
+from app.db.models import (
+    EvalRunRecord,
+    ExperimentPromotionEventRecord,
+    ExperimentRecord,
+    ReleaseGateDecisionRecord,
+)
 from app.models.experiment import (
     ExperimentCreate,
     ExperimentGateTrend,
+    ExperimentPromotionEvent,
     ExperimentPromoteRequest,
     ExperimentPromoteResponse,
     ExperimentReport,
@@ -84,6 +90,68 @@ class ExperimentService:
             score_trend=[run.average_score for run in recent_runs],
             latest_gate_status=gate_trends[0].status if gate_trends else "",
         )
+
+    def list_promotion_events(
+        self, db: Session, name: str, workspace_id: str, limit: int = 50
+    ) -> list[ExperimentPromotionEvent]:
+        try:
+            experiment_row = db.execute(
+                select(ExperimentRecord).where(
+                    ExperimentRecord.name == name,
+                    ExperimentRecord.workspace_id == workspace_id,
+                )
+            ).scalar_one_or_none()
+        except OperationalError as exc:
+            if "experiments" not in str(exc) and "workspace_id" not in str(exc):
+                raise
+            self._ensure_experiments_table(db)
+            experiment_row = db.execute(
+                select(ExperimentRecord).where(
+                    ExperimentRecord.name == name,
+                    ExperimentRecord.workspace_id == workspace_id,
+                )
+            ).scalar_one_or_none()
+        if experiment_row is None:
+            raise ValueError("Experiment not found")
+
+        try:
+            rows = db.execute(
+                select(ExperimentPromotionEventRecord)
+                .where(
+                    ExperimentPromotionEventRecord.workspace_id == workspace_id,
+                    ExperimentPromotionEventRecord.experiment_name == name,
+                )
+                .order_by(ExperimentPromotionEventRecord.created_at.desc())
+                .limit(max(1, min(limit, 200)))
+            ).scalars().all()
+        except OperationalError as exc:
+            if "experiment_promotion_events" not in str(exc):
+                raise
+            self._ensure_promotion_events_table(db)
+            rows = db.execute(
+                select(ExperimentPromotionEventRecord)
+                .where(
+                    ExperimentPromotionEventRecord.workspace_id == workspace_id,
+                    ExperimentPromotionEventRecord.experiment_name == name,
+                )
+                .order_by(ExperimentPromotionEventRecord.created_at.desc())
+                .limit(max(1, min(limit, 200)))
+            ).scalars().all()
+        return [
+            ExperimentPromotionEvent(
+                id=row.id,
+                workspace_id=row.workspace_id,
+                experiment_name=row.experiment_name,
+                dataset_name=row.dataset_name,
+                gate_id=row.gate_id,
+                promoted_run_id=row.promoted_run_id,
+                actor=row.actor,
+                note=row.note,
+                event_metadata={str(k): str(v) for k, v in (row.event_metadata or {}).items()},
+                created_at=row.created_at,
+            )
+            for row in rows
+        ]
 
     def exists(self, db: Session, name: str, workspace_id: str) -> bool:
         query = select(ExperimentRecord.id).where(
@@ -163,8 +231,47 @@ class ExperimentService:
         metadata["last_promoted_at"] = datetime.utcnow().isoformat()
         experiment_row.experiment_metadata = metadata
 
-        db.commit()
-        db.refresh(experiment_row)
+        event_payload = {
+            "workspace_id": workspace_id,
+            "experiment_name": experiment_row.name,
+            "dataset_name": experiment_row.dataset_name,
+            "gate_id": latest_gate.id,
+            "promoted_run_id": promoted_run_id,
+            "actor": "dashboard",
+            "note": "Candidate promoted to baseline after passing release gate.",
+            "event_metadata": {
+                "require_latest_gate_passed": str(payload.require_latest_gate_passed).lower(),
+            },
+        }
+        db.add(ExperimentPromotionEventRecord(**event_payload))
+
+        try:
+            db.commit()
+            db.refresh(experiment_row)
+        except OperationalError as exc:
+            db.rollback()
+            if "experiment_promotion_events" not in str(exc):
+                raise
+            self._ensure_promotion_events_table(db)
+            experiment_row = db.execute(
+                select(ExperimentRecord).where(
+                    ExperimentRecord.name == name,
+                    ExperimentRecord.workspace_id == workspace_id,
+                )
+            ).scalar_one_or_none()
+            if experiment_row is None:
+                raise ValueError("Experiment not found")
+            experiment_row.baseline_run_id = promoted_run_id
+            experiment_row.candidate_run_id = ""
+            experiment_row.status = "baseline"
+            experiment_row.updated_at = datetime.utcnow()
+            metadata = dict(experiment_row.experiment_metadata or {})
+            metadata["last_promoted_gate_id"] = latest_gate.id
+            metadata["last_promoted_at"] = datetime.utcnow().isoformat()
+            experiment_row.experiment_metadata = metadata
+            db.add(ExperimentPromotionEventRecord(**event_payload))
+            db.commit()
+            db.refresh(experiment_row)
 
         updated_experiment = self._to_response(db, experiment_row)
         return ExperimentPromoteResponse(
@@ -306,6 +413,50 @@ class ExperimentService:
                 )
             )
             db.commit()
+
+    @staticmethod
+    def _ensure_promotion_events_table(db: Session) -> None:
+        inspector = inspect(db.bind)
+        existing_tables = set(inspector.get_table_names())
+        if "experiment_promotion_events" in existing_tables:
+            return
+        db.execute(
+            text(
+                """
+                CREATE TABLE experiment_promotion_events (
+                    id VARCHAR(36) NOT NULL PRIMARY KEY,
+                    workspace_id VARCHAR(100) NOT NULL DEFAULT 'default',
+                    experiment_name VARCHAR(100) NOT NULL,
+                    dataset_name VARCHAR(100) NOT NULL,
+                    gate_id VARCHAR(36) NOT NULL,
+                    promoted_run_id VARCHAR(36) NOT NULL,
+                    actor VARCHAR(100) NOT NULL DEFAULT 'system',
+                    note TEXT NOT NULL DEFAULT '',
+                    event_metadata JSON NOT NULL DEFAULT '{}',
+                    created_at DATETIME NOT NULL
+                )
+                """
+            )
+        )
+        db.execute(
+            text("CREATE INDEX ix_experiment_promotion_events_workspace_id ON experiment_promotion_events (workspace_id)")
+        )
+        db.execute(
+            text("CREATE INDEX ix_experiment_promotion_events_experiment_name ON experiment_promotion_events (experiment_name)")
+        )
+        db.execute(
+            text("CREATE INDEX ix_experiment_promotion_events_dataset_name ON experiment_promotion_events (dataset_name)")
+        )
+        db.execute(
+            text("CREATE INDEX ix_experiment_promotion_events_gate_id ON experiment_promotion_events (gate_id)")
+        )
+        db.execute(
+            text("CREATE INDEX ix_experiment_promotion_events_promoted_run_id ON experiment_promotion_events (promoted_run_id)")
+        )
+        db.execute(
+            text("CREATE INDEX ix_experiment_promotion_events_created_at ON experiment_promotion_events (created_at)")
+        )
+        db.commit()
 
 
 experiment_service = ExperimentService()

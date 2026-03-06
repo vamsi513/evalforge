@@ -343,6 +343,7 @@ with tab4:
 
         experiment_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
         experiment_report = experiment_api.get_experiment_report(selected_experiment["name"])
+        release_history_events = experiment_api.get_experiment_release_history(selected_experiment["name"])
 
         recent_runs = experiment_report.get("recent_runs", [])
         if recent_runs:
@@ -353,6 +354,10 @@ with tab4:
         if release_history:
             st.markdown("**Release History**")
             st.dataframe(pd.DataFrame(release_history), use_container_width=True)
+
+        if release_history_events:
+            st.markdown("**Promotion Audit Log**")
+            st.dataframe(pd.DataFrame(release_history_events), use_container_width=True)
 
         score_trend = experiment_report.get("score_trend", [])
         if score_trend:
