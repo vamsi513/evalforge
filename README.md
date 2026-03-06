@@ -270,6 +270,16 @@ It queries:
 
 and fails the workflow when `allow_deploy=false`.
 
+`ci-decision` now includes:
+
+- `reason_codes` (machine-readable failure codes)
+- `reason_details` (human-readable failure reasons)
+
+Release-gate payloads also support hard-fail controls for:
+
+- `max_structured_output_failure_delta`
+- `max_groundedness_regression`
+
 Configure repository **Variables**:
 
 - `EVALFORGE_API_URL` (example: `https://your-api-domain`)
