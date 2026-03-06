@@ -195,6 +195,7 @@ If API key protection is enabled, also set:
 - `POST /api/v1/evals/judge`
 - `POST /api/v1/evals/compare`
 - `GET /api/v1/release-gates`
+- `GET /api/v1/release-gates/policies`
 - `POST /api/v1/release-gates`
 - `POST /api/v1/release-gates/evaluate-latest`
 - `GET /api/v1/release-gates/summary`

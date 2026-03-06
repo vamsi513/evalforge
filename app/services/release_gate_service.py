@@ -13,6 +13,7 @@ from app.models.eval_run import (
     ReleaseGateCiDecisionResponse,
     ReleaseGateCreate,
     ReleaseGateEvaluateLatestCreate,
+    ReleaseGatePolicyPreset,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendPoint,
@@ -22,6 +23,39 @@ from app.services.eval_service import eval_service
 
 
 class ReleaseGateService:
+    _POLICY_PRESETS: dict[str, dict[str, Any]] = {
+        "strict": {
+            "description": "Low-risk deployment gate with tight quality/cost/latency controls.",
+            "min_score_delta": -0.005,
+            "max_latency_regression_ms": 10.0,
+            "max_cost_regression_usd": 0.0003,
+            "max_failed_case_delta": 0,
+            "max_scenario_failed_delta": 0,
+        },
+        "balanced": {
+            "description": "Default production policy balancing quality and iteration speed.",
+            "min_score_delta": -0.02,
+            "max_latency_regression_ms": 25.0,
+            "max_cost_regression_usd": 0.001,
+            "max_failed_case_delta": 0,
+            "max_scenario_failed_delta": 0,
+        },
+        "lenient": {
+            "description": "Exploratory policy for rapid experimentation with wider regressions tolerated.",
+            "min_score_delta": -1.0,
+            "max_latency_regression_ms": 75.0,
+            "max_cost_regression_usd": 0.003,
+            "max_failed_case_delta": 2,
+            "max_scenario_failed_delta": 2,
+        },
+    }
+
+    def list_policy_presets(self) -> list[ReleaseGatePolicyPreset]:
+        return [
+            ReleaseGatePolicyPreset(name=name, **values)
+            for name, values in self._POLICY_PRESETS.items()
+        ]
+
     def list_decisions(self, db: Session, workspace_id: str = "default") -> list[ReleaseGateResponse]:
         try:
             rows = db.execute(
@@ -96,16 +130,21 @@ class ReleaseGateService:
 
         candidate_run = latest_runs[0]
         baseline_run = latest_runs[1]
+        policy = self._resolve_policy(payload.policy_name)
         decision_payload = ReleaseGateCreate(
             dataset_name=payload.dataset_name,
             experiment_name=payload.experiment_name,
             baseline_run_id=baseline_run.id,
             candidate_run_id=candidate_run.id,
-            min_score_delta=payload.min_score_delta,
-            max_latency_regression_ms=payload.max_latency_regression_ms,
-            max_cost_regression_usd=payload.max_cost_regression_usd,
-            max_failed_case_delta=payload.max_failed_case_delta,
-            max_scenario_failed_delta=payload.max_scenario_failed_delta,
+            min_score_delta=float(policy.get("min_score_delta", payload.min_score_delta)),
+            max_latency_regression_ms=float(
+                policy.get("max_latency_regression_ms", payload.max_latency_regression_ms)
+            ),
+            max_cost_regression_usd=float(policy.get("max_cost_regression_usd", payload.max_cost_regression_usd)),
+            max_failed_case_delta=int(policy.get("max_failed_case_delta", payload.max_failed_case_delta)),
+            max_scenario_failed_delta=int(
+                policy.get("max_scenario_failed_delta", payload.max_scenario_failed_delta)
+            ),
             scenario_score_thresholds=payload.scenario_score_thresholds,
             slice_score_thresholds=payload.slice_score_thresholds,
             scenario_failed_case_thresholds=payload.scenario_failed_case_thresholds,
@@ -478,6 +517,16 @@ class ReleaseGateService:
             filtered_runs = [run for run in filtered_runs if run.experiment_name == experiment_name]
         filtered_runs.sort(key=lambda run: run.created_at, reverse=True)
         return filtered_runs[:2]
+
+    def _resolve_policy(self, policy_name: str) -> dict[str, Any]:
+        normalized = policy_name.strip().lower()
+        if not normalized:
+            return {}
+        if normalized not in self._POLICY_PRESETS:
+            raise ValueError(
+                f"Unknown policy_name '{policy_name}'. Supported values: {', '.join(sorted(self._POLICY_PRESETS))}"
+            )
+        return self._POLICY_PRESETS[normalized]
 
     @staticmethod
     def _to_response(row: ReleaseGateDecisionRecord) -> ReleaseGateResponse:

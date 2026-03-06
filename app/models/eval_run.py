@@ -158,6 +158,7 @@ class ReleaseGateCreate(BaseModel):
 class ReleaseGateEvaluateLatestCreate(BaseModel):
     dataset_name: str = Field(min_length=3, max_length=100)
     experiment_name: str = Field(default="", max_length=100)
+    policy_name: str = Field(default="", max_length=30)
     min_score_delta: float = Field(default=-0.02, ge=-1.0, le=1.0)
     max_latency_regression_ms: float = Field(default=25.0, ge=0.0)
     max_cost_regression_usd: float = Field(default=0.001, ge=0.0)
@@ -229,3 +230,13 @@ class ReleaseGateTrendsResponse(BaseModel):
     overall_pass_rate: float = 0.0
     top_failure_codes: list[dict[str, Any]] = Field(default_factory=list)
     daily: list[ReleaseGateTrendPoint] = Field(default_factory=list)
+
+
+class ReleaseGatePolicyPreset(BaseModel):
+    name: str
+    description: str
+    min_score_delta: float
+    max_latency_regression_ms: float
+    max_cost_regression_usd: float
+    max_failed_case_delta: int
+    max_scenario_failed_delta: int

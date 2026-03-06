@@ -29,6 +29,7 @@ def load_snapshot(api_base_url: str, api_key_value: str, workspace: str) -> dict
         "runs": api.get_runs(),
         "jobs": api.get_jobs(),
         "release_gates": api.get_release_gates(),
+        "release_gate_policies": api.get_release_gate_policies(),
         "release_gate_trends": api.get_release_gate_trends(lookback_days=30),
         "model_routes": api.get_model_routes(),
     }
@@ -53,6 +54,7 @@ golden_cases = snapshot["golden_cases"]
 runs = snapshot["runs"]
 jobs = snapshot["jobs"]
 release_gates = snapshot["release_gates"]
+release_gate_policies = snapshot["release_gate_policies"]
 release_gate_trends = snapshot["release_gate_trends"]
 model_routes = snapshot["model_routes"]
 
@@ -203,6 +205,16 @@ with tab3:
             index=0,
         )
         experiment_name = st.text_input("Experiment (optional)", value="")
+        policy_options = ["custom"] + [policy.get("name", "") for policy in release_gate_policies]
+        selected_policy = st.selectbox("Policy preset", options=policy_options, index=1 if len(policy_options) > 1 else 0)
+        if selected_policy != "custom":
+            policy_details = next(
+                (policy for policy in release_gate_policies if policy.get("name") == selected_policy),
+                None,
+            )
+            if policy_details:
+                st.caption(policy_details.get("description", ""))
+                st.json(policy_details)
         threshold_col1, threshold_col2, threshold_col3, threshold_col4 = st.columns(4)
         min_score_delta = threshold_col1.number_input(
             "Min score delta", value=-0.02, min_value=-1.0, max_value=1.0, step=0.01
@@ -228,6 +240,7 @@ with tab3:
                     {
                         "dataset_name": selected_dataset or default_dataset,
                         "experiment_name": experiment_name.strip(),
+                        "policy_name": "" if selected_policy == "custom" else selected_policy,
                         "min_score_delta": min_score_delta,
                         "max_latency_regression_ms": max_latency_regression_ms,
                         "max_cost_regression_usd": max_cost_regression_usd,
