@@ -4,6 +4,7 @@ from statistics import mean
 from typing import Any, Optional, Union
 
 import httpx
+import structlog
 from sqlalchemy import inspect, select, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
@@ -31,6 +32,8 @@ from app.models.eval_run import (
     ReleaseGateTrendsResponse,
 )
 from app.services.eval_service import eval_service
+
+logger = structlog.get_logger(__name__)
 
 
 class ReleaseGateService:
@@ -786,9 +789,17 @@ class ReleaseGateService:
         }
         try:
             with httpx.Client(timeout=5.0) as client:
-                client.post(webhook_url, json=payload)
-        except Exception:
+                response = client.post(webhook_url, json=payload)
+                response.raise_for_status()
+        except Exception as exc:
             # Alerts are best-effort and must never fail scheduling flow.
+            logger.warning(
+                "release_gate_alert_delivery_failed",
+                error=str(exc),
+                event_type=event_type,
+                schedule_id=schedule.id,
+                workspace_id=workspace_id,
+            )
             return
 
     @staticmethod

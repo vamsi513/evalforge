@@ -148,6 +148,8 @@ async def judge_eval_run(
     dependencies=[Depends(require_editor_role)],
 )
 async def compare_eval_run(
-    payload: PairwiseEvalCreate, db: Session = Depends(get_db)
+    payload: PairwiseEvalCreate,
+    _: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
 ) -> PairwiseEvalResponse:
     return eval_service.compare_runs(db, payload)

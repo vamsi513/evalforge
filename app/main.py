@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from app.api.router import api_router
 from app.core.config import settings
 from app.core.logging import configure_logging
-from app.db.session import check_db_connection, init_db
+from app.db.session import check_db_connection, check_redis_connection, init_db
 
 configure_logging()
 
@@ -33,13 +33,23 @@ async def liveness() -> dict[str, str]:
 @app.get("/health/ready", tags=["system"])
 async def readiness():
     db_ok = check_db_connection()
-    if not db_ok:
+    redis_required = settings.async_backend.lower() == "redis"
+    redis_ok = True
+    if redis_required:
+        redis_ok = check_redis_connection()
+    if not db_ok or not redis_ok:
+        checks = {"database": "ok" if db_ok else "down"}
+        if redis_required:
+            checks["redis"] = "ok" if redis_ok else "down"
         return JSONResponse(
             status_code=503,
             content={
                 "status": "not_ready",
                 "service": settings.app_name,
-                "checks": {"database": "down"},
+                "checks": checks,
             },
         )
-    return {"status": "ready", "service": settings.app_name, "checks": {"database": "ok"}}
+    checks = {"database": "ok"}
+    if redis_required:
+        checks["redis"] = "ok"
+    return {"status": "ready", "service": settings.app_name, "checks": checks}

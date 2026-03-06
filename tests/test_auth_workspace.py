@@ -15,8 +15,16 @@ def test_api_key_and_workspace_scoping(monkeypatch) -> None:
     unauthorized_response = client.get("/api/v1/datasets")
     assert unauthorized_response.status_code == 401
 
-    headers_a = {"X-API-Key": "secret-key", "X-Workspace-ID": "team-a"}
-    headers_b = {"X-API-Key": "secret-key", "X-Workspace-ID": "team-b"}
+    headers_a = {
+        "X-API-Key": "secret-key",
+        "X-Workspace-ID": "team-a",
+        "X-User-Role": "editor",
+    }
+    headers_b = {
+        "X-API-Key": "secret-key",
+        "X-Workspace-ID": "team-b",
+        "X-User-Role": "editor",
+    }
 
     dataset_a = f"workspace_a_{uuid4().hex[:8]}"
     dataset_b = f"workspace_b_{uuid4().hex[:8]}"

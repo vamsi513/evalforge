@@ -205,7 +205,7 @@ class EvalService:
         outcomes: list[float] = []
         for run in runs:
             for result in run.results:
-                confidence = float(result.judge_score) if hasattr(result, "judge_score") else float(result.score)
+                confidence = float(result.judge_score) if result.judge_score is not None else float(result.score)
                 confidence = min(1.0, max(0.0, confidence))
                 confidences.append(confidence)
                 outcomes.append(1.0 if result.passed else 0.0)
@@ -490,6 +490,11 @@ class EvalService:
         normalized.setdefault("structured_output_error", "")
         normalized.setdefault("groundedness_score", 1.0)
         normalized.setdefault("groundedness_feedback", "")
+        normalized.setdefault("judge_provider", "")
+        normalized.setdefault("judge_model", "")
+        normalized.setdefault("judge_score", None)
+        normalized.setdefault("judge_reasoning", "")
+        normalized.setdefault("used_fallback", False)
         normalized.setdefault("feedback", "Loaded from legacy eval record.")
         return normalized
 

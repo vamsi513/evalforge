@@ -85,6 +85,8 @@ EvalForge addresses that by combining:
 - 5-minute walkthrough: `docs/RECRUITER_DEMO_WALKTHROUGH.md`
 - System diagram: `docs/ARCHITECTURE_DIAGRAM.md`
 - Metrics report template: `docs/METRICS_SUMMARY_TEMPLATE.md`
+- Demo script: `docs/DEMO.md`
+- Resume bullets: `docs/RESUME_BULLETS.md`
 
 ## Stack
 
@@ -141,7 +143,7 @@ REDIS_QUEUE_NAME=evalforge:eval_jobs
 PLATFORM_API_KEY=
 DEFAULT_WORKSPACE_ID=default
 RELEASE_GATE_ALERT_WEBHOOK_URL=
-DEFAULT_USER_ROLE=admin
+DEFAULT_USER_ROLE=viewer
 ```
 
 Start the API:

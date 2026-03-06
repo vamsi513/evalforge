@@ -1,5 +1,6 @@
 from collections.abc import Generator
 
+import structlog
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -17,6 +18,7 @@ engine = create_engine(
     echo=settings.database_echo,
 )
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
+logger = structlog.get_logger(__name__)
 
 
 def init_db() -> None:
@@ -38,7 +40,20 @@ def check_db_connection() -> bool:
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
         return True
-    except Exception:
+    except Exception as exc:
+        logger.warning("db_connection_check_failed", error=str(exc))
+        return False
+
+
+def check_redis_connection() -> bool:
+    try:
+        from redis import Redis
+
+        client = Redis.from_url(settings.redis_url, socket_timeout=1, socket_connect_timeout=1)
+        client.ping()
+        return True
+    except Exception as exc:
+        logger.warning("redis_connection_check_failed", error=str(exc))
         return False
 
 
