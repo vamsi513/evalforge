@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from uuid import uuid4
 
 from sqlalchemy import JSON, DateTime, Float, String, Text, UniqueConstraint
@@ -157,6 +158,36 @@ class ReleaseGateDecisionRecord(Base):
     metrics: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     failures: Mapped[list[dict]] = mapped_column(JSON, nullable=False, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class ReleaseGateScheduleRecord(Base):
+    __tablename__ = "release_gate_schedules"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    workspace_id: Mapped[str] = mapped_column(String(100), nullable=False, default="default", index=True)
+    dataset_name: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    experiment_name: Mapped[str] = mapped_column(String(100), nullable=False, default="", index=True)
+    policy_name: Mapped[str] = mapped_column(String(30), nullable=False, default="balanced")
+    cron_expression: Mapped[str] = mapped_column(String(100), nullable=False, default="0 2 * * *")
+    enabled: Mapped[bool] = mapped_column(nullable=False, default=True, index=True)
+    last_run_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    next_run_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+    )
+
+
+class ReleaseGateScheduleRunRecord(Base):
+    __tablename__ = "release_gate_schedule_runs"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    schedule_id: Mapped[str] = mapped_column(String(36), nullable=False, index=True)
+    workspace_id: Mapped[str] = mapped_column(String(100), nullable=False, default="default", index=True)
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="failed", index=True)
+    decision_id: Mapped[str] = mapped_column(String(36), nullable=False, default="", index=True)
+    message: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False, index=True)
 
 
 class ExperimentPromotionEventRecord(Base):

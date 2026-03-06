@@ -9,6 +9,9 @@ from app.models.eval_run import (
     ReleaseGateEvaluateLatestCreate,
     ReleaseGatePolicyPreset,
     ReleaseGatePolicyReportResponse,
+    ReleaseGateScheduleCreate,
+    ReleaseGateScheduleResponse,
+    ReleaseGateScheduleRunResponse,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendsResponse,
@@ -23,6 +26,54 @@ async def list_release_gates(
     workspace_id: str = Depends(get_workspace_id), db: Session = Depends(get_db)
 ) -> list[ReleaseGateResponse]:
     return release_gate_service.list_decisions(db, workspace_id=workspace_id)
+
+
+@router.get("/schedules", response_model=list[ReleaseGateScheduleResponse])
+async def list_release_gate_schedules(
+    workspace_id: str = Depends(get_workspace_id), db: Session = Depends(get_db)
+) -> list[ReleaseGateScheduleResponse]:
+    return release_gate_service.list_schedules(db, workspace_id=workspace_id)
+
+
+@router.post("/schedules", response_model=ReleaseGateScheduleResponse, status_code=201)
+async def create_release_gate_schedule(
+    payload: ReleaseGateScheduleCreate,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ReleaseGateScheduleResponse:
+    try:
+        return release_gate_service.create_schedule(db, payload, workspace_id=workspace_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/schedules/{schedule_id}/run", response_model=ReleaseGateScheduleRunResponse, status_code=201)
+async def run_release_gate_schedule(
+    schedule_id: str,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ReleaseGateScheduleRunResponse:
+    try:
+        return release_gate_service.run_schedule_now(db, schedule_id=schedule_id, workspace_id=workspace_id)
+    except ValueError as exc:
+        detail = str(exc)
+        status = 404 if detail == "Release gate schedule not found" else 400
+        raise HTTPException(status_code=status, detail=detail) from exc
+
+
+@router.get("/schedules/{schedule_id}/runs", response_model=list[ReleaseGateScheduleRunResponse])
+async def list_release_gate_schedule_runs(
+    schedule_id: str,
+    limit: int = 20,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> list[ReleaseGateScheduleRunResponse]:
+    return release_gate_service.list_schedule_runs(
+        db,
+        schedule_id=schedule_id,
+        workspace_id=workspace_id,
+        limit=limit,
+    )
 
 
 @router.get("/policies", response_model=list[ReleaseGatePolicyPreset])

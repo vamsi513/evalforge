@@ -29,6 +29,7 @@ def load_snapshot(api_base_url: str, api_key_value: str, workspace: str) -> dict
         "runs": api.get_runs(),
         "jobs": api.get_jobs(),
         "release_gates": api.get_release_gates(),
+        "release_gate_schedules": api.get_release_gate_schedules(),
         "release_gate_policies": api.get_release_gate_policies(),
         "release_gate_trends": api.get_release_gate_trends(lookback_days=30),
         "release_gate_policy_report": api.get_release_gate_policy_report(lookback_days=30),
@@ -55,6 +56,7 @@ golden_cases = snapshot["golden_cases"]
 runs = snapshot["runs"]
 jobs = snapshot["jobs"]
 release_gates = snapshot["release_gates"]
+release_gate_schedules = snapshot["release_gate_schedules"]
 release_gate_policies = snapshot["release_gate_policies"]
 release_gate_trends = snapshot["release_gate_trends"]
 release_gate_policy_report = snapshot["release_gate_policy_report"]
@@ -197,6 +199,74 @@ with tab2:
 
 with tab3:
     st.subheader("Release Gate Decisions")
+    st.markdown("### Nightly Schedules")
+    with st.form("release_gate_schedule_form", clear_on_submit=False):
+        schedule_dataset_options = [dataset.get("name", "") for dataset in datasets if dataset.get("name")]
+        schedule_dataset = st.selectbox(
+            "Schedule Dataset",
+            options=schedule_dataset_options if schedule_dataset_options else [""],
+            index=0,
+        )
+        schedule_experiment = st.text_input("Schedule Experiment (optional)", value="")
+        schedule_policy = st.selectbox(
+            "Schedule Policy",
+            options=[policy.get("name", "") for policy in release_gate_policies] or ["balanced"],
+            index=1 if len(release_gate_policies) > 1 else 0,
+        )
+        schedule_cron = st.text_input("Cron Expression", value="0 2 * * *")
+        schedule_enabled = st.checkbox("Enabled", value=True)
+        submit_schedule = st.form_submit_button("Create Schedule")
+
+    if submit_schedule:
+        if not schedule_dataset:
+            st.error("Create at least one dataset before creating a schedule.")
+        else:
+            schedule_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
+            try:
+                created_schedule = schedule_api.create_release_gate_schedule(
+                    {
+                        "dataset_name": schedule_dataset,
+                        "experiment_name": schedule_experiment.strip(),
+                        "policy_name": schedule_policy,
+                        "cron_expression": schedule_cron.strip(),
+                        "enabled": schedule_enabled,
+                    }
+                )
+                st.success("Release-gate schedule created.")
+                st.json(created_schedule)
+                load_snapshot.clear()
+            except HTTPError as exc:
+                st.error(f"Failed to create schedule: {exc}")
+
+    if release_gate_schedules:
+        st.dataframe(pd.DataFrame(release_gate_schedules), use_container_width=True)
+        selected_schedule_id = st.selectbox(
+            "Inspect schedule",
+            [schedule["id"] for schedule in release_gate_schedules],
+        )
+        selected_schedule = next(s for s in release_gate_schedules if s["id"] == selected_schedule_id)
+        st.json(selected_schedule)
+
+        run_schedule_now = st.button("Run Selected Schedule Now", key="run_schedule_now_btn")
+        if run_schedule_now:
+            schedule_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
+            try:
+                run_response = schedule_api.run_release_gate_schedule(selected_schedule_id)
+                st.success("Schedule run completed.")
+                st.json(run_response)
+                load_snapshot.clear()
+            except HTTPError as exc:
+                st.error(f"Failed to run schedule: {exc}")
+
+        schedule_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
+        try:
+            schedule_runs = schedule_api.get_release_gate_schedule_runs(selected_schedule_id)
+            if schedule_runs:
+                st.markdown("**Schedule Run Logs**")
+                st.dataframe(pd.DataFrame(schedule_runs), use_container_width=True)
+        except HTTPError as exc:
+            st.warning(f"Could not load schedule runs: {exc}")
+
     st.markdown("### Evaluate Latest Runs")
     dataset_options = [dataset.get("name", "") for dataset in datasets if dataset.get("name")]
     default_dataset = dataset_options[0] if dataset_options else ""
