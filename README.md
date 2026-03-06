@@ -174,6 +174,8 @@ If API key protection is enabled, also set:
 ## Main API surface
 
 - `GET /health`
+- `GET /health/live`
+- `GET /health/ready`
 - `GET /api/v1/datasets`
 - `POST /api/v1/datasets`
 - `GET /api/v1/assets/prompts`
@@ -209,6 +211,13 @@ If API key protection is enabled, also set:
 - `GET /api/v1/release-gates/ci-decision`
 - `GET /api/v1/release-gates/trends`
 - `GET /api/v1/telemetry/summary`
+
+## Production hardening
+
+- Deployment runbook: `docs/DEPLOYMENT_HARDENING.md`
+- Postgres ops scripts:
+  - `scripts/ops/backup_postgres.sh`
+  - `scripts/ops/restore_postgres.sh`
 
 ## API protection and workspaces
 
