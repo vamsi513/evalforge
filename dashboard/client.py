@@ -102,3 +102,13 @@ class EvalForgeClient:
         if experiment_name:
             query += f"&experiment_name={experiment_name}"
         return self._get(query)
+
+    def get_release_gate_policy_report(
+        self, dataset_name: str = "", experiment_name: str = "", lookback_days: int = 30
+    ) -> Dict[str, Any]:
+        query = f"/api/v1/release-gates/policy-report?lookback_days={lookback_days}"
+        if dataset_name:
+            query += f"&dataset_name={dataset_name}"
+        if experiment_name:
+            query += f"&experiment_name={experiment_name}"
+        return self._get(query)

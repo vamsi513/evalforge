@@ -142,6 +142,7 @@ class AsyncEvalJobResponse(BaseModel):
 class ReleaseGateCreate(BaseModel):
     dataset_name: str = Field(min_length=3, max_length=100)
     experiment_name: str = Field(default="", max_length=100)
+    policy_name: str = Field(default="", max_length=30)
     baseline_run_id: str = Field(min_length=36, max_length=36)
     candidate_run_id: str = Field(min_length=36, max_length=36)
     min_score_delta: float = Field(default=-0.02, ge=-1.0, le=1.0)
@@ -175,6 +176,7 @@ class ReleaseGateResponse(BaseModel):
     dataset_name: str
     workspace_id: str = "default"
     experiment_name: str = ""
+    policy_name: str = ""
     baseline_run_id: str
     candidate_run_id: str
     status: str
@@ -240,3 +242,20 @@ class ReleaseGatePolicyPreset(BaseModel):
     max_cost_regression_usd: float
     max_failed_case_delta: int
     max_scenario_failed_delta: int
+
+
+class ReleaseGatePolicyReportItem(BaseModel):
+    policy_name: str
+    total_decisions: int = 0
+    passed: int = 0
+    failed: int = 0
+    block_rate: float = 0.0
+
+
+class ReleaseGatePolicyReportResponse(BaseModel):
+    workspace_id: str = "default"
+    dataset_name: str = ""
+    experiment_name: str = ""
+    lookback_days: int = 30
+    total_decisions: int = 0
+    policies: list[ReleaseGatePolicyReportItem] = Field(default_factory=list)

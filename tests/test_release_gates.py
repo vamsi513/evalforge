@@ -449,6 +449,7 @@ def test_release_gate_policy_endpoint_and_evaluate_latest_policy() -> None:
     )
     assert strict_gate.status_code == 201
     assert strict_gate.json()["status"] == "failed"
+    assert strict_gate.json()["policy_name"] == "strict"
 
     lenient_gate = client.post(
         "/api/v1/release-gates/evaluate-latest",
@@ -460,6 +461,18 @@ def test_release_gate_policy_endpoint_and_evaluate_latest_policy() -> None:
     )
     assert lenient_gate.status_code == 201
     assert lenient_gate.json()["status"] == "passed"
+    assert lenient_gate.json()["policy_name"] == "lenient"
+
+    report = client.get(
+        "/api/v1/release-gates/policy-report",
+        params={"dataset_name": dataset_name, "experiment_name": experiment_name, "lookback_days": 30},
+    )
+    assert report.status_code == 200
+    report_payload = report.json()
+    assert report_payload["total_decisions"] >= 2
+    policy_names = [item["policy_name"] for item in report_payload["policies"]]
+    assert "strict" in policy_names
+    assert "lenient" in policy_names
 
 
 def test_release_gate_ci_decision_endpoint() -> None:

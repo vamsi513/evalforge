@@ -14,6 +14,8 @@ from app.models.eval_run import (
     ReleaseGateCreate,
     ReleaseGateEvaluateLatestCreate,
     ReleaseGatePolicyPreset,
+    ReleaseGatePolicyReportItem,
+    ReleaseGatePolicyReportResponse,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendPoint,
@@ -86,6 +88,7 @@ class ReleaseGateService:
             raise ValueError("Both runs must belong to the provided dataset")
 
         metrics = self._build_metrics(baseline, candidate)
+        metrics["policy_name"] = payload.policy_name.strip().lower() or "custom"
         failures = self._build_failures(payload, metrics)
         status = "passed" if not failures else "failed"
         summary = self._build_summary(status, baseline, candidate, failures)
@@ -134,6 +137,7 @@ class ReleaseGateService:
         decision_payload = ReleaseGateCreate(
             dataset_name=payload.dataset_name,
             experiment_name=payload.experiment_name,
+            policy_name=payload.policy_name.strip().lower() or "custom",
             baseline_run_id=baseline_run.id,
             candidate_run_id=candidate_run.id,
             min_score_delta=float(policy.get("min_score_delta", payload.min_score_delta)),
@@ -317,6 +321,68 @@ class ReleaseGateService:
             overall_pass_rate=round(passed_count / total_decisions, 6) if total_decisions else 0.0,
             top_failure_codes=top_codes,
             daily=daily,
+        )
+
+    def get_policy_report(
+        self,
+        db: Session,
+        workspace_id: str = "default",
+        dataset_name: str = "",
+        experiment_name: str = "",
+        lookback_days: int = 30,
+    ) -> ReleaseGatePolicyReportResponse:
+        cutoff = datetime.utcnow() - timedelta(days=max(1, lookback_days))
+        try:
+            query = select(ReleaseGateDecisionRecord).where(
+                ReleaseGateDecisionRecord.workspace_id == workspace_id,
+                ReleaseGateDecisionRecord.created_at >= cutoff,
+            )
+            if dataset_name:
+                query = query.where(ReleaseGateDecisionRecord.dataset_name == dataset_name)
+            if experiment_name:
+                query = query.where(ReleaseGateDecisionRecord.experiment_name == experiment_name)
+            rows = db.execute(query).scalars().all()
+        except OperationalError as exc:
+            if "release_gate_decisions" not in str(exc) and "workspace_id" not in str(exc):
+                raise
+            self._ensure_legacy_table(db)
+            query = select(ReleaseGateDecisionRecord).where(
+                ReleaseGateDecisionRecord.workspace_id == workspace_id,
+                ReleaseGateDecisionRecord.created_at >= cutoff,
+            )
+            if dataset_name:
+                query = query.where(ReleaseGateDecisionRecord.dataset_name == dataset_name)
+            if experiment_name:
+                query = query.where(ReleaseGateDecisionRecord.experiment_name == experiment_name)
+            rows = db.execute(query).scalars().all()
+
+        grouped: dict[str, dict[str, int]] = {}
+        for row in rows:
+            policy_name = str((row.metrics or {}).get("policy_name", "")).strip() or "custom"
+            bucket = grouped.setdefault(policy_name, {"total": 0, "passed": 0, "failed": 0})
+            bucket["total"] += 1
+            if row.status == "passed":
+                bucket["passed"] += 1
+            else:
+                bucket["failed"] += 1
+
+        policies = [
+            ReleaseGatePolicyReportItem(
+                policy_name=name,
+                total_decisions=values["total"],
+                passed=values["passed"],
+                failed=values["failed"],
+                block_rate=round(values["failed"] / values["total"], 6) if values["total"] else 0.0,
+            )
+            for name, values in sorted(grouped.items(), key=lambda item: (-item[1]["total"], item[0]))
+        ]
+        return ReleaseGatePolicyReportResponse(
+            workspace_id=workspace_id,
+            dataset_name=dataset_name,
+            experiment_name=experiment_name,
+            lookback_days=max(1, lookback_days),
+            total_decisions=len(rows),
+            policies=policies,
         )
 
     @staticmethod
@@ -535,6 +601,7 @@ class ReleaseGateService:
             dataset_name=row.dataset_name,
             workspace_id=getattr(row, "workspace_id", "default"),
             experiment_name=getattr(row, "experiment_name", ""),
+            policy_name=str((row.metrics or {}).get("policy_name", "")).strip(),
             baseline_run_id=row.baseline_run_id,
             candidate_run_id=row.candidate_run_id,
             status=row.status,
