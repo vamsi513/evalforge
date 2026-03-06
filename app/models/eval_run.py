@@ -196,6 +196,8 @@ class ReleaseGateCreate(BaseModel):
     max_cost_regression_usd: float = Field(default=0.001, ge=0.0)
     max_failed_case_delta: int = Field(default=0, ge=0)
     max_scenario_failed_delta: int = Field(default=0, ge=0)
+    max_structured_output_failure_delta: int = Field(default=0, ge=0)
+    max_groundedness_regression: float = Field(default=0.05, ge=0.0, le=1.0)
     scenario_score_thresholds: dict[str, float] = Field(default_factory=dict)
     slice_score_thresholds: dict[str, float] = Field(default_factory=dict)
     scenario_failed_case_thresholds: dict[str, int] = Field(default_factory=dict)
@@ -211,6 +213,8 @@ class ReleaseGateEvaluateLatestCreate(BaseModel):
     max_cost_regression_usd: float = Field(default=0.001, ge=0.0)
     max_failed_case_delta: int = Field(default=0, ge=0)
     max_scenario_failed_delta: int = Field(default=0, ge=0)
+    max_structured_output_failure_delta: int = Field(default=0, ge=0)
+    max_groundedness_regression: float = Field(default=0.05, ge=0.0, le=1.0)
     scenario_score_thresholds: dict[str, float] = Field(default_factory=dict)
     slice_score_thresholds: dict[str, float] = Field(default_factory=dict)
     scenario_failed_case_thresholds: dict[str, int] = Field(default_factory=dict)
@@ -257,6 +261,7 @@ class ReleaseGateCiDecisionResponse(BaseModel):
     status: str = "not_evaluated"
     allow_deploy: bool = False
     reason_codes: list[str] = Field(default_factory=list)
+    reason_details: list[str] = Field(default_factory=list)
     summary: str = ""
     decided_at: Optional[datetime] = None
 

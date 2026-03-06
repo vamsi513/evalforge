@@ -45,6 +45,8 @@ class ReleaseGateService:
             "max_cost_regression_usd": 0.0003,
             "max_failed_case_delta": 0,
             "max_scenario_failed_delta": 0,
+            "max_structured_output_failure_delta": 0,
+            "max_groundedness_regression": 0.02,
         },
         "balanced": {
             "description": "Default production policy balancing quality and iteration speed.",
@@ -53,6 +55,8 @@ class ReleaseGateService:
             "max_cost_regression_usd": 0.001,
             "max_failed_case_delta": 0,
             "max_scenario_failed_delta": 0,
+            "max_structured_output_failure_delta": 0,
+            "max_groundedness_regression": 0.05,
         },
         "lenient": {
             "description": "Exploratory policy for rapid experimentation with wider regressions tolerated.",
@@ -61,6 +65,8 @@ class ReleaseGateService:
             "max_cost_regression_usd": 0.003,
             "max_failed_case_delta": 2,
             "max_scenario_failed_delta": 2,
+            "max_structured_output_failure_delta": 5,
+            "max_groundedness_regression": 1.0,
         },
     }
 
@@ -315,6 +321,12 @@ class ReleaseGateService:
             max_scenario_failed_delta=int(
                 policy.get("max_scenario_failed_delta", payload.max_scenario_failed_delta)
             ),
+            max_structured_output_failure_delta=int(
+                policy.get("max_structured_output_failure_delta", payload.max_structured_output_failure_delta)
+            ),
+            max_groundedness_regression=float(
+                policy.get("max_groundedness_regression", payload.max_groundedness_regression)
+            ),
             scenario_score_thresholds=payload.scenario_score_thresholds,
             slice_score_thresholds=payload.slice_score_thresholds,
             scenario_failed_case_thresholds=payload.scenario_failed_case_thresholds,
@@ -407,6 +419,7 @@ class ReleaseGateService:
             status=summary.status,
             allow_deploy=summary.gate_passed,
             reason_codes=summary.blocking_failure_codes,
+            reason_details=summary.blocking_failures,
             summary=summary.summary,
             decided_at=summary.decided_at,
         )
@@ -561,6 +574,28 @@ class ReleaseGateService:
         candidate_latency = mean(result.latency_ms for result in candidate.results) if candidate.results else 0.0
         baseline_cost = sum(result.cost_usd for result in baseline.results)
         candidate_cost = sum(result.cost_usd for result in candidate.results)
+        baseline_structured_failures = sum(
+            1
+            for result in baseline.results
+            if result.required_json_fields and not result.structured_output_valid
+        )
+        candidate_structured_failures = sum(
+            1
+            for result in candidate.results
+            if result.required_json_fields and not result.structured_output_valid
+        )
+        baseline_groundedness_values = [
+            float(result.groundedness_score) for result in baseline.results if result.reference_answer
+        ]
+        candidate_groundedness_values = [
+            float(result.groundedness_score) for result in candidate.results if result.reference_answer
+        ]
+        baseline_groundedness_avg = (
+            mean(baseline_groundedness_values) if baseline_groundedness_values else 1.0
+        )
+        candidate_groundedness_avg = (
+            mean(candidate_groundedness_values) if candidate_groundedness_values else 1.0
+        )
         scenario_metrics = ReleaseGateService._build_scenario_metrics(baseline, candidate)
         slice_metrics = ReleaseGateService._build_slice_metrics(baseline, candidate)
         scenario_failed_delta = sum(
@@ -585,6 +620,12 @@ class ReleaseGateService:
             "baseline_failed_cases": baseline_failed,
             "candidate_failed_cases": candidate_failed,
             "failed_case_delta": candidate_failed - baseline_failed,
+            "baseline_structured_output_failures": baseline_structured_failures,
+            "candidate_structured_output_failures": candidate_structured_failures,
+            "structured_output_failure_delta": candidate_structured_failures - baseline_structured_failures,
+            "baseline_groundedness_avg": round(baseline_groundedness_avg, 6),
+            "candidate_groundedness_avg": round(candidate_groundedness_avg, 6),
+            "groundedness_delta": round(candidate_groundedness_avg - baseline_groundedness_avg, 6),
             "scenario_failed_delta": scenario_failed_delta,
             "slice_failed_delta": slice_failed_delta,
             "scenario_metrics": scenario_metrics,
@@ -643,6 +684,24 @@ class ReleaseGateService:
                 reason=(
                     f"Scenario failed-case delta {metrics['scenario_failed_delta']} exceeds "
                     f"threshold {payload.max_scenario_failed_delta}."
+                ),
+            )
+        if int(metrics["structured_output_failure_delta"]) > payload.max_structured_output_failure_delta:
+            add_failure(
+                code="STRUCTURED_OUTPUT_FAILURE_DELTA_FAIL",
+                metric="structured_output_failure_delta",
+                reason=(
+                    f"Structured-output failure delta {metrics['structured_output_failure_delta']} exceeds "
+                    f"threshold {payload.max_structured_output_failure_delta}."
+                ),
+            )
+        if float(metrics["groundedness_delta"]) < (-1.0 * payload.max_groundedness_regression):
+            add_failure(
+                code="GROUNDEDNESS_REGRESSION_FAIL",
+                metric="groundedness_delta",
+                reason=(
+                    f"Groundedness delta {metrics['groundedness_delta']} is below allowed regression "
+                    f"-{payload.max_groundedness_regression}."
                 ),
             )
         for scenario_metric in metrics.get("scenario_metrics", []):

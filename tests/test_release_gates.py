@@ -555,6 +555,158 @@ def test_release_gate_ci_decision_endpoint() -> None:
     assert payload["decision_id"] == gate.json()["id"]
     assert payload["allow_deploy"] is False
     assert "SCORE_DELTA_FAIL" in payload["reason_codes"] or "FAILED_CASE_DELTA_FAIL" in payload["reason_codes"]
+    assert isinstance(payload["reason_details"], list)
+    assert payload["reason_details"]
+
+
+def test_release_gate_fails_on_structured_output_failure_delta() -> None:
+    dataset_name = f"release_gate_structured_{uuid4().hex[:8]}"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for structured output gate checks.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "structured-gate",
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Return JSON with summary and severity.",
+                    "expected_keyword": "summary",
+                    "candidate_output": "{\"summary\": \"database failover\", \"severity\": \"high\"}",
+                    "reference_answer": "{\"summary\": \"database failover\", \"severity\": \"high\"}",
+                    "required_json_fields": ["summary", "severity"],
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "structured-gate",
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Return JSON with summary and severity.",
+                    "expected_keyword": "summary",
+                    "candidate_output": "{\"summary\": \"database failover\"}",
+                    "reference_answer": "{\"summary\": \"database failover\", \"severity\": \"high\"}",
+                    "required_json_fields": ["summary", "severity"],
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -1.0,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 10,
+            "max_scenario_failed_delta": 10,
+            "max_structured_output_failure_delta": 0,
+            "max_groundedness_regression": 1.0,
+        },
+    )
+    assert gate.status_code == 201
+    payload = gate.json()
+    assert payload["status"] == "failed"
+    assert payload["metrics"]["structured_output_failure_delta"] > 0
+    assert any(failure["code"] == "STRUCTURED_OUTPUT_FAILURE_DELTA_FAIL" for failure in payload["failures"])
+
+
+def test_release_gate_fails_on_groundedness_regression() -> None:
+    dataset_name = f"release_gate_grounded_{uuid4().hex[:8]}"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for groundedness gate checks.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    baseline_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "grounded-gate",
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize outage cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert baseline_run.status_code == 201
+
+    candidate_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": "grounded-gate",
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize outage cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue and malware corruption.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert candidate_run.status_code == 201
+
+    gate = client.post(
+        "/api/v1/release-gates",
+        json={
+            "dataset_name": dataset_name,
+            "baseline_run_id": baseline_run.json()["id"],
+            "candidate_run_id": candidate_run.json()["id"],
+            "min_score_delta": -1.0,
+            "max_latency_regression_ms": 1000,
+            "max_cost_regression_usd": 1,
+            "max_failed_case_delta": 10,
+            "max_scenario_failed_delta": 10,
+            "max_structured_output_failure_delta": 10,
+            "max_groundedness_regression": 0.01,
+        },
+    )
+    assert gate.status_code == 201
+    payload = gate.json()
+    assert payload["status"] == "failed"
+    assert payload["metrics"]["groundedness_delta"] < 0
+    assert any(failure["code"] == "GROUNDEDNESS_REGRESSION_FAIL" for failure in payload["failures"])
 
 
 def test_release_gate_trends_endpoint() -> None:
