@@ -1,4 +1,6 @@
 from datetime import datetime
+import csv
+import io
 from typing import Optional
 
 from sqlalchemy import func, inspect, select, text
@@ -152,6 +154,43 @@ class ExperimentService:
             )
             for row in rows
         ]
+
+    def export_promotion_events_csv(
+        self, db: Session, name: str, workspace_id: str, limit: int = 200
+    ) -> str:
+        events = self.list_promotion_events(db=db, name=name, workspace_id=workspace_id, limit=limit)
+        buffer = io.StringIO()
+        writer = csv.writer(buffer)
+        writer.writerow(
+            [
+                "id",
+                "workspace_id",
+                "experiment_name",
+                "dataset_name",
+                "gate_id",
+                "promoted_run_id",
+                "actor",
+                "note",
+                "event_metadata",
+                "created_at",
+            ]
+        )
+        for event in events:
+            writer.writerow(
+                [
+                    event.id,
+                    event.workspace_id,
+                    event.experiment_name,
+                    event.dataset_name,
+                    event.gate_id,
+                    event.promoted_run_id,
+                    event.actor,
+                    event.note,
+                    ";".join(f"{k}={v}" for k, v in sorted(event.event_metadata.items())),
+                    event.created_at.isoformat(),
+                ]
+            )
+        return buffer.getvalue()
 
     def exists(self, db: Session, name: str, workspace_id: str) -> bool:
         query = select(ExperimentRecord.id).where(

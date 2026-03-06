@@ -62,6 +62,13 @@ class EvalForgeClient:
     def get_experiment_release_history(self, experiment_name: str, limit: int = 20) -> List[Dict[str, Any]]:
         return self._get(f"/api/v1/experiments/{experiment_name}/release-history?limit={limit}")
 
+    def get_experiment_release_history_csv(self, experiment_name: str, limit: int = 200) -> str:
+        path = f"/api/v1/experiments/{experiment_name}/release-history/export.csv?limit={limit}"
+        with httpx.Client(base_url=self.base_url, timeout=20.0) as client:
+            response = client.get(path, headers=self._headers())
+            response.raise_for_status()
+            return response.text
+
     def get_prompt_templates(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/assets/prompts")
 
