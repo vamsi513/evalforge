@@ -84,6 +84,18 @@ class EvalForgeClient:
     def get_release_gates(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/release-gates")
 
+    def get_release_gate_schedules(self) -> List[Dict[str, Any]]:
+        return self._get("/api/v1/release-gates/schedules")
+
+    def create_release_gate_schedule(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        return self._post("/api/v1/release-gates/schedules", payload)
+
+    def run_release_gate_schedule(self, schedule_id: str) -> Dict[str, Any]:
+        return self._post(f"/api/v1/release-gates/schedules/{schedule_id}/run", {})
+
+    def get_release_gate_schedule_runs(self, schedule_id: str, limit: int = 20) -> List[Dict[str, Any]]:
+        return self._get(f"/api/v1/release-gates/schedules/{schedule_id}/runs?limit={limit}")
+
     def get_release_gate_policies(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/release-gates/policies")
 

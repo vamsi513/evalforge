@@ -259,3 +259,35 @@ class ReleaseGatePolicyReportResponse(BaseModel):
     lookback_days: int = 30
     total_decisions: int = 0
     policies: list[ReleaseGatePolicyReportItem] = Field(default_factory=list)
+
+
+class ReleaseGateScheduleCreate(BaseModel):
+    dataset_name: str = Field(min_length=3, max_length=100)
+    experiment_name: str = Field(default="", max_length=100)
+    policy_name: str = Field(default="balanced", max_length=30)
+    cron_expression: str = Field(default="0 2 * * *", max_length=100)
+    enabled: bool = True
+
+
+class ReleaseGateScheduleResponse(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid4()))
+    workspace_id: str = "default"
+    dataset_name: str
+    experiment_name: str = ""
+    policy_name: str = "balanced"
+    cron_expression: str
+    enabled: bool = True
+    last_run_at: Optional[datetime] = None
+    next_run_at: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class ReleaseGateScheduleRunResponse(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid4()))
+    schedule_id: str
+    workspace_id: str = "default"
+    status: str
+    decision_id: str = ""
+    message: str = ""
+    created_at: datetime = Field(default_factory=datetime.utcnow)

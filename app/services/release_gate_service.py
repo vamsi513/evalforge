@@ -7,7 +7,11 @@ from sqlalchemy import inspect, select, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
-from app.db.models import ReleaseGateDecisionRecord
+from app.db.models import (
+    ReleaseGateDecisionRecord,
+    ReleaseGateScheduleRecord,
+    ReleaseGateScheduleRunRecord,
+)
 from app.models.eval_run import (
     EvalRunResponse,
     ReleaseGateCiDecisionResponse,
@@ -16,6 +20,9 @@ from app.models.eval_run import (
     ReleaseGatePolicyPreset,
     ReleaseGatePolicyReportItem,
     ReleaseGatePolicyReportResponse,
+    ReleaseGateScheduleCreate,
+    ReleaseGateScheduleResponse,
+    ReleaseGateScheduleRunResponse,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendPoint,
@@ -75,6 +82,145 @@ class ReleaseGateService:
                 .order_by(ReleaseGateDecisionRecord.created_at.desc())
             ).scalars().all()
         return [self._to_response(row) for row in rows]
+
+    def list_schedules(self, db: Session, workspace_id: str = "default") -> list[ReleaseGateScheduleResponse]:
+        try:
+            rows = db.execute(
+                select(ReleaseGateScheduleRecord)
+                .where(ReleaseGateScheduleRecord.workspace_id == workspace_id)
+                .order_by(ReleaseGateScheduleRecord.updated_at.desc())
+            ).scalars().all()
+        except OperationalError as exc:
+            if "release_gate_schedules" not in str(exc):
+                raise
+            self._ensure_schedule_tables(db)
+            rows = db.execute(
+                select(ReleaseGateScheduleRecord)
+                .where(ReleaseGateScheduleRecord.workspace_id == workspace_id)
+                .order_by(ReleaseGateScheduleRecord.updated_at.desc())
+            ).scalars().all()
+        return [self._to_schedule_response(row) for row in rows]
+
+    def create_schedule(
+        self, db: Session, payload: ReleaseGateScheduleCreate, workspace_id: str = "default"
+    ) -> ReleaseGateScheduleResponse:
+        policy = payload.policy_name.strip().lower() or "balanced"
+        if policy not in self._POLICY_PRESETS:
+            raise ValueError(
+                f"Unknown policy_name '{payload.policy_name}'. Supported values: {', '.join(sorted(self._POLICY_PRESETS))}"
+            )
+        row = ReleaseGateScheduleRecord(
+            workspace_id=workspace_id,
+            dataset_name=payload.dataset_name,
+            experiment_name=payload.experiment_name,
+            policy_name=policy,
+            cron_expression=payload.cron_expression,
+            enabled=payload.enabled,
+        )
+        db.add(row)
+        try:
+            db.commit()
+            db.refresh(row)
+        except OperationalError as exc:
+            db.rollback()
+            if "release_gate_schedules" not in str(exc):
+                raise
+            self._ensure_schedule_tables(db)
+            db.add(row)
+            db.commit()
+            db.refresh(row)
+        return self._to_schedule_response(row)
+
+    def run_schedule_now(
+        self, db: Session, schedule_id: str, workspace_id: str = "default"
+    ) -> ReleaseGateScheduleRunResponse:
+        self._ensure_schedule_tables(db)
+        try:
+            schedule = db.execute(
+                select(ReleaseGateScheduleRecord).where(
+                    ReleaseGateScheduleRecord.id == schedule_id,
+                    ReleaseGateScheduleRecord.workspace_id == workspace_id,
+                )
+            ).scalar_one_or_none()
+        except OperationalError as exc:
+            if "release_gate_schedules" not in str(exc):
+                raise
+            self._ensure_schedule_tables(db)
+            schedule = db.execute(
+                select(ReleaseGateScheduleRecord).where(
+                    ReleaseGateScheduleRecord.id == schedule_id,
+                    ReleaseGateScheduleRecord.workspace_id == workspace_id,
+                )
+            ).scalar_one_or_none()
+        if schedule is None:
+            raise ValueError("Release gate schedule not found")
+        if not schedule.enabled:
+            raise ValueError("Release gate schedule is disabled")
+
+        run_log = ReleaseGateScheduleRunRecord(
+            schedule_id=schedule.id,
+            workspace_id=workspace_id,
+            status="running",
+            message="Schedule run started.",
+        )
+        db.add(run_log)
+        db.commit()
+        db.refresh(run_log)
+
+        try:
+            decision = self.create_decision_from_latest(
+                db=db,
+                payload=ReleaseGateEvaluateLatestCreate(
+                    dataset_name=schedule.dataset_name,
+                    experiment_name=schedule.experiment_name,
+                    policy_name=schedule.policy_name,
+                ),
+                workspace_id=workspace_id,
+            )
+            run_log.status = "completed"
+            run_log.decision_id = decision.id
+            run_log.message = f"Created release gate decision {decision.id}."
+            schedule.last_run_at = datetime.utcnow()
+            schedule.next_run_at = None
+            schedule.updated_at = datetime.utcnow()
+            db.commit()
+            db.refresh(run_log)
+        except ValueError as exc:
+            run_log.status = "failed"
+            run_log.message = str(exc)
+            schedule.last_run_at = datetime.utcnow()
+            schedule.updated_at = datetime.utcnow()
+            db.commit()
+            db.refresh(run_log)
+        return self._to_schedule_run_response(run_log)
+
+    def list_schedule_runs(
+        self, db: Session, schedule_id: str, workspace_id: str = "default", limit: int = 20
+    ) -> list[ReleaseGateScheduleRunResponse]:
+        try:
+            rows = db.execute(
+                select(ReleaseGateScheduleRunRecord)
+                .where(
+                    ReleaseGateScheduleRunRecord.schedule_id == schedule_id,
+                    ReleaseGateScheduleRunRecord.workspace_id == workspace_id,
+                )
+                .order_by(ReleaseGateScheduleRunRecord.created_at.desc())
+                .limit(max(1, min(limit, 200)))
+            ).scalars().all()
+        except OperationalError as exc:
+            if "release_gate_schedule_runs" not in str(exc):
+                raise
+            self._ensure_schedule_tables(db)
+            rows = db.execute(
+                select(ReleaseGateScheduleRunRecord)
+                .where(
+                    ReleaseGateScheduleRunRecord.schedule_id == schedule_id,
+                    ReleaseGateScheduleRunRecord.workspace_id == workspace_id,
+                )
+                .order_by(ReleaseGateScheduleRunRecord.created_at.desc())
+                .limit(max(1, min(limit, 200)))
+            ).scalars().all()
+        return [self._to_schedule_run_response(row) for row in rows]
 
     def create_decision(
         self, db: Session, payload: ReleaseGateCreate, workspace_id: str = "default"
@@ -595,6 +741,34 @@ class ReleaseGateService:
         return self._POLICY_PRESETS[normalized]
 
     @staticmethod
+    def _to_schedule_response(row: ReleaseGateScheduleRecord) -> ReleaseGateScheduleResponse:
+        return ReleaseGateScheduleResponse(
+            id=row.id,
+            workspace_id=row.workspace_id,
+            dataset_name=row.dataset_name,
+            experiment_name=row.experiment_name,
+            policy_name=row.policy_name,
+            cron_expression=row.cron_expression,
+            enabled=row.enabled,
+            last_run_at=row.last_run_at,
+            next_run_at=row.next_run_at,
+            created_at=row.created_at,
+            updated_at=row.updated_at,
+        )
+
+    @staticmethod
+    def _to_schedule_run_response(row: ReleaseGateScheduleRunRecord) -> ReleaseGateScheduleRunResponse:
+        return ReleaseGateScheduleRunResponse(
+            id=row.id,
+            schedule_id=row.schedule_id,
+            workspace_id=row.workspace_id,
+            status=row.status,
+            decision_id=row.decision_id,
+            message=row.message,
+            created_at=row.created_at,
+        )
+
+    @staticmethod
     def _to_response(row: ReleaseGateDecisionRecord) -> ReleaseGateResponse:
         return ReleaseGateResponse(
             id=row.id,
@@ -749,6 +923,56 @@ class ReleaseGateService:
         db.execute(
             text("CREATE INDEX ix_release_gate_decisions_status ON release_gate_decisions (status)")
         )
+        db.commit()
+
+    @staticmethod
+    def _ensure_schedule_tables(db: Session) -> None:
+        inspector = inspect(db.bind)
+        existing = set(inspector.get_table_names())
+        if "release_gate_schedules" not in existing:
+            db.execute(
+                text(
+                    """
+                    CREATE TABLE release_gate_schedules (
+                        id VARCHAR(36) NOT NULL PRIMARY KEY,
+                        workspace_id VARCHAR(100) NOT NULL DEFAULT 'default',
+                        dataset_name VARCHAR(100) NOT NULL,
+                        experiment_name VARCHAR(100) NOT NULL DEFAULT '',
+                        policy_name VARCHAR(30) NOT NULL DEFAULT 'balanced',
+                        cron_expression VARCHAR(100) NOT NULL DEFAULT '0 2 * * *',
+                        enabled BOOLEAN NOT NULL DEFAULT 1,
+                        last_run_at DATETIME NULL,
+                        next_run_at DATETIME NULL,
+                        created_at DATETIME NOT NULL,
+                        updated_at DATETIME NOT NULL
+                    )
+                    """
+                )
+            )
+            db.execute(text("CREATE INDEX ix_release_gate_schedules_workspace_id ON release_gate_schedules (workspace_id)"))
+            db.execute(text("CREATE INDEX ix_release_gate_schedules_dataset_name ON release_gate_schedules (dataset_name)"))
+            db.execute(text("CREATE INDEX ix_release_gate_schedules_experiment_name ON release_gate_schedules (experiment_name)"))
+            db.execute(text("CREATE INDEX ix_release_gate_schedules_enabled ON release_gate_schedules (enabled)"))
+        if "release_gate_schedule_runs" not in existing:
+            db.execute(
+                text(
+                    """
+                    CREATE TABLE release_gate_schedule_runs (
+                        id VARCHAR(36) NOT NULL PRIMARY KEY,
+                        schedule_id VARCHAR(36) NOT NULL,
+                        workspace_id VARCHAR(100) NOT NULL DEFAULT 'default',
+                        status VARCHAR(20) NOT NULL DEFAULT 'failed',
+                        decision_id VARCHAR(36) NOT NULL DEFAULT '',
+                        message TEXT NOT NULL DEFAULT '',
+                        created_at DATETIME NOT NULL
+                    )
+                    """
+                )
+            )
+            db.execute(text("CREATE INDEX ix_release_gate_schedule_runs_schedule_id ON release_gate_schedule_runs (schedule_id)"))
+            db.execute(text("CREATE INDEX ix_release_gate_schedule_runs_workspace_id ON release_gate_schedule_runs (workspace_id)"))
+            db.execute(text("CREATE INDEX ix_release_gate_schedule_runs_status ON release_gate_schedule_runs (status)"))
+            db.execute(text("CREATE INDEX ix_release_gate_schedule_runs_decision_id ON release_gate_schedule_runs (decision_id)"))
         db.commit()
 
 

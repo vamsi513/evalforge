@@ -197,6 +197,10 @@ If API key protection is enabled, also set:
 - `GET /api/v1/release-gates`
 - `GET /api/v1/release-gates/policies`
 - `GET /api/v1/release-gates/policy-report`
+- `GET /api/v1/release-gates/schedules`
+- `POST /api/v1/release-gates/schedules`
+- `POST /api/v1/release-gates/schedules/{schedule_id}/run`
+- `GET /api/v1/release-gates/schedules/{schedule_id}/runs`
 - `POST /api/v1/release-gates`
 - `POST /api/v1/release-gates/evaluate-latest`
 - `GET /api/v1/release-gates/summary`

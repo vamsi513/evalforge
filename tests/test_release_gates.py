@@ -788,3 +788,88 @@ def test_release_gate_evaluate_latest_requires_two_runs() -> None:
     )
     assert gate.status_code == 400
     assert "At least two eval runs are required" in gate.json()["detail"]
+
+
+def test_release_gate_schedule_create_run_and_logs() -> None:
+    dataset_name = f"release_gate_schedule_{uuid4().hex[:8]}"
+    experiment_name = "schedule-track"
+
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for schedule run testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    older_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert older_run.status_code == 201
+
+    newer_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert newer_run.status_code == 201
+
+    created_schedule = client.post(
+        "/api/v1/release-gates/schedules",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "policy_name": "balanced",
+            "cron_expression": "0 2 * * *",
+            "enabled": True,
+        },
+    )
+    assert created_schedule.status_code == 201
+    schedule_id = created_schedule.json()["id"]
+
+    listed_schedules = client.get("/api/v1/release-gates/schedules")
+    assert listed_schedules.status_code == 200
+    assert any(item["id"] == schedule_id for item in listed_schedules.json())
+
+    run_now = client.post(f"/api/v1/release-gates/schedules/{schedule_id}/run")
+    assert run_now.status_code == 201
+    run_payload = run_now.json()
+    assert run_payload["schedule_id"] == schedule_id
+    assert run_payload["status"] in {"completed", "failed"}
+    assert run_payload["status"] == "completed"
+    assert run_payload["decision_id"] != ""
+
+    logs = client.get(f"/api/v1/release-gates/schedules/{schedule_id}/runs")
+    assert logs.status_code == 200
+    log_rows = logs.json()
+    assert len(log_rows) >= 1
+    assert log_rows[0]["schedule_id"] == schedule_id
