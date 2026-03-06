@@ -12,6 +12,7 @@ from app.models.eval_run import (
     EvalRunResponse,
     ReleaseGateCiDecisionResponse,
     ReleaseGateCreate,
+    ReleaseGateEvaluateLatestCreate,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendPoint,
@@ -80,6 +81,37 @@ class ReleaseGateService:
             db.commit()
             db.refresh(row)
         return self._to_response(row)
+
+    def create_decision_from_latest(
+        self, db: Session, payload: ReleaseGateEvaluateLatestCreate, workspace_id: str = "default"
+    ) -> ReleaseGateResponse:
+        latest_runs = self._get_latest_two_runs(
+            db=db,
+            workspace_id=workspace_id,
+            dataset_name=payload.dataset_name,
+            experiment_name=payload.experiment_name,
+        )
+        if len(latest_runs) < 2:
+            raise ValueError("At least two eval runs are required to evaluate latest release gate")
+
+        candidate_run = latest_runs[0]
+        baseline_run = latest_runs[1]
+        decision_payload = ReleaseGateCreate(
+            dataset_name=payload.dataset_name,
+            experiment_name=payload.experiment_name,
+            baseline_run_id=baseline_run.id,
+            candidate_run_id=candidate_run.id,
+            min_score_delta=payload.min_score_delta,
+            max_latency_regression_ms=payload.max_latency_regression_ms,
+            max_cost_regression_usd=payload.max_cost_regression_usd,
+            max_failed_case_delta=payload.max_failed_case_delta,
+            max_scenario_failed_delta=payload.max_scenario_failed_delta,
+            scenario_score_thresholds=payload.scenario_score_thresholds,
+            slice_score_thresholds=payload.slice_score_thresholds,
+            scenario_failed_case_thresholds=payload.scenario_failed_case_thresholds,
+            slice_failed_case_thresholds=payload.slice_failed_case_thresholds,
+        )
+        return self.create_decision(db=db, payload=decision_payload, workspace_id=workspace_id)
 
     def get_latest_summary(
         self,
@@ -432,6 +464,20 @@ class ReleaseGateService:
         if candidate.experiment_name and candidate.experiment_name == baseline.experiment_name:
             return candidate.experiment_name
         return candidate.experiment_name or baseline.experiment_name or ""
+
+    @staticmethod
+    def _get_latest_two_runs(
+        db: Session,
+        workspace_id: str,
+        dataset_name: str,
+        experiment_name: str,
+    ) -> list[EvalRunResponse]:
+        runs = eval_service.list_runs(db, workspace_id=workspace_id)
+        filtered_runs = [run for run in runs if run.dataset_name == dataset_name]
+        if experiment_name:
+            filtered_runs = [run for run in filtered_runs if run.experiment_name == experiment_name]
+        filtered_runs.sort(key=lambda run: run.created_at, reverse=True)
+        return filtered_runs[:2]
 
     @staticmethod
     def _to_response(row: ReleaseGateDecisionRecord) -> ReleaseGateResponse:

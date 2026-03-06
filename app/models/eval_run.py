@@ -155,6 +155,20 @@ class ReleaseGateCreate(BaseModel):
     slice_failed_case_thresholds: dict[str, int] = Field(default_factory=dict)
 
 
+class ReleaseGateEvaluateLatestCreate(BaseModel):
+    dataset_name: str = Field(min_length=3, max_length=100)
+    experiment_name: str = Field(default="", max_length=100)
+    min_score_delta: float = Field(default=-0.02, ge=-1.0, le=1.0)
+    max_latency_regression_ms: float = Field(default=25.0, ge=0.0)
+    max_cost_regression_usd: float = Field(default=0.001, ge=0.0)
+    max_failed_case_delta: int = Field(default=0, ge=0)
+    max_scenario_failed_delta: int = Field(default=0, ge=0)
+    scenario_score_thresholds: dict[str, float] = Field(default_factory=dict)
+    slice_score_thresholds: dict[str, float] = Field(default_factory=dict)
+    scenario_failed_case_thresholds: dict[str, int] = Field(default_factory=dict)
+    slice_failed_case_thresholds: dict[str, int] = Field(default_factory=dict)
+
+
 class ReleaseGateResponse(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     dataset_name: str

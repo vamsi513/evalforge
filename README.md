@@ -190,6 +190,7 @@ If API key protection is enabled, also set:
 - `POST /api/v1/evals/compare`
 - `GET /api/v1/release-gates`
 - `POST /api/v1/release-gates`
+- `POST /api/v1/release-gates/evaluate-latest`
 - `GET /api/v1/release-gates/summary`
 - `GET /api/v1/release-gates/ci-decision`
 - `GET /api/v1/release-gates/trends`

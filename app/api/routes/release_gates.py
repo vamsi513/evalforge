@@ -6,6 +6,7 @@ from app.db.session import get_db
 from app.models.eval_run import (
     ReleaseGateCiDecisionResponse,
     ReleaseGateCreate,
+    ReleaseGateEvaluateLatestCreate,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendsResponse,
@@ -77,5 +78,17 @@ async def create_release_gate(
 ) -> ReleaseGateResponse:
     try:
         return release_gate_service.create_decision(db, payload, workspace_id=workspace_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/evaluate-latest", response_model=ReleaseGateResponse, status_code=201)
+async def create_release_gate_from_latest(
+    payload: ReleaseGateEvaluateLatestCreate,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ReleaseGateResponse:
+    try:
+        return release_gate_service.create_decision_from_latest(db, payload, workspace_id=workspace_id)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
