@@ -31,6 +31,7 @@ def load_snapshot(api_base_url: str, api_key_value: str, workspace: str) -> dict
         "release_gates": api.get_release_gates(),
         "release_gate_policies": api.get_release_gate_policies(),
         "release_gate_trends": api.get_release_gate_trends(lookback_days=30),
+        "release_gate_policy_report": api.get_release_gate_policy_report(lookback_days=30),
         "model_routes": api.get_model_routes(),
     }
 
@@ -56,6 +57,7 @@ jobs = snapshot["jobs"]
 release_gates = snapshot["release_gates"]
 release_gate_policies = snapshot["release_gate_policies"]
 release_gate_trends = snapshot["release_gate_trends"]
+release_gate_policy_report = snapshot["release_gate_policy_report"]
 model_routes = snapshot["model_routes"]
 
 col1, col2, col3, col4 = st.columns(4)
@@ -270,6 +272,11 @@ with tab3:
         trend_df = pd.DataFrame(daily_trends).set_index("date")
         st.markdown("**Daily Gate Pass Rate (30d)**")
         st.line_chart(trend_df[["pass_rate"]], use_container_width=True)
+
+    policy_rows = release_gate_policy_report.get("policies", [])
+    if policy_rows:
+        st.markdown("**Policy Drift Report (30d)**")
+        st.dataframe(pd.DataFrame(policy_rows), use_container_width=True)
 
     if not release_gates:
         st.info("No release gate decisions found.")
