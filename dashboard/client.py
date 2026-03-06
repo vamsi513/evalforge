@@ -45,6 +45,20 @@ class EvalForgeClient:
     def get_experiment_report(self, experiment_name: str) -> Dict[str, Any]:
         return self._get(f"/api/v1/experiments/{experiment_name}/report")
 
+    def promote_experiment_candidate(
+        self,
+        experiment_name: str,
+        candidate_run_id: str = "",
+        require_latest_gate_passed: bool = True,
+    ) -> Dict[str, Any]:
+        return self._post(
+            f"/api/v1/experiments/{experiment_name}/promote",
+            {
+                "candidate_run_id": candidate_run_id,
+                "require_latest_gate_passed": require_latest_gate_passed,
+            },
+        )
+
     def get_prompt_templates(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/assets/prompts")
 

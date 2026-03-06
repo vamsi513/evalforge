@@ -3,7 +3,13 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_workspace_id
 from app.db.session import get_db
-from app.models.experiment import ExperimentCreate, ExperimentReport, ExperimentResponse
+from app.models.experiment import (
+    ExperimentCreate,
+    ExperimentPromoteRequest,
+    ExperimentPromoteResponse,
+    ExperimentReport,
+    ExperimentResponse,
+)
 from app.services.experiment_service import experiment_service
 
 router = APIRouter()
@@ -37,3 +43,24 @@ async def get_experiment_report(
     if report is None:
         raise HTTPException(status_code=404, detail="Experiment not found")
     return report
+
+
+@router.post("/{experiment_name}/promote", response_model=ExperimentPromoteResponse)
+async def promote_experiment_candidate(
+    experiment_name: str,
+    payload: ExperimentPromoteRequest,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ExperimentPromoteResponse:
+    try:
+        return experiment_service.promote_candidate(
+            db=db,
+            name=experiment_name,
+            payload=payload,
+            workspace_id=workspace_id,
+        )
+    except ValueError as exc:
+        detail = str(exc)
+        if detail == "Experiment not found":
+            raise HTTPException(status_code=404, detail=detail) from exc
+        raise HTTPException(status_code=400, detail=detail) from exc

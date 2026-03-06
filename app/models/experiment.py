@@ -48,3 +48,18 @@ class ExperimentReport(BaseModel):
     release_gates: list[ExperimentGateTrend] = Field(default_factory=list)
     score_trend: list[float] = Field(default_factory=list)
     latest_gate_status: str = ""
+
+
+class ExperimentPromoteRequest(BaseModel):
+    candidate_run_id: str = Field(default="", max_length=36)
+    require_latest_gate_passed: bool = True
+
+
+class ExperimentPromoteResponse(BaseModel):
+    experiment_name: str
+    workspace_id: str = "default"
+    promoted_run_id: str
+    gate_id: str
+    gate_status: str
+    message: str
+    updated_experiment: ExperimentResponse

@@ -185,6 +185,10 @@ If API key protection is enabled, also set:
 - `POST /api/v1/evals/async`
 - `GET /api/v1/evals/jobs`
 - `GET /api/v1/evals/jobs/{job_id}`
+- `GET /api/v1/experiments`
+- `POST /api/v1/experiments`
+- `GET /api/v1/experiments/{experiment_name}/report`
+- `POST /api/v1/experiments/{experiment_name}/promote`
 - `POST /api/v1/evals/stored`
 - `POST /api/v1/evals/judge`
 - `POST /api/v1/evals/compare`

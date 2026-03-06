@@ -316,6 +316,31 @@ with tab4:
         selected_experiment = next(experiment for experiment in experiments if experiment["id"] == selected_experiment_id)
         st.json(selected_experiment)
 
+        st.markdown("**Release Promotion**")
+        promote_candidate_run_id = st.text_input(
+            "Candidate run id override (optional)",
+            value="",
+            key=f"promote_candidate_override_{selected_experiment_id}",
+            help="Leave empty to promote the candidate run from the latest release-gate decision.",
+        )
+        promote_btn = st.button(
+            "Promote Candidate to Baseline",
+            key=f"promote_candidate_btn_{selected_experiment_id}",
+        )
+        if promote_btn:
+            experiment_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
+            try:
+                promotion = experiment_api.promote_experiment_candidate(
+                    selected_experiment["name"],
+                    candidate_run_id=promote_candidate_run_id.strip(),
+                    require_latest_gate_passed=True,
+                )
+                st.success("Promotion completed.")
+                st.json(promotion)
+                load_snapshot.clear()
+            except HTTPError as exc:
+                st.error(f"Promotion failed: {exc}")
+
         experiment_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
         experiment_report = experiment_api.get_experiment_report(selected_experiment["name"])
 

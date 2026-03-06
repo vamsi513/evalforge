@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import func, inspect, select, text
@@ -8,6 +9,8 @@ from app.db.models import EvalRunRecord, ExperimentRecord, ReleaseGateDecisionRe
 from app.models.experiment import (
     ExperimentCreate,
     ExperimentGateTrend,
+    ExperimentPromoteRequest,
+    ExperimentPromoteResponse,
     ExperimentReport,
     ExperimentResponse,
     ExperimentRunTrend,
@@ -94,6 +97,85 @@ class ExperimentService:
                 raise
             self._ensure_experiments_table(db)
             return db.execute(query).first() is not None
+
+    def promote_candidate(
+        self, db: Session, name: str, payload: ExperimentPromoteRequest, workspace_id: str
+    ) -> ExperimentPromoteResponse:
+        try:
+            experiment_row = db.execute(
+                select(ExperimentRecord).where(
+                    ExperimentRecord.name == name,
+                    ExperimentRecord.workspace_id == workspace_id,
+                )
+            ).scalar_one_or_none()
+        except OperationalError as exc:
+            if "experiments" not in str(exc) and "workspace_id" not in str(exc):
+                raise
+            self._ensure_experiments_table(db)
+            experiment_row = db.execute(
+                select(ExperimentRecord).where(
+                    ExperimentRecord.name == name,
+                    ExperimentRecord.workspace_id == workspace_id,
+                )
+            ).scalar_one_or_none()
+
+        if experiment_row is None:
+            raise ValueError("Experiment not found")
+
+        latest_gate = db.execute(
+            select(ReleaseGateDecisionRecord)
+            .where(
+                ReleaseGateDecisionRecord.workspace_id == workspace_id,
+                ReleaseGateDecisionRecord.dataset_name == experiment_row.dataset_name,
+                ReleaseGateDecisionRecord.experiment_name == experiment_row.name,
+            )
+            .order_by(ReleaseGateDecisionRecord.created_at.desc())
+            .limit(1)
+        ).scalar_one_or_none()
+        if latest_gate is None:
+            raise ValueError("No release gate decision found for this experiment")
+
+        if payload.require_latest_gate_passed and latest_gate.status != "passed":
+            raise ValueError("Latest release gate did not pass; promotion blocked")
+
+        promoted_run_id = payload.candidate_run_id or latest_gate.candidate_run_id
+        if not promoted_run_id:
+            raise ValueError("No candidate run available to promote")
+
+        run_exists = db.execute(
+            select(EvalRunRecord.id).where(
+                EvalRunRecord.id == promoted_run_id,
+                EvalRunRecord.workspace_id == workspace_id,
+                EvalRunRecord.dataset_name == experiment_row.dataset_name,
+                EvalRunRecord.experiment_name == experiment_row.name,
+            )
+        ).first()
+        if run_exists is None:
+            raise ValueError("Candidate run does not exist in this experiment scope")
+
+        experiment_row.baseline_run_id = promoted_run_id
+        experiment_row.candidate_run_id = ""
+        experiment_row.status = "baseline"
+        experiment_row.updated_at = datetime.utcnow()
+
+        metadata = dict(experiment_row.experiment_metadata or {})
+        metadata["last_promoted_gate_id"] = latest_gate.id
+        metadata["last_promoted_at"] = datetime.utcnow().isoformat()
+        experiment_row.experiment_metadata = metadata
+
+        db.commit()
+        db.refresh(experiment_row)
+
+        updated_experiment = self._to_response(db, experiment_row)
+        return ExperimentPromoteResponse(
+            experiment_name=updated_experiment.name,
+            workspace_id=updated_experiment.workspace_id,
+            promoted_run_id=promoted_run_id,
+            gate_id=latest_gate.id,
+            gate_status=latest_gate.status,
+            message=f"Promoted run {promoted_run_id} to baseline for experiment {updated_experiment.name}.",
+            updated_experiment=updated_experiment,
+        )
 
     @staticmethod
     def _to_response(db: Session, row: ExperimentRecord) -> ExperimentResponse:
