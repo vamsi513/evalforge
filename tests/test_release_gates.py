@@ -380,6 +380,88 @@ def test_release_gate_summary_endpoint_returns_latest_decision() -> None:
     assert isinstance(payload["blocking_failure_codes"], list)
 
 
+def test_release_gate_policy_endpoint_and_evaluate_latest_policy() -> None:
+    policies = client.get("/api/v1/release-gates/policies")
+    assert policies.status_code == 200
+    policy_payload = policies.json()
+    assert any(policy["name"] == "strict" for policy in policy_payload)
+    assert any(policy["name"] == "balanced" for policy in policy_payload)
+    assert any(policy["name"] == "lenient" for policy in policy_payload)
+
+    dataset_name = f"release_gate_policy_{uuid4().hex[:8]}"
+    experiment_name = "policy-track"
+    assert client.post(
+        "/api/v1/datasets",
+        json={
+            "name": dataset_name,
+            "description": "Dataset for policy-preset evaluate-latest testing.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    older_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "baseline-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert older_run.status_code == 201
+
+    newer_run = client.post(
+        "/api/v1/evals",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "candidate-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize the outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by an infrastructure issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert newer_run.status_code == 201
+
+    strict_gate = client.post(
+        "/api/v1/release-gates/evaluate-latest",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "policy_name": "strict",
+        },
+    )
+    assert strict_gate.status_code == 201
+    assert strict_gate.json()["status"] == "failed"
+
+    lenient_gate = client.post(
+        "/api/v1/release-gates/evaluate-latest",
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "policy_name": "lenient",
+        },
+    )
+    assert lenient_gate.status_code == 201
+    assert lenient_gate.json()["status"] == "passed"
+
+
 def test_release_gate_ci_decision_endpoint() -> None:
     dataset_name = f"release_gate_ci_{uuid4().hex[:8]}"
     experiment_name = "ci-track"

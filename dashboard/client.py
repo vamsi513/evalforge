@@ -84,6 +84,9 @@ class EvalForgeClient:
     def get_release_gates(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/release-gates")
 
+    def get_release_gate_policies(self) -> List[Dict[str, Any]]:
+        return self._get("/api/v1/release-gates/policies")
+
     def evaluate_latest_release_gate(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         return self._post("/api/v1/release-gates/evaluate-latest", payload)
 

@@ -7,6 +7,7 @@ from app.models.eval_run import (
     ReleaseGateCiDecisionResponse,
     ReleaseGateCreate,
     ReleaseGateEvaluateLatestCreate,
+    ReleaseGatePolicyPreset,
     ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendsResponse,
@@ -21,6 +22,11 @@ async def list_release_gates(
     workspace_id: str = Depends(get_workspace_id), db: Session = Depends(get_db)
 ) -> list[ReleaseGateResponse]:
     return release_gate_service.list_decisions(db, workspace_id=workspace_id)
+
+
+@router.get("/policies", response_model=list[ReleaseGatePolicyPreset])
+async def list_release_gate_policies() -> list[ReleaseGatePolicyPreset]:
+    return release_gate_service.list_policy_presets()
 
 
 @router.get("/summary", response_model=ReleaseGateSummaryResponse)
