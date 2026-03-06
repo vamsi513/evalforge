@@ -20,7 +20,7 @@ class EvalRunner:
     def run(self, payload: EvalRunCreate) -> tuple[list[EvalCaseResult], float]:
         results: list[EvalCaseResult] = []
         for item in payload.samples:
-            results.append(self._score_sample(item))
+            results.append(self._score_sample(item, evaluator_profile=payload.evaluator_profile))
         avg_score = mean(result.score for result in results) if results else 0.0
         return results, avg_score
 
@@ -41,6 +41,7 @@ class EvalRunner:
                 required_json_fields=[],
                 reference_answer=item.reference_answer,
                 rubric=item.rubric,
+                evaluator_profile="balanced",
             )
             result_b = self._score_candidate(
                 prompt=item.prompt,
@@ -52,6 +53,7 @@ class EvalRunner:
                 required_json_fields=[],
                 reference_answer=item.reference_answer,
                 rubric=item.rubric,
+                evaluator_profile="balanced",
             )
 
             if result_a.score > result_b.score:
@@ -89,7 +91,7 @@ class EvalRunner:
             results=results,
         )
 
-    def _score_sample(self, item) -> EvalCaseResult:
+    def _score_sample(self, item, evaluator_profile: str) -> EvalCaseResult:
         return self._score_candidate(
             prompt=item.prompt,
             expected_keyword=item.expected_keyword,
@@ -100,6 +102,7 @@ class EvalRunner:
             required_json_fields=item.required_json_fields,
             reference_answer=item.reference_answer,
             rubric=item.rubric,
+            evaluator_profile=evaluator_profile,
         )
 
     def _score_candidate(
@@ -114,6 +117,7 @@ class EvalRunner:
         required_json_fields: list[str],
         reference_answer: Optional[str],
         rubric: list[RubricCriterion],
+        evaluator_profile: str,
     ) -> EvalCaseResult:
         prompt_tokens = max(1, len(prompt.split()))
         response_tokens = max(1, len(candidate_output.split()))
@@ -126,7 +130,7 @@ class EvalRunner:
             rubric=rubric,
         )
         score_result = self.registry.evaluate(score_context)
-        score = round(min(1.0, score_result.score), 4)
+        score = round(min(1.0, self.registry.score_with_profile(score_result, evaluator_profile)), 4)
         passed = score >= 0.65
 
         if passed:

@@ -8,6 +8,7 @@ from app.models.assets import StoredEvalRunCreate
 from app.models.eval_run import (
     AsyncEvalJobResponse,
     EvalCalibrationResponse,
+    EvalScenarioCalibrationResponse,
     EvalRunCreate,
     EvalRunResponse,
     JudgeEvalCreate,
@@ -44,6 +45,23 @@ async def get_eval_calibration_report(
         experiment_name=experiment_name,
         lookback_runs=lookback_runs,
         bin_count=bin_count,
+    )
+
+
+@router.get("/calibration/scenarios", response_model=EvalScenarioCalibrationResponse)
+async def get_eval_scenario_calibration_report(
+    dataset_name: str = "",
+    experiment_name: str = "",
+    lookback_runs: int = 30,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> EvalScenarioCalibrationResponse:
+    return eval_service.get_scenario_calibration_report(
+        db=db,
+        workspace_id=workspace_id,
+        dataset_name=dataset_name,
+        experiment_name=experiment_name,
+        lookback_runs=lookback_runs,
     )
 
 

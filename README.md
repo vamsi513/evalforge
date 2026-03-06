@@ -192,6 +192,8 @@ If API key protection is enabled, also set:
 - `POST /api/v1/assets/bundles/import`
 - `GET /api/v1/evals`
 - `POST /api/v1/evals`
+- `GET /api/v1/evals/calibration`
+- `GET /api/v1/evals/calibration/scenarios`
 - `POST /api/v1/evals/async`
 - `GET /api/v1/evals/jobs`
 - `GET /api/v1/evals/jobs/{job_id}`
@@ -303,6 +305,14 @@ For a timed script, use:
 - `docs/RECRUITER_DEMO_WALKTHROUGH.md`
 
 ## Judge modes
+
+## Evaluator profiles
+
+`POST /api/v1/evals` accepts:
+
+- `evaluator_profile`: `strict` | `balanced` | `lenient` (default: `balanced`)
+
+Profiles adjust scoring weight emphasis across keyword hit, reference overlap, rubric, structured output validity, and groundedness.
 
 ### Mock mode
 

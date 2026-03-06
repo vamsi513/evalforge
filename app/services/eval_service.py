@@ -19,6 +19,8 @@ from app.models.eval_run import (
     EvalCaseResult,
     EvalRunCreate,
     EvalRunResponse,
+    EvalScenarioCalibrationItem,
+    EvalScenarioCalibrationResponse,
     JudgeEvalCreate,
     JudgeEvalResponse,
     PairwiseEvalCreate,
@@ -59,6 +61,8 @@ class EvalService:
 
     def create_run(self, db: Session, payload: EvalRunCreate, workspace_id: str = "default") -> EvalRunResponse:
         results, average_score = eval_runner.run(payload)
+        run_metadata = dict(payload.run_metadata)
+        run_metadata.setdefault("evaluator_profile", payload.evaluator_profile)
         return self._persist_eval_run(
             db=db,
             workspace_id=workspace_id,
@@ -68,7 +72,7 @@ class EvalService:
             model_name=payload.model_name,
             evaluator_version=payload.evaluator_version,
             average_score=average_score,
-            run_metadata=payload.run_metadata,
+            run_metadata=run_metadata,
             results=[result.model_dump() for result in results],
         )
 
@@ -266,6 +270,61 @@ class EvalService:
             bins=calibration_bins,
         )
 
+    def get_scenario_calibration_report(
+        self,
+        db: Session,
+        workspace_id: str = "default",
+        dataset_name: str = "",
+        experiment_name: str = "",
+        lookback_runs: int = 30,
+    ) -> EvalScenarioCalibrationResponse:
+        runs = self.list_runs(db, workspace_id=workspace_id)
+        if dataset_name:
+            runs = [run for run in runs if run.dataset_name == dataset_name]
+        if experiment_name:
+            runs = [run for run in runs if run.experiment_name == experiment_name]
+        runs = sorted(runs, key=lambda run: run.created_at, reverse=True)[: max(1, lookback_runs)]
+
+        scenario_points: dict[str, dict[str, list[float]]] = {}
+        for run in runs:
+            for result in run.results:
+                scenario = result.scenario or "general"
+                bucket = scenario_points.setdefault(scenario, {"confidence": [], "outcome": []})
+                confidence = min(1.0, max(0.0, float(result.score)))
+                bucket["confidence"].append(confidence)
+                bucket["outcome"].append(1.0 if result.passed else 0.0)
+
+        items: list[EvalScenarioCalibrationItem] = []
+        for scenario, values in sorted(scenario_points.items(), key=lambda item: item[0]):
+            total = len(values["confidence"])
+            if total == 0:
+                continue
+            avg_confidence = sum(values["confidence"]) / total
+            pass_rate = sum(values["outcome"]) / total
+            brier = sum(
+                (confidence - outcome) ** 2
+                for confidence, outcome in zip(values["confidence"], values["outcome"])
+            ) / total
+            ece = abs(avg_confidence - pass_rate)
+            items.append(
+                EvalScenarioCalibrationItem(
+                    scenario=scenario,
+                    total_cases=total,
+                    avg_confidence=round(avg_confidence, 4),
+                    empirical_pass_rate=round(pass_rate, 4),
+                    expected_calibration_error=round(ece, 4),
+                    brier_score=round(brier, 4),
+                )
+            )
+
+        return EvalScenarioCalibrationResponse(
+            workspace_id=workspace_id,
+            dataset_name=dataset_name,
+            experiment_name=experiment_name,
+            lookback_runs=max(1, lookback_runs),
+            scenarios=items,
+        )
+
     def judge_run(self, db: Session, payload: JudgeEvalCreate, workspace_id: str = "default") -> JudgeEvalResponse:
         response = judge_client.evaluate(
             dataset_name=payload.dataset_name,
@@ -335,6 +394,7 @@ class EvalService:
             prompt_version=row.prompt_version,
             model_name=row.model_name,
             evaluator_version=row.evaluator_version,
+            evaluator_profile=str((row.run_metadata or {}).get("evaluator_profile", "balanced")),
             average_score=row.average_score,
             run_metadata={str(key): str(value) for key, value in (row.run_metadata or {}).items()},
             created_at=row.created_at,
@@ -505,6 +565,7 @@ class EvalService:
             prompt_version=row["prompt_version"],
             model_name=row["model_name"],
             evaluator_version="heuristic-v1",
+            evaluator_profile="balanced",
             average_score=row["average_score"],
             run_metadata={},
             created_at=created_at,

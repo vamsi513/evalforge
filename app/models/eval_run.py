@@ -30,6 +30,7 @@ class EvalRunCreate(BaseModel):
     prompt_version: str = Field(min_length=1, max_length=50)
     model_name: str = Field(min_length=1, max_length=100)
     evaluator_version: str = Field(default="heuristic-v1", min_length=1, max_length=50)
+    evaluator_profile: str = Field(default="balanced", pattern="^(strict|balanced|lenient)$")
     run_metadata: dict[str, str] = Field(default_factory=dict)
     samples: list[EvalSample] = Field(min_length=1, max_length=1000)
 
@@ -58,6 +59,7 @@ class EvalRunResponse(BaseModel):
     prompt_version: str
     model_name: str
     evaluator_version: str = "heuristic-v1"
+    evaluator_profile: str = "balanced"
     average_score: float
     run_metadata: dict[str, str] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -159,6 +161,23 @@ class EvalCalibrationResponse(BaseModel):
     expected_calibration_error: float = 0.0
     brier_score: float = 0.0
     bins: list[EvalCalibrationBin] = Field(default_factory=list)
+
+
+class EvalScenarioCalibrationItem(BaseModel):
+    scenario: str
+    total_cases: int
+    avg_confidence: float
+    empirical_pass_rate: float
+    expected_calibration_error: float
+    brier_score: float
+
+
+class EvalScenarioCalibrationResponse(BaseModel):
+    workspace_id: str = "default"
+    dataset_name: str = ""
+    experiment_name: str = ""
+    lookback_runs: int = 30
+    scenarios: list[EvalScenarioCalibrationItem] = Field(default_factory=list)
 
 
 class ReleaseGateCreate(BaseModel):
