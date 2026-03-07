@@ -298,6 +298,14 @@ Local dry-run (without calling API) for CI decision payloads:
 python scripts/ci/check_release_gate.py --input-file /path/to/decision.json
 ```
 
+Generate a Markdown artifact locally:
+
+```bash
+python scripts/ci/check_release_gate.py \
+  --input-file /path/to/decision.json \
+  --report-out artifacts/release-gate-report.md
+```
+
 ## Demo flow
 
 For a clean demo, use this order:
