@@ -28,5 +28,14 @@ jobs:
           EVALFORGE_WORKSPACE: ${{ vars.EVALFORGE_WORKSPACE }}
           EVALFORGE_API_KEY: ${{ secrets.EVALFORGE_API_KEY }}
           EVALFORGE_REQUIRE_GATE_DECISION: ${{ vars.EVALFORGE_REQUIRE_GATE_DECISION }}
+          EVALFORGE_REPORT_PATH: artifacts/release-gate-report.md
         run: |
           python scripts/ci/check_release_gate.py
+
+      - name: Upload release-gate report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-gate-report
+          path: artifacts/release-gate-report.md
+          if-no-files-found: warn
