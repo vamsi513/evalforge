@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from statistics import mean
 from typing import Any, Dict, List, Optional
 
@@ -7,6 +8,14 @@ import httpx
 
 from app.core.config import settings
 from app.models.eval_run import EvalSample, JudgeCaseResult, JudgeEvalResponse
+
+# OpenAI list pricing, USD per token (https://openai.com/api/pricing/).
+# Keyed by model name; used to compute real cost_usd from actual token usage
+# rather than trusting the judge model's self-reported estimate.
+_TOKEN_PRICING_USD: Dict[str, Dict[str, float]] = {
+    "gpt-4o-mini": {"prompt": 0.15 / 1_000_000, "completion": 0.60 / 1_000_000},
+    "gpt-4o": {"prompt": 2.50 / 1_000_000, "completion": 10.00 / 1_000_000},
+}
 
 
 class JudgeClient:
@@ -96,11 +105,15 @@ class JudgeClient:
                 "json_schema": {
                     "name": "evalforge_judge_result",
                     "schema": self._response_schema(),
-                    "strict": True,
+                    # strict:true rejects criterion_scores (an open-ended
+                    # {name: score} map — additionalProperties as a schema
+                    # isn't representable in OpenAI's strict subset).
+                    "strict": False,
                 },
             },
         }
 
+        start = time.perf_counter()
         with httpx.Client(base_url=settings.openai_base_url, timeout=20.0) as client:
             response = client.post(
                 "/chat/completions",
@@ -112,12 +125,36 @@ class JudgeClient:
             )
             response.raise_for_status()
             body = response.json()
+        measured_latency_ms = (time.perf_counter() - start) * 1000
+        measured_cost_usd = self._measured_cost_usd(body)
 
         content = self._extract_message_content(body)
         parsed = json.loads(content)
-        return self._build_openai_result(sample, parsed)
+        return self._build_openai_result(
+            sample, parsed, measured_latency_ms=measured_latency_ms, measured_cost_usd=measured_cost_usd
+        )
 
-    def _build_openai_result(self, sample: EvalSample, parsed: Dict[str, Any]) -> JudgeCaseResult:
+    @staticmethod
+    def _measured_cost_usd(body: Dict[str, Any]) -> Optional[float]:
+        usage = body.get("usage")
+        model = body.get("model", "")
+        if not usage:
+            return None
+        pricing = next((rates for name, rates in _TOKEN_PRICING_USD.items() if model.startswith(name)), None)
+        if pricing is None:
+            return None
+        prompt_tokens = usage.get("prompt_tokens", 0)
+        completion_tokens = usage.get("completion_tokens", 0)
+        return prompt_tokens * pricing["prompt"] + completion_tokens * pricing["completion"]
+
+    def _build_openai_result(
+        self,
+        sample: EvalSample,
+        parsed: Dict[str, Any],
+        *,
+        measured_latency_ms: float,
+        measured_cost_usd: Optional[float],
+    ) -> JudgeCaseResult:
         criterion_scores_raw = parsed.get("criterion_scores", {})
         criterion_scores = {
             str(name): round(float(score), 4) for name, score in criterion_scores_raw.items()
@@ -135,8 +172,8 @@ class JudgeClient:
             reference_answer=sample.reference_answer,
             rubric=sample.rubric,
             score=score,
-            latency_ms=max(1, int(parsed.get("latency_ms", 1))),
-            cost_usd=round(float(parsed.get("cost_usd", 0.0)), 6),
+            latency_ms=max(1, round(measured_latency_ms)),
+            cost_usd=round(measured_cost_usd, 6) if measured_cost_usd is not None else round(float(parsed.get("cost_usd", 0.0)), 6),
             passed=bool(parsed.get("passed", score >= 0.7)),
             matched_terms=matched_terms,
             missing_terms=missing_terms,
