@@ -9,13 +9,30 @@ import httpx
 from app.core.config import settings
 from app.models.eval_run import EvalSample, JudgeCaseResult, JudgeEvalResponse
 
-# OpenAI list pricing, USD per token (https://openai.com/api/pricing/).
-# Keyed by model name; used to compute real cost_usd from actual token usage
-# rather than trusting the judge model's self-reported estimate.
+# Published list pricing, USD per token. Keyed by model name; used to
+# compute real cost_usd from actual token usage rather than trusting the
+# judge model's self-reported estimate.
 _TOKEN_PRICING_USD: Dict[str, Dict[str, float]] = {
     "gpt-4o-mini": {"prompt": 0.15 / 1_000_000, "completion": 0.60 / 1_000_000},
     "gpt-4o": {"prompt": 2.50 / 1_000_000, "completion": 10.00 / 1_000_000},
+    # https://www.anthropic.com/pricing#api
+    "claude-haiku-4-5": {"prompt": 1.00 / 1_000_000, "completion": 5.00 / 1_000_000},
+    # https://mistral.ai/pricing#api-pricing
+    "mistral-small-latest": {"prompt": 0.10 / 1_000_000, "completion": 0.30 / 1_000_000},
 }
+
+
+def _ensure_v1_path(base_url: str) -> str:
+    """Normalize a provider base URL to always include the /v1 API path.
+
+    Ambient environment variables (e.g. ANTHROPIC_BASE_URL set globally by
+    unrelated tools on a dev machine) can override this app's own .env and
+    strip the /v1 suffix, silently breaking every request. Env vars always
+    take precedence over .env file values for pydantic-settings, so this
+    can't be fixed by config alone -- normalize it defensively instead.
+    """
+    trimmed = base_url.rstrip("/")
+    return trimmed if trimmed.endswith("/v1") else f"{trimmed}/v1"
 
 
 class JudgeClient:
@@ -25,6 +42,20 @@ class JudgeClient:
         provider = settings.judge_provider.lower()
         if provider == "openai":
             return self._evaluate_openai(
+                dataset_name=dataset_name,
+                prompt_version=prompt_version,
+                model_name=model_name,
+                samples=samples,
+            )
+        if provider == "anthropic":
+            return self._evaluate_anthropic(
+                dataset_name=dataset_name,
+                prompt_version=prompt_version,
+                model_name=model_name,
+                samples=samples,
+            )
+        if provider == "mistral":
+            return self._evaluate_mistral(
                 dataset_name=dataset_name,
                 prompt_version=prompt_version,
                 model_name=model_name,
@@ -114,7 +145,7 @@ class JudgeClient:
         }
 
         start = time.perf_counter()
-        with httpx.Client(base_url=settings.openai_base_url, timeout=20.0) as client:
+        with httpx.Client(base_url=_ensure_v1_path(settings.openai_base_url), timeout=20.0) as client:
             response = client.post(
                 "/chat/completions",
                 headers={
@@ -130,8 +161,194 @@ class JudgeClient:
 
         content = self._extract_message_content(body)
         parsed = json.loads(content)
-        return self._build_openai_result(
-            sample, parsed, measured_latency_ms=measured_latency_ms, measured_cost_usd=measured_cost_usd
+        return self._build_judge_result(
+            sample,
+            parsed,
+            provider="openai",
+            model=settings.judge_model,
+            measured_latency_ms=measured_latency_ms,
+            measured_cost_usd=measured_cost_usd,
+        )
+
+    def _evaluate_anthropic(
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: List[EvalSample]
+    ) -> JudgeEvalResponse:
+        mock_response = self._evaluate_mock(
+            dataset_name=dataset_name,
+            prompt_version=prompt_version,
+            model_name=model_name,
+            samples=samples,
+        )
+
+        if not settings.anthropic_api_key:
+            return self._mark_fallback(
+                response=mock_response,
+                provider="anthropic",
+                model=settings.judge_model_anthropic,
+                feedback="Anthropic key missing. Used mock judge fallback.",
+            )
+
+        try:
+            results = [self._score_with_anthropic(sample) for sample in samples]
+        except (httpx.HTTPError, ValueError, KeyError, json.JSONDecodeError) as exc:
+            return self._mark_fallback(
+                response=mock_response,
+                provider="anthropic",
+                model=settings.judge_model_anthropic,
+                feedback=f"Anthropic judge failed ({exc}). Used mock judge fallback.",
+            )
+
+        return JudgeEvalResponse(
+            dataset_name=dataset_name,
+            prompt_version=prompt_version,
+            model_name=model_name,
+            judge_provider="anthropic",
+            judge_model=settings.judge_model_anthropic,
+            average_score=round(mean(result.score for result in results), 4) if results else 0.0,
+            results=results,
+        )
+
+    def _score_with_anthropic(self, sample: EvalSample) -> JudgeCaseResult:
+        # Claude has no OpenAI-style response_format:json_schema. Forcing a
+        # tool call is Anthropic's documented way to get reliable structured
+        # output: the model must call this tool, whose input_schema is our
+        # judge schema, so `content[0].input` is already a parsed dict.
+        payload = {
+            "model": settings.judge_model_anthropic,
+            "max_tokens": 1024,
+            "system": self._system_prompt(),
+            "messages": [{"role": "user", "content": self._user_prompt(sample)}],
+            "tools": [
+                {
+                    "name": "evalforge_judge_result",
+                    "description": "Return the structured judge scoring result.",
+                    "input_schema": self._response_schema(),
+                }
+            ],
+            "tool_choice": {"type": "tool", "name": "evalforge_judge_result"},
+        }
+
+        start = time.perf_counter()
+        with httpx.Client(base_url=_ensure_v1_path(settings.anthropic_base_url), timeout=20.0) as client:
+            response = client.post(
+                "/messages",
+                headers={
+                    "x-api-key": settings.anthropic_api_key,
+                    "anthropic-version": "2023-06-01",
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+            )
+            response.raise_for_status()
+            body = response.json()
+        measured_latency_ms = (time.perf_counter() - start) * 1000
+        measured_cost_usd = self._measured_cost_usd_anthropic(body)
+
+        parsed = self._extract_anthropic_tool_input(body)
+        return self._build_judge_result(
+            sample,
+            parsed,
+            provider="anthropic",
+            model=settings.judge_model_anthropic,
+            measured_latency_ms=measured_latency_ms,
+            measured_cost_usd=measured_cost_usd,
+        )
+
+    @staticmethod
+    def _extract_anthropic_tool_input(body: Dict[str, Any]) -> Dict[str, Any]:
+        for block in body.get("content", []):
+            if block.get("type") == "tool_use":
+                return block.get("input", {})
+        raise ValueError("No tool_use block returned by Anthropic")
+
+    @staticmethod
+    def _measured_cost_usd_anthropic(body: Dict[str, Any]) -> Optional[float]:
+        usage = body.get("usage")
+        model = body.get("model", "")
+        if not usage:
+            return None
+        pricing = next((rates for name, rates in _TOKEN_PRICING_USD.items() if model.startswith(name)), None)
+        if pricing is None:
+            return None
+        prompt_tokens = usage.get("input_tokens", 0)
+        completion_tokens = usage.get("output_tokens", 0)
+        return prompt_tokens * pricing["prompt"] + completion_tokens * pricing["completion"]
+
+    def _evaluate_mistral(
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: List[EvalSample]
+    ) -> JudgeEvalResponse:
+        mock_response = self._evaluate_mock(
+            dataset_name=dataset_name,
+            prompt_version=prompt_version,
+            model_name=model_name,
+            samples=samples,
+        )
+
+        if not settings.mistral_api_key:
+            return self._mark_fallback(
+                response=mock_response,
+                provider="mistral",
+                model=settings.judge_model_mistral,
+                feedback="Mistral key missing. Used mock judge fallback.",
+            )
+
+        try:
+            results = [self._score_with_mistral(sample) for sample in samples]
+        except (httpx.HTTPError, ValueError, KeyError, json.JSONDecodeError) as exc:
+            return self._mark_fallback(
+                response=mock_response,
+                provider="mistral",
+                model=settings.judge_model_mistral,
+                feedback=f"Mistral judge failed ({exc}). Used mock judge fallback.",
+            )
+
+        return JudgeEvalResponse(
+            dataset_name=dataset_name,
+            prompt_version=prompt_version,
+            model_name=model_name,
+            judge_provider="mistral",
+            judge_model=settings.judge_model_mistral,
+            average_score=round(mean(result.score for result in results), 4) if results else 0.0,
+            results=results,
+        )
+
+    def _score_with_mistral(self, sample: EvalSample) -> JudgeCaseResult:
+        # Mistral's chat/completions endpoint is OpenAI-shaped: same
+        # choices[0].message.content envelope, JSON mode via response_format.
+        payload = {
+            "model": settings.judge_model_mistral,
+            "temperature": 0,
+            "messages": [
+                {"role": "system", "content": self._system_prompt()},
+                {"role": "user", "content": self._user_prompt(sample)},
+            ],
+            "response_format": {"type": "json_object"},
+        }
+
+        start = time.perf_counter()
+        with httpx.Client(base_url=_ensure_v1_path(settings.mistral_base_url), timeout=20.0) as client:
+            response = client.post(
+                "/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {settings.mistral_api_key}",
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+            )
+            response.raise_for_status()
+            body = response.json()
+        measured_latency_ms = (time.perf_counter() - start) * 1000
+        measured_cost_usd = self._measured_cost_usd(body)
+
+        content = self._extract_message_content(body)
+        parsed = json.loads(content)
+        return self._build_judge_result(
+            sample,
+            parsed,
+            provider="mistral",
+            model=settings.judge_model_mistral,
+            measured_latency_ms=measured_latency_ms,
+            measured_cost_usd=measured_cost_usd,
         )
 
     @staticmethod
@@ -147,11 +364,13 @@ class JudgeClient:
         completion_tokens = usage.get("completion_tokens", 0)
         return prompt_tokens * pricing["prompt"] + completion_tokens * pricing["completion"]
 
-    def _build_openai_result(
+    def _build_judge_result(
         self,
         sample: EvalSample,
         parsed: Dict[str, Any],
         *,
+        provider: str,
+        model: str,
         measured_latency_ms: float,
         measured_cost_usd: Optional[float],
     ) -> JudgeCaseResult:
@@ -182,8 +401,8 @@ class JudgeClient:
             groundedness_score=groundedness_score,
             groundedness_feedback=groundedness_feedback,
             feedback=str(parsed.get("feedback", "Structured LLM judge completed scoring.")),
-            judge_provider="openai",
-            judge_model=settings.judge_model,
+            judge_provider=provider,
+            judge_model=model,
             judge_score=score,
             judge_reasoning=str(parsed["judge_reasoning"]),
             used_fallback=False,
