@@ -1,8 +1,10 @@
 name: Release Gate Decision
 
 on:
+  push:
+    branches: [main]
   pull_request:
-    branches: ["main"]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
