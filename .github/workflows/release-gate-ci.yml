@@ -23,6 +23,7 @@ jobs:
         run: python -m pip install --upgrade pip httpx
 
       - name: Enforce release-gate decision
+        if: vars.EVALFORGE_API_URL != ''
         env:
           EVALFORGE_API_URL: ${{ vars.EVALFORGE_API_URL }}
           EVALFORGE_DATASET: ${{ vars.EVALFORGE_DATASET }}
