@@ -6,6 +6,12 @@
 
 EvalForge is a production-style LLM Reliability and PromptOps platform for regression testing prompts, scoring model outputs, comparing prompt versions, managing golden datasets, and monitoring latency, cost, and async evaluation jobs.
 
+## Live Demo
+
+**API:** [https://evalforge-17u9.onrender.com/docs](https://evalforge-17u9.onrender.com/docs)
+
+> Free tier spins down after inactivity — first request takes ~30 seconds to wake.
+
 ## Why this project matters
 
 Teams shipping LLM features usually fail on the same problems:
