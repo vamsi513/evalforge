@@ -92,7 +92,8 @@ EvalForge addresses that by combining:
 
 - Backend: FastAPI, Pydantic, SQLAlchemy
 - Storage: SQLite by default, Postgres-ready config, Alembic migrations
-- LLM judge: OpenAI-compatible structured `chat/completions` path with fallback
+- LLM judge: OpenAI-compatible structured `chat/completions` path with fallback (Anthropic and Mistral backends also supported)
+- Experiment tracking: MLflow — every eval run and pairwise comparison logged with metrics, parameters, and result artifacts
 - Dashboard: Streamlit, pandas
 - Async processing: local background execution by default, Redis-backed worker path for durable job dispatch
 - Packaging: editable Python package with `pyproject.toml`
@@ -144,6 +145,10 @@ PLATFORM_API_KEY=
 DEFAULT_WORKSPACE_ID=default
 RELEASE_GATE_ALERT_WEBHOOK_URL=
 DEFAULT_USER_ROLE=viewer
+
+# MLflow experiment tracking (optional)
+MLFLOW_TRACKING_URI=
+MLFLOW_EXPERIMENT=evalforge
 ```
 
 Start the API:
@@ -325,6 +330,17 @@ For a timed script, use:
 - `docs/RECRUITER_DEMO_WALKTHROUGH.md`
 
 ## Judge modes
+
+EvalForge supports three judge backends, configurable via `JUDGE_PROVIDER`:
+
+| Provider | Description |
+|---|---|
+| `mock` | Deterministic heuristic scoring — no API key needed, fast CI |
+| `openai` | OpenAI-compatible structured judge via `/chat/completions` with JSON schema output |
+| `anthropic` | Anthropic Claude judge using the Messages API |
+| `mistral` | Mistral judge via the Mistral client |
+
+All providers fall back to `mock` if the key is missing or the response is malformed. Fallback responses are marked with `used_fallback=true`.
 
 ## Evaluator profiles
 
