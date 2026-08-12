@@ -1,5 +1,9 @@
 # EvalForge
 
+[![CI](https://github.com/vamsi513/evalforge/actions/workflows/ci.yml/badge.svg)](https://github.com/vamsi513/evalforge/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 EvalForge is a production-style LLM Reliability and PromptOps platform for regression testing prompts, scoring model outputs, comparing prompt versions, managing golden datasets, and monitoring latency, cost, and async evaluation jobs.
 
 ## Why this project matters
