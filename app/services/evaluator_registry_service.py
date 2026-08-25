@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import inspect, select, text
 from sqlalchemy.exc import OperationalError
@@ -67,7 +67,7 @@ class EvaluatorRegistryService:
 
     def _bootstrap_defaults(self, db: Session) -> None:
         registry = build_default_registry()
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         for definition in registry.definitions():
             exists = db.execute(
                 select(EvaluatorDefinitionRecord.id).where(

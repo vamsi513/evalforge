@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from math import floor
 from typing import Optional
 
@@ -158,7 +158,7 @@ class EvalService:
             if row is None:
                 return
             row.status = "running"
-            row.updated_at = datetime.utcnow()
+            row.updated_at = datetime.now(timezone.utc)
             db.commit()
 
             payload = EvalRunCreate(**row.payload)
@@ -167,7 +167,7 @@ class EvalService:
             row.result = run_response.model_dump(mode="json")
             row.status = "completed"
             row.error_message = ""
-            row.updated_at = datetime.utcnow()
+            row.updated_at = datetime.now(timezone.utc)
             db.commit()
         except Exception as exc:  # noqa: BLE001
             db.rollback()
@@ -177,7 +177,7 @@ class EvalService:
             if failed_row is not None:
                 failed_row.status = "failed"
                 failed_row.error_message = str(exc)
-                failed_row.updated_at = datetime.utcnow()
+                failed_row.updated_at = datetime.now(timezone.utc)
                 db.commit()
         finally:
             db.close()

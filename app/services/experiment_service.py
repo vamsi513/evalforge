@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import csv
 import io
 from typing import Optional
@@ -263,11 +263,11 @@ class ExperimentService:
         experiment_row.baseline_run_id = promoted_run_id
         experiment_row.candidate_run_id = ""
         experiment_row.status = "baseline"
-        experiment_row.updated_at = datetime.utcnow()
+        experiment_row.updated_at = datetime.now(timezone.utc)
 
         metadata = dict(experiment_row.experiment_metadata or {})
         metadata["last_promoted_gate_id"] = latest_gate.id
-        metadata["last_promoted_at"] = datetime.utcnow().isoformat()
+        metadata["last_promoted_at"] = datetime.now(timezone.utc).isoformat()
         experiment_row.experiment_metadata = metadata
 
         event_payload = {
@@ -303,10 +303,10 @@ class ExperimentService:
             experiment_row.baseline_run_id = promoted_run_id
             experiment_row.candidate_run_id = ""
             experiment_row.status = "baseline"
-            experiment_row.updated_at = datetime.utcnow()
+            experiment_row.updated_at = datetime.now(timezone.utc)
             metadata = dict(experiment_row.experiment_metadata or {})
             metadata["last_promoted_gate_id"] = latest_gate.id
-            metadata["last_promoted_at"] = datetime.utcnow().isoformat()
+            metadata["last_promoted_at"] = datetime.now(timezone.utc).isoformat()
             experiment_row.experiment_metadata = metadata
             db.add(ExperimentPromotionEventRecord(**event_payload))
             db.commit()

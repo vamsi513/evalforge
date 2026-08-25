@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from uuid import uuid4
 
@@ -109,7 +109,7 @@ class AssetService:
                 raise
             self._ensure_golden_case_metadata_columns(db)
             legacy_id = row.id or str(uuid4())
-            created_at = row.created_at or datetime.utcnow()
+            created_at = row.created_at or datetime.now(timezone.utc)
             db.execute(
                 text(
                     """

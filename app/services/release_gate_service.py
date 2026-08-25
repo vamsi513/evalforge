@@ -1,5 +1,5 @@
 from collections import Counter
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from statistics import mean
 from typing import Any, Optional, Union
 
@@ -191,9 +191,9 @@ class ReleaseGateService:
             run_log.status = "completed"
             run_log.decision_id = decision.id
             run_log.message = f"Created release gate decision {decision.id} with status {decision.status}."
-            schedule.last_run_at = datetime.utcnow()
+            schedule.last_run_at = datetime.now(timezone.utc)
             schedule.next_run_at = None
-            schedule.updated_at = datetime.utcnow()
+            schedule.updated_at = datetime.now(timezone.utc)
             db.commit()
             db.refresh(run_log)
             if decision.status != "passed":
@@ -207,8 +207,8 @@ class ReleaseGateService:
         except ValueError as exc:
             run_log.status = "failed"
             run_log.message = str(exc)
-            schedule.last_run_at = datetime.utcnow()
-            schedule.updated_at = datetime.utcnow()
+            schedule.last_run_at = datetime.now(timezone.utc)
+            schedule.updated_at = datetime.now(timezone.utc)
             db.commit()
             db.refresh(run_log)
             self._send_schedule_alert(
@@ -432,7 +432,7 @@ class ReleaseGateService:
         experiment_name: str = "",
         lookback_days: int = 30,
     ) -> ReleaseGateTrendsResponse:
-        cutoff = datetime.utcnow() - timedelta(days=max(1, lookback_days))
+        cutoff = datetime.now(timezone.utc) - timedelta(days=max(1, lookback_days))
         try:
             query = select(ReleaseGateDecisionRecord).where(
                 ReleaseGateDecisionRecord.workspace_id == workspace_id,
@@ -510,7 +510,7 @@ class ReleaseGateService:
         experiment_name: str = "",
         lookback_days: int = 30,
     ) -> ReleaseGatePolicyReportResponse:
-        cutoff = datetime.utcnow() - timedelta(days=max(1, lookback_days))
+        cutoff = datetime.now(timezone.utc) - timedelta(days=max(1, lookback_days))
         try:
             query = select(ReleaseGateDecisionRecord).where(
                 ReleaseGateDecisionRecord.workspace_id == workspace_id,
