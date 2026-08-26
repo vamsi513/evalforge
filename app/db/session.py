@@ -5,9 +5,8 @@ from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import settings
-from app.db.base import Base
 from app.db import models  # noqa: F401
-
+from app.db.base import Base
 
 connect_args = {"check_same_thread": False} if settings.database_url.startswith("sqlite") else {}
 engine = create_engine(

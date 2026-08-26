@@ -9,10 +9,10 @@ from app.models.eval_run import (
     ReleaseGateEvaluateLatestCreate,
     ReleaseGatePolicyPreset,
     ReleaseGatePolicyReportResponse,
+    ReleaseGateResponse,
     ReleaseGateScheduleCreate,
     ReleaseGateScheduleResponse,
     ReleaseGateScheduleRunResponse,
-    ReleaseGateResponse,
     ReleaseGateSummaryResponse,
     ReleaseGateTrendsResponse,
 )

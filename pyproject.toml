@@ -42,3 +42,12 @@ include = ["app*", "training*"]
 [tool.ruff]
 line-length = 100
 target-version = "py39"
+
+[tool.ruff.lint]
+ignore = [
+  "B008",    # FastAPI uses Depends() / Query() / Header() in function defaults by design
+  "FA100",   # from __future__ import annotations not required on Python 3.10+
+  "BLE001",  # Broad Exception catches are intentional in best-effort alert/DB paths
+  "PLW1510", # subprocess.run check handled explicitly by caller
+  "RUF012",  # SQLAlchemy/Pydantic mutable class-level defaults are correct here
+]

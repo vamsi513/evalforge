@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
-from app.services.eval_service import eval_service
 from app.models.eval_run import EvalRunResponse
 from app.models.telemetry import TelemetryRollup, TelemetrySummary
+from app.services.eval_service import eval_service
 
 
 class TelemetryService:

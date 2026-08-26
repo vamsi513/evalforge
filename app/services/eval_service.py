@@ -169,7 +169,7 @@ class EvalService:
             row.error_message = ""
             row.updated_at = datetime.now(timezone.utc)
             db.commit()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             db.rollback()
             failed_row = db.execute(
                 select(EvalJobRecord).where(EvalJobRecord.id == job_id)

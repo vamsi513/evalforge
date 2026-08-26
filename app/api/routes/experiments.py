@@ -7,9 +7,9 @@ from app.models.experiment import (
     ExperimentBaselineRecommendationResponse,
     ExperimentCreate,
     ExperimentLeaderboardResponse,
-    ExperimentPromotionEvent,
     ExperimentPromoteRequest,
     ExperimentPromoteResponse,
+    ExperimentPromotionEvent,
     ExperimentReport,
     ExperimentResponse,
 )

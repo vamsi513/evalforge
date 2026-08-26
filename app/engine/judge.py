@@ -3,7 +3,7 @@ import logging
 import re
 import time
 from statistics import mean
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import httpx
 
@@ -15,7 +15,7 @@ from app.models.eval_run import EvalSample, JudgeCaseResult, JudgeEvalResponse
 # Published list pricing, USD per token. Keyed by model name; used to
 # compute real cost_usd from actual token usage rather than trusting the
 # judge model's self-reported estimate.
-_TOKEN_PRICING_USD: Dict[str, Dict[str, float]] = {
+_TOKEN_PRICING_USD: dict[str, dict[str, float]] = {
     "gpt-4o-mini": {"prompt": 0.15 / 1_000_000, "completion": 0.60 / 1_000_000},
     "gpt-4o": {"prompt": 2.50 / 1_000_000, "completion": 10.00 / 1_000_000},
     # https://www.anthropic.com/pricing#api
@@ -40,7 +40,7 @@ def _ensure_v1_path(base_url: str) -> str:
 
 class JudgeClient:
     def evaluate(
-        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: List[EvalSample]
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: list[EvalSample]
     ) -> JudgeEvalResponse:
         provider = settings.judge_provider.lower()
         if provider == "openai":
@@ -72,9 +72,9 @@ class JudgeClient:
         )
 
     def _evaluate_mock(
-        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: List[EvalSample]
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: list[EvalSample]
     ) -> JudgeEvalResponse:
-        results: List[JudgeCaseResult] = []
+        results: list[JudgeCaseResult] = []
         for sample in samples:
             results.append(self._score_with_mock(sample))
 
@@ -89,7 +89,7 @@ class JudgeClient:
         )
 
     def _evaluate_openai(
-        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: List[EvalSample]
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: list[EvalSample]
     ) -> JudgeEvalResponse:
         mock_response = self._evaluate_mock(
             dataset_name=dataset_name,
@@ -174,7 +174,7 @@ class JudgeClient:
         )
 
     def _evaluate_anthropic(
-        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: List[EvalSample]
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: list[EvalSample]
     ) -> JudgeEvalResponse:
         mock_response = self._evaluate_mock(
             dataset_name=dataset_name,
@@ -258,14 +258,14 @@ class JudgeClient:
         )
 
     @staticmethod
-    def _extract_anthropic_tool_input(body: Dict[str, Any]) -> Dict[str, Any]:
+    def _extract_anthropic_tool_input(body: dict[str, Any]) -> dict[str, Any]:
         for block in body.get("content", []):
             if block.get("type") == "tool_use":
                 return block.get("input", {})
         raise ValueError("No tool_use block returned by Anthropic")
 
     @staticmethod
-    def _measured_cost_usd_anthropic(body: Dict[str, Any]) -> Optional[float]:
+    def _measured_cost_usd_anthropic(body: dict[str, Any]) -> Optional[float]:
         usage = body.get("usage")
         model = body.get("model", "")
         if not usage:
@@ -278,7 +278,7 @@ class JudgeClient:
         return prompt_tokens * pricing["prompt"] + completion_tokens * pricing["completion"]
 
     def _evaluate_mistral(
-        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: List[EvalSample]
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: list[EvalSample]
     ) -> JudgeEvalResponse:
         mock_response = self._evaluate_mock(
             dataset_name=dataset_name,
@@ -355,7 +355,7 @@ class JudgeClient:
         )
 
     @staticmethod
-    def _measured_cost_usd(body: Dict[str, Any]) -> Optional[float]:
+    def _measured_cost_usd(body: dict[str, Any]) -> Optional[float]:
         usage = body.get("usage")
         model = body.get("model", "")
         if not usage:
@@ -370,7 +370,7 @@ class JudgeClient:
     def _build_judge_result(
         self,
         sample: EvalSample,
-        parsed: Dict[str, Any],
+        parsed: dict[str, Any],
         *,
         provider: str,
         model: str,
@@ -412,7 +412,7 @@ class JudgeClient:
         )
 
     @staticmethod
-    def _extract_message_content(body: Dict[str, Any]) -> str:
+    def _extract_message_content(body: dict[str, Any]) -> str:
         choices = body.get("choices", [])
         if not choices:
             raise ValueError("No completion choices returned")
@@ -454,9 +454,9 @@ class JudgeClient:
         keyword_hit = sample.expected_keyword.lower() in output
         rubric_hits = 0
         total_terms = 0
-        matched_terms: List[str] = []
-        missing_terms: List[str] = []
-        criterion_scores: Dict[str, float] = {}
+        matched_terms: list[str] = []
+        missing_terms: list[str] = []
+        criterion_scores: dict[str, float] = {}
 
         for criterion in sample.rubric:
             required_terms = [term.lower() for term in criterion.required_terms]
@@ -543,7 +543,7 @@ class JudgeClient:
         )
 
     @staticmethod
-    def _response_schema() -> Dict[str, Any]:
+    def _response_schema() -> dict[str, Any]:
         return {
             "type": "object",
             "properties": {

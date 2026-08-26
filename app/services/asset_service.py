@@ -1,8 +1,7 @@
+import json
 from datetime import datetime, timezone
 from typing import Optional
 from uuid import uuid4
-
-import json
 
 from sqlalchemy import delete, inspect, select, text
 from sqlalchemy.exc import OperationalError

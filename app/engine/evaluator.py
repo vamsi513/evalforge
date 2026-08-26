@@ -8,7 +8,6 @@ from app.models.eval_run import (
     PairwiseCaseResult,
     PairwiseEvalCreate,
     PairwiseEvalResponse,
-    PairwiseSample,
     RubricCriterion,
 )
 
