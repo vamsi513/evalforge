@@ -650,3 +650,141 @@ def test_release_history_csv_export() -> None:
     assert "experiment_name,dataset_name,gate_id" in body
     assert experiment_name in body
     assert gate.json()["id"] in body
+
+
+def test_experiment_leaderboard_endpoint_returns_ranked_items() -> None:
+    workspace_headers = {"X-Workspace-ID": "exp-leaderboard"}
+    dataset_name = f"experiment_leaderboard_dataset_{uuid4().hex[:8]}"
+    experiment_name = f"leaderboard-track-{uuid4().hex[:6]}"
+
+    assert client.post(
+        "/api/v1/datasets",
+        headers=workspace_headers,
+        json={
+            "name": dataset_name,
+            "description": "Dataset for leaderboard endpoint validation.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/experiments",
+        headers=workspace_headers,
+        json={
+            "name": experiment_name,
+            "dataset_name": dataset_name,
+            "owner": "test-suite",
+            "status": "active",
+            "description": "Leaderboard experiment.",
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "leaderboard-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "The outage was caused by a database failover issue.",
+                    "reference_answer": "The outage was caused by a database failover issue.",
+                    "rubric": [],
+                }
+            ],
+        },
+    ).status_code == 201
+
+    leaderboard = client.get(
+        "/api/v1/experiments/leaderboard",
+        headers=workspace_headers,
+        params={"dataset_name": dataset_name},
+    )
+    assert leaderboard.status_code == 200
+    payload = leaderboard.json()
+    assert payload["workspace_id"] == "exp-leaderboard"
+    assert any(item["experiment_name"] == experiment_name for item in payload["items"])
+
+
+def test_experiment_recommend_baseline_endpoint_returns_candidate() -> None:
+    workspace_headers = {"X-Workspace-ID": "exp-recommend"}
+    dataset_name = f"experiment_recommend_dataset_{uuid4().hex[:8]}"
+    experiment_name = f"recommend-track-{uuid4().hex[:6]}"
+
+    assert client.post(
+        "/api/v1/datasets",
+        headers=workspace_headers,
+        json={
+            "name": dataset_name,
+            "description": "Dataset for baseline recommendation endpoint validation.",
+            "owner": "test-suite",
+        },
+    ).status_code == 201
+
+    assert client.post(
+        "/api/v1/experiments",
+        headers=workspace_headers,
+        json={
+            "name": experiment_name,
+            "dataset_name": dataset_name,
+            "owner": "test-suite",
+            "status": "active",
+            "description": "Recommendation experiment.",
+        },
+    ).status_code == 201
+
+    run_a = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "recommend-v1",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "Infrastructure issue caused outage.",
+                    "reference_answer": "Database failover caused outage.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert run_a.status_code == 201
+
+    run_b = client.post(
+        "/api/v1/evals",
+        headers=workspace_headers,
+        json={
+            "dataset_name": dataset_name,
+            "experiment_name": experiment_name,
+            "prompt_version": "recommend-v2",
+            "model_name": "gpt-4o-mini",
+            "samples": [
+                {
+                    "prompt": "Summarize outage root cause.",
+                    "expected_keyword": "database",
+                    "candidate_output": "Database failover caused outage.",
+                    "reference_answer": "Database failover caused outage.",
+                    "rubric": [],
+                }
+            ],
+        },
+    )
+    assert run_b.status_code == 201
+
+    recommendation = client.get(
+        f"/api/v1/experiments/{experiment_name}/recommend-baseline",
+        headers=workspace_headers,
+    )
+    assert recommendation.status_code == 200
+    payload = recommendation.json()
+    assert payload["experiment_name"] == experiment_name
+    assert payload["considered_runs"] >= 2
+    assert payload["recommended_run_id"] in {run_a.json()["id"], run_b.json()["id"]}

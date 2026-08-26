@@ -24,6 +24,7 @@ def load_snapshot(api_base_url: str, api_key_value: str, workspace: str) -> dict
         "datasets": api.get_datasets(),
         "evaluators": api.get_evaluators(),
         "experiments": api.get_experiments(),
+        "experiment_leaderboard": api.get_experiment_leaderboard(lookback_runs=20, limit=20),
         "prompts": api.get_prompt_templates(),
         "golden_cases": api.get_golden_cases(),
         "runs": api.get_runs(),
@@ -53,6 +54,7 @@ telemetry = snapshot["telemetry"]
 datasets = snapshot["datasets"]
 evaluators = snapshot["evaluators"]
 experiments = snapshot["experiments"]
+experiment_leaderboard = snapshot["experiment_leaderboard"]
 prompts = snapshot["prompts"]
 golden_cases = snapshot["golden_cases"]
 runs = snapshot["runs"]
@@ -406,6 +408,11 @@ with tab3:
 
 with tab4:
     st.subheader("Experiment Registry")
+    leaderboard_items = experiment_leaderboard.get("items", [])
+    if leaderboard_items:
+        st.markdown("### Experiment Leaderboard")
+        st.dataframe(pd.DataFrame(leaderboard_items), use_container_width=True)
+
     if not experiments:
         st.info("No experiments found.")
     else:
@@ -458,6 +465,10 @@ with tab4:
         experiment_api = EvalForgeClient(base_url, api_key=api_key, workspace_id=workspace_id)
         experiment_report = experiment_api.get_experiment_report(selected_experiment["name"])
         release_history_events = experiment_api.get_experiment_release_history(selected_experiment["name"])
+        baseline_recommendation = experiment_api.recommend_experiment_baseline(selected_experiment["name"])
+
+        st.markdown("**Baseline Recommendation**")
+        st.json(baseline_recommendation)
 
         recent_runs = experiment_report.get("recent_runs", [])
         if recent_runs:

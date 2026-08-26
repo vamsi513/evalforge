@@ -4,7 +4,9 @@ from sqlalchemy.orm import Session
 from app.api.dependencies import get_workspace_id, require_editor_role
 from app.db.session import get_db
 from app.models.experiment import (
+    ExperimentBaselineRecommendationResponse,
     ExperimentCreate,
+    ExperimentLeaderboardResponse,
     ExperimentPromotionEvent,
     ExperimentPromoteRequest,
     ExperimentPromoteResponse,
@@ -21,6 +23,23 @@ async def list_experiments(
     workspace_id: str = Depends(get_workspace_id), db: Session = Depends(get_db)
 ) -> list[ExperimentResponse]:
     return experiment_service.list_experiments(db, workspace_id)
+
+
+@router.get("/leaderboard", response_model=ExperimentLeaderboardResponse)
+async def get_experiment_leaderboard(
+    dataset_name: str = "",
+    lookback_runs: int = 20,
+    limit: int = 20,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ExperimentLeaderboardResponse:
+    return experiment_service.get_leaderboard(
+        db=db,
+        workspace_id=workspace_id,
+        dataset_name=dataset_name,
+        lookback_runs=lookback_runs,
+        limit=limit,
+    )
 
 
 @router.post("", response_model=ExperimentResponse, status_code=201, dependencies=[Depends(require_editor_role)])
@@ -44,6 +63,28 @@ async def get_experiment_report(
     if report is None:
         raise HTTPException(status_code=404, detail="Experiment not found")
     return report
+
+
+@router.get(
+    "/{experiment_name}/recommend-baseline",
+    response_model=ExperimentBaselineRecommendationResponse,
+)
+async def recommend_experiment_baseline(
+    experiment_name: str,
+    workspace_id: str = Depends(get_workspace_id),
+    db: Session = Depends(get_db),
+) -> ExperimentBaselineRecommendationResponse:
+    try:
+        return experiment_service.recommend_baseline(
+            db=db,
+            workspace_id=workspace_id,
+            experiment_name=experiment_name,
+        )
+    except ValueError as exc:
+        detail = str(exc)
+        if detail == "Experiment not found":
+            raise HTTPException(status_code=404, detail=detail) from exc
+        raise HTTPException(status_code=400, detail=detail) from exc
 
 
 @router.post(

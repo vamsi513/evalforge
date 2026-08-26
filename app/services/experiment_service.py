@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 import csv
 import io
+from statistics import mean
 from typing import Optional
 
 from sqlalchemy import func, inspect, select, text
@@ -17,6 +18,9 @@ from app.models.experiment import (
     ExperimentCreate,
     ExperimentGateTrend,
     ExperimentPromotionEvent,
+    ExperimentBaselineRecommendationResponse,
+    ExperimentLeaderboardItem,
+    ExperimentLeaderboardResponse,
     ExperimentPromoteRequest,
     ExperimentPromoteResponse,
     ExperimentReport,
@@ -26,6 +30,109 @@ from app.models.experiment import (
 
 
 class ExperimentService:
+    def get_leaderboard(
+        self,
+        db: Session,
+        workspace_id: str,
+        dataset_name: str = "",
+        lookback_runs: int = 20,
+        limit: int = 20,
+    ) -> ExperimentLeaderboardResponse:
+        experiments = self.list_experiments(db, workspace_id)
+        if dataset_name:
+            experiments = [exp for exp in experiments if exp.dataset_name == dataset_name]
+
+        items: list[ExperimentLeaderboardItem] = []
+        for experiment in experiments:
+            run_trends = self._list_run_trends(
+                db=db,
+                workspace_id=workspace_id,
+                dataset_name=experiment.dataset_name,
+                experiment_name=experiment.name,
+            )[: max(1, lookback_runs)]
+            if not run_trends:
+                continue
+            gate_trends = self._list_gate_trends(
+                db=db,
+                workspace_id=workspace_id,
+                dataset_name=experiment.dataset_name,
+                experiment_name=experiment.name,
+            )
+            items.append(
+                ExperimentLeaderboardItem(
+                    experiment_name=experiment.name,
+                    dataset_name=experiment.dataset_name,
+                    workspace_id=workspace_id,
+                    run_count=experiment.run_count,
+                    latest_score=round(run_trends[0].average_score, 4),
+                    average_recent_score=round(mean(run.average_score for run in run_trends), 4),
+                    latest_gate_status=gate_trends[0].status if gate_trends else "",
+                    last_updated_at=experiment.updated_at,
+                )
+            )
+        items.sort(
+            key=lambda item: (
+                item.latest_gate_status != "passed",
+                -item.average_recent_score,
+                -item.latest_score,
+                item.experiment_name,
+            )
+        )
+        return ExperimentLeaderboardResponse(
+            workspace_id=workspace_id,
+            dataset_name=dataset_name,
+            lookback_runs=max(1, lookback_runs),
+            items=items[: max(1, min(limit, 100))],
+        )
+
+    def recommend_baseline(
+        self, db: Session, workspace_id: str, experiment_name: str
+    ) -> ExperimentBaselineRecommendationResponse:
+        report = self.get_experiment_report(db, experiment_name, workspace_id)
+        if report is None:
+            raise ValueError("Experiment not found")
+
+        runs = report.recent_runs
+        if not runs:
+            raise ValueError("No runs found for this experiment")
+
+        run_ids = {run.run_id for run in runs}
+        gate_trends = report.release_gates
+        gate_status_by_candidate = {
+            gate.candidate_run_id: gate.status
+            for gate in gate_trends
+            if gate.candidate_run_id in run_ids
+        }
+
+        best_run = None
+        best_score = -1.0
+        for run in runs:
+            score = float(run.average_score)
+            gate_status = gate_status_by_candidate.get(run.run_id, "")
+            gate_bonus = 0.05 if gate_status == "passed" else 0.0
+            candidate_score = score + gate_bonus
+            if candidate_score > best_score:
+                best_score = candidate_score
+                best_run = run
+
+        if best_run is None:
+            raise ValueError("No candidate run available for recommendation")
+
+        gate_status = gate_status_by_candidate.get(best_run.run_id, "unknown")
+        rationale = (
+            f"Selected run {best_run.run_id} from {len(runs)} recent runs using "
+            f"average_score plus gate-status bonus. Gate status: {gate_status}."
+        )
+        return ExperimentBaselineRecommendationResponse(
+            workspace_id=workspace_id,
+            experiment_name=report.experiment.name,
+            dataset_name=report.experiment.dataset_name,
+            recommended_run_id=best_run.run_id,
+            recommendation_score=round(best_score, 4),
+            rationale=rationale,
+            considered_runs=len(runs),
+        )
+
     def list_experiments(self, db: Session, workspace_id: str) -> list[ExperimentResponse]:
         try:
             rows = db.execute(

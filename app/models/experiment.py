@@ -76,3 +76,31 @@ class ExperimentPromotionEvent(BaseModel):
     note: str = ""
     event_metadata: dict[str, str] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class ExperimentLeaderboardItem(BaseModel):
+    experiment_name: str
+    dataset_name: str
+    workspace_id: str = "default"
+    run_count: int = 0
+    latest_score: float = 0.0
+    average_recent_score: float = 0.0
+    latest_gate_status: str = ""
+    last_updated_at: datetime
+
+
+class ExperimentLeaderboardResponse(BaseModel):
+    workspace_id: str = "default"
+    dataset_name: str = ""
+    lookback_runs: int = 20
+    items: list[ExperimentLeaderboardItem] = Field(default_factory=list)
+
+
+class ExperimentBaselineRecommendationResponse(BaseModel):
+    workspace_id: str = "default"
+    experiment_name: str
+    dataset_name: str
+    recommended_run_id: str = ""
+    recommendation_score: float = 0.0
+    rationale: str
+    considered_runs: int = 0

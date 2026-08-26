@@ -42,8 +42,22 @@ class EvalForgeClient:
     def get_experiments(self) -> List[Dict[str, Any]]:
         return self._get("/api/v1/experiments")
 
+    def get_experiment_leaderboard(
+        self,
+        dataset_name: str = "",
+        lookback_runs: int = 20,
+        limit: int = 20,
+    ) -> Dict[str, Any]:
+        query = f"/api/v1/experiments/leaderboard?lookback_runs={lookback_runs}&limit={limit}"
+        if dataset_name:
+            query += f"&dataset_name={dataset_name}"
+        return self._get(query)
+
     def get_experiment_report(self, experiment_name: str) -> Dict[str, Any]:
         return self._get(f"/api/v1/experiments/{experiment_name}/report")
+
+    def recommend_experiment_baseline(self, experiment_name: str) -> Dict[str, Any]:
+        return self._get(f"/api/v1/experiments/{experiment_name}/recommend-baseline")
 
     def promote_experiment_candidate(
         self,

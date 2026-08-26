@@ -1,10 +1,13 @@
 import json
+import logging
 import re
 import time
 from statistics import mean
 from typing import Any, Dict, List, Optional
 
 import httpx
+
+logger = logging.getLogger(__name__)
 
 from app.core.config import settings
 from app.models.eval_run import EvalSample, JudgeCaseResult, JudgeEvalResponse
@@ -432,6 +435,10 @@ class JudgeClient:
     def _mark_fallback(
         *, response: JudgeEvalResponse, provider: str, model: str, feedback: str
     ) -> JudgeEvalResponse:
+        logger.warning(
+            "Judge fallback activated: provider=%s model=%s reason=%s samples=%d",
+            provider, model, feedback, len(response.results),
+        )
         response.judge_provider = provider
         response.judge_model = model
         for result in response.results:
