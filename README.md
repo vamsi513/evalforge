@@ -237,6 +237,18 @@ If API key protection is enabled, also set:
 - `GET /api/v1/release-gates/trends`
 - `GET /api/v1/telemetry/summary`
 
+## CI/CD — GitHub Actions auto-deploy
+
+Every push to `main` triggers a GitHub Actions pipeline:
+
+1. Installs dependencies, runs ruff lint and security scan
+2. Builds the Docker image
+3. Runs the full test suite
+4. Deploys to AWS EC2 via SSH — checks out the exact tested commit, rebuilds, and restarts the container
+5. Runs a health check loop (`GET /health`) — if the new container fails to start, the previous image is automatically restored
+
+Required GitHub Secrets: `EC2_HOST`, `EC2_SSH_KEY`
+
 ## Production hardening
 
 - Deployment runbook: `docs/DEPLOYMENT_HARDENING.md`
