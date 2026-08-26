@@ -36,3 +36,25 @@ jobs:
         with:
           name: test-results
           path: test-results.xml
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ec2-user/evalforge
+            git pull origin main
+            sudo docker build -t evalforge-api .
+            sudo docker stop evalforge-api || true
+            sudo docker rm evalforge-api || true
+            sudo docker run -d --name evalforge-api --network host --env-file .env evalforge-api \
+              uvicorn app.main:app --host 0.0.0.0 --port 8001 --root-path /evalforge
+            sudo docker image prune -f
