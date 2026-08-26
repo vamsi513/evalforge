@@ -7,10 +7,10 @@ from typing import Any
 
 import httpx
 
-logger = logging.getLogger(__name__)
-
 from app.core.config import settings
 from app.models.eval_run import EvalSample, JudgeCaseResult, JudgeEvalResponse
+
+logger = logging.getLogger(__name__)
 
 # Published list pricing, USD per token. Keyed by model name; used to
 # compute real cost_usd from actual token usage rather than trusting the
