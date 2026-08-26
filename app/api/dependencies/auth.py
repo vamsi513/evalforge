@@ -1,5 +1,4 @@
 import hmac
-from typing import Optional
 
 from fastapi import Header, HTTPException, status
 
@@ -9,7 +8,7 @@ _ROLE_RANK = {"viewer": 1, "editor": 2, "admin": 3}
 
 
 async def require_api_access(
-    x_api_key: Optional[str] = Header(default=None, alias="X-API-Key"),
+    x_api_key: str | None = Header(default=None, alias="X-API-Key"),
 ) -> None:
     if not settings.platform_api_key:
         return
@@ -19,14 +18,14 @@ async def require_api_access(
 
 
 async def get_workspace_id(
-    x_workspace_id: Optional[str] = Header(default=None, alias="X-Workspace-ID"),
+    x_workspace_id: str | None = Header(default=None, alias="X-Workspace-ID"),
 ) -> str:
     workspace_id = (x_workspace_id or settings.default_workspace_id).strip()
     return workspace_id or settings.default_workspace_id
 
 
 async def get_user_role(
-    x_user_role: Optional[str] = Header(default=None, alias="X-User-Role"),
+    x_user_role: str | None = Header(default=None, alias="X-User-Role"),
 ) -> str:
     # When API key auth is enabled the role comes from server config, not the
     # request header, so a caller cannot self-promote by sending X-User-Role.
@@ -42,7 +41,7 @@ def _require_min_role(min_role: str):
     min_rank = _ROLE_RANK[min_role]
 
     async def _checker(
-        x_user_role: Optional[str] = Header(default=None, alias="X-User-Role"),
+        x_user_role: str | None = Header(default=None, alias="X-User-Role"),
     ) -> None:
         if not settings.platform_api_key:
             # Dev mode: honour header but validate value

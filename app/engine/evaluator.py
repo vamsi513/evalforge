@@ -1,5 +1,4 @@
 from statistics import mean
-from typing import Optional
 
 from app.engine.evaluator_registry import ScoreContext, build_default_registry
 from app.models.eval_run import (
@@ -114,7 +113,7 @@ class EvalRunner:
         slice_name: str,
         severity: str,
         required_json_fields: list[str],
-        reference_answer: Optional[str],
+        reference_answer: str | None,
         rubric: list[RubricCriterion],
         evaluator_profile: str,
     ) -> EvalCaseResult:

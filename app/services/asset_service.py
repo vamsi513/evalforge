@@ -1,6 +1,5 @@
 import json
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from sqlalchemy import delete, inspect, select, text
@@ -22,7 +21,7 @@ from app.models.eval_run import RubricCriterion
 
 class AssetService:
     def list_prompt_templates(
-        self, db: Session, dataset_name: Optional[str] = None, workspace_id: str = "default"
+        self, db: Session, dataset_name: str | None = None, workspace_id: str = "default"
     ) -> list[PromptTemplateResponse]:
         query = select(PromptTemplateRecord).order_by(PromptTemplateRecord.created_at.desc())
         if dataset_name:
@@ -60,7 +59,7 @@ class AssetService:
         return db.execute(query).first() is not None
 
     def list_golden_cases(
-        self, db: Session, dataset_name: Optional[str] = None, workspace_id: str = "default"
+        self, db: Session, dataset_name: str | None = None, workspace_id: str = "default"
     ) -> list[GoldenCaseResponse]:
         query = select(GoldenCaseRecord).order_by(GoldenCaseRecord.created_at.desc())
         if dataset_name:
@@ -108,7 +107,7 @@ class AssetService:
                 raise
             self._ensure_golden_case_metadata_columns(db)
             legacy_id = row.id or str(uuid4())
-            created_at = row.created_at or datetime.now(timezone.utc)
+            created_at = row.created_at or datetime.now(UTC)
             db.execute(
                 text(
                     """
@@ -164,7 +163,7 @@ class AssetService:
         ).scalars().all()
         return [self._to_case_response(row) for row in rows]
 
-    def export_bundle(self, db: Session, dataset_name: str, workspace_id: str = "default") -> Optional[DatasetBundle]:
+    def export_bundle(self, db: Session, dataset_name: str, workspace_id: str = "default") -> DatasetBundle | None:
         dataset_row = db.execute(
             select(DatasetRecord).where(
                 DatasetRecord.name == dataset_name,
@@ -291,7 +290,7 @@ class AssetService:
 
     @staticmethod
     def _list_legacy_golden_cases(
-        db: Session, dataset_name: Optional[str] = None, workspace_id: str = "default"
+        db: Session, dataset_name: str | None = None, workspace_id: str = "default"
     ) -> list[GoldenCaseResponse]:
         if dataset_name and not AssetService._dataset_exists_in_workspace(db, dataset_name, workspace_id):
             return []

@@ -1,7 +1,6 @@
 import json
 import re
 from dataclasses import dataclass, field
-from typing import Optional
 
 from app.models.eval_run import RubricCriterion
 
@@ -12,7 +11,7 @@ class ScoreContext:
     expected_keyword: str
     candidate_output: str
     required_json_fields: list[str]
-    reference_answer: Optional[str]
+    reference_answer: str | None
     rubric: list[RubricCriterion]
 
 

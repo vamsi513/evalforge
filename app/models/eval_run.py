@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
-from typing import Any, Optional
+from datetime import UTC, datetime
+from typing import Any
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
@@ -20,7 +20,7 @@ class EvalSample(BaseModel):
     slice_name: str = Field(default="default", min_length=2, max_length=100)
     severity: str = Field(default="medium", pattern="^(low|medium|high|critical)$")
     required_json_fields: list[str] = Field(default_factory=list, max_length=20)
-    reference_answer: Optional[str] = Field(default=None, max_length=2000)
+    reference_answer: str | None = Field(default=None, max_length=2000)
     rubric: list[RubricCriterion] = Field(default_factory=list, max_length=10)
 
 
@@ -50,7 +50,7 @@ class EvalCaseResult(EvalSample):
     groundedness_feedback: str = ""
     judge_provider: str = ""
     judge_model: str = ""
-    judge_score: Optional[float] = None
+    judge_score: float | None = None
     judge_reasoning: str = ""
     used_fallback: bool = False
     feedback: str
@@ -67,7 +67,7 @@ class EvalRunResponse(BaseModel):
     evaluator_profile: str = "balanced"
     average_score: float
     run_metadata: dict[str, str] = Field(default_factory=dict)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     results: list[EvalCaseResult]
 
 
@@ -76,7 +76,7 @@ class PairwiseSample(BaseModel):
     candidate_a: str = Field(min_length=1)
     candidate_b: str = Field(min_length=1)
     expected_keyword: str = Field(min_length=1)
-    reference_answer: Optional[str] = Field(default=None, max_length=2000)
+    reference_answer: str | None = Field(default=None, max_length=2000)
     rubric: list[RubricCriterion] = Field(default_factory=list, max_length=10)
 
 
@@ -104,7 +104,7 @@ class PairwiseEvalResponse(BaseModel):
     win_rate_a: float
     win_rate_b: float
     ties: int
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     results: list[PairwiseCaseResult]
 
 
@@ -130,7 +130,7 @@ class JudgeEvalResponse(BaseModel):
     judge_provider: str
     judge_model: str
     average_score: float
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     results: list[JudgeCaseResult]
 
 
@@ -140,10 +140,10 @@ class AsyncEvalJobResponse(BaseModel):
     status: str
     dataset_name: str
     workspace_id: str = "default"
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     error_message: str = ""
-    result: Optional[EvalRunResponse] = None
+    result: EvalRunResponse | None = None
 
 
 class EvalCalibrationBin(BaseModel):
@@ -233,7 +233,7 @@ class ReleaseGateResponse(BaseModel):
     summary: str
     metrics: dict[str, Any] = Field(default_factory=dict)
     failures: list[dict[str, str]] = Field(default_factory=list)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
 class ReleaseGateSummaryResponse(BaseModel):
@@ -250,7 +250,7 @@ class ReleaseGateSummaryResponse(BaseModel):
     failed_case_delta: int = 0
     scenario_failed_delta: int = 0
     slice_failed_delta: int = 0
-    decided_at: Optional[datetime] = None
+    decided_at: datetime | None = None
 
 
 class ReleaseGateCiDecisionResponse(BaseModel):
@@ -263,7 +263,7 @@ class ReleaseGateCiDecisionResponse(BaseModel):
     reason_codes: list[str] = Field(default_factory=list)
     reason_details: list[str] = Field(default_factory=list)
     summary: str = ""
-    decided_at: Optional[datetime] = None
+    decided_at: datetime | None = None
 
 
 class ReleaseGateTrendPoint(BaseModel):
@@ -328,10 +328,10 @@ class ReleaseGateScheduleResponse(BaseModel):
     policy_name: str = "balanced"
     cron_expression: str
     enabled: bool = True
-    last_run_at: Optional[datetime] = None
-    next_run_at: Optional[datetime] = None
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    last_run_at: datetime | None = None
+    next_run_at: datetime | None = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
 class ReleaseGateScheduleRunResponse(BaseModel):
@@ -341,4 +341,4 @@ class ReleaseGateScheduleRunResponse(BaseModel):
     status: str
     decision_id: str = ""
     message: str = ""
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))

@@ -1,8 +1,7 @@
 import csv
 import io
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from statistics import mean
-from typing import Optional
 
 from sqlalchemy import func, inspect, select, text
 from sqlalchemy.exc import OperationalError
@@ -168,7 +167,7 @@ class ExperimentService:
             db.refresh(row)
         return self._to_response(db, row)
 
-    def get_experiment_report(self, db: Session, name: str, workspace_id: str) -> Optional[ExperimentReport]:
+    def get_experiment_report(self, db: Session, name: str, workspace_id: str) -> ExperimentReport | None:
         try:
             row = db.execute(
                 select(ExperimentRecord).where(
@@ -370,11 +369,11 @@ class ExperimentService:
         experiment_row.baseline_run_id = promoted_run_id
         experiment_row.candidate_run_id = ""
         experiment_row.status = "baseline"
-        experiment_row.updated_at = datetime.now(timezone.utc)
+        experiment_row.updated_at = datetime.now(UTC)
 
         metadata = dict(experiment_row.experiment_metadata or {})
         metadata["last_promoted_gate_id"] = latest_gate.id
-        metadata["last_promoted_at"] = datetime.now(timezone.utc).isoformat()
+        metadata["last_promoted_at"] = datetime.now(UTC).isoformat()
         experiment_row.experiment_metadata = metadata
 
         event_payload = {
@@ -410,10 +409,10 @@ class ExperimentService:
             experiment_row.baseline_run_id = promoted_run_id
             experiment_row.candidate_run_id = ""
             experiment_row.status = "baseline"
-            experiment_row.updated_at = datetime.now(timezone.utc)
+            experiment_row.updated_at = datetime.now(UTC)
             metadata = dict(experiment_row.experiment_metadata or {})
             metadata["last_promoted_gate_id"] = latest_gate.id
-            metadata["last_promoted_at"] = datetime.now(timezone.utc).isoformat()
+            metadata["last_promoted_at"] = datetime.now(UTC).isoformat()
             experiment_row.experiment_metadata = metadata
             db.add(ExperimentPromotionEventRecord(**event_payload))
             db.commit()

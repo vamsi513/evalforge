@@ -1,7 +1,6 @@
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from math import floor
-from typing import Optional
 
 from sqlalchemy import inspect, select, text
 from sqlalchemy.exc import OperationalError
@@ -43,7 +42,7 @@ class EvalService:
                 raise
             return self._list_legacy_runs(db, workspace_id=workspace_id)
 
-    def get_run_by_id(self, db: Session, run_id: str, workspace_id: str = "default") -> Optional[EvalRunResponse]:
+    def get_run_by_id(self, db: Session, run_id: str, workspace_id: str = "default") -> EvalRunResponse | None:
         try:
             row = db.execute(
                 select(EvalRunRecord).where(
@@ -94,7 +93,7 @@ class EvalService:
             ).scalars().all()
         return [self._to_job_response(row) for row in rows]
 
-    def get_job(self, db: Session, job_id: str, workspace_id: str = "default") -> Optional[AsyncEvalJobResponse]:
+    def get_job(self, db: Session, job_id: str, workspace_id: str = "default") -> AsyncEvalJobResponse | None:
         try:
             row = db.execute(
                 select(EvalJobRecord).where(
@@ -158,7 +157,7 @@ class EvalService:
             if row is None:
                 return
             row.status = "running"
-            row.updated_at = datetime.now(timezone.utc)
+            row.updated_at = datetime.now(UTC)
             db.commit()
 
             payload = EvalRunCreate(**row.payload)
@@ -167,7 +166,7 @@ class EvalService:
             row.result = run_response.model_dump(mode="json")
             row.status = "completed"
             row.error_message = ""
-            row.updated_at = datetime.now(timezone.utc)
+            row.updated_at = datetime.now(UTC)
             db.commit()
         except Exception as exc:
             db.rollback()
@@ -177,7 +176,7 @@ class EvalService:
             if failed_row is not None:
                 failed_row.status = "failed"
                 failed_row.error_message = str(exc)
-                failed_row.updated_at = datetime.now(timezone.utc)
+                failed_row.updated_at = datetime.now(UTC)
                 db.commit()
         finally:
             db.close()
@@ -537,7 +536,7 @@ class EvalService:
     @staticmethod
     def _get_legacy_run_by_id(
         db: Session, run_id: str, workspace_id: str = "default"
-    ) -> Optional[EvalRunResponse]:
+    ) -> EvalRunResponse | None:
         if workspace_id != "default":
             return None
         row = db.execute(

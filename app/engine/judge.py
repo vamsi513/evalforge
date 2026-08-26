@@ -3,7 +3,7 @@ import logging
 import re
 import time
 from statistics import mean
-from typing import Any, Optional
+from typing import Any
 
 import httpx
 
@@ -265,7 +265,7 @@ class JudgeClient:
         raise ValueError("No tool_use block returned by Anthropic")
 
     @staticmethod
-    def _measured_cost_usd_anthropic(body: dict[str, Any]) -> Optional[float]:
+    def _measured_cost_usd_anthropic(body: dict[str, Any]) -> float | None:
         usage = body.get("usage")
         model = body.get("model", "")
         if not usage:
@@ -355,7 +355,7 @@ class JudgeClient:
         )
 
     @staticmethod
-    def _measured_cost_usd(body: dict[str, Any]) -> Optional[float]:
+    def _measured_cost_usd(body: dict[str, Any]) -> float | None:
         usage = body.get("usage")
         model = body.get("model", "")
         if not usage:
@@ -375,7 +375,7 @@ class JudgeClient:
         provider: str,
         model: str,
         measured_latency_ms: float,
-        measured_cost_usd: Optional[float],
+        measured_cost_usd: float | None,
     ) -> JudgeCaseResult:
         criterion_scores_raw = parsed.get("criterion_scores", {})
         criterion_scores = {

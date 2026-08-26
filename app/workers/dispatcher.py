@@ -1,4 +1,3 @@
-from typing import Optional
 
 from fastapi import BackgroundTasks
 
@@ -6,7 +5,7 @@ from app.core.config import settings
 
 
 class EvalJobDispatcher:
-    def dispatch(self, job_id: str, background_tasks: Optional[BackgroundTasks] = None) -> None:
+    def dispatch(self, job_id: str, background_tasks: BackgroundTasks | None = None) -> None:
         backend = settings.async_backend.lower()
         if backend == "redis":
             self._dispatch_redis(job_id)
@@ -14,7 +13,7 @@ class EvalJobDispatcher:
         self._dispatch_local(job_id, background_tasks=background_tasks)
 
     @staticmethod
-    def _dispatch_local(job_id: str, background_tasks: Optional[BackgroundTasks] = None) -> None:
+    def _dispatch_local(job_id: str, background_tasks: BackgroundTasks | None = None) -> None:
         from app.services.eval_service import eval_service
 
         if background_tasks is not None:

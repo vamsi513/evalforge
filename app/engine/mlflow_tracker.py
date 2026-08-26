@@ -17,7 +17,7 @@ import logging
 import os
 import subprocess
 import tempfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.engine.evaluator import EvalRunner
 from app.models.eval_run import (
@@ -89,7 +89,7 @@ def tracked_run(
         return results, avg_score
 
     _setup()
-    run_name = f"eval-{datetime.now(timezone.utc):%Y%m%d-%H%M%S}"
+    run_name = f"eval-{datetime.now(UTC):%Y%m%d-%H%M%S}"
 
     with mlflow.start_run(run_name=run_name):
         mlflow.log_params({
@@ -140,7 +140,7 @@ def tracked_compare(
         return response
 
     _setup()
-    run_name = f"pairwise-{datetime.now(timezone.utc):%Y%m%d-%H%M%S}"
+    run_name = f"pairwise-{datetime.now(UTC):%Y%m%d-%H%M%S}"
 
     with mlflow.start_run(run_name=run_name):
         mlflow.log_params({

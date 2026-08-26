@@ -1,7 +1,7 @@
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from statistics import mean
-from typing import Any, Optional, Union
+from typing import Any
 
 import httpx
 import structlog
@@ -191,9 +191,9 @@ class ReleaseGateService:
             run_log.status = "completed"
             run_log.decision_id = decision.id
             run_log.message = f"Created release gate decision {decision.id} with status {decision.status}."
-            schedule.last_run_at = datetime.now(timezone.utc)
+            schedule.last_run_at = datetime.now(UTC)
             schedule.next_run_at = None
-            schedule.updated_at = datetime.now(timezone.utc)
+            schedule.updated_at = datetime.now(UTC)
             db.commit()
             db.refresh(run_log)
             if decision.status != "passed":
@@ -207,8 +207,8 @@ class ReleaseGateService:
         except ValueError as exc:
             run_log.status = "failed"
             run_log.message = str(exc)
-            schedule.last_run_at = datetime.now(timezone.utc)
-            schedule.updated_at = datetime.now(timezone.utc)
+            schedule.last_run_at = datetime.now(UTC)
+            schedule.updated_at = datetime.now(UTC)
             db.commit()
             db.refresh(run_log)
             self._send_schedule_alert(
@@ -432,7 +432,7 @@ class ReleaseGateService:
         experiment_name: str = "",
         lookback_days: int = 30,
     ) -> ReleaseGateTrendsResponse:
-        cutoff = datetime.now(timezone.utc) - timedelta(days=max(1, lookback_days))
+        cutoff = datetime.now(UTC) - timedelta(days=max(1, lookback_days))
         try:
             query = select(ReleaseGateDecisionRecord).where(
                 ReleaseGateDecisionRecord.workspace_id == workspace_id,
@@ -510,7 +510,7 @@ class ReleaseGateService:
         experiment_name: str = "",
         lookback_days: int = 30,
     ) -> ReleaseGatePolicyReportResponse:
-        cutoff = datetime.now(timezone.utc) - timedelta(days=max(1, lookback_days))
+        cutoff = datetime.now(UTC) - timedelta(days=max(1, lookback_days))
         try:
             query = select(ReleaseGateDecisionRecord).where(
                 ReleaseGateDecisionRecord.workspace_id == workspace_id,
@@ -826,7 +826,7 @@ class ReleaseGateService:
         workspace_id: str,
         schedule: ReleaseGateScheduleRecord,
         run_log: ReleaseGateScheduleRunRecord,
-        decision: Optional[ReleaseGateResponse],
+        decision: ReleaseGateResponse | None,
     ) -> None:
         webhook_url = settings.release_gate_alert_webhook_url.strip()
         if not webhook_url:
@@ -909,8 +909,8 @@ class ReleaseGateService:
     @staticmethod
     def _build_scenario_metrics(
         baseline: EvalRunResponse, candidate: EvalRunResponse
-    ) -> list[dict[str, Union[str, float, int]]]:
-        scenario_metrics: list[dict[str, Union[str, float, int]]] = []
+    ) -> list[dict[str, str | float | int]]:
+        scenario_metrics: list[dict[str, str | float | int]] = []
         scenarios = sorted(
             {
                 result.scenario
@@ -940,8 +940,8 @@ class ReleaseGateService:
     @staticmethod
     def _build_slice_metrics(
         baseline: EvalRunResponse, candidate: EvalRunResponse
-    ) -> list[dict[str, Union[str, float, int]]]:
-        slice_metrics: list[dict[str, Union[str, float, int]]] = []
+    ) -> list[dict[str, str | float | int]]:
+        slice_metrics: list[dict[str, str | float | int]] = []
         slices = sorted(
             {
                 result.slice_name

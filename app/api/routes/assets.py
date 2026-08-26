@@ -1,4 +1,3 @@
-from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -20,7 +19,7 @@ router = APIRouter()
 
 @router.get("/prompts", response_model=list[PromptTemplateResponse])
 async def list_prompt_templates(
-    dataset_name: Optional[str] = Query(default=None),
+    dataset_name: str | None = Query(default=None),
     workspace_id: str = Depends(get_workspace_id),
     db: Session = Depends(get_db),
 ) -> list[PromptTemplateResponse]:
@@ -48,7 +47,7 @@ async def create_prompt_template(
 
 @router.get("/golden-cases", response_model=list[GoldenCaseResponse])
 async def list_golden_cases(
-    dataset_name: Optional[str] = Query(default=None),
+    dataset_name: str | None = Query(default=None),
     workspace_id: str = Depends(get_workspace_id),
     db: Session = Depends(get_db),
 ) -> list[GoldenCaseResponse]:
