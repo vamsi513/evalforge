@@ -9,7 +9,7 @@ from app.db.base import Base
 
 class DatasetRecord(Base):
     __tablename__ = "datasets"
-    __table_args__ = (UniqueConstraint("name", name="uq_dataset_name"),)
+    __table_args__ = (UniqueConstraint("workspace_id", "name", name="uq_dataset_workspace_name"),)
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
     workspace_id: Mapped[str] = mapped_column(String(100), nullable=False, default="default", index=True)
