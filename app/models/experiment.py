@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
@@ -18,8 +18,8 @@ class ExperimentCreate(BaseModel):
 class ExperimentResponse(ExperimentCreate):
     id: str = Field(default_factory=lambda: str(uuid4()))
     workspace_id: str = "default"
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     run_count: int = 0
 
 
@@ -75,7 +75,7 @@ class ExperimentPromotionEvent(BaseModel):
     actor: str = "system"
     note: str = ""
     event_metadata: dict[str, str] = Field(default_factory=dict)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ExperimentLeaderboardItem(BaseModel):

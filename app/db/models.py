@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from uuid import uuid4
 
@@ -17,7 +17,7 @@ class DatasetRecord(Base):
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     owner: Mapped[str] = mapped_column(String(100), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
 
 class EvalRunRecord(Base):
@@ -33,7 +33,7 @@ class EvalRunRecord(Base):
     average_score: Mapped[float] = mapped_column(Float, nullable=False)
     run_metadata: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     results: Mapped[list[dict]] = mapped_column(JSON, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
 
 class ExperimentRecord(Base):
@@ -50,9 +50,9 @@ class ExperimentRecord(Base):
     baseline_run_id: Mapped[str] = mapped_column(String(36), nullable=False, default="")
     candidate_run_id: Mapped[str] = mapped_column(String(36), nullable=False, default="")
     experiment_metadata: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False
     )
 
 
@@ -67,9 +67,9 @@ class EvaluatorDefinitionRecord(Base):
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="active", index=True)
     description: Mapped[str] = mapped_column(Text, nullable=False, default="")
     config: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False
     )
 
 
@@ -91,9 +91,9 @@ class ModelRoutingPolicyRecord(Base):
     max_cost_usd: Mapped[float] = mapped_column(Float, nullable=False, default=0.01)
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="active", index=True)
     notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False
     )
 
 
@@ -108,9 +108,9 @@ class EvalJobRecord(Base):
     payload: Mapped[dict] = mapped_column(JSON, nullable=False)
     result: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     error_message: Mapped[str] = mapped_column(Text, nullable=False, default="")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False
     )
 
 
@@ -124,7 +124,7 @@ class PromptTemplateRecord(Base):
     system_prompt: Mapped[str] = mapped_column(Text, nullable=False)
     task_prompt: Mapped[str] = mapped_column(Text, nullable=False)
     notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
 
 class GoldenCaseRecord(Base):
@@ -141,7 +141,7 @@ class GoldenCaseRecord(Base):
     required_json_fields: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
     rubric: Mapped[list[dict]] = mapped_column(JSON, nullable=False, default=list)
     tags: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
 
 class ReleaseGateDecisionRecord(Base):
@@ -157,7 +157,7 @@ class ReleaseGateDecisionRecord(Base):
     summary: Mapped[str] = mapped_column(Text, nullable=False, default="")
     metrics: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     failures: Mapped[list[dict]] = mapped_column(JSON, nullable=False, default=list)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
 
 class ReleaseGateScheduleRecord(Base):
@@ -172,9 +172,9 @@ class ReleaseGateScheduleRecord(Base):
     enabled: Mapped[bool] = mapped_column(nullable=False, default=True, index=True)
     last_run_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     next_run_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False
     )
 
 
@@ -187,7 +187,7 @@ class ReleaseGateScheduleRunRecord(Base):
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="failed", index=True)
     decision_id: Mapped[str] = mapped_column(String(36), nullable=False, default="", index=True)
     message: Mapped[str] = mapped_column(Text, nullable=False, default="")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False, index=True)
 
 
 class ExperimentPromotionEventRecord(Base):
@@ -202,4 +202,4 @@ class ExperimentPromotionEventRecord(Base):
     actor: Mapped[str] = mapped_column(String(100), nullable=False, default="system")
     note: Mapped[str] = mapped_column(Text, nullable=False, default="")
     event_metadata: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False, index=True)

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 from uuid import uuid4
 
@@ -67,7 +67,7 @@ class EvalRunResponse(BaseModel):
     evaluator_profile: str = "balanced"
     average_score: float
     run_metadata: dict[str, str] = Field(default_factory=dict)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     results: list[EvalCaseResult]
 
 
@@ -104,7 +104,7 @@ class PairwiseEvalResponse(BaseModel):
     win_rate_a: float
     win_rate_b: float
     ties: int
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     results: list[PairwiseCaseResult]
 
 
@@ -130,7 +130,7 @@ class JudgeEvalResponse(BaseModel):
     judge_provider: str
     judge_model: str
     average_score: float
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     results: list[JudgeCaseResult]
 
 
@@ -140,8 +140,8 @@ class AsyncEvalJobResponse(BaseModel):
     status: str
     dataset_name: str
     workspace_id: str = "default"
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     error_message: str = ""
     result: Optional[EvalRunResponse] = None
 
@@ -233,7 +233,7 @@ class ReleaseGateResponse(BaseModel):
     summary: str
     metrics: dict[str, Any] = Field(default_factory=dict)
     failures: list[dict[str, str]] = Field(default_factory=list)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ReleaseGateSummaryResponse(BaseModel):
@@ -330,8 +330,8 @@ class ReleaseGateScheduleResponse(BaseModel):
     enabled: bool = True
     last_run_at: Optional[datetime] = None
     next_run_at: Optional[datetime] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ReleaseGateScheduleRunResponse(BaseModel):
@@ -341,4 +341,4 @@ class ReleaseGateScheduleRunResponse(BaseModel):
     status: str
     decision_id: str = ""
     message: str = ""
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

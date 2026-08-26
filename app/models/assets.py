@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
@@ -17,7 +17,7 @@ class PromptTemplateCreate(BaseModel):
 
 class PromptTemplateResponse(PromptTemplateCreate):
     id: str = Field(default_factory=lambda: str(uuid4()))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class GoldenCaseCreate(BaseModel):
@@ -35,7 +35,7 @@ class GoldenCaseCreate(BaseModel):
 
 class GoldenCaseResponse(GoldenCaseCreate):
     id: str = Field(default_factory=lambda: str(uuid4()))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class StoredEvalRunCreate(BaseModel):
@@ -49,7 +49,7 @@ class DatasetBundle(BaseModel):
     dataset: DatasetResponse
     prompts: list[PromptTemplateResponse] = Field(default_factory=list)
     golden_cases: list[GoldenCaseResponse] = Field(default_factory=list)
-    exported_at: datetime = Field(default_factory=datetime.utcnow)
+    exported_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class DatasetBundleImport(BaseModel):
