@@ -28,6 +28,10 @@ async def get_workspace_id(
 async def get_user_role(
     x_user_role: Optional[str] = Header(default=None, alias="X-User-Role"),
 ) -> str:
+    # When API key auth is enabled the role comes from server config, not the
+    # request header, so a caller cannot self-promote by sending X-User-Role.
+    if settings.platform_api_key:
+        return settings.platform_user_role
     role = (x_user_role or settings.default_user_role or "viewer").strip().lower()
     if role not in _ROLE_RANK:
         raise HTTPException(status_code=400, detail="Invalid X-User-Role. Use viewer, editor, or admin.")
@@ -37,12 +41,17 @@ async def get_user_role(
 def _require_min_role(min_role: str):
     min_rank = _ROLE_RANK[min_role]
 
-    async def _checker(role: str = Header(default="", alias="X-User-Role")) -> None:
+    async def _checker(
+        x_user_role: Optional[str] = Header(default=None, alias="X-User-Role"),
+    ) -> None:
         if not settings.platform_api_key:
-            return
-        resolved = (role or settings.default_user_role or "viewer").strip().lower()
-        if resolved not in _ROLE_RANK:
-            raise HTTPException(status_code=400, detail="Invalid X-User-Role. Use viewer, editor, or admin.")
+            # Dev mode: honour header but validate value
+            resolved = (x_user_role or settings.default_user_role or "viewer").strip().lower()
+            if resolved not in _ROLE_RANK:
+                raise HTTPException(status_code=400, detail="Invalid X-User-Role. Use viewer, editor, or admin.")
+        else:
+            # Auth enabled: role is derived from server config, never the header
+            resolved = settings.platform_user_role
         if _ROLE_RANK[resolved] < min_rank:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,

@@ -11,7 +11,7 @@ client = TestClient(app)
 
 def test_viewer_cannot_call_mutating_endpoints(monkeypatch) -> None:
     monkeypatch.setattr(settings, "platform_api_key", "secret-key")
-    monkeypatch.setattr(settings, "default_user_role", "viewer")
+    monkeypatch.setattr(settings, "platform_user_role", "viewer")
 
     headers = {"X-API-Key": "secret-key", "X-Workspace-ID": "role-viewer"}
     list_datasets = client.get("/api/v1/datasets", headers=headers)
@@ -53,12 +53,11 @@ def test_viewer_cannot_call_mutating_endpoints(monkeypatch) -> None:
 
 def test_editor_can_mutate_but_cannot_call_admin_endpoints(monkeypatch) -> None:
     monkeypatch.setattr(settings, "platform_api_key", "secret-key")
-    monkeypatch.setattr(settings, "default_user_role", "viewer")
+    monkeypatch.setattr(settings, "platform_user_role", "editor")
 
     editor_headers = {
         "X-API-Key": "secret-key",
         "X-Workspace-ID": "role-editor",
-        "X-User-Role": "editor",
     }
     dataset_name = f"editor_ds_{uuid4().hex[:8]}"
     create_dataset = client.post(
@@ -109,12 +108,11 @@ def test_editor_can_mutate_but_cannot_call_admin_endpoints(monkeypatch) -> None:
 
 def test_admin_can_call_admin_endpoints(monkeypatch) -> None:
     monkeypatch.setattr(settings, "platform_api_key", "secret-key")
-    monkeypatch.setattr(settings, "default_user_role", "viewer")
+    monkeypatch.setattr(settings, "platform_user_role", "admin")
 
     admin_headers = {
         "X-API-Key": "secret-key",
         "X-Workspace-ID": "role-admin",
-        "X-User-Role": "admin",
     }
     create_evaluator = client.post(
         "/api/v1/evaluators",

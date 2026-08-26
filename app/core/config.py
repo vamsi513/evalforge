@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     default_workspace_id: str = "default"
     release_gate_alert_webhook_url: str = ""
     default_user_role: str = "viewer"
+    # Role granted to any caller who presents a valid API key.
+    # Only honoured when platform_api_key is set; ignored in dev mode.
+    platform_user_role: str = "editor"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
