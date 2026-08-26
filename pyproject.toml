@@ -7,7 +7,7 @@ name = "evalforge"
 version = "0.1.0"
 description = "LLM Reliability and PromptOps platform"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.115.0",
   "uvicorn[standard]>=0.30.0",
@@ -41,7 +41,7 @@ include = ["app*", "training*"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py39"
+target-version = "py311"
 
 [tool.ruff.lint]
 ignore = [
