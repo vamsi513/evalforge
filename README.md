@@ -8,9 +8,9 @@ EvalForge is a production-style LLM Reliability and PromptOps platform for regre
 
 ## Live Demo
 
-**API:** [https://evalforge-17u9.onrender.com/docs](https://evalforge-17u9.onrender.com/docs)
+**API:** [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
 
-> Free tier spins down after inactivity — first request takes ~30 seconds to wake.
+**Dashboard:** [https://evalforge-vax5matamtffmf9muqc2aj.streamlit.app](https://evalforge-vax5matamtffmf9muqc2aj.streamlit.app)
 
 ## Why this project matters
 
