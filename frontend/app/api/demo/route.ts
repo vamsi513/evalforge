@@ -105,14 +105,21 @@ export async function POST(req: NextRequest) {
   if (KEY) headers["X-API-Key"] = KEY;
 
   try {
-    // Ensure the dataset exists (ignore conflict if already created)
+    // Ensure dataset exists (409 = already exists, that's ok)
     await fetch(`${BASE}/api/v1/datasets`, {
-      method: "POST",
-      headers,
+      method: "POST", headers,
+      body: JSON.stringify({ name: scenario.dataset, description: `Demo dataset for ${scenarioKey} scenario`, owner: "demo" }),
+    });
+
+    // Register experiment record — required for leaderboard to show it (409 = already exists, ok)
+    await fetch(`${BASE}/api/v1/experiments`, {
+      method: "POST", headers,
       body: JSON.stringify({
-        name: scenario.dataset,
-        description: `Demo dataset for ${scenarioKey} scenario`,
+        name: scenario.experiment,
+        dataset_name: scenario.dataset,
         owner: "demo",
+        status: "active",
+        description: `Demo experiment: ${scenario.experiment}`,
       }),
     });
 
