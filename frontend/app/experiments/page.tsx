@@ -15,7 +15,7 @@ export default async function ExperimentsPage() {
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.7px", marginBottom: 5 }}>Experiments</h1>
         <p style={{ fontSize: 13.5, color: "var(--muted)" }}>
-          Compare prompt versions and model configurations side by side
+          Compare prompt versions and model configurations side by side — leaderboard ranked by average eval score
         </p>
       </div>
 
