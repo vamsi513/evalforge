@@ -2,126 +2,94 @@
 
 [![CI](https://github.com/vamsi513/evalforge/actions/workflows/ci.yml/badge.svg)](https://github.com/vamsi513/evalforge/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-EvalForge is a production-style LLM Reliability and PromptOps platform for regression testing prompts, scoring model outputs, comparing prompt versions, managing golden datasets, and monitoring latency, cost, and async evaluation jobs.
+A production-inspired LLM evaluation platform with deterministic multi-signal scoring, experiment tracking, and automated release gates. Built with FastAPI, Next.js 16, and SQLAlchemy — deployed on AWS EC2 and Vercel.
 
 ## Live Demo
 
-**Frontend:** [https://evalforge-platform.vercel.app](https://evalforge-platform.vercel.app)
+**Dashboard:** [https://evalforge-platform.vercel.app](https://evalforge-platform.vercel.app)
 
 **API docs:** [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
 
-## Why this project matters
+Click **Run General Knowledge** on the dashboard to run a live heuristic evaluation — no setup needed.
 
-Teams shipping LLM features usually fail on the same problems:
+## What it does
 
-- prompt changes silently degrade quality
-- there is no reusable golden dataset for regression checks
+Teams shipping LLM features hit the same problems:
+
+- prompt changes silently degrade output quality
+- no reusable golden dataset for regression testing
 - evaluation logic is inconsistent across teams
-- latency and cost are not tracked with output quality
-- failures are only discovered after deployment
+- latency and cost are untracked
+- failures surface only after deployment
 
-EvalForge addresses that by combining:
+EvalForge addresses this with a full evaluation pipeline:
 
-- FastAPI evaluation APIs
-- persistent dataset, run, and asset management
-- heuristic and LLM-judge scoring
-- prompt template and golden case versioning
-- async job submission and polling
-- dashboard observability
+- **5-signal heuristic scorer** — keyword match, reference overlap, rubric coverage, structured output validation, lexical groundedness
+- **LLM judge adapters** — OpenAI, Anthropic, Mistral via a unified interface with automatic heuristic fallback
+- **Experiment leaderboard** — rank prompt versions and model configs by average eval score
+- **Release gates** — PASS/FAIL CI signal based on score delta vs. baseline
+- **Async job worker** — background eval jobs decoupled from the API layer
+- **Telemetry** — per-run latency, cost, pass rate, and groundedness metrics
 
-## Key capabilities
+## Stack
 
-- Golden dataset management with stored prompt templates and golden cases
-- Synchronous eval runs for quick iteration
-- Async eval jobs for background processing and job polling
-- Pairwise comparison for prompt or response variants
-- Judge-based scoring with structured OpenAI-compatible output and fallback
-- Bundle import/export for dataset portability
-- Telemetry for average score, latency, and cost
-- Streamlit dashboard for runs, jobs, prompts, and golden assets
+| Layer | Technology |
+|---|---|
+| Backend API | FastAPI, Pydantic, SQLAlchemy |
+| Storage | SQLite (default), Postgres-ready, Alembic migrations |
+| LLM judges | OpenAI · Anthropic · Mistral with heuristic fallback |
+| Experiment tracking | Optional MLflow integration |
+| Async jobs | Local background tasks or Redis-backed worker |
+| Frontend | Next.js 16 App Router, React, Vercel |
+| Infrastructure | Docker, GitHub Actions CI/CD, AWS EC2 |
 
 ## Architecture
 
 ```text
-                      +----------------------+
-                      |  Streamlit Dashboard |
-                      +----------+-----------+
-                                 |
-                                 v
-+-----------+          +---------+----------+         +------------------+
-| Swagger UI | ------> |      FastAPI       | ------> |  Telemetry APIs  |
-+-----------+          |  evals / assets    |         +------------------+
-                       |  jobs / datasets   |
-                       +----+-----------+---+
-                            |           |
-                            |           +-------------------------------+
-                            |                                           |
-                            v                                           v
-                   +--------+---------+                     +-----------+-----------+
-                   |   Eval Engine    |                     |  Judge Engine         |
-                   | heuristic scorer |                     | mock / OpenAI-style   |
-                   +--------+---------+                     +-----------+-----------+
-                            |                                           |
-                            +------------------+------------------------+
-                                               |
-                                               v
-                                   +-----------+-----------+
-                                   |  SQLAlchemy Storage   |
-                                   | runs / jobs / assets  |
-                                   +-----------+-----------+
-                                               |
-                                               v
-                                        SQLite or Postgres
+┌─────────────────────────┐
+│  Next.js 16 Dashboard   │  ← evalforge-platform.vercel.app
+│  (Vercel)               │
+└────────────┬────────────┘
+             │ HTTPS (server-side proxy)
+             ▼
+┌────────────────────────────────────────────┐
+│              FastAPI Backend               │  ← EC2 :8001
+│  /evals  /experiments  /release-gates      │
+│  /datasets  /telemetry  /evals/async       │
+└──────┬─────────────────────────┬───────────┘
+       │                         │
+       ▼                         ▼
+┌──────────────┐       ┌─────────────────────┐
+│  Eval Engine │       │    Judge Engine      │
+│  heuristic   │       │  OpenAI / Anthropic  │
+│  5-signal    │       │  Mistral / fallback  │
+└──────┬───────┘       └──────────┬──────────┘
+       └──────────────┬───────────┘
+                      ▼
+             ┌────────────────┐
+             │  SQLAlchemy    │
+             │  SQLite / PG   │
+             └────────────────┘
 ```
-
-## Screenshots
-
-### API endpoints
-
-![Swagger endpoints](screenshots/swagger-endpoints.png)
-
-### Dashboard overview
-
-![Dashboard overview](screenshots/dashboard-overview.png)
-
-### Async jobs
-
-![Dashboard jobs](screenshots/dashboard-jobs.png)
-
-## Recruiter demo pack
-
-- 5-minute walkthrough: `docs/RECRUITER_DEMO_WALKTHROUGH.md`
-- System diagram: `docs/ARCHITECTURE_DIAGRAM.md`
-- Metrics report template: `docs/METRICS_SUMMARY_TEMPLATE.md`
-- Demo script: `docs/DEMO.md`
-- Resume bullets: `docs/RESUME_BULLETS.md`
-
-## Stack
-
-- **Backend:** FastAPI, Pydantic, SQLAlchemy, SQLite (Postgres-ready), Alembic migrations
-- **Frontend:** Next.js 15 App Router, React, deployed on Vercel
-- **LLM judge:** OpenAI-compatible structured `chat/completions` with heuristic fallback (GPT-4o, Claude 3, Mistral supported)
-- **Experiment tracking:** MLflow — every eval run logged with metrics, parameters, and result artifacts
-- **Async processing:** background job queue with Redis-backed worker path for durable job dispatch
-- **Infrastructure:** Docker, GitHub Actions CI, EC2 (backend), Vercel (frontend)
 
 ## Project structure
 
 ```text
 evalforge/
-├── app/                  # FastAPI backend
-│   ├── api/routes/       # Evals, experiments, gates, telemetry
-│   ├── engine/           # Heuristic + LLM judge scorers
-│   ├── models/           # Pydantic schemas
-│   └── services/         # Business logic
-├── frontend/             # Next.js 15 dashboard (Vercel)
-│   ├── app/              # App Router pages
-│   ├── components/       # MetricCard, ScoreChart, DemoButton…
-│   └── lib/api.ts        # Typed API client
+├── app/                    # FastAPI backend
+│   ├── api/routes/         # Evals, experiments, gates, telemetry
+│   ├── engine/judge.py     # Heuristic + LLM judge scorers
+│   ├── models/             # Pydantic schemas
+│   └── services/           # Business logic
+├── frontend/               # Next.js 16 dashboard
+│   ├── app/                # App Router pages + loading skeletons
+│   ├── components/         # MetricCard, ScoreChart, DemoButton…
+│   └── lib/api.ts          # Typed API client
 ├── tests/
-├── alembic/              # DB migrations
+├── alembic/                # DB migrations
 ├── docker-compose.yml
 └── Dockerfile
 ```
@@ -129,353 +97,94 @@ evalforge/
 ## Quick start
 
 ```bash
-cd evalforge
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
+python3 -m venv .venv && source .venv/bin/activate
 pip install -e '.[dev]'
 ```
 
-Create or update `.env`:
+Create `.env`:
 
 ```env
 DATABASE_URL=sqlite:///./evalforge.db
 AUTO_CREATE_TABLES=true
 JUDGE_PROVIDER=mock
 OPENAI_API_KEY=
-OPENAI_BASE_URL=https://api.openai.com/v1
 JUDGE_MODEL=gpt-4o-mini
-ASYNC_BACKEND=local
-REDIS_URL=redis://localhost:6379/0
-REDIS_QUEUE_NAME=evalforge:eval_jobs
 PLATFORM_API_KEY=
 DEFAULT_WORKSPACE_ID=default
-RELEASE_GATE_ALERT_WEBHOOK_URL=
-DEFAULT_USER_ROLE=viewer
-
-# MLflow experiment tracking (optional)
-MLFLOW_TRACKING_URI=
-MLFLOW_EXPERIMENT=evalforge
 ```
 
 Start the API:
 
 ```bash
-python -m uvicorn app.main:app --port 8001
+uvicorn app.main:app --port 8001
 ```
 
-Open Swagger:
-
-- [http://127.0.0.1:8001/docs](http://127.0.0.1:8001/docs)
-
-Start the dashboard in a second terminal:
+Start the frontend:
 
 ```bash
-cd evalforge
-source .venv/bin/activate
-streamlit run dashboard/app.py --server.port 8502
+cd frontend && npm install && npm run dev
 ```
-
-Open dashboard:
-
-- [http://localhost:8502](http://localhost:8502)
-
-Set sidebar API URL to:
-
-```text
-http://127.0.0.1:8001
-```
-
-If API key protection is enabled, also set:
-
-- `API Key`: your configured `PLATFORM_API_KEY`
-- `Workspace`: your target workspace, for example `default` or `team-a`
-
-## Main API surface
-
-- `GET /health`
-- `GET /health/live`
-- `GET /health/ready`
-- `GET /api/v1/datasets`
-- `POST /api/v1/datasets`
-- `GET /api/v1/assets/prompts`
-- `POST /api/v1/assets/prompts`
-- `GET /api/v1/assets/golden-cases`
-- `POST /api/v1/assets/golden-cases`
-- `GET /api/v1/assets/bundles/{dataset_name}`
-- `POST /api/v1/assets/bundles/import`
-- `GET /api/v1/evals`
-- `POST /api/v1/evals`
-- `GET /api/v1/evals/calibration`
-- `GET /api/v1/evals/calibration/scenarios`
-- `POST /api/v1/evals/async`
-- `GET /api/v1/evals/jobs`
-- `GET /api/v1/evals/jobs/{job_id}`
-- `GET /api/v1/experiments`
-- `POST /api/v1/experiments`
-- `GET /api/v1/experiments/{experiment_name}/report`
-- `POST /api/v1/experiments/{experiment_name}/promote`
-- `GET /api/v1/experiments/{experiment_name}/release-history`
-- `GET /api/v1/experiments/{experiment_name}/release-history/export.csv`
-- `POST /api/v1/evals/stored`
-- `POST /api/v1/evals/judge`
-- `POST /api/v1/evals/compare`
-- `GET /api/v1/release-gates`
-- `GET /api/v1/release-gates/policies`
-- `GET /api/v1/release-gates/policy-report`
-- `GET /api/v1/release-gates/schedules`
-- `POST /api/v1/release-gates/schedules`
-- `POST /api/v1/release-gates/schedules/{schedule_id}/run`
-- `GET /api/v1/release-gates/schedules/{schedule_id}/runs`
-- `POST /api/v1/release-gates`
-- `POST /api/v1/release-gates/evaluate-latest`
-- `GET /api/v1/release-gates/summary`
-- `GET /api/v1/release-gates/ci-decision`
-- `GET /api/v1/release-gates/trends`
-- `GET /api/v1/telemetry/summary`
-
-## CI/CD — GitHub Actions auto-deploy
-
-Every push to `main` triggers a GitHub Actions pipeline:
-
-1. Installs dependencies, runs ruff lint and security scan
-2. Builds the Docker image
-3. Runs the full test suite
-4. Deploys to AWS EC2 via SSH — checks out the exact tested commit, rebuilds, and restarts the container
-5. Runs a health check loop (`GET /health`) — if the new container fails to start, the previous image is automatically restored
-
-Required GitHub Secrets: `EC2_HOST`, `EC2_SSH_KEY`
-
-## Production hardening
-
-- Deployment runbook: `docs/DEPLOYMENT_HARDENING.md`
-- Postgres ops scripts:
-  - `scripts/ops/backup_postgres.sh`
-  - `scripts/ops/restore_postgres.sh`
-
-## API protection and workspaces
-
-EvalForge now supports a minimal platform-style access model:
-
-- optional API-key enforcement
-- workspace-scoped datasets, runs, jobs, telemetry, and release gates
-
-Enable API-key enforcement:
-
-```env
-PLATFORM_API_KEY=change-me
-DEFAULT_WORKSPACE_ID=default
-```
-
-Then send headers with requests:
-
-```text
-X-API-Key: change-me
-X-Workspace-ID: team-a
-X-User-Role: editor
-```
-
-Behavior:
-
-- if `PLATFORM_API_KEY` is empty, auth is disabled
-- if `X-Workspace-ID` is omitted, `DEFAULT_WORKSPACE_ID` is used
-- `X-User-Role` supports `viewer`, `editor`, `admin` (defaults from `DEFAULT_USER_ROLE`)
-- workspace scoping applies to newly created datasets and evaluation artifacts
-
-## CI release gate workflow
-
-This repo includes a GitHub Actions workflow:
-
-- `.github/workflows/release-gate-ci.yml`
-
-It queries:
-
-- `GET /api/v1/release-gates/ci-decision`
-
-and fails the workflow when `allow_deploy=false`.
-
-`ci-decision` now includes:
-
-- `reason_codes` (machine-readable failure codes)
-- `reason_details` (human-readable failure reasons)
-
-Release-gate payloads also support hard-fail controls for:
-
-- `max_structured_output_failure_delta`
-- `max_groundedness_regression`
-
-Configure repository **Variables**:
-
-- `EVALFORGE_API_URL` (example: `https://your-api-domain`)
-- `EVALFORGE_DATASET` (target dataset name)
-- `EVALFORGE_EXPERIMENT` (optional)
-- `EVALFORGE_WORKSPACE` (optional)
-- `EVALFORGE_REQUIRE_GATE_DECISION` (`true` by default)
-
-Configure repository **Secret**:
-
-- `EVALFORGE_API_KEY` (optional unless API key protection is enabled)
-
-Local dry-run (without calling API) for CI decision payloads:
-
-```bash
-python scripts/ci/check_release_gate.py --input-file /path/to/decision.json
-```
-
-Generate a Markdown artifact locally:
-
-```bash
-python scripts/ci/check_release_gate.py \
-  --input-file /path/to/decision.json \
-  --report-out artifacts/release-gate-report.md
-```
-
-## Demo flow
-
-For a clean demo, use this order:
-
-1. Create a dataset with `POST /api/v1/datasets`
-2. Add a prompt template with `POST /api/v1/assets/prompts`
-3. Add a golden case with `POST /api/v1/assets/golden-cases`
-4. Run `POST /api/v1/evals/stored`
-5. Run `POST /api/v1/evals/compare`
-6. Run `POST /api/v1/evals/judge`
-7. Run `POST /api/v1/evals/async`
-8. Poll `GET /api/v1/evals/jobs/{job_id}`
-9. Open the dashboard and show Runs + Jobs + Telemetry
-
-For a timed script, use:
-
-- `docs/RECRUITER_DEMO_WALKTHROUGH.md`
 
 ## Judge modes
 
-EvalForge supports three judge backends, configurable via `JUDGE_PROVIDER`:
-
 | Provider | Description |
 |---|---|
-| `mock` | Deterministic heuristic scoring — no API key needed, fast CI |
-| `openai` | OpenAI-compatible structured judge via `/chat/completions` with JSON schema output |
-| `anthropic` | Anthropic Claude judge using the Messages API |
-| `mistral` | Mistral judge via the Mistral client |
+| `mock` | Deterministic heuristic scoring — no API key, zero cost, fast CI |
+| `openai` | OpenAI structured judge via `/chat/completions` with JSON schema output |
+| `anthropic` | Anthropic Messages API judge |
+| `mistral` | Mistral client judge |
 
 All providers fall back to `mock` if the key is missing or the response is malformed. Fallback responses are marked with `used_fallback=true`.
 
 ## Evaluator profiles
 
-`POST /api/v1/evals` accepts:
+`POST /api/v1/evals` accepts `evaluator_profile`: `strict` | `balanced` | `lenient`
 
-- `evaluator_profile`: `strict` | `balanced` | `lenient` (default: `balanced`)
-
-Profiles adjust scoring weight emphasis across keyword hit, reference overlap, rubric, structured output validity, and groundedness.
-
-### Mock mode
-
-Use deterministic local scoring:
-
-```env
-JUDGE_PROVIDER=mock
-```
-
-### OpenAI-compatible structured judge
-
-```env
-JUDGE_PROVIDER=openai
-OPENAI_API_KEY=your_key_here
-OPENAI_BASE_URL=https://api.openai.com/v1
-JUDGE_MODEL=gpt-4o-mini
-```
-
-Behavior:
-
-- sends a structured JSON-schema scoring request to `/chat/completions`
-- parses score, pass/fail, matched terms, missing terms, criterion scores, and reasoning
-- falls back to the mock judge if the key is missing, the provider is unavailable, or the response is malformed
-- marks fallback responses with `used_fallback=true`
+Profiles weight keyword hit, reference overlap, rubric coverage, structured output validity, and lexical groundedness differently.
 
 ## Async jobs
 
-EvalForge supports background eval execution with persisted job state.
-
-Job lifecycle:
-
-- `queued`
-- `running`
-- `completed`
-- `failed`
-
-The dashboard surfaces:
-
-- queued job count
-- running job count
-- completed job count
-- failed job count
-- per-job result payloads
-
-### Local mode
-
-Default local mode executes jobs with FastAPI background execution:
-
-```env
-ASYNC_BACKEND=local
-```
-
-### Redis-backed durable mode
-
-Enable Redis-backed dispatch:
-
-```env
-ASYNC_BACKEND=redis
-REDIS_URL=redis://localhost:6379/0
-REDIS_QUEUE_NAME=evalforge:eval_jobs
-```
-
-Run the worker:
+Background eval execution with persisted job state (`queued → running → completed → failed`).
 
 ```bash
+# Redis-backed worker
+ASYNC_BACKEND=redis
 python -m app.workers.redis_worker
 ```
 
-## Dataset portability
+## CI/CD
 
-Bundles let you move a dataset and its assets together:
+Every push to `main`:
 
-- dataset record
-- prompt templates
-- golden cases
+1. Ruff lint + security scan
+2. Docker build
+3. Full test suite
+4. SSH deploy to EC2 — rebuild and restart container
+5. Health check loop with automatic rollback on failure
 
-Use:
+Release gate CI workflow queries `GET /api/v1/release-gates/ci-decision` and fails the pipeline when `allow_deploy=false`.
 
-- `GET /api/v1/assets/bundles/{dataset_name}`
-- `POST /api/v1/assets/bundles/import`
+## API surface
 
-## Postgres, Redis, and Alembic
-
-The repo includes Alembic plus a Docker Compose stack for:
-
-- Postgres
-- Redis
-- API
-- worker
-
-Local SQLite is still the default path for quick development.
-
-Install dependencies:
-
-```bash
-cd evalforge
-source .venv/bin/activate
-pip install -e '.[dev]'
+```
+GET  /health
+POST /api/v1/datasets
+POST /api/v1/evals
+POST /api/v1/evals/async
+GET  /api/v1/evals/jobs/{job_id}
+POST /api/v1/experiments
+GET  /api/v1/experiments/leaderboard
+POST /api/v1/release-gates
+GET  /api/v1/release-gates/ci-decision
+GET  /api/v1/telemetry/summary
 ```
 
-Run migrations against the current database target:
+Full reference: [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
 
-```bash
-alembic upgrade head
-```
+## Resume description
 
-For Postgres later, switch `.env` to a Postgres URL and set:
+> Built EvalForge, a production-inspired LLM evaluation platform with deterministic multi-signal scoring, structured OpenAI/Anthropic/Mistral judge adapters, experiment tracking, automated release gates, async job paths, optional MLflow integration, FastAPI, SQLAlchemy, Next.js 16, Docker, and GitHub Actions CI/CD.
 
-```env
-AUTO_CREATE_TABLES=false
-```
+## License
+
+MIT
