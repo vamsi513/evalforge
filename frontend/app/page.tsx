@@ -4,7 +4,7 @@ import RunsTable from "@/components/RunsTable";
 import ScoreChart from "@/components/ScoreChart";
 import { CheckCircle, FlaskConical, Zap, DollarSign } from "lucide-react";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 function scoreColor(s: number) {
   if (s >= 0.8) return "var(--green)";

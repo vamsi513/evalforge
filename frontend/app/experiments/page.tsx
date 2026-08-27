@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import { GitCompare } from "lucide-react";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 export default async function ExperimentsPage() {
   const leaderboard = await api.leaderboard().catch(() => ({ items: [] }));

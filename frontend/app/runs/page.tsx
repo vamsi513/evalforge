@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import RunsTable from "@/components/RunsTable";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 export default async function RunsPage() {
   const runs = await api.runs().catch(() => []);

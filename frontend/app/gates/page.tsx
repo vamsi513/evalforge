@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import { Shield, CheckCircle, XCircle } from "lucide-react";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 export default async function GatesPage() {
   const gates = await api.releaseGates().catch(() => []);

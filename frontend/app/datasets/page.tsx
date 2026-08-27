@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import { Database } from "lucide-react";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 export default async function DatasetsPage() {
   const datasets = await api.datasets().catch(() => []);
