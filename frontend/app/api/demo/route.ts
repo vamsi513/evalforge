@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         dataset_name: scenario.dataset,
         experiment_name: scenario.experiment,
-        model_name: "gpt-4o-mini",
+        model_name: "heuristic-demo",
         prompt_version: "demo-v2",
         evaluator_profile: "balanced",
         samples: scenario.samples,

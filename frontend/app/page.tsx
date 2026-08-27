@@ -62,7 +62,7 @@ export default async function DashboardPage() {
           Overview
         </h1>
         <p style={{ fontSize: 13.5, color: "var(--muted)" }}>
-          Real-time quality metrics across your AI evaluation pipeline
+          Quality metrics across your AI evaluation runs
         </p>
       </div>
 

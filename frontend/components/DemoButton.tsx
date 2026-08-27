@@ -101,7 +101,7 @@ export default function DemoButton() {
           <div>
             <div style={{ fontSize: 13.5, fontWeight: 700, marginBottom: 2 }}>Try a live eval run</div>
             <div style={{ fontSize: 12, color: "var(--muted)" }}>
-              Scores 3 real AI answers with 5 heuristic evaluators — no setup needed
+              Scores 3 curated sample answers with 5 deterministic heuristic evaluators — no setup needed
             </div>
           </div>
           <button
@@ -220,7 +220,7 @@ export default function DemoButton() {
 
         {state === "idle" && (
           <div style={{ padding: "13px 20px", fontSize: 12, color: "var(--subtle)" }}>
-            Pick a scenario and click <strong style={{ color: "var(--muted)" }}>Run</strong> to score live.
+            Pick a scenario and click <strong style={{ color: "var(--muted)" }}>Run</strong> — scored by deterministic keyword, overlap, and groundedness evaluators.
           </div>
         )}
       </div>

@@ -17,8 +17,8 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EvalForge",
-  description: "Production LLM evaluation and reliability platform",
+  title: "EvalForge — LLM Evaluation Platform",
+  description: "Portfolio project: deterministic multi-signal LLM evaluation with heuristic evaluators, judge adapters, experiment tracking, and release gates. Built with FastAPI, Next.js, and SQLAlchemy.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
