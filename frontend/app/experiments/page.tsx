@@ -1,5 +1,6 @@
 import { api } from "@/lib/api";
 import { GitCompare, Trophy, ArrowUpRight } from "lucide-react";
+import SeedButton from "@/components/SeedButton";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,12 @@ export default async function ExperimentsPage() {
           <p style={{ fontSize: 13, color: "var(--muted)", maxWidth: 400, margin: "0 auto" }}>
             Run evals with an <span style={{ color: "var(--text)", fontWeight: 500 }}>experiment_name</span> field
             to track and compare different configurations here.
+          </p>
+          <div style={{ marginTop: 20, display: "flex", justifyContent: "center" }}>
+            <SeedButton />
+          </div>
+          <p style={{ fontSize: 11.5, color: "var(--subtle)", marginTop: 10 }}>
+            Seeds 3 heuristic demo experiments across General Knowledge, Customer Support, and Code &amp; Tech.
           </p>
         </div>
       ) : (

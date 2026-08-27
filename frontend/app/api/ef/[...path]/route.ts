@@ -21,11 +21,15 @@ export async function GET(
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (KEY) headers["X-API-Key"] = KEY;
 
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10000);
   try {
-    const upstream = await fetch(url, { headers, cache: "no-store" });
+    const upstream = await fetch(url, { headers, cache: "no-store", signal: ctrl.signal });
     return NextResponse.json(await parseBody(upstream), { status: upstream.status });
   } catch {
     return NextResponse.json({ error: "API unreachable" }, { status: 503 });
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -38,11 +42,15 @@ export async function POST(
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (KEY) headers["X-API-Key"] = KEY;
 
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10000);
   try {
     const body = await req.json();
-    const upstream = await fetch(url, { method: "POST", headers, body: JSON.stringify(body) });
+    const upstream = await fetch(url, { method: "POST", headers, body: JSON.stringify(body), signal: ctrl.signal });
     return NextResponse.json(await parseBody(upstream), { status: upstream.status });
   } catch {
     return NextResponse.json({ error: "API unreachable" }, { status: 503 });
+  } finally {
+    clearTimeout(timer);
   }
 }

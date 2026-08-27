@@ -56,6 +56,17 @@ export default function ScoreChart({ runs }: Props) {
           <span>Run an eval to see your trend</span>
         </div>
       ) : (
+        <>
+        {/* Visually hidden data table for screen readers */}
+        <table style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap" }}
+          aria-label="Quality score trend data">
+          <thead><tr><th>Run</th><th>Dataset</th><th>Score</th></tr></thead>
+          <tbody>
+            {data.map(d => (
+              <tr key={d.name}><td>{d.name}</td><td>{d.dataset}</td><td>{d.score}%</td></tr>
+            ))}
+          </tbody>
+        </table>
         <ResponsiveContainer width="100%" height={190}>
           <AreaChart data={data} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
             <defs>
@@ -98,6 +109,7 @@ export default function ScoreChart({ runs }: Props) {
             />
           </AreaChart>
         </ResponsiveContainer>
+        </>
       )}
     </div>
   );

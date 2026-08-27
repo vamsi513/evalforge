@@ -11,11 +11,17 @@ function buildRequest(path: string): [string, RequestInit] {
   return [`${base}/${path}`, { cache: "no-store", headers }];
 }
 
-async function get<T>(path: string): Promise<T> {
+async function get<T>(path: string, timeoutMs = 8000): Promise<T> {
   const [url, init] = buildRequest(path);
-  const res = await fetch(url, init);
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-  return res.json();
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...init, signal: ctrl.signal });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return res.json();
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export interface Telemetry {

@@ -141,17 +141,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: detail }, { status: evalRes.status });
     }
 
-    // Idempotently create a release gate for this experiment so the Gates page shows a live decision
-    fetch(`${BASE}/api/v1/release-gates`, {
+    // Create a release gate — must await before responding (serverless kills fire-and-forget)
+    const gateCtrl = new AbortController();
+    const gateTimer = setTimeout(() => gateCtrl.abort(), 4000);
+    await fetch(`${BASE}/api/v1/release-gates`, {
       method: "POST",
       headers,
+      signal: gateCtrl.signal,
       body: JSON.stringify({
         experiment_name: scenario.experiment,
         dataset_name: scenario.dataset,
         min_score: 0.70,
         evaluator_profile: "balanced",
       }),
-    }).catch(() => {/* ignore: gate may already exist */});
+    }).catch(() => {/* gate may already exist — ok */}).finally(() => clearTimeout(gateTimer));
 
     return NextResponse.json(data, { status: 200 });
   } catch (err) {

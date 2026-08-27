@@ -1,5 +1,6 @@
 import { api } from "@/lib/api";
 import { Shield, CheckCircle, XCircle, Lock, GitMerge, AlertTriangle } from "lucide-react";
+import SeedButton from "@/components/SeedButton";
 
 export const dynamic = "force-dynamic";
 
@@ -72,6 +73,21 @@ export default async function GatesPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Seed demo */}
+          <div style={{
+            background: "var(--surface)", border: "1px solid var(--border)",
+            borderRadius: 12, padding: "18px 24px",
+            display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap",
+          }}>
+            <div>
+              <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 3 }}>See a live gate decision</div>
+              <div style={{ fontSize: 12, color: "var(--muted)" }}>
+                Seeds 3 demo experiments and creates release gates — takes ~3 seconds
+              </div>
+            </div>
+            <SeedButton />
           </div>
 
           {/* API example */}

@@ -103,7 +103,7 @@ export default async function DashboardPage() {
         <MetricCard
           label="Compute Cost"
           value={`$${(telemetry.total_cost_usd ?? 0).toFixed(4)}`}
-          sub="Total OpenAI spend"
+          sub="Judge API spend"
           icon={DollarSign}
           color="var(--green)"
         />

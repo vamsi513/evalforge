@@ -21,6 +21,7 @@ const DESCRIPTION =
   "Portfolio project: deterministic multi-signal LLM evaluation with heuristic evaluators, OpenAI/Anthropic/Mistral judge adapters, experiment tracking, and release gates. Built with FastAPI, Next.js, and SQLAlchemy.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://frontend-sooty-nine-89.vercel.app"),
   title: "EvalForge — LLM Evaluation Platform",
   description: DESCRIPTION,
   openGraph: {
