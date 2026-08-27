@@ -7,6 +7,9 @@ interface CaseResult {
   score: number;
   passed: boolean;
   feedback: string;
+  criterion_scores?: Record<string, number>;
+  matched_terms?: string[];
+  missing_terms?: string[];
 }
 
 interface RunResult {
@@ -17,8 +20,34 @@ interface RunResult {
 const SCENARIOS = [
   { key: "general", label: "General Knowledge", desc: "Geography, math, literature" },
   { key: "support", label: "Customer Support", desc: "Refunds, shipping, accounts" },
-  { key: "code", label: "Code & Tech", desc: "Algorithms, JS, databases" },
+  { key: "code",    label: "Code & Tech",       desc: "Algorithms, JS, databases" },
 ];
+
+function buildFeedback(r: CaseResult): string {
+  const scores = r.criterion_scores ?? {};
+  const parts: string[] = [];
+
+  if (scores.keyword !== undefined) {
+    parts.push(scores.keyword >= 0.9
+      ? "Keyword matched"
+      : scores.keyword >= 0.5 ? "Partial keyword match" : "Keyword missing");
+  }
+  if (scores.reference_overlap !== undefined) {
+    parts.push(scores.reference_overlap >= 0.7
+      ? "Strong reference overlap"
+      : scores.reference_overlap >= 0.4 ? "Moderate overlap with reference" : "Low reference overlap");
+  }
+  if (scores.groundedness !== undefined) {
+    parts.push(scores.groundedness >= 0.8
+      ? "Well-grounded in source"
+      : scores.groundedness >= 0.5 ? "Mostly grounded" : "Some unsupported claims");
+  }
+  if (r.missing_terms?.length) {
+    parts.push(`Missing: ${r.missing_terms.slice(0, 2).join(", ")}`);
+  }
+
+  return parts.length > 0 ? parts.join(" · ") : r.feedback;
+}
 
 export default function DemoButton() {
   const [activeScenario, setActiveScenario] = useState("general");
@@ -63,10 +92,11 @@ export default function DemoButton() {
         background: "var(--surface)", border: "1px solid var(--border)",
         borderRadius: 12, overflow: "hidden",
       }}>
-        {/* Header row */}
+        {/* Header */}
         <div style={{
           padding: "16px 20px", borderBottom: "1px solid var(--border)",
-          display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12,
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          flexWrap: "wrap", gap: 12,
         }}>
           <div>
             <div style={{ fontSize: 13.5, fontWeight: 700, marginBottom: 2 }}>Try a live eval run</div>
@@ -82,8 +112,9 @@ export default function DemoButton() {
               padding: "9px 20px", borderRadius: 8,
               background: state === "running" ? "var(--surface2)" : "var(--accent)",
               color: "#fff", border: "none", cursor: state === "running" ? "not-allowed" : "pointer",
-              fontSize: 13, fontWeight: 600, fontFamily: "inherit", transition: "opacity 0.15s",
+              fontSize: 13, fontWeight: 600, fontFamily: "inherit",
               opacity: state === "running" ? 0.7 : 1,
+              transition: "opacity 0.15s",
             }}
           >
             {state === "running" ? (
@@ -106,10 +137,7 @@ export default function DemoButton() {
         </div>
 
         {/* Scenario tabs */}
-        <div style={{
-          display: "flex", gap: 0, borderBottom: "1px solid var(--border)",
-          background: "var(--bg)",
-        }}>
+        <div style={{ display: "flex", background: "var(--bg)", borderBottom: "1px solid var(--border)" }}>
           {SCENARIOS.map(s => {
             const active = s.key === activeScenario;
             return (
@@ -121,33 +149,33 @@ export default function DemoButton() {
                   flex: 1, padding: "10px 12px", border: "none", cursor: "pointer",
                   background: active ? "var(--surface)" : "transparent",
                   borderBottom: active ? "2px solid var(--accent)" : "2px solid transparent",
-                  fontFamily: "inherit", transition: "all 0.15s",
-                  textAlign: "left",
+                  fontFamily: "inherit", textAlign: "left", transition: "all 0.15s",
                 }}
               >
                 <div style={{ fontSize: 12.5, fontWeight: active ? 600 : 400, color: active ? "var(--text)" : "var(--muted)" }}>
                   {s.label}
                 </div>
-                <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{s.desc}</div>
+                <div style={{ fontSize: 11, color: "var(--subtle)", marginTop: 1 }}>{s.desc}</div>
               </button>
             );
           })}
         </div>
 
-        {/* Results area */}
+        {/* Results */}
         {state === "done" && result && (
           <>
             <div style={{
-              padding: "12px 20px", borderBottom: "1px solid var(--border)",
+              padding: "11px 20px", borderBottom: "1px solid var(--border)",
               display: "flex", alignItems: "center", justifyContent: "space-between",
               background: "rgba(99,102,241,0.04)",
             }}>
-              <span style={{ fontSize: 12.5, fontWeight: 600, color: "var(--muted)" }}>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--muted)" }}>
                 {scenarioLabel} · 3 cases scored
               </span>
-              <span style={{
-                fontFamily: "monospace", fontSize: 13.5, fontWeight: 700,
-                color: result.average_score >= 0.8 ? "var(--green)" : result.average_score >= 0.65 ? "var(--yellow)" : "var(--red)",
+              <span className="mono" style={{
+                fontSize: 13.5, fontWeight: 700,
+                color: result.average_score >= 0.8 ? "var(--green)"
+                  : result.average_score >= 0.65 ? "var(--yellow)" : "var(--red)",
               }}>
                 {Math.round(result.average_score * 100)}% avg
               </span>
@@ -161,17 +189,17 @@ export default function DemoButton() {
                 <span style={{
                   width: 20, height: 20, borderRadius: "50%", flexShrink: 0, marginTop: 1,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  background: r.passed ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
+                  background: r.passed ? "var(--green-dim)" : "var(--red-dim)",
                   color: r.passed ? "var(--green)" : "var(--red)", fontSize: 11, fontWeight: 700,
                 }}>
                   {r.passed ? "✓" : "✗"}
                 </span>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 12.5, fontWeight: 500, marginBottom: 2 }}>{r.prompt}</div>
-                  <div style={{ fontSize: 11.5, color: "var(--muted)" }}>{r.feedback}</div>
+                  <div style={{ fontSize: 12.5, fontWeight: 500, marginBottom: 3 }}>{r.prompt}</div>
+                  <div style={{ fontSize: 11, color: "var(--subtle)" }}>{buildFeedback(r)}</div>
                 </div>
-                <span style={{
-                  fontFamily: "monospace", fontSize: 12, fontWeight: 700, flexShrink: 0,
+                <span className="mono" style={{
+                  fontSize: 12, fontWeight: 700, flexShrink: 0,
                   color: r.score >= 0.8 ? "var(--green)" : r.score >= 0.65 ? "var(--yellow)" : "var(--red)",
                 }}>
                   {Math.round(r.score * 100)}%
@@ -191,12 +219,11 @@ export default function DemoButton() {
         )}
 
         {state === "idle" && (
-          <div style={{ padding: "16px 20px", fontSize: 12.5, color: "var(--muted)" }}>
-            Select a scenario above and click <strong style={{ color: "var(--text)" }}>Run</strong> to see live scoring.
+          <div style={{ padding: "13px 20px", fontSize: 12, color: "var(--subtle)" }}>
+            Pick a scenario and click <strong style={{ color: "var(--muted)" }}>Run</strong> to score live.
           </div>
         )}
       </div>
-
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );

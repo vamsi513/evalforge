@@ -3,7 +3,7 @@ import MetricCard from "@/components/MetricCard";
 import RunsTable from "@/components/RunsTable";
 import ScoreChart from "@/components/ScoreChart";
 import DemoButton from "@/components/DemoButton";
-import { CheckCircle, FlaskConical, Zap, TrendingUp } from "lucide-react";
+import { CheckCircle, FlaskConical, Zap, TrendingUp, DollarSign } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -70,7 +70,7 @@ export default async function DashboardPage() {
       <DemoButton />
 
       {/* Metric cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 28 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14, marginBottom: 28 }}>
         <MetricCard
           label="Avg Quality Score"
           value={`${Math.round(score * 100)}%`}
@@ -99,6 +99,13 @@ export default async function DashboardPage() {
           sub="Per test case"
           icon={Zap}
           color="var(--yellow)"
+        />
+        <MetricCard
+          label="Compute Cost"
+          value={`$${(telemetry.total_cost_usd ?? 0).toFixed(4)}`}
+          sub="Total OpenAI spend"
+          icon={DollarSign}
+          color="var(--green)"
         />
       </div>
 

@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 const BASE = process.env.EVALFORGE_API_URL ?? "http://23.21.42.197:8001";
 const KEY = process.env.EVALFORGE_API_KEY ?? "";
 
-const SCENARIOS: Record<string, { dataset: string; samples: unknown[] }> = {
+const SCENARIOS: Record<string, { dataset: string; experiment: string; samples: unknown[] }> = {
   general: {
     dataset: "demo-general-knowledge",
+    experiment: "General Knowledge",
     samples: [
       {
         prompt: "What is the capital of France?",
@@ -35,6 +36,7 @@ const SCENARIOS: Record<string, { dataset: string; samples: unknown[] }> = {
   },
   support: {
     dataset: "demo-customer-support",
+    experiment: "Customer Support",
     samples: [
       {
         prompt: "How do I request a refund for my order?",
@@ -64,6 +66,7 @@ const SCENARIOS: Record<string, { dataset: string; samples: unknown[] }> = {
   },
   code: {
     dataset: "demo-code-review",
+    experiment: "Code & Tech",
     samples: [
       {
         prompt: "What does the 'async/await' pattern do in JavaScript?",
@@ -118,6 +121,7 @@ export async function POST(req: NextRequest) {
       headers,
       body: JSON.stringify({
         dataset_name: scenario.dataset,
+        experiment_name: scenario.experiment,
         model_name: "gpt-4o-mini",
         prompt_version: "demo-v2",
         evaluator_profile: "balanced",
