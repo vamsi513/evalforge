@@ -138,7 +138,7 @@ export default async function GatesPage() {
                   </div>
                   {typeof g.summary === "string" && g.summary && (
                     <div style={{ fontSize: 11.5, color: "var(--subtle)", marginTop: 4, lineHeight: 1.4 }}>
-                      {g.summary}
+                      {passed ? "No threshold regressions detected — candidate meets all quality criteria." : g.summary}
                     </div>
                   )}
                 </div>
