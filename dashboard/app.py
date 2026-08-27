@@ -18,7 +18,7 @@ with st.sidebar:
         value="http://23.21.42.197:8001",
         help="Address of the EvalForge API server",
     )
-    api_key = st.text_input("API Key (optional)", value="", type="password")
+    api_key = ""
     workspace_id = st.text_input("Workspace", value="default")
     st.button("🔄 Refresh")
 
