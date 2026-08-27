@@ -130,9 +130,13 @@ export default async function GatesPage() {
                   <div style={{ fontWeight: 600, fontSize: 13.5 }}>{String(g.experiment_name || "—")}</div>
                   <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
                     {String(g.dataset_name || "—")}
-                    {scoreDelta !== null && (
+                    {scoreDelta !== null && scoreDelta !== 0 ? (
                       <span style={{ marginLeft: 8, color: scoreDelta >= 0 ? "var(--green)" : "var(--red)" }}>
                         Δ {scoreDelta >= 0 ? "+" : ""}{(scoreDelta * 100).toFixed(1)}%
+                      </span>
+                    ) : (
+                      <span style={{ marginLeft: 8, color: "var(--subtle)", fontSize: 11 }}>
+                        demo threshold gate
                       </span>
                     )}
                   </div>

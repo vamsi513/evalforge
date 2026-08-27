@@ -26,10 +26,10 @@ const FEATURES = [
   { icon: "🚦", label: "Release gates",         desc: "PASS/FAIL CI signal that blocks regressions before deploy" },
   { icon: "⚡", label: "Async job worker",       desc: "Background eval jobs via queue — decoupled from the API layer" },
   { icon: "📊", label: "MLflow integration",    desc: "Optional run logging to hosted MLflow tracking server" },
-  { icon: "🔌", label: "LLM judge adapters",    desc: "OpenAI GPT-4o · Anthropic Claude 3 · Mistral — with deterministic fallback" },
+  { icon: "🔌", label: "LLM judge adapters",    desc: "OpenAI · Anthropic · Mistral adapters — with deterministic heuristic fallback" },
 ];
 
-const STACK = ["FastAPI", "SQLAlchemy", "SQLite", "Next.js 15", "Docker", "GitHub Actions"];
+const STACK = ["FastAPI", "SQLAlchemy", "SQLite", "Next.js 16", "Docker", "GitHub Actions"];
 
 export default async function DashboardPage() {
   const [health, telemetry, runs] = await Promise.all([
@@ -124,7 +124,7 @@ export default async function DashboardPage() {
         <MetricCard
           label="Compute Cost"
           value={`$${(telemetry.total_cost_usd ?? 0).toFixed(4)}`}
-          sub="Judge API spend"
+          sub={(telemetry.total_cost_usd ?? 0) < 0.001 ? "Heuristic scoring" : "Judge API spend"}
           icon={DollarSign}
           color="var(--green)"
         />
