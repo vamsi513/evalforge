@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface CaseResult {
   prompt: string;
@@ -16,6 +17,7 @@ interface RunResult {
 export default function DemoButton() {
   const [state, setState] = useState<"idle" | "running" | "done" | "error">("idle");
   const [result, setResult] = useState<RunResult | null>(null);
+  const router = useRouter();
 
   async function runDemo() {
     setState("running");
@@ -26,6 +28,7 @@ export default function DemoButton() {
       if (!res.ok) throw new Error(data.error ?? "Failed");
       setResult(data as RunResult);
       setState("done");
+      router.refresh(); // re-run server components so metrics update
     } catch {
       setState("error");
     }
