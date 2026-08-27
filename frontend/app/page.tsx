@@ -24,32 +24,44 @@ export default async function DashboardPage() {
   const score = telemetry.average_score ?? 0;
 
   const allResults = runs.flatMap(r => r.results ?? []);
-  const passRate = allResults.length > 0
-    ? allResults.filter(r => r.passed).length / allResults.length
-    : 0;
+  const totalPassed = allResults.filter(r => r.passed).length;
+  const passRate = allResults.length > 0 ? totalPassed / allResults.length : 0;
+
+  const now = new Date().toLocaleString("en-US", {
+    month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true,
+  });
 
   return (
-    <div style={{ padding: "32px 40px", maxWidth: 1200 }}>
-      {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            fontSize: 12, fontWeight: 600, padding: "4px 10px", borderRadius: 20,
-            background: online ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)",
-            color: online ? "var(--green)" : "var(--red)",
-            border: `1px solid ${online ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}`,
-          }}>
+    <div style={{ padding: "36px 44px", maxWidth: 1220 }}>
+      {/* Page header */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{
-              width: 6, height: 6, borderRadius: "50%",
-              background: online ? "var(--green)" : "var(--red)",
-              boxShadow: online ? "0 0 6px #22c55e" : "none",
-            }} />
-            {online ? "All systems operational" : "API unreachable"}
-          </span>
+              display: "inline-flex", alignItems: "center", gap: 6,
+              fontSize: 11.5, fontWeight: 600, padding: "4px 11px", borderRadius: 20,
+              background: online ? "var(--green-dim)" : "var(--red-dim)",
+              color: online ? "var(--green)" : "var(--red)",
+              border: `1px solid ${online ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)"}`,
+            }}>
+              <span
+                className={online ? "pulse" : ""}
+                style={{
+                  width: 6, height: 6, borderRadius: "50%",
+                  background: online ? "var(--green)" : "var(--red)",
+                  display: "inline-block",
+                }}
+              />
+              {online ? "All systems operational" : "API unreachable"}
+            </span>
+          </div>
+          <span style={{ fontSize: 11.5, color: "var(--subtle)" }}>Updated {now}</span>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.5px" }}>Overview</h1>
-        <p style={{ fontSize: 13.5, color: "var(--muted)", marginTop: 4 }}>
+
+        <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.7px", marginBottom: 5 }}>
+          Overview
+        </h1>
+        <p style={{ fontSize: 13.5, color: "var(--muted)" }}>
           Real-time quality metrics across your AI evaluation pipeline
         </p>
       </div>
@@ -58,7 +70,7 @@ export default async function DashboardPage() {
       <DemoButton />
 
       {/* Metric cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 28 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 28 }}>
         <MetricCard
           label="Avg Quality Score"
           value={`${Math.round(score * 100)}%`}
@@ -69,7 +81,9 @@ export default async function DashboardPage() {
         <MetricCard
           label="Pass Rate"
           value={allResults.length > 0 ? `${Math.round(passRate * 100)}%` : "—"}
-          sub={allResults.length > 0 ? `${allResults.filter(r => r.passed).length} of ${allResults.length} cases` : "No cases yet"}
+          sub={allResults.length > 0
+            ? `${totalPassed} of ${allResults.length} cases`
+            : "No cases yet"}
           icon={TrendingUp}
           color={passRate >= 0.8 ? "var(--green)" : passRate >= 0.65 ? "var(--yellow)" : "var(--red)"}
         />
@@ -89,18 +103,29 @@ export default async function DashboardPage() {
       </div>
 
       {/* Charts row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 14 }}>
         <ScoreChart runs={runs} />
-        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-            <h2 style={{ fontSize: 14, fontWeight: 600 }}>Recent Runs</h2>
+        <div style={{
+          background: "var(--surface)", border: "1px solid var(--border)",
+          borderRadius: 14, overflow: "hidden",
+        }}>
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            padding: "16px 20px", borderBottom: "1px solid var(--border)",
+          }}>
+            <div>
+              <div style={{ fontSize: 13.5, fontWeight: 600 }}>Recent Runs</div>
+              <div style={{ fontSize: 11.5, color: "var(--muted)", marginTop: 2 }}>
+                {runs.length} total
+              </div>
+            </div>
             {runs.length > 0 && (
-              <a href="/runs" style={{ fontSize: 12, color: "var(--accent)", textDecoration: "none" }}>
+              <a href="/runs" style={{ fontSize: 12, color: "var(--accent)", fontWeight: 500 }}>
                 View all →
               </a>
             )}
           </div>
-          <RunsTable runs={runs.slice(0, 6)} compact />
+          <RunsTable runs={runs.slice(0, 7)} compact />
         </div>
       </div>
     </div>

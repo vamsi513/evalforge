@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { GitCompare } from "lucide-react";
+import { GitCompare, Trophy, ArrowUpRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -7,55 +7,143 @@ export default async function ExperimentsPage() {
   const leaderboard = await api.leaderboard().catch(() => ({ items: [] }));
   const items = leaderboard.items ?? [];
 
+  const best = items[0];
+
   return (
-    <div style={{ padding: "32px 40px", maxWidth: 1200 }}>
+    <div style={{ padding: "36px 44px", maxWidth: 1220 }}>
       <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.5px" }}>Experiments</h1>
-        <p style={{ fontSize: 13.5, color: "var(--muted)", marginTop: 4 }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.7px", marginBottom: 5 }}>Experiments</h1>
+        <p style={{ fontSize: 13.5, color: "var(--muted)" }}>
           Compare prompt versions and model configurations side by side
         </p>
       </div>
 
-      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: 24 }}>
-        {items.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "32px 0" }}>
-            <GitCompare size={32} style={{ color: "var(--muted)", margin: "0 auto 12px" }} />
-            <p style={{ color: "var(--muted)", fontSize: 14 }}>No experiments yet.</p>
+      {items.length === 0 ? (
+        <div style={{
+          background: "var(--surface)", border: "1px solid var(--border)",
+          borderRadius: 14, padding: "60px 48px", textAlign: "center",
+        }}>
+          <div style={{
+            width: 48, height: 48, borderRadius: 12,
+            background: "var(--accent-dim)", border: "1px solid rgba(99,102,241,0.2)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            margin: "0 auto 16px",
+          }}>
+            <GitCompare size={22} style={{ color: "var(--accent)" }} />
           </div>
-        ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-            <thead>
-              <tr style={{ borderBottom: "1px solid var(--border)" }}>
-                {["Rank", "Experiment", "Model", "Score", "Runs", "Avg Latency"].map(h => (
-                  <th key={h} style={{ textAlign: "left", padding: "6px 10px", fontSize: 11.5, fontWeight: 600, color: "var(--muted)", letterSpacing: "0.04em" }}>
-                    {h.toUpperCase()}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item, i) => {
-                const score = item.average_score ?? 0;
-                const color = score >= 0.8 ? "var(--green)" : score >= 0.5 ? "var(--yellow)" : "var(--red)";
-                return (
-                  <tr key={item.experiment_name} style={{ borderBottom: "1px solid var(--border)" }}>
-                    <td style={{ padding: "10px", color: "var(--muted)", fontWeight: 600 }}>#{i + 1}</td>
-                    <td style={{ padding: "10px", fontWeight: 500 }}>{item.experiment_name || "—"}</td>
-                    <td style={{ padding: "10px", color: "var(--muted)" }}>{item.model_name || "—"}</td>
-                    <td style={{ padding: "10px" }}>
-                      <span style={{ fontSize: 12, fontWeight: 600, color, background: `${color}18`, padding: "2px 8px", borderRadius: 6 }}>
-                        {Math.round(score * 100)}%
-                      </span>
-                    </td>
-                    <td style={{ padding: "10px", color: "var(--muted)" }}>{item.run_count}</td>
-                    <td style={{ padding: "10px", color: "var(--muted)" }}>{Math.round(item.average_latency_ms ?? 0)} ms</td>
+          <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 6 }}>No experiments yet</div>
+          <p style={{ fontSize: 13, color: "var(--muted)", maxWidth: 400, margin: "0 auto" }}>
+            Run evals with an <span style={{ color: "var(--text)", fontWeight: 500 }}>experiment_name</span> field
+            to track and compare different configurations here.
+          </p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {/* Best performer highlight */}
+          {best && (
+            <div style={{
+              background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.04))",
+              border: "1px solid rgba(99,102,241,0.25)",
+              borderRadius: 14, padding: "18px 22px",
+              display: "flex", alignItems: "center", gap: 16,
+            }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                background: "rgba(99,102,241,0.15)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <Trophy size={18} style={{ color: "var(--accent)" }} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, marginBottom: 3, letterSpacing: "0.05em" }}>
+                  CURRENT LEADER
+                </div>
+                <div style={{ fontWeight: 700, fontSize: 14.5 }}>{best.experiment_name || "Unnamed"}</div>
+                <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
+                  {best.model_name} · {best.run_count} run{best.run_count !== 1 ? "s" : ""}
+                </div>
+              </div>
+              <div className="mono" style={{
+                fontSize: 28, fontWeight: 700, letterSpacing: "-1px",
+                color: (best.average_score ?? 0) >= 0.8 ? "var(--green)" : "var(--yellow)",
+              }}>
+                {Math.round((best.average_score ?? 0) * 100)}%
+              </div>
+            </div>
+          )}
+
+          {/* Leaderboard table */}
+          <div style={{
+            background: "var(--surface)", border: "1px solid var(--border)",
+            borderRadius: 14, overflow: "hidden",
+          }}>
+            <div style={{
+              padding: "14px 20px", borderBottom: "1px solid var(--border)",
+              fontSize: 12, fontWeight: 600, color: "var(--muted)",
+            }}>
+              Leaderboard · last 20 runs
+            </div>
+            <div style={{ overflowX: "auto" }}>
+              <table className="data-table" style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr>
+                    {["Rank", "Experiment", "Model", "Score", "Runs", "Avg Latency"].map(h => (
+                      <th key={h} style={{
+                        textAlign: "left", padding: "10px 16px",
+                        fontSize: 10.5, fontWeight: 600, color: "var(--subtle)",
+                        letterSpacing: "0.07em", textTransform: "uppercase",
+                        borderBottom: "1px solid var(--border)",
+                        background: "var(--bg)",
+                      }}>
+                        {h}
+                      </th>
+                    ))}
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </div>
+                </thead>
+                <tbody>
+                  {items.map((item, i) => {
+                    const score = item.average_score ?? 0;
+                    const color = score >= 0.8 ? "var(--green)" : score >= 0.65 ? "var(--yellow)" : "var(--red)";
+                    const dimColor = score >= 0.8 ? "var(--green-dim)" : score >= 0.65 ? "var(--yellow-dim)" : "var(--red-dim)";
+                    return (
+                      <tr key={item.experiment_name}>
+                        <td style={{ padding: "12px 16px", color: "var(--subtle)", fontWeight: 600, borderBottom: "1px solid var(--border)" }}>
+                          {i === 0
+                            ? <span style={{ color: "var(--accent)" }}>#{i + 1}</span>
+                            : `#${i + 1}`}
+                        </td>
+                        <td style={{ padding: "12px 16px", fontWeight: 500, borderBottom: "1px solid var(--border)" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                            {item.experiment_name || "—"}
+                            {i === 0 && <ArrowUpRight size={13} style={{ color: "var(--accent)", opacity: 0.7 }} />}
+                          </div>
+                        </td>
+                        <td style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
+                          <span className="mono" style={{ fontSize: 12, color: "var(--muted)" }}>{item.model_name || "—"}</span>
+                        </td>
+                        <td style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
+                          <span className="mono" style={{
+                            fontSize: 12.5, fontWeight: 700, color,
+                            background: dimColor, padding: "2px 9px", borderRadius: 6,
+                          }}>
+                            {Math.round(score * 100)}%
+                          </span>
+                        </td>
+                        <td style={{ padding: "12px 16px", color: "var(--muted)", borderBottom: "1px solid var(--border)" }}>
+                          {item.run_count}
+                        </td>
+                        <td style={{ padding: "12px 16px", color: "var(--muted)", borderBottom: "1px solid var(--border)" }}>
+                          <span className="mono">{Math.round(item.average_latency_ms ?? 0)} ms</span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

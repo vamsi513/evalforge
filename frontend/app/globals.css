@@ -1,29 +1,129 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #09090b;
-  --surface: #111113;
-  --surface2: #18181b;
-  --border: #27272a;
-  --border2: #3f3f46;
-  --text: #fafafa;
-  --muted: #a1a1aa;
-  --accent: #6366f1;
-  --accent-dim: rgba(99,102,241,0.15);
-  --green: #22c55e;
-  --yellow: #eab308;
-  --red: #ef4444;
+  /* Backgrounds — slightly warm-tinted, not pure black */
+  --bg:       #0a0a0f;
+  --surface:  #111118;
+  --surface2: #16161f;
+  --surface3: #1c1c28;
+
+  /* Borders */
+  --border:  #1e1e2e;
+  --border2: #2a2a3e;
+
+  /* Text */
+  --text:    #f0f0f8;
+  --muted:   #8b8ba7;
+  --subtle:  #52526e;
+
+  /* Accent — indigo, slightly more saturated */
+  --accent:     #6366f1;
+  --accent-dim: rgba(99, 102, 241, 0.12);
+  --accent-glow: rgba(99, 102, 241, 0.25);
+
+  /* Semantic */
+  --green:  #22c55e;
+  --yellow: #f59e0b;
+  --red:    #ef4444;
+  --green-dim:  rgba(34, 197, 94, 0.12);
+  --yellow-dim: rgba(245, 158, 11, 0.12);
+  --red-dim:    rgba(239, 68, 68, 0.12);
+
+  /* Fonts */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-mono), "Fira Code", "Cascadia Code", monospace;
+
+  /* Transitions */
+  --t: 150ms ease;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { color-scheme: dark; }
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+/* ── Scrollbars ── */
+::-webkit-scrollbar              { width: 5px; height: 5px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: var(--border2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover  { background: var(--subtle); }
+
+/* ── Links ── */
+a { color: inherit; text-decoration: none; }
+
+/* ── Table rows: hover via pure CSS ── */
+.data-table tbody tr {
+  transition: background var(--t);
+}
+.data-table tbody tr:hover {
+  background: var(--surface2);
+}
+
+/* ── Card hover ── */
+.hover-card {
+  transition: border-color var(--t), transform var(--t), box-shadow var(--t);
+}
+.hover-card:hover {
+  border-color: var(--border2) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+
+/* ── Sidebar nav item hover ── */
+.nav-item {
+  transition: background var(--t), color var(--t);
+}
+.nav-item:hover:not(.nav-active) {
+  background: var(--surface2) !important;
+  color: var(--text) !important;
+}
+.nav-item:hover:not(.nav-active) svg {
+  color: var(--muted) !important;
+}
+
+/* ── Status pulse animation ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.pulse { animation: pulse 2s ease-in-out infinite; }
+
+/* ── Spinner ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Score bar ── */
+.score-bar-track {
+  height: 4px;
+  background: var(--surface3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ── Mono values ── */
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ── Code block ── */
+pre {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--muted);
+  overflow-x: auto;
+}

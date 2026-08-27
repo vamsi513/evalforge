@@ -1,9 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "EvalForge",
@@ -12,10 +23,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="flex h-screen overflow-hidden" style={{ background: "var(--bg)" }}>
+    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
+      <body style={{ background: "var(--bg)", display: "flex", height: "100vh", overflow: "hidden" }}>
         <Sidebar />
-        <main className="flex-1 overflow-y-auto">
+        <main style={{ flex: 1, overflowY: "auto" }}>
           {children}
         </main>
       </body>
