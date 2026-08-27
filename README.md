@@ -8,7 +8,7 @@ EvalForge is a production-style LLM Reliability and PromptOps platform for regre
 
 ## Live Demo
 
-**Frontend:** [https://frontend-git-main-vamsi513s-projects.vercel.app](https://frontend-git-main-vamsi513s-projects.vercel.app)
+**Frontend:** [https://evalforge-platform.vercel.app](https://evalforge-platform.vercel.app)
 
 **API docs:** [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
 
