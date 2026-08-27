@@ -136,9 +136,9 @@ export default async function GatesPage() {
                       </span>
                     )}
                   </div>
-                  {g.summary && (
+                  {typeof g.summary === "string" && g.summary && (
                     <div style={{ fontSize: 11.5, color: "var(--subtle)", marginTop: 4, lineHeight: 1.4 }}>
-                      {String(g.summary)}
+                      {g.summary}
                     </div>
                   )}
                 </div>
