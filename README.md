@@ -15,6 +15,8 @@ A production-inspired LLM evaluation platform with deterministic multi-signal sc
 
 Click **Run General Knowledge** on the dashboard to run a live heuristic evaluation — no setup needed.
 
+![EvalForge Overview — live demo with heuristic scores, pass rate, and latency](docs/screenshot.png)
+
 ## What it does
 
 Teams shipping LLM features hit the same problems:
@@ -180,10 +182,6 @@ GET  /api/v1/telemetry/summary
 ```
 
 Full reference: [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
-
-## Resume description
-
-> Built EvalForge, a production-inspired LLM evaluation platform with deterministic multi-signal scoring, structured OpenAI/Anthropic/Mistral judge adapters, experiment tracking, automated release gates, async job paths, optional MLflow integration, FastAPI, SQLAlchemy, Next.js 16, Docker, and GitHub Actions CI/CD.
 
 ## License
 

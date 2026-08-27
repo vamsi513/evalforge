@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main-content" className="app-main" style={{ flex: 1, overflowY: "auto" }}>
           {children}
         </main>
+        <Analytics />
       </body>
     </html>
   );
