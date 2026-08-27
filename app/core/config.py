@@ -1,5 +1,3 @@
-import sys
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -36,12 +34,10 @@ class Settings(BaseSettings):
 
     def validate_production(self) -> None:
         if self.app_env == "production" and not self.platform_api_key:
-            print(
-                "ERROR: PLATFORM_API_KEY must be set when APP_ENV=production. "
-                "Set it in your .env file or environment.",
-                file=sys.stderr,
+            raise RuntimeError(
+                "PLATFORM_API_KEY must be set when APP_ENV=production. "
+                "Set it in your .env file or environment."
             )
-            sys.exit(1)
 
 
 settings = Settings()
