@@ -192,6 +192,27 @@ export default function DemoButton() {
                 {Math.round(result.average_score * 100)}% avg
               </span>
             </div>
+            <div style={{
+              padding: "7px 20px", borderBottom: "1px solid var(--border)",
+              display: "flex", alignItems: "center", gap: 6,
+              background: "var(--bg)", flexWrap: "wrap",
+            }}>
+              <span style={{ fontSize: 10.5, color: "var(--subtle)", fontWeight: 600, letterSpacing: "0.05em", marginRight: 4 }}>
+                EVALUATORS
+              </span>
+              {["keyword", "reference_overlap", "rubric_coverage", "structured_output", "groundedness"].map(e => (
+                <span key={e} style={{
+                  fontSize: 10.5, padding: "2px 8px", borderRadius: 4,
+                  background: "var(--surface2)", color: "var(--muted)",
+                  border: "1px solid var(--border)", fontFamily: "monospace",
+                }}>
+                  {e}
+                </span>
+              ))}
+              <span style={{ fontSize: 10.5, color: "var(--subtle)", marginLeft: "auto" }}>
+                model: heuristic-demo
+              </span>
+            </div>
             {result.results?.map((r, i) => (
               <div key={i} style={{
                 padding: "12px 20px",

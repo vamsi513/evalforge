@@ -90,7 +90,7 @@ export default async function DashboardPage() {
         <MetricCard
           label="Total Eval Runs"
           value={String(telemetry.total_runs)}
-          sub="Across all workspaces"
+          sub="Demo workspace"
           icon={FlaskConical}
         />
         <MetricCard

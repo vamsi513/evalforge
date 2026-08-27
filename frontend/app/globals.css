@@ -129,10 +129,13 @@ a { color: inherit; text-decoration: none; }
   .dataset-grid { grid-template-columns: 1fr !important; }
 }
 
-/* ── Responsive: sidebar collapses on mobile ── */
+/* ── Responsive: sidebar collapses on mobile; hamburger drawer replaces it ── */
 @media (max-width: 700px) {
-  .app-sidebar { display: none !important; }
-  .app-main    { padding: 20px 16px !important; }
+  .app-sidebar    { display: none !important; }
+  .app-main       { padding-top: 52px !important; }
+  .mobile-header  { display: flex !important; }
+  .mobile-backdrop{ display: block !important; }
+  .mobile-drawer  { display: flex !important; }
 }
 
 /* ── prefers-reduced-motion ── */

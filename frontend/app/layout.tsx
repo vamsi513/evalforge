@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body style={{ background: "var(--bg)", display: "flex", height: "100vh", overflow: "hidden" }}>
         <Sidebar />
+        <MobileNav />
         <main className="app-main" style={{ flex: 1, overflowY: "auto" }}>
           {children}
         </main>
