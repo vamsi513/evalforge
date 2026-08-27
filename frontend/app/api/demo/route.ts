@@ -148,20 +148,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: detail }, { status: evalRes.status });
     }
 
-    // Create a release gate — must await before responding (serverless kills fire-and-forget)
-    const gateCtrl = new AbortController();
-    const gateTimer = setTimeout(() => gateCtrl.abort(), 4000);
-    await fetch(`${BASE}/api/v1/release-gates`, {
-      method: "POST",
-      headers,
-      signal: gateCtrl.signal,
-      body: JSON.stringify({
-        experiment_name: scenario.experiment,
-        dataset_name: scenario.dataset,
-        min_score: 0.70,
-        evaluator_profile: "balanced",
-      }),
-    }).catch(() => {/* gate may already exist — ok */}).finally(() => clearTimeout(gateTimer));
+    // Create a release gate — requires baseline_run_id and candidate_run_id (UUIDs from eval run)
+    const runId = (data as { id?: string })?.id;
+    if (runId) {
+      const gateCtrl = new AbortController();
+      const gateTimer = setTimeout(() => gateCtrl.abort(), 4000);
+      await fetch(`${BASE}/api/v1/release-gates`, {
+        method: "POST",
+        headers,
+        signal: gateCtrl.signal,
+        body: JSON.stringify({
+          experiment_name: scenario.experiment,
+          dataset_name: scenario.dataset,
+          baseline_run_id: runId,
+          candidate_run_id: runId,
+          min_score_delta: -0.05,
+        }),
+      }).catch(() => {}).finally(() => clearTimeout(gateTimer));
+    }
 
     return NextResponse.json(data, { status: 200 });
   } catch (err) {

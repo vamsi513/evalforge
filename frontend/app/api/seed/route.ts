@@ -36,7 +36,7 @@ const SCENARIOS = [
   },
 ];
 
-async function post(path: string, body: unknown, timeoutMs = 6000): Promise<{ ok: boolean; status: number }> {
+async function post(path: string, body: unknown, timeoutMs = 6000): Promise<{ ok: boolean; status: number; data?: unknown }> {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (KEY) headers["X-API-Key"] = KEY;
   const ctrl = new AbortController();
@@ -46,7 +46,9 @@ async function post(path: string, body: unknown, timeoutMs = 6000): Promise<{ ok
       method: "POST", headers, signal: ctrl.signal,
       body: JSON.stringify(body),
     });
-    return { ok: res.ok || res.status === 409, status: res.status };
+    let data: unknown;
+    try { data = await res.json(); } catch { data = undefined; }
+    return { ok: res.ok || res.status === 409, status: res.status, data };
   } catch {
     return { ok: false, status: 0 };
   } finally {
@@ -85,14 +87,20 @@ export async function POST() {
     }, 10000);
     steps.eval = ev.ok ? "ok" : `${ev.status}`;
 
-    // 4. Create release gate
-    const gate = await post("api/v1/release-gates", {
-      experiment_name: s.name,
-      dataset_name: s.dataset,
-      min_score: s.minScore,
-      evaluator_profile: "balanced",
-    });
-    steps.gate = gate.ok ? "ok" : `${gate.status}`;
+    // 4. Create release gate — requires baseline_run_id and candidate_run_id (both UUIDs from eval runs)
+    const runId = (ev.data as { id?: string } | undefined)?.id;
+    if (runId) {
+      const gate = await post("api/v1/release-gates", {
+        experiment_name: s.name,
+        dataset_name: s.dataset,
+        baseline_run_id: runId,
+        candidate_run_id: runId,
+        min_score_delta: -0.05,
+      });
+      steps.gate = gate.ok ? "ok" : `${gate.status}`;
+    } else {
+      steps.gate = "skipped";
+    }
 
     results.push({ name: s.name, steps });
   }

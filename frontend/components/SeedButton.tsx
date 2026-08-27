@@ -13,9 +13,11 @@ export default function SeedButton() {
     setMsg("");
     try {
       const res = await fetch("/api/seed", { method: "POST" });
-      const data = await res.json() as { seeded?: { experiment: string; status: string }[] };
+      const data = await res.json() as { seeded?: { name: string; steps: Record<string, string> }[] };
       if (res.ok || res.status === 207) {
-        const ok = data.seeded?.filter(s => s.status === "ok").length ?? 0;
+        const ok = data.seeded?.filter(s =>
+          Object.values(s.steps).every(v => v === "ok" || v === "skipped")
+        ).length ?? 0;
         setMsg(`Seeded ${ok} of 3 experiment${ok !== 1 ? "s" : ""}`);
         setState("done");
         router.refresh();
