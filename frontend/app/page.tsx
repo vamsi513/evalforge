@@ -2,6 +2,7 @@ import { api } from "@/lib/api";
 import MetricCard from "@/components/MetricCard";
 import RunsTable from "@/components/RunsTable";
 import ScoreChart from "@/components/ScoreChart";
+import DemoButton from "@/components/DemoButton";
 import { CheckCircle, FlaskConical, Zap, DollarSign } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +43,8 @@ export default async function DashboardPage() {
           Real-time quality metrics for your AI evaluations
         </p>
       </div>
+
+      <DemoButton />
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 32 }}>
         <MetricCard label="Avg Quality Score" value={`${Math.round(score * 100)}%`}
