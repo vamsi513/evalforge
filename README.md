@@ -8,9 +8,9 @@ EvalForge is a production-style LLM Reliability and PromptOps platform for regre
 
 ## Live Demo
 
-**API:** [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
+**Frontend:** [https://frontend-git-main-vamsi513s-projects.vercel.app](https://frontend-git-main-vamsi513s-projects.vercel.app)
 
-**Dashboard:** [https://evalforge-vax5matamtffmf9muqc2aj.streamlit.app](https://evalforge-vax5matamtffmf9muqc2aj.streamlit.app)
+**API docs:** [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
 
 ## Why this project matters
 
@@ -100,33 +100,30 @@ EvalForge addresses that by combining:
 
 ## Stack
 
-- Backend: FastAPI, Pydantic, SQLAlchemy
-- Storage: SQLite by default, Postgres-ready config, Alembic migrations
-- LLM judge: OpenAI-compatible structured `chat/completions` path with fallback (Anthropic and Mistral backends also supported)
-- Experiment tracking: MLflow — every eval run and pairwise comparison logged with metrics, parameters, and result artifacts
-- Dashboard: Streamlit, pandas
-- Async processing: local background execution by default, Redis-backed worker path for durable job dispatch
-- Packaging: editable Python package with `pyproject.toml`
+- **Backend:** FastAPI, Pydantic, SQLAlchemy, SQLite (Postgres-ready), Alembic migrations
+- **Frontend:** Next.js 15 App Router, React, deployed on Vercel
+- **LLM judge:** OpenAI-compatible structured `chat/completions` with heuristic fallback (GPT-4o, Claude 3, Mistral supported)
+- **Experiment tracking:** MLflow — every eval run logged with metrics, parameters, and result artifacts
+- **Async processing:** background job queue with Redis-backed worker path for durable job dispatch
+- **Infrastructure:** Docker, GitHub Actions CI, EC2 (backend), Vercel (frontend)
 
 ## Project structure
 
 ```text
 evalforge/
-├── app/
-│   ├── api/routes/
-│   ├── core/
-│   ├── db/
-│   ├── engine/
-│   ├── models/
-│   └── services/
-├── dashboard/
-├── training/
+├── app/                  # FastAPI backend
+│   ├── api/routes/       # Evals, experiments, gates, telemetry
+│   ├── engine/           # Heuristic + LLM judge scorers
+│   ├── models/           # Pydantic schemas
+│   └── services/         # Business logic
+├── frontend/             # Next.js 15 dashboard (Vercel)
+│   ├── app/              # App Router pages
+│   ├── components/       # MetricCard, ScoreChart, DemoButton…
+│   └── lib/api.ts        # Typed API client
 ├── tests/
-├── alembic/
+├── alembic/              # DB migrations
 ├── docker-compose.yml
-├── Dockerfile
-├── alembic.ini
-└── README.md
+└── Dockerfile
 ```
 
 ## Quick start
