@@ -492,7 +492,7 @@ class JudgeClient:
             rubric=sample.rubric,
             score=score,
             latency_ms=max(10, len(sample.prompt.split()) * 9),
-            cost_usd=round((len(sample.prompt.split()) + len(sample.candidate_output.split())) * 0.00002, 6),
+            cost_usd=0.0,
             passed=score >= 0.7,
             matched_terms=matched_terms,
             missing_terms=missing_terms,

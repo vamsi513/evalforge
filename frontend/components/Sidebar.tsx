@@ -93,6 +93,11 @@ export default function Sidebar() {
         <div style={{ fontSize: 11.5, color: "var(--muted)", fontWeight: 500, marginBottom: 6 }}>
           Vamsi Krishna Sadu
         </div>
+        {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA && (
+          <div style={{ fontSize: 10, color: "var(--subtle)", fontFamily: "monospace", marginBottom: 6 }}>
+            {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7)}
+          </div>
+        )}
         <a
           href="https://github.com/vamsi513/evalforge"
           target="_blank"

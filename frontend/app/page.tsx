@@ -18,7 +18,7 @@ const EVALUATORS = [
   { name: "Reference Overlap",  desc: "ROUGE-style token similarity"        },
   { name: "Rubric Coverage",    desc: "Criterion-by-criterion scoring"      },
   { name: "JSON Structure",     desc: "Schema validation for structured output" },
-  { name: "Groundedness",       desc: "Source attribution & factual support" },
+  { name: "Groundedness",       desc: "Lexical groundedness proxy — token overlap with reference" },
 ];
 
 const FEATURES = [
