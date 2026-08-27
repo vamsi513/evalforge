@@ -1,7 +1,12 @@
-const base = "/api/ef";
+function getBase() {
+  if (typeof window !== "undefined") return "/api/ef";
+  const vercelUrl = process.env.VERCEL_URL;
+  if (vercelUrl) return `https://${vercelUrl}/api/ef`;
+  return "http://localhost:3000/api/ef";
+}
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${base}/${path}`, { cache: "no-store" });
+  const res = await fetch(`${getBase()}/${path}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return res.json();
 }
