@@ -1,9 +1,7 @@
 import pandas as pd
 import streamlit as st
-from httpx import HTTPError
-
 from client import EvalForgeClient
-
+from httpx import HTTPError
 
 st.set_page_config(page_title="EvalForge", page_icon="EF", layout="wide")
 

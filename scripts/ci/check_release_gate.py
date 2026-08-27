@@ -2,10 +2,9 @@
 import argparse
 import json
 import os
-import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import httpx
 
@@ -14,7 +13,7 @@ def _truthy(value: str) -> bool:
     return value.strip().lower() not in {"", "0", "false", "no"}
 
 
-def _load_decision_from_file(path: Path) -> Dict[str, Any]:
+def _load_decision_from_file(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
 
@@ -25,7 +24,7 @@ def _fetch_decision(
     experiment_name: str,
     workspace_id: str,
     api_key: str,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     url = f"{api_url.rstrip('/')}/api/v1/release-gates/ci-decision"
     params = {"dataset_name": dataset_name}
     if experiment_name:
@@ -50,9 +49,9 @@ def _fetch_trends(
     workspace_id: str,
     api_key: str,
     lookback_days: int = 30,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     url = f"{api_url.rstrip('/')}/api/v1/release-gates/trends"
-    params: Dict[str, Any] = {"dataset_name": dataset_name, "lookback_days": lookback_days}
+    params: dict[str, Any] = {"dataset_name": dataset_name, "lookback_days": lookback_days}
     if experiment_name:
         params["experiment_name"] = experiment_name
 
@@ -68,10 +67,10 @@ def _fetch_trends(
         return response.json()
 
 
-def _evaluate_decision(payload: Dict[str, Any], require_gate_decision: bool) -> int:
+def _evaluate_decision(payload: dict[str, Any], require_gate_decision: bool) -> int:
     status = str(payload.get("status", "unknown"))
     allow_deploy = bool(payload.get("allow_deploy", False))
-    reason_codes: List[str] = list(payload.get("reason_codes", []))
+    reason_codes: list[str] = list(payload.get("reason_codes", []))
     summary = str(payload.get("summary", ""))
 
     print(f"Release gate status: {status}")
@@ -91,8 +90,8 @@ def _evaluate_decision(payload: Dict[str, Any], require_gate_decision: bool) -> 
 
 
 def _render_report(
-    payload: Dict[str, Any],
-    trends_payload: Optional[Dict[str, Any]] = None,
+    payload: dict[str, Any],
+    trends_payload: dict[str, Any] | None = None,
     require_gate_decision: bool = True,
 ) -> str:
     status = str(payload.get("status", "unknown"))
@@ -103,7 +102,7 @@ def _render_report(
     summary = str(payload.get("summary", ""))
     reason_codes = [str(code) for code in payload.get("reason_codes", [])]
     reason_details = [str(reason) for reason in payload.get("reason_details", [])]
-    generated_at = datetime.now(timezone.utc).isoformat()
+    generated_at = datetime.now(UTC).isoformat()
 
     lines = [
         "# EvalGate CI Report",
@@ -191,7 +190,7 @@ def main() -> int:
     args = parser.parse_args()
 
     require_gate = _truthy(str(args.require_gate_decision))
-    trends_payload: Optional[Dict[str, Any]] = None
+    trends_payload: dict[str, Any] | None = None
 
     if args.input_file:
         payload = _load_decision_from_file(Path(args.input_file))
@@ -228,9 +227,9 @@ def main() -> int:
                 api_key=args.api_key,
                 lookback_days=30,
             )
-        except Exception as trends_exc:  # noqa: BLE001
+        except Exception as trends_exc:
             print(f"Warning: unable to fetch release-gate trends: {trends_exc}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         print(f"Failed to fetch release-gate decision: {exc}")
         return 1
 

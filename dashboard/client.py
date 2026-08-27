@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import httpx
 
@@ -9,7 +9,7 @@ class EvalForgeClient:
         self.api_key = api_key.strip()
         self.workspace_id = workspace_id.strip() or "default"
 
-    def _headers(self) -> Dict[str, str]:
+    def _headers(self) -> dict[str, str]:
         headers = {"X-Workspace-ID": self.workspace_id}
         if self.api_key:
             headers["X-API-Key"] = self.api_key
@@ -21,25 +21,25 @@ class EvalForgeClient:
             response.raise_for_status()
             return response.json()
 
-    def _post(self, path: str, payload: Dict[str, Any]) -> Any:
+    def _post(self, path: str, payload: dict[str, Any]) -> Any:
         with httpx.Client(base_url=self.base_url, timeout=20.0) as client:
             response = client.post(path, json=payload, headers=self._headers())
             response.raise_for_status()
             return response.json()
 
-    def get_health(self) -> Dict[str, Any]:
+    def get_health(self) -> dict[str, Any]:
         return self._get("/health")
 
-    def get_telemetry(self) -> Dict[str, Any]:
+    def get_telemetry(self) -> dict[str, Any]:
         return self._get("/api/v1/telemetry/summary")
 
-    def get_datasets(self) -> List[Dict[str, Any]]:
+    def get_datasets(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/datasets")
 
-    def get_evaluators(self) -> List[Dict[str, Any]]:
+    def get_evaluators(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/evaluators")
 
-    def get_experiments(self) -> List[Dict[str, Any]]:
+    def get_experiments(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/experiments")
 
     def get_experiment_leaderboard(
@@ -47,16 +47,16 @@ class EvalForgeClient:
         dataset_name: str = "",
         lookback_runs: int = 20,
         limit: int = 20,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         query = f"/api/v1/experiments/leaderboard?lookback_runs={lookback_runs}&limit={limit}"
         if dataset_name:
             query += f"&dataset_name={dataset_name}"
         return self._get(query)
 
-    def get_experiment_report(self, experiment_name: str) -> Dict[str, Any]:
+    def get_experiment_report(self, experiment_name: str) -> dict[str, Any]:
         return self._get(f"/api/v1/experiments/{experiment_name}/report")
 
-    def recommend_experiment_baseline(self, experiment_name: str) -> Dict[str, Any]:
+    def recommend_experiment_baseline(self, experiment_name: str) -> dict[str, Any]:
         return self._get(f"/api/v1/experiments/{experiment_name}/recommend-baseline")
 
     def promote_experiment_candidate(
@@ -64,7 +64,7 @@ class EvalForgeClient:
         experiment_name: str,
         candidate_run_id: str = "",
         require_latest_gate_passed: bool = True,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         return self._post(
             f"/api/v1/experiments/{experiment_name}/promote",
             {
@@ -73,7 +73,7 @@ class EvalForgeClient:
             },
         )
 
-    def get_experiment_release_history(self, experiment_name: str, limit: int = 20) -> List[Dict[str, Any]]:
+    def get_experiment_release_history(self, experiment_name: str, limit: int = 20) -> list[dict[str, Any]]:
         return self._get(f"/api/v1/experiments/{experiment_name}/release-history?limit={limit}")
 
     def get_experiment_release_history_csv(self, experiment_name: str, limit: int = 200) -> str:
@@ -83,16 +83,16 @@ class EvalForgeClient:
             response.raise_for_status()
             return response.text
 
-    def get_prompt_templates(self) -> List[Dict[str, Any]]:
+    def get_prompt_templates(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/assets/prompts")
 
-    def get_golden_cases(self) -> List[Dict[str, Any]]:
+    def get_golden_cases(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/assets/golden-cases")
 
-    def get_runs(self) -> List[Dict[str, Any]]:
+    def get_runs(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/evals")
 
-    def get_jobs(self) -> List[Dict[str, Any]]:
+    def get_jobs(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/evals/jobs")
 
     def get_eval_calibration(
@@ -101,7 +101,7 @@ class EvalForgeClient:
         experiment_name: str = "",
         lookback_runs: int = 30,
         bin_count: int = 10,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         query = f"/api/v1/evals/calibration?lookback_runs={lookback_runs}&bin_count={bin_count}"
         if dataset_name:
             query += f"&dataset_name={dataset_name}"
@@ -114,7 +114,7 @@ class EvalForgeClient:
         dataset_name: str = "",
         experiment_name: str = "",
         lookback_runs: int = 30,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         query = f"/api/v1/evals/calibration/scenarios?lookback_runs={lookback_runs}"
         if dataset_name:
             query += f"&dataset_name={dataset_name}"
@@ -122,33 +122,33 @@ class EvalForgeClient:
             query += f"&experiment_name={experiment_name}"
         return self._get(query)
 
-    def get_release_gates(self) -> List[Dict[str, Any]]:
+    def get_release_gates(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/release-gates")
 
-    def get_release_gate_schedules(self) -> List[Dict[str, Any]]:
+    def get_release_gate_schedules(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/release-gates/schedules")
 
-    def create_release_gate_schedule(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def create_release_gate_schedule(self, payload: dict[str, Any]) -> dict[str, Any]:
         return self._post("/api/v1/release-gates/schedules", payload)
 
-    def run_release_gate_schedule(self, schedule_id: str) -> Dict[str, Any]:
+    def run_release_gate_schedule(self, schedule_id: str) -> dict[str, Any]:
         return self._post(f"/api/v1/release-gates/schedules/{schedule_id}/run", {})
 
-    def get_release_gate_schedule_runs(self, schedule_id: str, limit: int = 20) -> List[Dict[str, Any]]:
+    def get_release_gate_schedule_runs(self, schedule_id: str, limit: int = 20) -> list[dict[str, Any]]:
         return self._get(f"/api/v1/release-gates/schedules/{schedule_id}/runs?limit={limit}")
 
-    def get_release_gate_policies(self) -> List[Dict[str, Any]]:
+    def get_release_gate_policies(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/release-gates/policies")
 
-    def evaluate_latest_release_gate(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def evaluate_latest_release_gate(self, payload: dict[str, Any]) -> dict[str, Any]:
         return self._post("/api/v1/release-gates/evaluate-latest", payload)
 
-    def get_model_routes(self) -> List[Dict[str, Any]]:
+    def get_model_routes(self) -> list[dict[str, Any]]:
         return self._get("/api/v1/model-routing")
 
     def get_release_gate_trends(
         self, dataset_name: str = "", experiment_name: str = "", lookback_days: int = 30
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         query = f"/api/v1/release-gates/trends?lookback_days={lookback_days}"
         if dataset_name:
             query += f"&dataset_name={dataset_name}"
@@ -158,7 +158,7 @@ class EvalForgeClient:
 
     def get_release_gate_policy_report(
         self, dataset_name: str = "", experiment_name: str = "", lookback_days: int = 30
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         query = f"/api/v1/release-gates/policy-report?lookback_days={lookback_days}"
         if dataset_name:
             query += f"&dataset_name={dataset_name}"
