@@ -261,6 +261,12 @@ class ExperimentService:
             for row in rows
         ]
 
+    @staticmethod
+    def _csv_safe(value: object) -> str:
+        """Prevent CSV formula injection by prefixing dangerous leading characters."""
+        s = str(value) if value is not None else ""
+        return ("'" + s) if s and s[0] in ("=", "+", "-", "@", "\t", "\r") else s
+
     def export_promotion_events_csv(
         self, db: Session, name: str, workspace_id: str, limit: int = 200
     ) -> str:
@@ -281,18 +287,19 @@ class ExperimentService:
                 "created_at",
             ]
         )
+        s = self._csv_safe
         for event in events:
             writer.writerow(
                 [
                     event.id,
-                    event.workspace_id,
-                    event.experiment_name,
-                    event.dataset_name,
+                    s(event.workspace_id),
+                    s(event.experiment_name),
+                    s(event.dataset_name),
                     event.gate_id,
                     event.promoted_run_id,
-                    event.actor,
-                    event.note,
-                    ";".join(f"{k}={v}" for k, v in sorted(event.event_metadata.items())),
+                    s(event.actor),
+                    s(event.note),
+                    s(";".join(f"{k}={v}" for k, v in sorted(event.event_metadata.items()))),
                     event.created_at.isoformat(),
                 ]
             )

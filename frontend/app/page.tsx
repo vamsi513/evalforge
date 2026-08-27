@@ -70,7 +70,7 @@ export default async function DashboardPage() {
       <DemoButton />
 
       {/* Metric cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14, marginBottom: 28 }}>
+      <div className="metrics-grid" style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14, marginBottom: 28 }}>
         <MetricCard
           label="Avg Quality Score"
           value={`${Math.round(score * 100)}%`}
@@ -110,7 +110,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Charts row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 14 }}>
+      <div className="chart-grid" style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 14 }}>
         <ScoreChart runs={runs} />
         <div style={{
           background: "var(--surface)", border: "1px solid var(--border)",

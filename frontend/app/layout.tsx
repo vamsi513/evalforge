@@ -16,9 +16,30 @@ const mono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
+const DESCRIPTION =
+  "Portfolio project: deterministic multi-signal LLM evaluation with heuristic evaluators, OpenAI/Anthropic/Mistral judge adapters, experiment tracking, and release gates. Built with FastAPI, Next.js, and SQLAlchemy.";
+
 export const metadata: Metadata = {
   title: "EvalForge — LLM Evaluation Platform",
-  description: "Portfolio project: deterministic multi-signal LLM evaluation with heuristic evaluators, judge adapters, experiment tracking, and release gates. Built with FastAPI, Next.js, and SQLAlchemy.",
+  description: DESCRIPTION,
+  openGraph: {
+    title: "EvalForge — LLM Evaluation Platform",
+    description: DESCRIPTION,
+    url: "https://frontend-sooty-nine-89.vercel.app",
+    siteName: "EvalForge",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EvalForge — LLM Evaluation Platform",
+    description: DESCRIPTION,
+    creator: "@vamsi513",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -26,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body style={{ background: "var(--bg)", display: "flex", height: "100vh", overflow: "hidden" }}>
         <Sidebar />
-        <main style={{ flex: 1, overflowY: "auto" }}>
+        <main className="app-main" style={{ flex: 1, overflowY: "auto" }}>
           {children}
         </main>
       </body>

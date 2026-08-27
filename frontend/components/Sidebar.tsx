@@ -15,7 +15,7 @@ export default function Sidebar() {
   const path = usePathname();
 
   return (
-    <aside style={{
+    <aside className="app-sidebar" style={{
       width: 224, flexShrink: 0,
       background: "var(--surface)",
       borderRight: "1px solid var(--border)",

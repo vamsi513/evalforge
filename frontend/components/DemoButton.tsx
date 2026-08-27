@@ -137,14 +137,26 @@ export default function DemoButton() {
         </div>
 
         {/* Scenario tabs */}
-        <div style={{ display: "flex", background: "var(--bg)", borderBottom: "1px solid var(--border)" }}>
+        <div
+          role="tablist"
+          aria-label="Evaluation scenario"
+          style={{ display: "flex", background: "var(--bg)", borderBottom: "1px solid var(--border)" }}
+        >
           {SCENARIOS.map(s => {
             const active = s.key === activeScenario;
             return (
               <button
                 key={s.key}
+                role="tab"
+                aria-selected={active}
+                aria-controls="demo-panel"
                 onClick={() => { setActiveScenario(s.key); setState("idle"); setResult(null); }}
                 disabled={state === "running"}
+                onKeyDown={e => {
+                  const idx = SCENARIOS.findIndex(x => x.key === activeScenario);
+                  if (e.key === "ArrowRight") setActiveScenario(SCENARIOS[(idx + 1) % SCENARIOS.length].key);
+                  if (e.key === "ArrowLeft")  setActiveScenario(SCENARIOS[(idx - 1 + SCENARIOS.length) % SCENARIOS.length].key);
+                }}
                 style={{
                   flex: 1, padding: "10px 12px", border: "none", cursor: "pointer",
                   background: active ? "var(--surface)" : "transparent",
@@ -163,7 +175,7 @@ export default function DemoButton() {
 
         {/* Results */}
         {state === "done" && result && (
-          <>
+          <div id="demo-panel" role="tabpanel">
             <div style={{
               padding: "11px 20px", borderBottom: "1px solid var(--border)",
               display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -206,7 +218,7 @@ export default function DemoButton() {
                 </span>
               </div>
             ))}
-          </>
+          </div>
         )}
 
         {state === "error" && (
