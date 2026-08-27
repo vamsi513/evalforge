@@ -8,7 +8,7 @@ st.set_page_config(page_title="EvalForge", page_icon="EF", layout="wide")
 st.title("EvalForge Dashboard")
 st.caption("Reliability, PromptOps, and evaluation telemetry for LLM systems.")
 
-base_url = st.sidebar.text_input("API Base URL", value="http://127.0.0.1:8001")
+base_url = st.sidebar.text_input("API Base URL", value="http://23.21.42.197/evalforge")
 api_key = st.sidebar.text_input("API Key", value="", type="password")
 workspace_id = st.sidebar.text_input("Workspace", value="default")
 refresh = st.sidebar.button("Refresh")
