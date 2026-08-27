@@ -1,7 +1,25 @@
 import { api } from "@/lib/api";
-import { Shield, CheckCircle, XCircle } from "lucide-react";
+import { Shield, CheckCircle, XCircle, Lock, GitMerge, AlertTriangle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
+
+const HOW_IT_WORKS = [
+  {
+    icon: GitMerge,
+    title: "Define a gate",
+    desc: "Attach a minimum quality threshold (e.g. 75%) to an experiment and dataset.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Evaluate before deploy",
+    desc: "Every eval run is scored against the gate. If average score drops below the threshold, the gate fails.",
+  },
+  {
+    icon: Lock,
+    title: "Block bad releases",
+    desc: "CI/CD pipelines call the gate API to get a PASS/FAIL signal before promoting the model to production.",
+  },
+];
 
 export default async function GatesPage() {
   const gates = await api.releaseGates().catch(() => []);
@@ -11,32 +29,106 @@ export default async function GatesPage() {
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.5px" }}>Release Gates</h1>
         <p style={{ fontSize: 13.5, color: "var(--muted)", marginTop: 4 }}>
-          Automated checks that block bad model updates from reaching production
+          Automated quality gates that block regressions from reaching production
         </p>
       </div>
 
       {gates.length === 0 ? (
-        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: 48, textAlign: "center" }}>
-          <Shield size={32} style={{ color: "var(--muted)", margin: "0 auto 12px" }} />
-          <p style={{ color: "var(--muted)", fontSize: 14 }}>No release gates configured yet.</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {/* Explainer */}
+          <div style={{
+            background: "var(--surface)", border: "1px solid var(--border)",
+            borderRadius: 12, padding: "28px 32px",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 10,
+                background: "var(--accent-dim)", display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <Shield size={18} style={{ color: "var(--accent)" }} />
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>How release gates work</div>
+                <div style={{ fontSize: 12, color: "var(--muted)" }}>
+                  No gates configured yet — here&apos;s what they do
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+              {HOW_IT_WORKS.map(({ icon: Icon, title, desc }) => (
+                <div key={title} style={{
+                  background: "var(--bg)", borderRadius: 10, padding: "16px 18px",
+                  border: "1px solid var(--border)",
+                }}>
+                  <div style={{
+                    width: 30, height: 30, borderRadius: 8, background: "var(--accent-dim)",
+                    display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 10,
+                  }}>
+                    <Icon size={14} style={{ color: "var(--accent)" }} />
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 4 }}>{title}</div>
+                  <div style={{ fontSize: 12, color: "var(--muted)", lineHeight: 1.5 }}>{desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* API example */}
+          <div style={{
+            background: "var(--surface)", border: "1px solid var(--border)",
+            borderRadius: 12, padding: "20px 24px",
+          }}>
+            <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 12 }}>Create a gate via the API</div>
+            <pre style={{
+              background: "var(--bg)", borderRadius: 8, padding: "14px 16px",
+              fontSize: 12, fontFamily: "monospace", color: "var(--muted)",
+              border: "1px solid var(--border)", overflowX: "auto",
+              lineHeight: 1.7,
+            }}>{`POST /api/v1/release-gates
+{
+  "experiment_name": "gpt4o-chat-v3",
+  "dataset_name":    "production-qa",
+  "min_score":       0.75,
+  "evaluator_profile": "strict"
+}`}</pre>
+          </div>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {gates.map((g: Record<string, unknown>, i: number) => {
             const passed = g.status === "passed";
+            const score = typeof g.average_score === "number" ? g.average_score : null;
+            const threshold = typeof g.min_score === "number" ? g.min_score : null;
             return (
-              <div key={i} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
+              <div key={i} style={{
+                background: "var(--surface)", border: "1px solid var(--border)",
+                borderRadius: 12, padding: "16px 20px",
+                display: "flex", alignItems: "center", gap: 16,
+              }}>
                 {passed
                   ? <CheckCircle size={20} style={{ color: "var(--green)", flexShrink: 0 }} />
                   : <XCircle size={20} style={{ color: "var(--red)", flexShrink: 0 }} />}
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: 13.5 }}>{String(g.experiment_name || "—")}</div>
-                  <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>Dataset: {String(g.dataset_name || "—")}</div>
+                  <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
+                    Dataset: {String(g.dataset_name || "—")}
+                    {threshold !== null && ` · min score ${Math.round(threshold * 100)}%`}
+                  </div>
                 </div>
+                {score !== null && (
+                  <span style={{
+                    fontFamily: "monospace", fontSize: 13, fontWeight: 700,
+                    color: passed ? "var(--green)" : "var(--red)",
+                  }}>
+                    {Math.round(score * 100)}%
+                  </span>
+                )}
                 <span style={{
-                  fontSize: 12, fontWeight: 700, padding: "3px 10px", borderRadius: 6,
+                  fontSize: 11.5, fontWeight: 700, padding: "3px 10px", borderRadius: 6,
                   background: passed ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)",
                   color: passed ? "var(--green)" : "var(--red)",
+                  letterSpacing: "0.04em",
                 }}>
                   {passed ? "PASSED" : "FAILED"}
                 </span>
