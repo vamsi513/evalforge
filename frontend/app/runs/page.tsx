@@ -1,4 +1,5 @@
 import { api, EvalRun } from "@/lib/api";
+import SeedButton from "@/components/SeedButton";
 
 export const dynamic = "force-dynamic";
 
@@ -63,8 +64,14 @@ export default async function RunsPage() {
 
       <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}>
         {runs.length === 0 ? (
-          <div style={{ padding: 48, textAlign: "center", color: "var(--muted)", fontSize: 14 }}>
-            No eval runs yet. Click <b style={{ color: "var(--text)" }}>Run Demo Eval</b> on the Overview page to create the first one.
+          <div style={{ padding: "52px 48px", textAlign: "center" }}>
+            <div style={{ fontSize: 14, color: "var(--muted)", marginBottom: 4 }}>No eval runs yet</div>
+            <p style={{ fontSize: 12.5, color: "var(--subtle)", marginBottom: 0 }}>
+              Seed 3 demo experiments to populate this table with real scored results.
+            </p>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <SeedButton />
+            </div>
           </div>
         ) : (
           <div style={{ overflowX: "auto" }}>

@@ -1,5 +1,6 @@
 import { api } from "@/lib/api";
 import { Database, Layers, FlaskConical } from "lucide-react";
+import SeedButton from "@/components/SeedButton";
 
 export const dynamic = "force-dynamic";
 
@@ -71,10 +72,13 @@ export default async function DatasetsPage() {
             <Database size={22} style={{ color: "var(--accent)" }} />
           </div>
           <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 6 }}>No datasets yet</div>
-          <p style={{ fontSize: 13, color: "var(--muted)", maxWidth: 380, margin: "0 auto 20px" }}>
-            Datasets are created automatically when you run the demo eval. You can also create them via the API.
+          <p style={{ fontSize: 13, color: "var(--muted)", maxWidth: 380, margin: "0 auto" }}>
+            Seed 3 demo datasets or create them via the API.
           </p>
-          <pre style={{ display: "inline-block", textAlign: "left", fontSize: 12 }}>{`POST /api/v1/datasets
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <SeedButton />
+          </div>
+          <pre style={{ display: "inline-block", textAlign: "left", fontSize: 12, marginTop: 16 }}>{`POST /api/v1/datasets
 { "name": "my-dataset", "owner": "team" }`}</pre>
         </div>
       ) : (
