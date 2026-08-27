@@ -21,13 +21,13 @@ const DESCRIPTION =
   "Portfolio project: deterministic multi-signal LLM evaluation with heuristic evaluators, OpenAI/Anthropic/Mistral judge adapters, experiment tracking, and release gates. Built with FastAPI, Next.js, and SQLAlchemy.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://frontend-sooty-nine-89.vercel.app"),
+  metadataBase: new URL("https://evalforge-platform.vercel.app"),
   title: "EvalForge — LLM Evaluation Platform",
   description: DESCRIPTION,
   openGraph: {
     title: "EvalForge — LLM Evaluation Platform",
     description: DESCRIPTION,
-    url: "https://frontend-sooty-nine-89.vercel.app",
+    url: "https://evalforge-platform.vercel.app",
     siteName: "EvalForge",
     type: "website",
     locale: "en_US",
@@ -42,6 +42,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0a0f",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
