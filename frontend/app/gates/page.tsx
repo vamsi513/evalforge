@@ -114,34 +114,41 @@ export default async function GatesPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {gates.map((g: Record<string, unknown>, i: number) => {
             const passed = g.status === "passed";
-            const score = typeof g.average_score === "number" ? g.average_score : null;
-            const threshold = typeof g.min_score === "number" ? g.min_score : null;
+            const metrics = (g.metrics ?? {}) as Record<string, unknown>;
+            const candidateScore = typeof metrics.candidate_score === "number" ? metrics.candidate_score : null;
+            const scoreDelta = typeof metrics.score_delta === "number" ? metrics.score_delta : null;
             return (
               <div key={i} style={{
-                background: "var(--surface)", border: "1px solid var(--border)",
+                background: "var(--surface)", border: `1px solid ${passed ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.15)"}`,
                 borderRadius: 12, padding: "16px 20px",
                 display: "flex", alignItems: "center", gap: 16,
               }}>
                 {passed
                   ? <CheckCircle size={20} style={{ color: "var(--green)", flexShrink: 0 }} />
                   : <XCircle size={20} style={{ color: "var(--red)", flexShrink: 0 }} />}
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13.5 }}>{String(g.experiment_name || "—")}</div>
                   <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
-                    Dataset: {String(g.dataset_name || "—")}
-                    {threshold !== null && ` · min score ${Math.round(threshold * 100)}%`}
+                    {String(g.dataset_name || "—")}
+                    {scoreDelta !== null && (
+                      <span style={{ marginLeft: 8, color: scoreDelta >= 0 ? "var(--green)" : "var(--red)" }}>
+                        Δ {scoreDelta >= 0 ? "+" : ""}{(scoreDelta * 100).toFixed(1)}%
+                      </span>
+                    )}
                   </div>
+                  {g.summary && (
+                    <div style={{ fontSize: 11.5, color: "var(--subtle)", marginTop: 4, lineHeight: 1.4 }}>
+                      {String(g.summary)}
+                    </div>
+                  )}
                 </div>
-                {score !== null && (
-                  <span style={{
-                    fontFamily: "monospace", fontSize: 13, fontWeight: 700,
-                    color: passed ? "var(--green)" : "var(--red)",
-                  }}>
-                    {Math.round(score * 100)}%
+                {candidateScore !== null && (
+                  <span className="mono" style={{ fontSize: 14, fontWeight: 700, color: passed ? "var(--green)" : "var(--red)", flexShrink: 0 }}>
+                    {Math.round(candidateScore * 100)}%
                   </span>
                 )}
                 <span style={{
-                  fontSize: 11.5, fontWeight: 700, padding: "3px 10px", borderRadius: 6,
+                  fontSize: 11.5, fontWeight: 700, padding: "3px 10px", borderRadius: 6, flexShrink: 0,
                   background: passed ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)",
                   color: passed ? "var(--green)" : "var(--red)",
                   letterSpacing: "0.04em",

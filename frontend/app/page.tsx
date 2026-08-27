@@ -39,11 +39,20 @@ export default async function DashboardPage() {
   ]);
 
   const online = health.status === "ok";
-  const score = telemetry.average_score ?? 0;
 
   const allResults = runs.flatMap(r => r.results ?? []);
   const totalPassed = allResults.filter(r => r.passed).length;
   const passRate = allResults.length > 0 ? totalPassed / allResults.length : 0;
+
+  // Prefer runs-derived score (always available) over telemetry (may be scoped differently)
+  const runsAvgScore = runs.length > 0
+    ? runs.reduce((sum, r) => sum + (r.average_score ?? 0), 0) / runs.length
+    : 0;
+  const score = runsAvgScore > 0 ? runsAvgScore : (telemetry.average_score ?? 0);
+  const runsAvgLatency = allResults.length > 0
+    ? allResults.reduce((sum, r) => sum + (r.latency_ms ?? 0), 0) / allResults.length
+    : 0;
+  const avgLatency = runsAvgLatency > 0 ? runsAvgLatency : (telemetry.average_latency_ms ?? 0);
 
   const now = new Date().toLocaleString("en-US", {
     month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true,
@@ -101,13 +110,13 @@ export default async function DashboardPage() {
         />
         <MetricCard
           label="Total Eval Runs"
-          value={String(telemetry.total_runs)}
-          sub={telemetry.total_runs > 0 ? "Demo workspace" : "Run demo to populate"}
+          value={String(telemetry.total_runs > 0 ? telemetry.total_runs : runs.length)}
+          sub={(telemetry.total_runs > 0 || runs.length > 0) ? "Demo workspace" : "Run demo to populate"}
           icon={FlaskConical}
         />
         <MetricCard
           label="Avg Latency"
-          value={hasData ? `${Math.round(telemetry.average_latency_ms)} ms` : "—"}
+          value={hasData ? `${Math.round(avgLatency)} ms` : "—"}
           sub="Per test case"
           icon={Zap}
           color={hasData ? "var(--yellow)" : "var(--muted)"}
