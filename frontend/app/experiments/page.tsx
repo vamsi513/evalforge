@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { GitCompare, Trophy, ArrowUpRight } from "lucide-react";
+import { GitCompare, Trophy, ArrowUpRight, CheckCircle, XCircle } from "lucide-react";
 import SeedButton from "@/components/SeedButton";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +9,17 @@ export default async function ExperimentsPage() {
   const items = leaderboard.items ?? [];
 
   const best = items[0];
+
+  function scoreColor(s: number) {
+    if (s >= 0.8) return "var(--green)";
+    if (s >= 0.65) return "var(--yellow)";
+    return "var(--red)";
+  }
+  function scoreDim(s: number) {
+    if (s >= 0.8) return "var(--green-dim)";
+    if (s >= 0.65) return "var(--yellow-dim)";
+    return "var(--red-dim)";
+  }
 
   return (
     <div style={{ padding: "36px 44px", maxWidth: 1220 }}>
@@ -65,16 +76,24 @@ export default async function ExperimentsPage() {
                 <div style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, marginBottom: 3, letterSpacing: "0.05em" }}>
                   CURRENT LEADER
                 </div>
-                <div style={{ fontWeight: 700, fontSize: 14.5 }}>{best.experiment_name || "Unnamed"}</div>
+                <div style={{ fontWeight: 700, fontSize: 14.5 }}>{best.experiment_name}</div>
                 <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
-                  {best.model_name} · {best.run_count} run{best.run_count !== 1 ? "s" : ""}
+                  {best.dataset_name} · {best.run_count} run{best.run_count !== 1 ? "s" : ""}
+                  {best.latest_gate_status && (
+                    <span style={{
+                      marginLeft: 8, fontSize: 11, fontWeight: 700,
+                      color: best.latest_gate_status === "passed" ? "var(--green)" : "var(--red)",
+                    }}>
+                      Gate: {best.latest_gate_status.toUpperCase()}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="mono" style={{
                 fontSize: 28, fontWeight: 700, letterSpacing: "-1px",
-                color: (best.average_score ?? 0) >= 0.8 ? "var(--green)" : "var(--yellow)",
+                color: scoreColor(best.average_recent_score),
               }}>
-                {Math.round((best.average_score ?? 0) * 100)}%
+                {Math.round(best.average_recent_score * 100)}%
               </div>
             </div>
           )}
@@ -94,7 +113,7 @@ export default async function ExperimentsPage() {
               <table className="data-table" style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
                   <tr>
-                    {["Rank", "Experiment", "Model", "Score", "Runs", "Avg Latency"].map(h => (
+                    {["Rank", "Experiment", "Dataset", "Avg Score", "Latest", "Runs", "Gate"].map(h => (
                       <th key={h} style={{
                         textAlign: "left", padding: "10px 16px",
                         fontSize: 10.5, fontWeight: 600, color: "var(--subtle)",
@@ -109,9 +128,12 @@ export default async function ExperimentsPage() {
                 </thead>
                 <tbody>
                   {items.map((item, i) => {
-                    const score = item.average_score ?? 0;
-                    const color = score >= 0.8 ? "var(--green)" : score >= 0.65 ? "var(--yellow)" : "var(--red)";
-                    const dimColor = score >= 0.8 ? "var(--green-dim)" : score >= 0.65 ? "var(--yellow-dim)" : "var(--red-dim)";
+                    const score = item.average_recent_score ?? 0;
+                    const latest = item.latest_score ?? 0;
+                    const color = scoreColor(score);
+                    const dim = scoreDim(score);
+                    const gatePassed = item.latest_gate_status === "passed";
+                    const gateFailed = item.latest_gate_status === "failed";
                     return (
                       <tr key={item.experiment_name}>
                         <td style={{ padding: "12px 16px", color: "var(--subtle)", fontWeight: 600, borderBottom: "1px solid var(--border)" }}>
@@ -121,26 +143,35 @@ export default async function ExperimentsPage() {
                         </td>
                         <td style={{ padding: "12px 16px", fontWeight: 500, borderBottom: "1px solid var(--border)" }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                            {item.experiment_name || "—"}
+                            {item.experiment_name}
                             {i === 0 && <ArrowUpRight size={13} style={{ color: "var(--accent)", opacity: 0.7 }} />}
                           </div>
                         </td>
                         <td style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
-                          <span className="mono" style={{ fontSize: 12, color: "var(--muted)" }}>{item.model_name || "—"}</span>
+                          <span className="mono" style={{ fontSize: 11.5, color: "var(--subtle)" }}>{item.dataset_name}</span>
                         </td>
                         <td style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
                           <span className="mono" style={{
                             fontSize: 12.5, fontWeight: 700, color,
-                            background: dimColor, padding: "2px 9px", borderRadius: 6,
+                            background: dim, padding: "2px 9px", borderRadius: 6,
                           }}>
                             {Math.round(score * 100)}%
                           </span>
                         </td>
                         <td style={{ padding: "12px 16px", color: "var(--muted)", borderBottom: "1px solid var(--border)" }}>
-                          {item.run_count}
+                          <span className="mono" style={{ fontSize: 12, color: scoreColor(latest) }}>
+                            {Math.round(latest * 100)}%
+                          </span>
                         </td>
                         <td style={{ padding: "12px 16px", color: "var(--muted)", borderBottom: "1px solid var(--border)" }}>
-                          <span className="mono">{Math.round(item.average_latency_ms ?? 0)} ms</span>
+                          {item.run_count}
+                        </td>
+                        <td style={{ padding: "12px 16px", borderBottom: "1px solid var(--border)" }}>
+                          {gatePassed
+                            ? <span style={{ display: "flex", alignItems: "center", gap: 4, color: "var(--green)", fontSize: 11.5, fontWeight: 600 }}><CheckCircle size={12} /> PASS</span>
+                            : gateFailed
+                            ? <span style={{ display: "flex", alignItems: "center", gap: 4, color: "var(--red)", fontSize: 11.5, fontWeight: 600 }}><XCircle size={12} /> FAIL</span>
+                            : <span style={{ color: "var(--subtle)", fontSize: 11.5 }}>—</span>}
                         </td>
                       </tr>
                     );

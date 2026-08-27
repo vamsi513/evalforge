@@ -49,10 +49,13 @@ export interface Dataset {
 
 export interface LeaderboardItem {
   experiment_name: string;
-  model_name: string;
-  average_score: number;
+  dataset_name: string;
+  workspace_id: string;
   run_count: number;
-  average_latency_ms: number;
+  latest_score: number;
+  average_recent_score: number;
+  latest_gate_status: string;
+  last_updated_at: string;
 }
 
 export const api = {
