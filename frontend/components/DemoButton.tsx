@@ -17,19 +17,29 @@ interface RunResult {
 export default function DemoButton() {
   const [state, setState] = useState<"idle" | "running" | "done" | "error">("idle");
   const [result, setResult] = useState<RunResult | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const router = useRouter();
 
   async function runDemo() {
     setState("running");
     setResult(null);
+    setErrorMsg("");
     try {
       const res = await fetch("/api/demo", { method: "POST" });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Failed");
+      if (!res.ok) {
+        const msg = (data as { error?: string; detail?: string }).error
+          ?? (data as { detail?: string }).detail
+          ?? `HTTP ${res.status}`;
+        setErrorMsg(msg);
+        setState("error");
+        return;
+      }
       setResult(data as RunResult);
       setState("done");
-      router.refresh(); // re-run server components so metrics update
-    } catch {
+      router.refresh();
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Network error");
       setState("error");
     }
   }
@@ -136,7 +146,7 @@ export default function DemoButton() {
           background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)",
           fontSize: 12.5, color: "var(--red)",
         }}>
-          Demo run failed — check that the API server is running.
+          Demo run failed{errorMsg ? `: ${errorMsg}` : " — check that the API server is running."}
         </div>
       )}
 

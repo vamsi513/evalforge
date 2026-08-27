@@ -70,10 +70,19 @@ export async function POST() {
 
     const text = await evalRes.text();
     let data: unknown;
-    try { data = JSON.parse(text); } catch { data = { error: text }; }
+    try { data = JSON.parse(text); } catch { data = { error: text || "upstream error" }; }
 
-    return NextResponse.json(data, { status: evalRes.status });
-  } catch {
-    return NextResponse.json({ error: "Demo unavailable" }, { status: 503 });
+    if (!evalRes.ok) {
+      const detail =
+        (data as { detail?: string })?.detail ??
+        (data as { error?: string })?.error ??
+        `EC2 returned ${evalRes.status}`;
+      return NextResponse.json({ error: detail }, { status: evalRes.status });
+    }
+
+    return NextResponse.json(data, { status: 200 });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Network error reaching API";
+    return NextResponse.json({ error: msg }, { status: 503 });
   }
 }
