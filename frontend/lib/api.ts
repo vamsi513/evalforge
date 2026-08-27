@@ -1,12 +1,19 @@
-function getBase() {
-  if (typeof window !== "undefined") return "/api/ef";
-  const vercelUrl = process.env.VERCEL_URL;
-  if (vercelUrl) return `https://${vercelUrl}/api/ef`;
-  return "http://localhost:3000/api/ef";
+function buildRequest(path: string): [string, RequestInit] {
+  if (typeof window !== "undefined") {
+    // browser: go through the proxy route (keeps key server-side)
+    return [`/api/ef/${path}`, { cache: "no-store" }];
+  }
+  // server component: call EC2 directly with the key
+  const base = process.env.EVALFORGE_API_URL ?? "http://23.21.42.197:8001";
+  const key = process.env.EVALFORGE_API_KEY ?? "";
+  const headers: Record<string, string> = {};
+  if (key) headers["X-API-Key"] = key;
+  return [`${base}/${path}`, { cache: "no-store", headers }];
 }
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${getBase()}/${path}`, { cache: "no-store" });
+  const [url, init] = buildRequest(path);
+  const res = await fetch(url, init);
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return res.json();
 }
