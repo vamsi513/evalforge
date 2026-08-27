@@ -1,6 +1,6 @@
 import hmac
 
-from fastapi import Header, HTTPException, Request, status
+from fastapi import Header, HTTPException, status
 
 from app.core.config import settings
 
@@ -8,12 +8,9 @@ _ROLE_RANK = {"viewer": 1, "editor": 2, "admin": 3}
 
 
 async def require_api_access(
-    request: Request,
     x_api_key: str | None = Header(default=None, alias="X-API-Key"),
 ) -> None:
     if not settings.platform_api_key:
-        return
-    if request.method in ("GET", "HEAD", "OPTIONS"):
         return
     if x_api_key and hmac.compare_digest(x_api_key, settings.platform_api_key):
         return

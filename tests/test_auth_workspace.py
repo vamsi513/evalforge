@@ -11,16 +11,8 @@ client = TestClient(app)
 def test_api_key_and_workspace_scoping(monkeypatch) -> None:
     monkeypatch.setattr(settings, "platform_api_key", "secret-key")
 
-    # GET requests are public (read-only dashboard access)
-    unauthorized_get = client.get("/api/v1/datasets")
-    assert unauthorized_get.status_code == 200
-
-    # POST without a key must still be rejected
-    unauthorized_post = client.post(
-        "/api/v1/datasets",
-        json={"name": "no-auth", "description": "should fail", "owner": "nobody"},
-    )
-    assert unauthorized_post.status_code == 401
+    unauthorized_response = client.get("/api/v1/datasets")
+    assert unauthorized_response.status_code == 401
 
     headers_a = {
         "X-API-Key": "secret-key",
