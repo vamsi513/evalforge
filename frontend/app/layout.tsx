@@ -54,9 +54,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body style={{ background: "var(--bg)", display: "flex", height: "100vh", overflow: "hidden" }}>
+        <a href="#main-content" className="skip-nav">
+          Skip to main content
+        </a>
         <Sidebar />
         <MobileNav />
-        <main className="app-main" style={{ flex: 1, overflowY: "auto" }}>
+        <main id="main-content" className="app-main" style={{ flex: 1, overflowY: "auto" }}>
           {children}
         </main>
       </body>

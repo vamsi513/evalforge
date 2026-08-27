@@ -19,6 +19,13 @@ export default function MobileNav() {
   // Close on route change
   useEffect(() => { setOpen(false); }, [path]);
 
+  // Close on Escape key
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
   // Prevent body scroll when open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -105,6 +112,7 @@ export default function MobileNav() {
           </div>
           <button
             onClick={() => setOpen(false)}
+            aria-label="Close navigation menu"
             style={{ background: "none", border: "none", cursor: "pointer", color: "var(--muted)", padding: 4 }}
           >
             <X size={16} />
@@ -121,6 +129,7 @@ export default function MobileNav() {
               <Link
                 key={href}
                 href={href}
+                aria-current={active ? "page" : undefined}
                 className={`nav-item${active ? " nav-active" : ""}`}
                 style={{
                   display: "flex", alignItems: "center", gap: 10,

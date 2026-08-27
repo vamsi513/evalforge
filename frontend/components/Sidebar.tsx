@@ -55,13 +55,14 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, padding: "0 10px", display: "flex", flexDirection: "column", gap: 2 }}>
+      <nav aria-label="Primary navigation" style={{ flex: 1, padding: "0 10px", display: "flex", flexDirection: "column", gap: 2 }}>
         {nav.map(({ href, label, icon: Icon }) => {
           const active = path === href;
           return (
             <Link
               key={href}
               href={href}
+              aria-current={active ? "page" : undefined}
               className={`nav-item${active ? " nav-active" : ""}`}
               style={{
                 display: "flex", alignItems: "center", gap: 10,
