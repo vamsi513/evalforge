@@ -1,24 +1,14 @@
 import type { NextConfig } from "next";
 
-const CSP = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",   // Next.js requires unsafe-eval in dev; inline for hydration
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data:",
-  "connect-src 'self'",
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join("; ");
-
+// Content-Security-Policy is set per-request in middleware.ts instead of
+// here, so each response gets a fresh script-src nonce and can drop
+// 'unsafe-inline'/'unsafe-eval' for scripts entirely.
 const securityHeaders = [
   { key: "X-Content-Type-Options",      value: "nosniff" },
   { key: "X-Frame-Options",             value: "DENY" },
   { key: "Referrer-Policy",             value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy",          value: "camera=(), microphone=(), geolocation=()" },
   { key: "X-DNS-Prefetch-Control",      value: "on" },
-  { key: "Content-Security-Policy",     value: CSP },
   { key: "Strict-Transport-Security",   value: "max-age=63072000; includeSubDomains; preload" },
 ];
 
