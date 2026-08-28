@@ -148,7 +148,13 @@ class EvalRunner:
             rubric=rubric,
             score=score,
             latency_ms=prompt_tokens * 8 + response_tokens * 3,
-            cost_usd=round((prompt_tokens + response_tokens) * 0.00001, 6),
+            # EvalRunner is the pure heuristic scorer — no LLM call happens on
+            # this path, so there is no real API spend to report. This used
+            # to be a token-count-derived estimate that displayed as genuine
+            # "Judge API spend" for runs that never called a judge; a prior
+            # fix (07ae123) addressed the mock judge path in judge.py but
+            # missed this one, which is what the live demo actually runs.
+            cost_usd=0.0,
             passed=passed,
             matched_terms=score_result.matched_terms,
             missing_terms=score_result.missing_terms,
