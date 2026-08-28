@@ -13,7 +13,7 @@ A production-inspired LLM evaluation platform with deterministic multi-signal sc
 
 **API docs:** [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
 
-Click **Run General Knowledge** on the dashboard to run a live heuristic evaluation — no setup needed.
+Click **Run General Knowledge** on the dashboard to run a live heuristic evaluation — no setup needed. The demo runs in `mock` judge mode (see [Judge modes](#judge-modes) below), so the compute cost shown is genuinely `$0.0000` — no LLM judge API call is made, only the deterministic scorers.
 
 ![EvalForge Overview — live demo with heuristic scores, pass rate, and latency](docs/screenshot.png)
 
