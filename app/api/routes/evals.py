@@ -2,6 +2,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_workspace_id, require_editor_role
+from app.core.rate_limit import check_rate_limit
 from app.db.session import get_db
 from app.models.assets import StoredEvalRunCreate
 from app.models.eval_run import (
@@ -83,7 +84,12 @@ async def get_eval_job(
     return job
 
 
-@router.post("", response_model=EvalRunResponse, status_code=201, dependencies=[Depends(require_editor_role)])
+@router.post(
+    "",
+    response_model=EvalRunResponse,
+    status_code=201,
+    dependencies=[Depends(require_editor_role), Depends(check_rate_limit)],
+)
 async def create_eval_run(
     payload: EvalRunCreate,
     workspace_id: str = Depends(get_workspace_id),
@@ -96,7 +102,7 @@ async def create_eval_run(
     "/async",
     response_model=AsyncEvalJobResponse,
     status_code=202,
-    dependencies=[Depends(require_editor_role)],
+    dependencies=[Depends(require_editor_role), Depends(check_rate_limit)],
 )
 async def create_eval_run_async(
     payload: EvalRunCreate,
@@ -113,7 +119,7 @@ async def create_eval_run_async(
     "/stored",
     response_model=EvalRunResponse,
     status_code=201,
-    dependencies=[Depends(require_editor_role)],
+    dependencies=[Depends(require_editor_role), Depends(check_rate_limit)],
 )
 async def create_eval_run_from_stored_cases(
     payload: StoredEvalRunCreate,
@@ -130,7 +136,7 @@ async def create_eval_run_from_stored_cases(
     "/judge",
     response_model=JudgeEvalResponse,
     status_code=201,
-    dependencies=[Depends(require_editor_role)],
+    dependencies=[Depends(require_editor_role), Depends(check_rate_limit)],
 )
 async def judge_eval_run(
     payload: JudgeEvalCreate,
@@ -144,7 +150,7 @@ async def judge_eval_run(
     "/compare",
     response_model=PairwiseEvalResponse,
     status_code=201,
-    dependencies=[Depends(require_editor_role)],
+    dependencies=[Depends(require_editor_role), Depends(check_rate_limit)],
 )
 async def compare_eval_run(
     payload: PairwiseEvalCreate,
