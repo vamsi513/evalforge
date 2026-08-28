@@ -78,9 +78,12 @@ def _evaluate_decision(payload: dict[str, Any], require_gate_decision: bool) -> 
     print(f"Reason codes: {reason_codes}")
     print(f"Summary: {summary}")
 
-    if status == "not_evaluated" and require_gate_decision:
-        print("Blocking deployment: no release-gate decision found.")
-        return 1
+    if status == "not_evaluated":
+        if require_gate_decision:
+            print("Blocking deployment: no release-gate decision found.")
+            return 1
+        print("No release-gate decision found; not required, allowing deployment.")
+        return 0
 
     if not allow_deploy:
         print("Blocking deployment based on release-gate decision.")
