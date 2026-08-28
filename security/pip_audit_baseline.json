@@ -1,0 +1,11 @@
+{
+  "_comment": "Known, accepted CVEs as of the review date below, tracked so CI blocks on any NEW vulnerability without silently ignoring the whole scan. cryptography's fix (50.0.0) conflicts with mlflow's own pin (cryptography<50,>=43.0.0) — upgrading breaks mlflow's dependency resolution. The vulnerable code paths (pkcs7_decrypt_der/pem/smime — an S/MIME decryption oracle) are never called anywhere in this codebase, which does no S/MIME or PKCS#7 processing. Revisit once mlflow relaxes its cryptography ceiling.",
+  "reviewed_date": "2026-08-28",
+  "accepted_vulnerabilities": [
+    {
+      "package": "cryptography",
+      "id": "PYSEC-2026-3552",
+      "fix_versions": ["50.0.0"]
+    }
+  ]
+}

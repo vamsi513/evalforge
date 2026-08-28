@@ -24,13 +24,16 @@ dependencies = [
   "redis>=5.2.0",
   "mlflow>=3.15.0",
   "pyarrow>=23.0.1",
+  # setuptools>=83.0.0 used to live only in the dev extra below, which
+  # meant a base install (no [dev]) never picked up the fix for
+  # PYSEC-2026-3447. Moved here so it applies unconditionally.
+  "setuptools>=83.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest>=8.3.0",
   "ruff>=0.6.0",
-  "setuptools>=83.0.0",
 ]
 ml = [
   "scikit-learn>=1.5.0",
