@@ -24,8 +24,8 @@ const EVALUATORS = [
 const FEATURES = [
   { icon: "🧪", label: "Experiment tracking",   desc: "Compare prompt versions and model configs side by side" },
   { icon: "🚦", label: "Release gates",         desc: "PASS/FAIL CI signal that blocks regressions before deploy" },
-  { icon: "⚡", label: "Async job worker",       desc: "Background eval jobs via queue — decoupled from the API layer" },
-  { icon: "📊", label: "MLflow integration",    desc: "Optional run logging to hosted MLflow tracking server" },
+  { icon: "⚡", label: "Async eval API",         desc: "In-process background jobs by default — Redis-backed queue available for multi-worker deployments" },
+  { icon: "📊", label: "MLflow tracking",        desc: "Every eval run and comparison logged automatically for experiment history" },
   { icon: "🔌", label: "LLM judge adapters",    desc: "OpenAI · Anthropic · Mistral adapters — with deterministic heuristic fallback" },
 ];
 
