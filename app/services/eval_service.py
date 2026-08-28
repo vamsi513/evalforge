@@ -10,6 +10,7 @@ from app.db.models import EvalJobRecord, EvalRunRecord
 from app.db.session import SessionLocal
 from app.engine.evaluator import eval_runner
 from app.engine.judge import judge_client
+from app.engine.mlflow_tracker import tracked_compare, tracked_run
 from app.models.assets import StoredEvalRunCreate
 from app.models.eval_run import (
     AsyncEvalJobResponse,
@@ -59,7 +60,7 @@ class EvalService:
             return self._get_legacy_run_by_id(db, run_id, workspace_id=workspace_id)
 
     def create_run(self, db: Session, payload: EvalRunCreate, workspace_id: str = "default") -> EvalRunResponse:
-        results, average_score = eval_runner.run(payload)
+        results, average_score = tracked_run(eval_runner, payload)
         run_metadata = dict(payload.run_metadata)
         run_metadata.setdefault("evaluator_profile", payload.evaluator_profile)
         return self._persist_eval_run(
@@ -182,7 +183,7 @@ class EvalService:
             db.close()
 
     def compare_runs(self, db: Session, payload: PairwiseEvalCreate) -> PairwiseEvalResponse:
-        return eval_runner.compare(payload)
+        return tracked_compare(eval_runner, payload)
 
     def get_calibration_report(
         self,

@@ -12,3 +12,4 @@ coverage.xml
 htmlcov/
 evalforge.db
 *.egg-info/
+mlruns/

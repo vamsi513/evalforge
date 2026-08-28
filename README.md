@@ -33,7 +33,7 @@ EvalForge addresses this with a full evaluation pipeline:
 - **LLM judge adapters** — OpenAI, Anthropic, Mistral via a unified interface with automatic heuristic fallback
 - **Experiment leaderboard** — rank prompt versions and model configs by average eval score
 - **Release gates** — PASS/FAIL CI signal based on score delta vs. baseline
-- **Async job worker** — background eval jobs decoupled from the API layer
+- **Async job worker** — background eval jobs off the request/response cycle; runs in-process by default (`ASYNC_BACKEND=local`, what the live deployment uses today), with a Redis-backed queue available via `ASYNC_BACKEND=redis` for true multi-process decoupling
 - **Telemetry** — per-run latency, cost, pass rate, and groundedness metrics
 
 ## Stack
@@ -43,8 +43,8 @@ EvalForge addresses this with a full evaluation pipeline:
 | Backend API | FastAPI, Pydantic, SQLAlchemy |
 | Storage | SQLite (default), Postgres-ready, Alembic migrations |
 | LLM judges | OpenAI · Anthropic · Mistral with heuristic fallback |
-| Experiment tracking | Optional MLflow integration |
-| Async jobs | Local background tasks or Redis-backed worker |
+| Experiment tracking | MLflow — every eval run and pairwise comparison logged automatically (params, metrics, results artifact) |
+| Async jobs | In-process by default (`ASYNC_BACKEND=local`); Redis-backed queue available for true decoupling |
 | Frontend | Next.js 16 App Router, React, Vercel |
 | Infrastructure | Docker, GitHub Actions CI/CD, AWS EC2 |
 
