@@ -117,7 +117,7 @@ export default async function DashboardPage() {
         <MetricCard
           label="Avg Latency"
           value={hasData ? `${Math.round(avgLatency)} ms` : "—"}
-          sub="Per test case"
+          sub="Scoring only — excludes network & page load"
           icon={Zap}
           color={hasData ? "var(--yellow)" : "var(--muted)"}
         />
