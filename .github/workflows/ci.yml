@@ -70,7 +70,9 @@ jobs:
             sudo docker build -t evalforge-api:${{ github.sha }} .
             sudo docker stop evalforge-api || true
             sudo docker rm evalforge-api || true
+            sudo mkdir -p /home/ec2-user/evalforge/data
             sudo docker run -d --name evalforge-api --network host --env-file .env \
+              -v /home/ec2-user/evalforge/data:/app/data \
               evalforge-api:${{ github.sha }} \
               uvicorn app.main:app --host 0.0.0.0 --port 8001 --root-path /evalforge
 
@@ -92,6 +94,7 @@ jobs:
             sudo docker rm evalforge-api || true
             if [ -n "$OLD_IMAGE" ]; then
               sudo docker run -d --name evalforge-api --network host --env-file .env \
+                -v /home/ec2-user/evalforge/data:/app/data \
                 "$OLD_IMAGE" \
                 uvicorn app.main:app --host 0.0.0.0 --port 8001 --root-path /evalforge
               echo "Rolled back to $OLD_IMAGE"

@@ -10,6 +10,9 @@ Usage:
 Configuration (environment variables):
     MLFLOW_TRACKING_URI — MLflow server URI (default: local ./mlruns)
     MLFLOW_EXPERIMENT   — Experiment name (default: evalforge)
+    MLFLOW_ARTIFACT_ROOT — artifact storage location used only when the
+                           experiment is first created (default: mlflow's
+                           own default, relative to the process CWD)
 """
 
 import json
@@ -31,6 +34,7 @@ logger = logging.getLogger(__name__)
 
 _EXPERIMENT = os.getenv("MLFLOW_EXPERIMENT", "evalforge")
 _TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "")
+_ARTIFACT_ROOT = os.getenv("MLFLOW_ARTIFACT_ROOT", "")
 
 try:
     import mlflow
@@ -56,6 +60,14 @@ def _setup() -> None:
         return
     if _TRACKING_URI:
         mlflow.set_tracking_uri(_TRACKING_URI)
+
+    # Pin the artifact location explicitly on first creation so it lands
+    # under a persistent volume rather than mlflow's default of "./mlruns"
+    # relative to the process's working directory, which is wiped on every
+    # container redeploy.
+    if _ARTIFACT_ROOT and mlflow.get_experiment_by_name(_EXPERIMENT) is None:
+        mlflow.create_experiment(_EXPERIMENT, artifact_location=_ARTIFACT_ROOT)
+
     mlflow.set_experiment(_EXPERIMENT)
 
 
