@@ -1,11 +1,18 @@
 {
-  "_comment": "Known, accepted CVEs as of the review date below, tracked so CI blocks on any NEW vulnerability without silently ignoring the whole scan. cryptography's fix (50.0.0) conflicts with mlflow's own pin (cryptography<50,>=43.0.0) — upgrading breaks mlflow's dependency resolution. The vulnerable code paths (pkcs7_decrypt_der/pem/smime — an S/MIME decryption oracle) are never called anywhere in this codebase, which does no S/MIME or PKCS#7 processing. Revisit once mlflow relaxes its cryptography ceiling.",
-  "reviewed_date": "2026-08-28",
+  "_comment": "Known, accepted CVEs as of the review date below, tracked so CI blocks on any NEW vulnerability without silently ignoring the whole scan. cryptography's fix (50.0.0) conflicts with mlflow's own pin (cryptography<50,>=43.0.0) \u2014 upgrading breaks mlflow's dependency resolution. The vulnerable code paths (pkcs7_decrypt_der/pem/smime \u2014 an S/MIME decryption oracle) are never called anywhere in this codebase, which does no S/MIME or PKCS#7 processing. Revisit once mlflow relaxes its cryptography ceiling. mlflow CVE-2026-71211 has no fix available yet: it's an SSRF in mlflow's AI Gateway feature (mlflow/server/handlers.py's _create_gateway_secret and mlflow/server/gateway_api.py's raw_proxy accept and store an attacker-controlled api_base with no host/IP validation, then proxy requests to it). This codebase never runs mlflow's server process with the gateway component \u2014 mlflow is used purely as a client library (app/engine/mlflow_tracker.py: set_tracking_uri/start_run/log_metric against a local sqlite tracking store), and grep confirms zero references to \"gateway\" anywhere in the codebase. Revisit once mlflow ships a fix.",
+  "reviewed_date": "2026-09-03",
   "accepted_vulnerabilities": [
     {
       "package": "cryptography",
       "id": "PYSEC-2026-3552",
-      "fix_versions": ["50.0.0"]
+      "fix_versions": [
+        "50.0.0"
+      ]
+    },
+    {
+      "package": "mlflow",
+      "id": "CVE-2026-71211",
+      "fix_versions": []
     }
   ]
 }
