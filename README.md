@@ -138,6 +138,26 @@ cd frontend && npm install && npm run dev
 
 All providers fall back to `mock` if the key is missing or the response is malformed. Fallback responses are marked with `used_fallback=true`.
 
+### Judge provider benchmark
+
+Measured against a 30-case evaluation set (`evaluation/judge_benchmark_dataset.json` — 10 cases each across general knowledge, customer support, and code/tech, with deliberately mixed answer quality so scores actually differentiate). Every number below is a real per-request measurement — latency is wall-clock time around the actual API call, cost is computed from real token usage against the published per-token pricing in `app/engine/judge.py`. Reproduce with:
+
+```bash
+python -m scripts.run_judge_benchmark --out results.json
+```
+
+| Provider | Model | Latency (min/max/avg) | Cost per call (min/max/avg) | Total cost (30 calls) | Avg score |
+|---|---|---|---|---|---|
+| OpenAI | gpt-4o-mini | 909 / 2161 / 1177 ms | $0.000094 / $0.000134 / $0.000112 | $0.003363 | 0.687 |
+| Anthropic | claude-haiku-4-5 | 2829 / 4791 / 3952 ms | $0.002746 / $0.003349 / $0.003050 | $0.091500 | 0.674 |
+| Mistral | mistral-small-latest | 1089 / 2744 / 1668 ms | $0.000055 / $0.000097 / $0.000080 | $0.002387 | 0.648 |
+
+Total real spend for this benchmark: **$0.097250** (90 calls).
+
+Anthropic's claude-haiku-4-5 was consistently the slowest and, by a wide margin, the most expensive per call — roughly 27x OpenAI's and 38x Mistral's average cost on this dataset, consistent with its higher published per-token pricing on both prompt and completion tokens. Mistral had the lowest per-call cost and fastest median response, though its API rate-limits more aggressively under back-to-back requests than the other two — `scripts/run_judge_benchmark.py` paces and retries automatically when that happens rather than reporting a rate-limited fallback as a real result.
+
+30 cases is not a large-scale benchmark; treat the average-score column as a rough signal on this specific dataset, not a general quality ranking of the three models.
+
 ## Evaluator profiles
 
 `POST /api/v1/evals` accepts `evaluator_profile`: `strict` | `balanced` | `lenient`

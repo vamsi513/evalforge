@@ -1,0 +1,233 @@
+{
+  "description": "Expanded evaluation dataset for judge-provider benchmarking. Extends the 3 original demo scenarios (frontend/app/api/demo/route.ts) from 3 samples each to 10, with deliberately varied candidate-output quality (correct, partially correct, and flawed answers) so judge scores differentiate meaningfully instead of clustering near 1.0. Not wired into the live public demo -- that still runs its original 9 hand-picked cases. This file is for reproducible offline/CLI benchmarking via scripts/run_judge_benchmark.py.",
+  "scenarios": {
+    "general": {
+      "dataset": "benchmark-general-knowledge",
+      "experiment": "General Knowledge (Expanded)",
+      "samples": [
+        {
+          "prompt": "What is the capital of France?",
+          "expected_keyword": "Paris",
+          "candidate_output": "The capital of France is Paris, known for the Eiffel Tower.",
+          "reference_answer": "Paris is the capital and largest city of France.",
+          "scenario": "factual", "slice_name": "geography", "severity": "medium"
+        },
+        {
+          "prompt": "What is 2 + 2?",
+          "expected_keyword": "4",
+          "candidate_output": "2 + 2 equals 4.",
+          "reference_answer": "The answer is 4.",
+          "scenario": "math", "slice_name": "arithmetic", "severity": "low"
+        },
+        {
+          "prompt": "Who wrote Romeo and Juliet?",
+          "expected_keyword": "Shakespeare",
+          "candidate_output": "Romeo and Juliet was written by William Shakespeare.",
+          "reference_answer": "William Shakespeare wrote Romeo and Juliet.",
+          "scenario": "literature", "slice_name": "authors", "severity": "medium"
+        },
+        {
+          "prompt": "What is the largest planet in our solar system?",
+          "expected_keyword": "Jupiter",
+          "candidate_output": "Saturn is the largest planet in the solar system.",
+          "reference_answer": "Jupiter is the largest planet in the solar system.",
+          "scenario": "factual", "slice_name": "astronomy", "severity": "medium"
+        },
+        {
+          "prompt": "What year did World War II end?",
+          "expected_keyword": "1945",
+          "candidate_output": "World War II ended in 1945, with Japan's surrender in September of that year.",
+          "reference_answer": "World War II ended in 1945.",
+          "scenario": "factual", "slice_name": "history", "severity": "medium"
+        },
+        {
+          "prompt": "What is the chemical symbol for gold?",
+          "expected_keyword": "Au",
+          "candidate_output": "The chemical symbol for gold is Gd.",
+          "reference_answer": "The chemical symbol for gold is Au, from the Latin 'aurum'.",
+          "scenario": "factual", "slice_name": "chemistry", "severity": "medium"
+        },
+        {
+          "prompt": "How many continents are there on Earth?",
+          "expected_keyword": "seven",
+          "candidate_output": "There are seven continents: Africa, Antarctica, Asia, Australia, Europe, North America, and South America.",
+          "reference_answer": "There are seven continents on Earth.",
+          "scenario": "factual", "slice_name": "geography", "severity": "low"
+        },
+        {
+          "prompt": "What is the square root of 144?",
+          "expected_keyword": "12",
+          "candidate_output": "The square root of 144 is approximately 11.5.",
+          "reference_answer": "The square root of 144 is 12.",
+          "scenario": "math", "slice_name": "arithmetic", "severity": "medium"
+        },
+        {
+          "prompt": "Who painted the Mona Lisa?",
+          "expected_keyword": "Leonardo da Vinci",
+          "candidate_output": "The Mona Lisa was painted by Leonardo da Vinci in the early 16th century.",
+          "reference_answer": "Leonardo da Vinci painted the Mona Lisa.",
+          "scenario": "literature", "slice_name": "art", "severity": "low"
+        },
+        {
+          "prompt": "What is the boiling point of water at sea level in Celsius?",
+          "expected_keyword": "100",
+          "candidate_output": "Water boils at 100 degrees Celsius at sea level under standard atmospheric pressure.",
+          "reference_answer": "Water boils at 100 degrees Celsius at sea level.",
+          "scenario": "factual", "slice_name": "science", "severity": "medium"
+        }
+      ]
+    },
+    "support": {
+      "dataset": "benchmark-customer-support",
+      "experiment": "Customer Support (Expanded)",
+      "samples": [
+        {
+          "prompt": "How do I request a refund for my order?",
+          "expected_keyword": "refund",
+          "candidate_output": "To request a refund, go to your order history, select the order, and click 'Request Refund'. Refunds are processed within 5-7 business days.",
+          "reference_answer": "Customers can request refunds through order history within 30 days of purchase. Processing takes 5-7 business days.",
+          "scenario": "support", "slice_name": "refunds", "severity": "high"
+        },
+        {
+          "prompt": "What is your shipping policy for international orders?",
+          "expected_keyword": "shipping",
+          "candidate_output": "International shipping takes 10-21 business days. We ship to over 50 countries. Customs fees may apply.",
+          "reference_answer": "International orders ship via standard carrier in 10-21 business days to 50+ countries. Import duties and customs fees are the customer's responsibility.",
+          "scenario": "support", "slice_name": "shipping", "severity": "medium"
+        },
+        {
+          "prompt": "My account is locked. How do I regain access?",
+          "expected_keyword": "password",
+          "candidate_output": "If your account is locked, use the 'Forgot Password' link on the login page to reset your password via email.",
+          "reference_answer": "Locked accounts can be unlocked by resetting the password through the 'Forgot Password' flow on the login page.",
+          "scenario": "support", "slice_name": "account", "severity": "high"
+        },
+        {
+          "prompt": "Can I change my order after it's been placed?",
+          "expected_keyword": "cancel",
+          "candidate_output": "Orders cannot be changed once placed. You'll need to wait for delivery and return the item.",
+          "reference_answer": "Orders can be modified or canceled within 1 hour of placement by contacting support; after that, the order must be returned once delivered.",
+          "scenario": "support", "slice_name": "orders", "severity": "medium"
+        },
+        {
+          "prompt": "Do you offer price matching with competitors?",
+          "expected_keyword": "price match",
+          "candidate_output": "Yes, we offer price matching. Submit a price match request with a link to the competitor's listing within 14 days of purchase.",
+          "reference_answer": "We offer price matching within 14 days of purchase if the competitor is an authorized retailer with the item in stock.",
+          "scenario": "support", "slice_name": "pricing", "severity": "low"
+        },
+        {
+          "prompt": "How long is the warranty on electronics purchased from your store?",
+          "expected_keyword": "warranty",
+          "candidate_output": "All electronics come with a lifetime warranty covering any defect or damage.",
+          "reference_answer": "Electronics carry a manufacturer's standard 1-year warranty against defects; extended warranties are available for purchase.",
+          "scenario": "support", "slice_name": "warranty", "severity": "high"
+        },
+        {
+          "prompt": "What payment methods do you accept?",
+          "expected_keyword": "payment",
+          "candidate_output": "We accept major credit cards, PayPal, and Apple Pay. Bank transfers are not currently supported.",
+          "reference_answer": "Accepted payment methods include Visa, Mastercard, American Express, PayPal, and Apple Pay.",
+          "scenario": "support", "slice_name": "payments", "severity": "low"
+        },
+        {
+          "prompt": "How do I track my package once it has shipped?",
+          "expected_keyword": "tracking",
+          "candidate_output": "Once your order ships, you'll receive an email with a tracking number you can use on the carrier's website.",
+          "reference_answer": "A tracking number is emailed once the order ships and can be used on the carrier's site or in your account order history.",
+          "scenario": "support", "slice_name": "shipping", "severity": "low"
+        },
+        {
+          "prompt": "Can I use multiple discount codes on one order?",
+          "expected_keyword": "one discount code",
+          "candidate_output": "Yes, you can stack as many discount codes as you like on a single order.",
+          "reference_answer": "Only one discount code can be applied per order; codes cannot be combined.",
+          "scenario": "support", "slice_name": "pricing", "severity": "medium"
+        },
+        {
+          "prompt": "What is the process for returning a damaged item?",
+          "expected_keyword": "damaged",
+          "candidate_output": "For damaged items, contact support within 48 hours with photos of the damage to receive a replacement or refund at no cost.",
+          "reference_answer": "Damaged items should be reported within 48 hours of delivery with photo evidence; a free replacement or refund will be issued.",
+          "scenario": "support", "slice_name": "returns", "severity": "high"
+        }
+      ]
+    },
+    "code": {
+      "dataset": "benchmark-code-review",
+      "experiment": "Code & Tech (Expanded)",
+      "samples": [
+        {
+          "prompt": "What does the 'async/await' pattern do in JavaScript?",
+          "expected_keyword": "asynchronous",
+          "candidate_output": "async/await is syntactic sugar for Promises that makes asynchronous code look synchronous, improving readability.",
+          "reference_answer": "async/await allows writing asynchronous code in a synchronous style using Promises under the hood.",
+          "scenario": "technical", "slice_name": "javascript", "severity": "medium"
+        },
+        {
+          "prompt": "What is the time complexity of binary search?",
+          "expected_keyword": "O(log n)",
+          "candidate_output": "Binary search has a time complexity of O(log n) because it halves the search space with each step.",
+          "reference_answer": "Binary search runs in O(log n) time by repeatedly halving the array.",
+          "scenario": "technical", "slice_name": "algorithms", "severity": "medium"
+        },
+        {
+          "prompt": "What is the difference between SQL JOIN and UNION?",
+          "expected_keyword": "columns",
+          "candidate_output": "JOIN combines columns from multiple tables based on a related column. UNION combines rows from multiple SELECT queries with the same number of columns.",
+          "reference_answer": "JOIN merges columns from different tables using a shared key. UNION stacks rows from multiple queries that share the same column structure.",
+          "scenario": "technical", "slice_name": "databases", "severity": "medium"
+        },
+        {
+          "prompt": "What is a race condition in concurrent programming?",
+          "expected_keyword": "race condition",
+          "candidate_output": "A race condition happens when a program runs too slowly under heavy load, causing timeouts.",
+          "reference_answer": "A race condition occurs when the outcome of a program depends on the unpredictable timing or interleaving of concurrent operations accessing shared state.",
+          "scenario": "technical", "slice_name": "concurrency", "severity": "high"
+        },
+        {
+          "prompt": "What does HTTP status code 404 mean?",
+          "expected_keyword": "not found",
+          "candidate_output": "HTTP 404 means the requested resource could not be found on the server.",
+          "reference_answer": "A 404 status code indicates the requested resource was not found on the server.",
+          "scenario": "technical", "slice_name": "web", "severity": "low"
+        },
+        {
+          "prompt": "What is the purpose of an index in a relational database?",
+          "expected_keyword": "lookup",
+          "candidate_output": "An index speeds up data lookup and query performance by avoiding full table scans, at the cost of slower writes.",
+          "reference_answer": "Indexes speed up row lookups by maintaining a sorted data structure, trading write performance and storage for faster reads.",
+          "scenario": "technical", "slice_name": "databases", "severity": "medium"
+        },
+        {
+          "prompt": "What is the difference between '==' and '===' in JavaScript?",
+          "expected_keyword": "type coercion",
+          "candidate_output": "'==' and '===' both check for equality; there's no real difference in modern JavaScript.",
+          "reference_answer": "'==' performs type coercion before comparing values, while '===' checks both value and type without coercion.",
+          "scenario": "technical", "slice_name": "javascript", "severity": "medium"
+        },
+        {
+          "prompt": "What is a memory leak in software applications?",
+          "expected_keyword": "memory",
+          "candidate_output": "A memory leak occurs when a program allocates memory but fails to release it after it's no longer needed, causing memory usage to grow over time.",
+          "reference_answer": "A memory leak happens when allocated memory is never freed after it's no longer needed, gradually exhausting available memory.",
+          "scenario": "technical", "slice_name": "performance", "severity": "high"
+        },
+        {
+          "prompt": "What does REST stand for in API design?",
+          "expected_keyword": "Representational State Transfer",
+          "candidate_output": "REST stands for Rapid External Service Transfer, a protocol for fast APIs.",
+          "reference_answer": "REST stands for Representational State Transfer, an architectural style for designing networked APIs.",
+          "scenario": "technical", "slice_name": "web", "severity": "medium"
+        },
+        {
+          "prompt": "What is the primary benefit of using Docker containers?",
+          "expected_keyword": "consistent",
+          "candidate_output": "Docker containers package an application with its dependencies, ensuring it runs consistently across different environments.",
+          "reference_answer": "Docker containers bundle an application and its dependencies together, providing consistent behavior across development, testing, and production environments.",
+          "scenario": "technical", "slice_name": "devops", "severity": "medium"
+        }
+      ]
+    }
+  }
+}
