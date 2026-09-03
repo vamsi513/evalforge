@@ -96,6 +96,16 @@ jobs:
                 # prune operation is already running" even though the deploy
                 # itself succeeded (image already removed above). Non-fatal.
                 sudo docker image prune -f || true
+                # The image prune above only clears final tagged images -- it
+                # does NOT touch BuildKit's separate intermediate build cache
+                # (every RUN layer from every build, content-addressed and
+                # decoupled from image tags). That cache had never been
+                # cleared once and grew to 8+GB of 100%-reclaimable data,
+                # which is what actually filled the disk and broke a deploy
+                # (verified via `docker system df` on the host). Keep the
+                # last 24h of cache so same-day rebuilds still get a
+                # warm-cache speedup; anything older is reclaimed.
+                sudo docker builder prune -af --filter until=24h || true
                 exit 0
               fi
               echo "Attempt $attempt failed, retrying in 5s..."
