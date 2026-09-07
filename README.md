@@ -186,6 +186,14 @@ Every push to `main`:
 
 Release gate CI workflow queries `GET /api/v1/release-gates/ci-decision` and fails the pipeline when `allow_deploy=false`.
 
+## Infrastructure
+
+The EC2 host, its security group, and its Elastic IP are managed as Terraform under `infra/` (`aws_instance`, `aws_security_group`, `aws_eip`). The host was originally provisioned by hand, so this was built by importing the real, running resources into Terraform state (`terraform import`) rather than standing up new ones — `terraform plan` against it returns no changes.
+
+The instance is shared with two other deployed projects (AgentIQ, IncidentMemoryAI) running as separate containers on the same box, which is why the security group has ports for all three. `infra/main.tf` documents the actual bootstrap script, root volume, and every open port; `infra/variables.tf` exposes the SSH-source CIDR, key pair name, and instance type as variables instead of hardcoded values.
+
+Not managed by Terraform: the nginx reverse proxy config on the host (edited directly over SSH, not version-controlled) and the Docker containers themselves (handled by the CI/CD deploy step above).
+
 ## API surface
 
 ```
