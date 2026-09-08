@@ -1,0 +1,144 @@
+{
+  "n_pairs": 15,
+  "flipped_count": 0,
+  "position_bias_rate": 0.0,
+  "normal_order_accuracy": 1.0,
+  "swapped_order_accuracy": 1.0,
+  "results": [
+    {
+      "index": 0,
+      "prompt": "What is the capital of Australia?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 1,
+      "prompt": "How do I reset a forgotten password on your platform?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 2,
+      "prompt": "What is the time complexity of quicksort in the average case?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 3,
+      "prompt": "What causes rainbows to appear in the sky?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 4,
+      "prompt": "What is the difference between TCP and UDP?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 5,
+      "prompt": "How do I cancel a recurring subscription on your platform?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 6,
+      "prompt": "What is the boiling point of water at sea level in Fahrenheit?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 7,
+      "prompt": "What does the term 'idempotent' mean for an HTTP method?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 8,
+      "prompt": "Who is credited with developing the theory of general relativity?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 9,
+      "prompt": "What is a primary key in a relational database?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 10,
+      "prompt": "How long does standard domestic shipping usually take?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 11,
+      "prompt": "What is the purpose of a firewall in network security?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 12,
+      "prompt": "What year did the Berlin Wall fall?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 13,
+      "prompt": "What is the difference between a list and a tuple in Python?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    },
+    {
+      "index": 14,
+      "prompt": "What is photosynthesis?",
+      "normal_preferred": "A",
+      "normal_correct": true,
+      "swapped_preferred": "B",
+      "swapped_correct": true,
+      "flipped": false
+    }
+  ]
+}

@@ -41,8 +41,10 @@ from app.engine.judge import JudgeClient
 from app.models.eval_run import EvalSample
 
 _DATASET_PATH = Path(__file__).parent.parent / "evaluation" / "judge_benchmark_dataset.json"
-_ALL_PROVIDERS = ["openai", "anthropic", "mistral"]
+_ALL_PROVIDERS = ["openai", "anthropic", "mistral", "ollama"]
 
+# ollama has no key attribute -- it's a local server, not a paid API. Absence
+# from this dict means "no key required" rather than "always skip".
 _PROVIDER_KEY_ATTR = {
     "openai": "openai_api_key",
     "anthropic": "anthropic_api_key",
@@ -179,8 +181,8 @@ def main() -> None:
     run_started = datetime.now(UTC).isoformat()
 
     for provider in args.providers:
-        key_attr = _PROVIDER_KEY_ATTR[provider]
-        if not getattr(config.settings, key_attr, ""):
+        key_attr = _PROVIDER_KEY_ATTR.get(provider)
+        if key_attr and not getattr(config.settings, key_attr, ""):
             print(f"\nSkipping {provider}: {key_attr} is not configured.")
             continue
         print(f"\nRunning {len(samples)} samples against {provider}...")

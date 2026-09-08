@@ -1,0 +1,80 @@
+{
+  "description": "Hand-authored pairs for a judge position-bias test: each pair has a prompt and two candidate responses of genuinely different quality, written so which one is better is unambiguous. Used by scripts/run_position_bias_test.py to check whether the judge's verdict changes when the two responses are presented in the opposite order.",
+  "pairs": [
+    {
+      "prompt": "What is the capital of Australia?",
+      "response_better": "The capital of Australia is Canberra, not Sydney as many assume.",
+      "response_worse": "The capital of Australia is Sydney."
+    },
+    {
+      "prompt": "How do I reset a forgotten password on your platform?",
+      "response_better": "Click 'Forgot Password' on the login page, enter your email, and follow the reset link sent to your inbox (valid for 30 minutes).",
+      "response_worse": "You cannot reset your password once forgotten; you must create a new account."
+    },
+    {
+      "prompt": "What is the time complexity of quicksort in the average case?",
+      "response_better": "Quicksort has an average-case time complexity of O(n log n), though its worst case is O(n^2) on already-sorted or adversarial input.",
+      "response_worse": "Quicksort always runs in O(n) time."
+    },
+    {
+      "prompt": "What causes rainbows to appear in the sky?",
+      "response_better": "Rainbows form when sunlight is refracted, reflected, and dispersed by water droplets in the air, splitting light into its component colors.",
+      "response_worse": "Rainbows appear because the sky reflects colored light from clouds."
+    },
+    {
+      "prompt": "What is the difference between TCP and UDP?",
+      "response_better": "TCP is connection-oriented and guarantees ordered, reliable delivery with retransmission; UDP is connectionless and faster but doesn't guarantee delivery or order.",
+      "response_worse": "TCP and UDP are basically the same thing, just different names for sending data over a network."
+    },
+    {
+      "prompt": "How do I cancel a recurring subscription on your platform?",
+      "response_better": "Go to Account Settings > Subscription and click Cancel. You'll keep access until the current billing period ends, with no further charges.",
+      "response_worse": "Subscriptions cannot be canceled once started; you'll need to contact your bank to block the charge."
+    },
+    {
+      "prompt": "What is the boiling point of water at sea level in Fahrenheit?",
+      "response_better": "Water boils at 212 degrees Fahrenheit at sea level.",
+      "response_worse": "Water boils at 100 degrees Fahrenheit at sea level."
+    },
+    {
+      "prompt": "What does the term 'idempotent' mean for an HTTP method?",
+      "response_better": "An idempotent method produces the same result no matter how many times the same request is repeated, like PUT or DELETE.",
+      "response_worse": "Idempotent means the request is encrypted for security."
+    },
+    {
+      "prompt": "Who is credited with developing the theory of general relativity?",
+      "response_better": "Albert Einstein developed the theory of general relativity, published in 1915.",
+      "response_worse": "Isaac Newton developed the theory of general relativity."
+    },
+    {
+      "prompt": "What is a primary key in a relational database?",
+      "response_better": "A primary key is a column (or set of columns) that uniquely identifies each row in a table and cannot contain NULL values.",
+      "response_worse": "A primary key is just any column you decide to search by most often."
+    },
+    {
+      "prompt": "How long does standard domestic shipping usually take?",
+      "response_better": "Standard domestic shipping typically takes 3-5 business days from the time the order ships.",
+      "response_worse": "Standard domestic shipping is instant and arrives the same day every time."
+    },
+    {
+      "prompt": "What is the purpose of a firewall in network security?",
+      "response_better": "A firewall monitors and filters incoming and outgoing network traffic based on defined security rules, blocking unauthorized access.",
+      "response_worse": "A firewall makes your internet connection faster by compressing data."
+    },
+    {
+      "prompt": "What year did the Berlin Wall fall?",
+      "response_better": "The Berlin Wall fell in 1989, leading to German reunification in 1990.",
+      "response_worse": "The Berlin Wall fell in 1975."
+    },
+    {
+      "prompt": "What is the difference between a list and a tuple in Python?",
+      "response_better": "Lists are mutable (can be changed after creation) while tuples are immutable; tuples are generally faster and used for fixed collections of items.",
+      "response_worse": "Lists and tuples are exactly the same in Python, just written with different brackets."
+    },
+    {
+      "prompt": "What is photosynthesis?",
+      "response_better": "Photosynthesis is the process by which plants convert sunlight, water, and carbon dioxide into glucose and oxygen, mainly in chloroplasts.",
+      "response_worse": "Photosynthesis is how animals digest sunlight for energy."
+    }
+  ]
+}
