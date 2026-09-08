@@ -135,28 +135,43 @@ cd frontend && npm install && npm run dev
 | `openai` | OpenAI structured judge via `/chat/completions` with JSON schema output |
 | `anthropic` | Anthropic Messages API judge |
 | `mistral` | Mistral client judge |
+| `ollama` | Local judge via a self-hosted Ollama server (`qwen2.5:7b-instruct` by default) — no API key, no per-request cost, same JSON-schema request shape as the OpenAI judge since Ollama's endpoint is OpenAI-compatible |
 
-All providers fall back to `mock` if the key is missing or the response is malformed. Fallback responses are marked with `used_fallback=true`.
+All providers fall back to `mock` if the key is missing (not applicable to `ollama`, which has none) or the response is malformed. Fallback responses are marked with `used_fallback=true`.
 
 ### Judge provider benchmark
 
-Measured against a 30-case evaluation set (`evaluation/judge_benchmark_dataset.json` — 10 cases each across general knowledge, customer support, and code/tech, with deliberately mixed answer quality so scores actually differentiate). Every number below is a real per-request measurement — latency is wall-clock time around the actual API call, cost is computed from real token usage against the published per-token pricing in `app/engine/judge.py`. Reproduce with:
+Measured against a 60-case evaluation set (`evaluation/judge_benchmark_dataset.json`, version `1.1.0` — 20 cases each across general knowledge, customer support, and code/tech, with deliberately mixed answer quality so scores actually differentiate). Every number below is a real per-request measurement — latency is wall-clock time around the actual API call (or local inference call), cost is computed from real token usage against the published per-token pricing in `app/engine/judge.py`. Reproduce with:
 
 ```bash
 python -m scripts.run_judge_benchmark --out results.json
+python -m scripts.analyze_judge_agreement results.json
+python -m scripts.generate_eval_report
 ```
 
-| Provider | Model | Latency (min/max/avg) | Cost per call (min/max/avg) | Total cost (30 calls) | Avg score |
+| Provider | Model | Latency (avg) | Total cost (60 calls) | Avg score | 95% CI |
 |---|---|---|---|---|---|
-| OpenAI | gpt-4o-mini | 909 / 2161 / 1177 ms | $0.000094 / $0.000134 / $0.000112 | $0.003363 | 0.687 |
-| Anthropic | claude-haiku-4-5 | 2829 / 4791 / 3952 ms | $0.002746 / $0.003349 / $0.003050 | $0.091500 | 0.674 |
-| Mistral | mistral-small-latest | 1089 / 2744 / 1668 ms | $0.000055 / $0.000097 / $0.000080 | $0.002387 | 0.648 |
+| OpenAI | gpt-4o-mini | 1529 ms | $0.006674 | 0.645 | [0.548, 0.742] |
+| Anthropic | claude-haiku-4-5 | 4162 ms | $0.184357 | 0.634 | [0.542, 0.727] |
+| Ollama (local) | qwen2.5:7b-instruct | 6076 ms | local inference, no per-request API charge | 0.715 | [0.642, 0.782] |
+| Mistral | mistral-small-latest | — | 0 real calls | — | — |
 
-Total real spend for this benchmark: **$0.097250** (90 calls).
+Total real spend for this benchmark: **$0.191031**. Mistral returned 0/60 real results — every call, and a second slower-paced retry, fell back to the mock judge under rate limiting rather than reaching the API; it's excluded from the table above rather than backfilled with a guess.
 
-Anthropic's claude-haiku-4-5 was consistently the slowest and, by a wide margin, the most expensive per call — roughly 27x OpenAI's and 38x Mistral's average cost on this dataset, consistent with its higher published per-token pricing on both prompt and completion tokens. Mistral had the lowest per-call cost and fastest median response, though its API rate-limits more aggressively under back-to-back requests than the other two — `scripts/run_judge_benchmark.py` paces and retries automatically when that happens rather than reporting a rate-limited fallback as a real result.
+The three CIs overlap substantially at n=60 — these judges' average scores aren't statistically distinguishable from each other at this sample size. Local inference is markedly slower on this machine's CPU (roughly 4-5x OpenAI's latency) with no accuracy tradeoff visible in this benchmark.
 
-30 cases is not a large-scale benchmark; treat the average-score column as a rough signal on this specific dataset, not a general quality ranking of the three models.
+**Local-vs-paid agreement** (pass/fail label, threshold score ≥0.7, same 60 shared cases):
+
+| Comparison | % Agreement | Cohen's kappa | Pearson r (raw scores) |
+|---|---|---|---|
+| Ollama vs OpenAI | 93.3% | 0.859 | 0.786 |
+| Ollama vs Anthropic | 91.7% | 0.822 | 0.824 |
+
+Both kappa values fall in the "almost perfect agreement" band on the standard scale — a real result on 60 cases, not a large-scale claim.
+
+**Position-bias test**: 15 hand-authored pairs (`evaluation/position_bias_pairs.json`, each with an unambiguously better and worse response to the same prompt), tested with the local judge in both orders via `scripts/run_position_bias_test.py`. **0/15 verdicts flipped on swap.** These pairs were deliberately easy calls; this doesn't establish anything about bias on close judgment calls.
+
+60 cases is a small hand-written benchmark, not a comprehensive evaluation suite; treat every number above as a signal on this specific dataset, not a general quality ranking.
 
 ## Evaluator profiles
 
