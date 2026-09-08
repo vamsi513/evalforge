@@ -1,3 +1,4 @@
+import hashlib
 import json
 import logging
 import re
@@ -695,6 +696,22 @@ class JudgeClient:
             for token in re.findall(r"[a-zA-Z][a-zA-Z0-9_-]{4,}", text.lower())
             if token not in {"issue", "summary", "response", "result"}
         }
+
+
+def judge_prompt_fingerprint() -> str:
+    """A short hash of the judge's system prompt and response schema.
+
+    The caller-supplied prompt_version on JudgeEvalResponse only tracks
+    what a caller *labeled* a run as -- nothing forces it to change when
+    the actual prompt or schema does. This is derived from the real
+    content instead, so a benchmark/report run can record which exact
+    judge prompt produced its results and detect drift automatically
+    rather than relying on someone remembering to bump a version string.
+    """
+    static_content = JudgeClient._system_prompt() + json.dumps(
+        JudgeClient._response_schema(), sort_keys=True
+    )
+    return hashlib.sha256(static_content.encode()).hexdigest()[:16]
 
 
 judge_client = JudgeClient()

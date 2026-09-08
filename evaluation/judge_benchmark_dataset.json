@@ -1,4 +1,6 @@
 {
+  "dataset_version": "1.1.0",
+  "content_sha256_16": "30d94e4ac8b03154",
   "description": "Expanded evaluation dataset for judge-provider benchmarking. Extends the 3 original demo scenarios (frontend/app/api/demo/route.ts) from 3 samples each to 10, with deliberately varied candidate-output quality (correct, partially correct, and flawed answers) so judge scores differentiate meaningfully instead of clustering near 1.0. Not wired into the live public demo -- that still runs its original 9 hand-picked cases. This file is for reproducible offline/CLI benchmarking via scripts/run_judge_benchmark.py. Expanded from 10 to 20 hand-authored cases per category (60 total) for local-vs-paid-judge agreement testing, keeping the same mix of clearly correct, clearly wrong, and partially-correct answers.",
   "scenarios": {
     "general": {

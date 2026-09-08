@@ -30,6 +30,7 @@ re-running a provider that's rate-limit-sensitive.
 """
 
 import argparse
+import hashlib
 import json
 import time
 from datetime import UTC, datetime
@@ -37,7 +38,7 @@ from pathlib import Path
 from statistics import mean
 
 from app.core import config
-from app.engine.judge import JudgeClient
+from app.engine.judge import JudgeClient, judge_prompt_fingerprint
 from app.models.eval_run import EvalSample
 
 _DATASET_PATH = Path(__file__).parent.parent / "evaluation" / "judge_benchmark_dataset.json"
@@ -50,6 +51,30 @@ _PROVIDER_KEY_ATTR = {
     "anthropic": "anthropic_api_key",
     "mistral": "mistral_api_key",
 }
+
+
+def _dataset_content_hash(scenarios: dict) -> str:
+    canonical = json.dumps(scenarios, sort_keys=True)
+    return hashlib.sha256(canonical.encode()).hexdigest()[:16]
+
+
+def _load_dataset_meta() -> dict:
+    """Version, recorded hash, and live hash of the dataset file.
+
+    Comparing recorded vs live hash means silent drift (someone edits a
+    sample without bumping dataset_version) shows up in every report
+    instead of being invisible.
+    """
+    with open(_DATASET_PATH) as f:
+        data = json.load(f)
+    live_hash = _dataset_content_hash(data["scenarios"])
+    recorded_hash = data.get("content_sha256_16")
+    return {
+        "dataset_version": data.get("dataset_version", "unversioned"),
+        "recorded_content_hash": recorded_hash,
+        "live_content_hash": live_hash,
+        "hash_matches": recorded_hash == live_hash,
+    }
 
 
 def _load_samples() -> list[dict]:
@@ -174,7 +199,13 @@ def main() -> None:
     args = parser.parse_args()
 
     samples = _load_samples()
+    dataset_meta = _load_dataset_meta()
+    prompt_fingerprint = judge_prompt_fingerprint()
     print(f"Loaded {len(samples)} samples from {_DATASET_PATH}")
+    print(f"Dataset version: {dataset_meta['dataset_version']} "
+          f"(content hash {'matches' if dataset_meta['hash_matches'] else 'MISMATCH -- dataset edited without bumping dataset_version'} "
+          f"recorded={dataset_meta['recorded_content_hash']} live={dataset_meta['live_content_hash']})")
+    print(f"Judge prompt fingerprint: {prompt_fingerprint}")
 
     client = JudgeClient()
     all_records = []
@@ -220,6 +251,10 @@ def main() -> None:
             json.dump({
                 "run_started_utc": run_started,
                 "run_finished_utc": run_finished,
+                "dataset_version": dataset_meta["dataset_version"],
+                "dataset_content_hash": dataset_meta["live_content_hash"],
+                "dataset_hash_matched_recorded": dataset_meta["hash_matches"],
+                "judge_prompt_fingerprint": prompt_fingerprint,
                 "sample_count": len(samples),
                 "records": all_records,
                 "summaries": summaries,
