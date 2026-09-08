@@ -64,6 +64,13 @@ class JudgeClient:
                 model_name=model_name,
                 samples=samples,
             )
+        if provider == "ollama":
+            return self._evaluate_ollama(
+                dataset_name=dataset_name,
+                prompt_version=prompt_version,
+                model_name=model_name,
+                samples=samples,
+            )
         return self._evaluate_mock(
             dataset_name=dataset_name,
             prompt_version=prompt_version,
@@ -352,6 +359,85 @@ class JudgeClient:
             model=settings.judge_model_mistral,
             measured_latency_ms=measured_latency_ms,
             measured_cost_usd=measured_cost_usd,
+        )
+
+    def _evaluate_ollama(
+        self, *, dataset_name: str, prompt_version: str, model_name: str, samples: list[EvalSample]
+    ) -> JudgeEvalResponse:
+        mock_response = self._evaluate_mock(
+            dataset_name=dataset_name,
+            prompt_version=prompt_version,
+            model_name=model_name,
+            samples=samples,
+        )
+
+        try:
+            results = [self._score_with_ollama(sample) for sample in samples]
+        except (httpx.HTTPError, ValueError, KeyError, json.JSONDecodeError) as exc:
+            # No API key check here - unlike the paid providers there's
+            # nothing to be "missing"; a local server that isn't running or
+            # doesn't have the model pulled surfaces the same way any other
+            # judge failure does, as a connection/HTTP error on the first
+            # real call.
+            return self._mark_fallback(
+                response=mock_response,
+                provider="ollama",
+                model=settings.judge_model_ollama,
+                feedback=f"Ollama judge failed ({exc}). Used mock judge fallback.",
+            )
+
+        return JudgeEvalResponse(
+            dataset_name=dataset_name,
+            prompt_version=prompt_version,
+            model_name=model_name,
+            judge_provider="ollama",
+            judge_model=settings.judge_model_ollama,
+            average_score=round(mean(result.score for result in results), 4) if results else 0.0,
+            results=results,
+        )
+
+    def _score_with_ollama(self, sample: EvalSample) -> JudgeCaseResult:
+        # Ollama exposes an OpenAI-compatible /v1/chat/completions endpoint,
+        # including response_format:json_schema support, so this reuses the
+        # exact same request shape, prompts, and schema as the OpenAI judge.
+        payload = {
+            "model": settings.judge_model_ollama,
+            "temperature": 0,
+            "messages": [
+                {"role": "system", "content": self._system_prompt()},
+                {"role": "user", "content": self._user_prompt(sample)},
+            ],
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "evalforge_judge_result",
+                    "schema": self._response_schema(),
+                },
+            },
+        }
+
+        start = time.perf_counter()
+        # Local inference on a 7B model is genuinely slower than a hosted
+        # provider's optimized serving stack, especially on CPU - give it
+        # real headroom instead of inheriting the paid providers' 20s cap.
+        with httpx.Client(base_url=settings.ollama_base_url, timeout=120.0) as client:
+            response = client.post("/v1/chat/completions", json=payload)
+            response.raise_for_status()
+            body = response.json()
+        measured_latency_ms = (time.perf_counter() - start) * 1000
+
+        content = self._extract_message_content(body)
+        parsed = json.loads(content)
+        return self._build_judge_result(
+            sample,
+            parsed,
+            provider="ollama",
+            model=settings.judge_model_ollama,
+            measured_latency_ms=measured_latency_ms,
+            # Local inference has no per-request API charge - this is a real
+            # zero, not a stand-in for "unknown," unlike the paid providers'
+            # None (which falls back to the judge's own cost_usd estimate).
+            measured_cost_usd=0.0,
         )
 
     @staticmethod

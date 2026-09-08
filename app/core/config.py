@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     mistral_api_key: str = ""
     mistral_base_url: str = "https://api.mistral.ai/v1"
     judge_model_mistral: str = "mistral-small-latest"
+    ollama_base_url: str = "http://localhost:11434"
+    judge_model_ollama: str = "qwen2.5:7b-instruct"
     async_backend: str = "local"
     redis_url: str = "redis://localhost:6379/0"
     redis_queue_name: str = "evalforge:eval_jobs"
