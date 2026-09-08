@@ -1,5 +1,5 @@
 {
-  "description": "Expanded evaluation dataset for judge-provider benchmarking. Extends the 3 original demo scenarios (frontend/app/api/demo/route.ts) from 3 samples each to 10, with deliberately varied candidate-output quality (correct, partially correct, and flawed answers) so judge scores differentiate meaningfully instead of clustering near 1.0. Not wired into the live public demo -- that still runs its original 9 hand-picked cases. This file is for reproducible offline/CLI benchmarking via scripts/run_judge_benchmark.py.",
+  "description": "Expanded evaluation dataset for judge-provider benchmarking. Extends the 3 original demo scenarios (frontend/app/api/demo/route.ts) from 3 samples each to 10, with deliberately varied candidate-output quality (correct, partially correct, and flawed answers) so judge scores differentiate meaningfully instead of clustering near 1.0. Not wired into the live public demo -- that still runs its original 9 hand-picked cases. This file is for reproducible offline/CLI benchmarking via scripts/run_judge_benchmark.py. Expanded from 10 to 20 hand-authored cases per category (60 total) for local-vs-paid-judge agreement testing, keeping the same mix of clearly correct, clearly wrong, and partially-correct answers.",
   "scenarios": {
     "general": {
       "dataset": "benchmark-general-knowledge",
@@ -10,70 +10,180 @@
           "expected_keyword": "Paris",
           "candidate_output": "The capital of France is Paris, known for the Eiffel Tower.",
           "reference_answer": "Paris is the capital and largest city of France.",
-          "scenario": "factual", "slice_name": "geography", "severity": "medium"
+          "scenario": "factual",
+          "slice_name": "geography",
+          "severity": "medium"
         },
         {
           "prompt": "What is 2 + 2?",
           "expected_keyword": "4",
           "candidate_output": "2 + 2 equals 4.",
           "reference_answer": "The answer is 4.",
-          "scenario": "math", "slice_name": "arithmetic", "severity": "low"
+          "scenario": "math",
+          "slice_name": "arithmetic",
+          "severity": "low"
         },
         {
           "prompt": "Who wrote Romeo and Juliet?",
           "expected_keyword": "Shakespeare",
           "candidate_output": "Romeo and Juliet was written by William Shakespeare.",
           "reference_answer": "William Shakespeare wrote Romeo and Juliet.",
-          "scenario": "literature", "slice_name": "authors", "severity": "medium"
+          "scenario": "literature",
+          "slice_name": "authors",
+          "severity": "medium"
         },
         {
           "prompt": "What is the largest planet in our solar system?",
           "expected_keyword": "Jupiter",
           "candidate_output": "Saturn is the largest planet in the solar system.",
           "reference_answer": "Jupiter is the largest planet in the solar system.",
-          "scenario": "factual", "slice_name": "astronomy", "severity": "medium"
+          "scenario": "factual",
+          "slice_name": "astronomy",
+          "severity": "medium"
         },
         {
           "prompt": "What year did World War II end?",
           "expected_keyword": "1945",
           "candidate_output": "World War II ended in 1945, with Japan's surrender in September of that year.",
           "reference_answer": "World War II ended in 1945.",
-          "scenario": "factual", "slice_name": "history", "severity": "medium"
+          "scenario": "factual",
+          "slice_name": "history",
+          "severity": "medium"
         },
         {
           "prompt": "What is the chemical symbol for gold?",
           "expected_keyword": "Au",
           "candidate_output": "The chemical symbol for gold is Gd.",
           "reference_answer": "The chemical symbol for gold is Au, from the Latin 'aurum'.",
-          "scenario": "factual", "slice_name": "chemistry", "severity": "medium"
+          "scenario": "factual",
+          "slice_name": "chemistry",
+          "severity": "medium"
         },
         {
           "prompt": "How many continents are there on Earth?",
           "expected_keyword": "seven",
           "candidate_output": "There are seven continents: Africa, Antarctica, Asia, Australia, Europe, North America, and South America.",
           "reference_answer": "There are seven continents on Earth.",
-          "scenario": "factual", "slice_name": "geography", "severity": "low"
+          "scenario": "factual",
+          "slice_name": "geography",
+          "severity": "low"
         },
         {
           "prompt": "What is the square root of 144?",
           "expected_keyword": "12",
           "candidate_output": "The square root of 144 is approximately 11.5.",
           "reference_answer": "The square root of 144 is 12.",
-          "scenario": "math", "slice_name": "arithmetic", "severity": "medium"
+          "scenario": "math",
+          "slice_name": "arithmetic",
+          "severity": "medium"
         },
         {
           "prompt": "Who painted the Mona Lisa?",
           "expected_keyword": "Leonardo da Vinci",
           "candidate_output": "The Mona Lisa was painted by Leonardo da Vinci in the early 16th century.",
           "reference_answer": "Leonardo da Vinci painted the Mona Lisa.",
-          "scenario": "literature", "slice_name": "art", "severity": "low"
+          "scenario": "literature",
+          "slice_name": "art",
+          "severity": "low"
         },
         {
           "prompt": "What is the boiling point of water at sea level in Celsius?",
           "expected_keyword": "100",
           "candidate_output": "Water boils at 100 degrees Celsius at sea level under standard atmospheric pressure.",
           "reference_answer": "Water boils at 100 degrees Celsius at sea level.",
-          "scenario": "factual", "slice_name": "science", "severity": "medium"
+          "scenario": "factual",
+          "slice_name": "science",
+          "severity": "medium"
+        },
+        {
+          "prompt": "What is the capital of Japan?",
+          "expected_keyword": "Tokyo",
+          "candidate_output": "The capital of Japan is Tokyo, the country's largest city.",
+          "reference_answer": "Tokyo is the capital and most populous city of Japan.",
+          "scenario": "factual",
+          "slice_name": "geography",
+          "severity": "medium"
+        },
+        {
+          "prompt": "Who wrote the novel '1984'?",
+          "expected_keyword": "Orwell",
+          "candidate_output": "'1984' was written by George Orwell, published in 1949.",
+          "reference_answer": "George Orwell wrote '1984', a dystopian novel published in 1949.",
+          "scenario": "factual",
+          "slice_name": "literature",
+          "severity": "low"
+        },
+        {
+          "prompt": "What is the chemical formula for table salt?",
+          "expected_keyword": "NaCl",
+          "candidate_output": "Table salt is sodium chloride, with the chemical formula NaCl.",
+          "reference_answer": "Table salt is sodium chloride, formula NaCl.",
+          "scenario": "factual",
+          "slice_name": "science",
+          "severity": "low"
+        },
+        {
+          "prompt": "Who was the first person to walk on the Moon?",
+          "expected_keyword": "Armstrong",
+          "candidate_output": "Neil Armstrong was the first person to walk on the Moon, in July 1969.",
+          "reference_answer": "Neil Armstrong stepped onto the Moon on July 20, 1969.",
+          "scenario": "factual",
+          "slice_name": "history",
+          "severity": "low"
+        },
+        {
+          "prompt": "How many bones are in the adult human body?",
+          "expected_keyword": "206",
+          "candidate_output": "The adult human body has 208 bones.",
+          "reference_answer": "The adult human body has 206 bones.",
+          "scenario": "factual",
+          "slice_name": "biology",
+          "severity": "medium"
+        },
+        {
+          "prompt": "What is the freezing point of water in Celsius?",
+          "expected_keyword": "0",
+          "candidate_output": "Water freezes at 32 degrees Celsius.",
+          "reference_answer": "Water freezes at 0 degrees Celsius (32 degrees Fahrenheit).",
+          "scenario": "factual",
+          "slice_name": "science",
+          "severity": "medium"
+        },
+        {
+          "prompt": "How many strings does a standard guitar have?",
+          "expected_keyword": "six",
+          "candidate_output": "A standard guitar has five strings.",
+          "reference_answer": "A standard guitar has six strings.",
+          "scenario": "factual",
+          "slice_name": "music",
+          "severity": "low"
+        },
+        {
+          "prompt": "Approximately how fast does light travel in a vacuum?",
+          "expected_keyword": "300,000",
+          "candidate_output": "Light travels at about 300,000 kilometers per second.",
+          "reference_answer": "Light travels at approximately 299,792 kilometers per second in a vacuum.",
+          "scenario": "factual",
+          "slice_name": "science",
+          "severity": "low"
+        },
+        {
+          "prompt": "What is the longest river in the world?",
+          "expected_keyword": "Nile",
+          "candidate_output": "The Nile is generally considered the longest river, though it's a long river in Africa.",
+          "reference_answer": "The Nile River, at roughly 6,650 km, is generally considered the longest river in the world.",
+          "scenario": "factual",
+          "slice_name": "geography",
+          "severity": "low"
+        },
+        {
+          "prompt": "What is the chemical symbol for the element hydrogen?",
+          "expected_keyword": "H",
+          "candidate_output": "Hydrogen, the lightest element, has the chemical symbol He.",
+          "reference_answer": "Hydrogen has the chemical symbol H.",
+          "scenario": "factual",
+          "slice_name": "science",
+          "severity": "medium"
         }
       ]
     },
@@ -86,70 +196,180 @@
           "expected_keyword": "refund",
           "candidate_output": "To request a refund, go to your order history, select the order, and click 'Request Refund'. Refunds are processed within 5-7 business days.",
           "reference_answer": "Customers can request refunds through order history within 30 days of purchase. Processing takes 5-7 business days.",
-          "scenario": "support", "slice_name": "refunds", "severity": "high"
+          "scenario": "support",
+          "slice_name": "refunds",
+          "severity": "high"
         },
         {
           "prompt": "What is your shipping policy for international orders?",
           "expected_keyword": "shipping",
           "candidate_output": "International shipping takes 10-21 business days. We ship to over 50 countries. Customs fees may apply.",
           "reference_answer": "International orders ship via standard carrier in 10-21 business days to 50+ countries. Import duties and customs fees are the customer's responsibility.",
-          "scenario": "support", "slice_name": "shipping", "severity": "medium"
+          "scenario": "support",
+          "slice_name": "shipping",
+          "severity": "medium"
         },
         {
           "prompt": "My account is locked. How do I regain access?",
           "expected_keyword": "password",
           "candidate_output": "If your account is locked, use the 'Forgot Password' link on the login page to reset your password via email.",
           "reference_answer": "Locked accounts can be unlocked by resetting the password through the 'Forgot Password' flow on the login page.",
-          "scenario": "support", "slice_name": "account", "severity": "high"
+          "scenario": "support",
+          "slice_name": "account",
+          "severity": "high"
         },
         {
           "prompt": "Can I change my order after it's been placed?",
           "expected_keyword": "cancel",
           "candidate_output": "Orders cannot be changed once placed. You'll need to wait for delivery and return the item.",
           "reference_answer": "Orders can be modified or canceled within 1 hour of placement by contacting support; after that, the order must be returned once delivered.",
-          "scenario": "support", "slice_name": "orders", "severity": "medium"
+          "scenario": "support",
+          "slice_name": "orders",
+          "severity": "medium"
         },
         {
           "prompt": "Do you offer price matching with competitors?",
           "expected_keyword": "price match",
           "candidate_output": "Yes, we offer price matching. Submit a price match request with a link to the competitor's listing within 14 days of purchase.",
           "reference_answer": "We offer price matching within 14 days of purchase if the competitor is an authorized retailer with the item in stock.",
-          "scenario": "support", "slice_name": "pricing", "severity": "low"
+          "scenario": "support",
+          "slice_name": "pricing",
+          "severity": "low"
         },
         {
           "prompt": "How long is the warranty on electronics purchased from your store?",
           "expected_keyword": "warranty",
           "candidate_output": "All electronics come with a lifetime warranty covering any defect or damage.",
           "reference_answer": "Electronics carry a manufacturer's standard 1-year warranty against defects; extended warranties are available for purchase.",
-          "scenario": "support", "slice_name": "warranty", "severity": "high"
+          "scenario": "support",
+          "slice_name": "warranty",
+          "severity": "high"
         },
         {
           "prompt": "What payment methods do you accept?",
           "expected_keyword": "payment",
           "candidate_output": "We accept major credit cards, PayPal, and Apple Pay. Bank transfers are not currently supported.",
           "reference_answer": "Accepted payment methods include Visa, Mastercard, American Express, PayPal, and Apple Pay.",
-          "scenario": "support", "slice_name": "payments", "severity": "low"
+          "scenario": "support",
+          "slice_name": "payments",
+          "severity": "low"
         },
         {
           "prompt": "How do I track my package once it has shipped?",
           "expected_keyword": "tracking",
           "candidate_output": "Once your order ships, you'll receive an email with a tracking number you can use on the carrier's website.",
           "reference_answer": "A tracking number is emailed once the order ships and can be used on the carrier's site or in your account order history.",
-          "scenario": "support", "slice_name": "shipping", "severity": "low"
+          "scenario": "support",
+          "slice_name": "shipping",
+          "severity": "low"
         },
         {
           "prompt": "Can I use multiple discount codes on one order?",
           "expected_keyword": "one discount code",
           "candidate_output": "Yes, you can stack as many discount codes as you like on a single order.",
           "reference_answer": "Only one discount code can be applied per order; codes cannot be combined.",
-          "scenario": "support", "slice_name": "pricing", "severity": "medium"
+          "scenario": "support",
+          "slice_name": "pricing",
+          "severity": "medium"
         },
         {
           "prompt": "What is the process for returning a damaged item?",
           "expected_keyword": "damaged",
           "candidate_output": "For damaged items, contact support within 48 hours with photos of the damage to receive a replacement or refund at no cost.",
           "reference_answer": "Damaged items should be reported within 48 hours of delivery with photo evidence; a free replacement or refund will be issued.",
-          "scenario": "support", "slice_name": "returns", "severity": "high"
+          "scenario": "support",
+          "slice_name": "returns",
+          "severity": "high"
+        },
+        {
+          "prompt": "How do I cancel my subscription?",
+          "expected_keyword": "cancel",
+          "candidate_output": "Go to Account Settings > Subscription, then click 'Cancel Subscription'. You'll retain access until the end of the billing period.",
+          "reference_answer": "Subscriptions can be canceled from Account Settings > Subscription. Access continues until the current billing period ends.",
+          "scenario": "support",
+          "slice_name": "subscriptions",
+          "severity": "high"
+        },
+        {
+          "prompt": "Can I update my shipping address after placing an order but before it ships?",
+          "expected_keyword": "address",
+          "candidate_output": "Yes, if the order hasn't shipped yet, you can update the address from your order details page or by contacting support.",
+          "reference_answer": "Shipping addresses can be updated before an order ships, either via order details or by contacting support.",
+          "scenario": "support",
+          "slice_name": "orders",
+          "severity": "medium"
+        },
+        {
+          "prompt": "How do I check my gift card balance?",
+          "expected_keyword": "balance",
+          "candidate_output": "Enter your gift card number on the 'Check Balance' page under Account > Gift Cards to see the remaining balance.",
+          "reference_answer": "Gift card balances can be checked under Account > Gift Cards by entering the card number.",
+          "scenario": "support",
+          "slice_name": "gift_cards",
+          "severity": "low"
+        },
+        {
+          "prompt": "Do loyalty points expire?",
+          "expected_keyword": "expire",
+          "candidate_output": "No, loyalty points never expire and can be redeemed at any time.",
+          "reference_answer": "Loyalty points expire 12 months after they are earned if unused.",
+          "scenario": "support",
+          "slice_name": "loyalty",
+          "severity": "medium"
+        },
+        {
+          "prompt": "Can I combine two separate orders into a single shipment?",
+          "expected_keyword": "combine",
+          "candidate_output": "Unfortunately that's not something we can do once orders are placed.",
+          "reference_answer": "Orders can sometimes be combined into one shipment if neither has shipped yet \u2014 contact support as soon as possible after placing both.",
+          "scenario": "support",
+          "slice_name": "orders",
+          "severity": "low"
+        },
+        {
+          "prompt": "What are your live chat support hours?",
+          "expected_keyword": "hours",
+          "candidate_output": "Live chat is available Monday through Friday, 9 AM to 6 PM Eastern Time.",
+          "reference_answer": "Live chat support is available weekdays, 9 AM\u20136 PM ET.",
+          "scenario": "support",
+          "slice_name": "contact",
+          "severity": "low"
+        },
+        {
+          "prompt": "I was charged twice for the same order. What should I do?",
+          "expected_keyword": "duplicate",
+          "candidate_output": "That looks like a duplicate charge. Contact support with your order number and we'll refund the extra charge within 5-7 business days after verifying it.",
+          "reference_answer": "Duplicate charges are refunded within 5-7 business days after support verifies the charge against the order.",
+          "scenario": "support",
+          "slice_name": "billing",
+          "severity": "high"
+        },
+        {
+          "prompt": "How do I change the email address on my account?",
+          "expected_keyword": "email",
+          "candidate_output": "Account emails can't be changed once the account is created \u2014 you'd need to create a new account.",
+          "reference_answer": "The account email can be changed from Account Settings > Profile after verifying the new email address.",
+          "scenario": "support",
+          "slice_name": "account",
+          "severity": "medium"
+        },
+        {
+          "prompt": "Do you offer discounts for bulk or wholesale orders?",
+          "expected_keyword": "bulk",
+          "candidate_output": "We do have some options for larger orders, reach out and we can look into it.",
+          "reference_answer": "Bulk orders of 50+ units qualify for tiered discounts starting at 10% \u2014 contact sales@ for a quote.",
+          "scenario": "support",
+          "slice_name": "orders",
+          "severity": "low"
+        },
+        {
+          "prompt": "Can I return an item if I no longer have the original packaging?",
+          "expected_keyword": "packaging",
+          "candidate_output": "No, items can only be returned in their original packaging, no exceptions.",
+          "reference_answer": "Items can be returned without original packaging within the return window as long as proof of purchase is provided, though a restocking fee may apply.",
+          "scenario": "support",
+          "slice_name": "returns",
+          "severity": "medium"
         }
       ]
     },
@@ -162,70 +382,180 @@
           "expected_keyword": "asynchronous",
           "candidate_output": "async/await is syntactic sugar for Promises that makes asynchronous code look synchronous, improving readability.",
           "reference_answer": "async/await allows writing asynchronous code in a synchronous style using Promises under the hood.",
-          "scenario": "technical", "slice_name": "javascript", "severity": "medium"
+          "scenario": "technical",
+          "slice_name": "javascript",
+          "severity": "medium"
         },
         {
           "prompt": "What is the time complexity of binary search?",
           "expected_keyword": "O(log n)",
           "candidate_output": "Binary search has a time complexity of O(log n) because it halves the search space with each step.",
           "reference_answer": "Binary search runs in O(log n) time by repeatedly halving the array.",
-          "scenario": "technical", "slice_name": "algorithms", "severity": "medium"
+          "scenario": "technical",
+          "slice_name": "algorithms",
+          "severity": "medium"
         },
         {
           "prompt": "What is the difference between SQL JOIN and UNION?",
           "expected_keyword": "columns",
           "candidate_output": "JOIN combines columns from multiple tables based on a related column. UNION combines rows from multiple SELECT queries with the same number of columns.",
           "reference_answer": "JOIN merges columns from different tables using a shared key. UNION stacks rows from multiple queries that share the same column structure.",
-          "scenario": "technical", "slice_name": "databases", "severity": "medium"
+          "scenario": "technical",
+          "slice_name": "databases",
+          "severity": "medium"
         },
         {
           "prompt": "What is a race condition in concurrent programming?",
           "expected_keyword": "race condition",
           "candidate_output": "A race condition happens when a program runs too slowly under heavy load, causing timeouts.",
           "reference_answer": "A race condition occurs when the outcome of a program depends on the unpredictable timing or interleaving of concurrent operations accessing shared state.",
-          "scenario": "technical", "slice_name": "concurrency", "severity": "high"
+          "scenario": "technical",
+          "slice_name": "concurrency",
+          "severity": "high"
         },
         {
           "prompt": "What does HTTP status code 404 mean?",
           "expected_keyword": "not found",
           "candidate_output": "HTTP 404 means the requested resource could not be found on the server.",
           "reference_answer": "A 404 status code indicates the requested resource was not found on the server.",
-          "scenario": "technical", "slice_name": "web", "severity": "low"
+          "scenario": "technical",
+          "slice_name": "web",
+          "severity": "low"
         },
         {
           "prompt": "What is the purpose of an index in a relational database?",
           "expected_keyword": "lookup",
           "candidate_output": "An index speeds up data lookup and query performance by avoiding full table scans, at the cost of slower writes.",
           "reference_answer": "Indexes speed up row lookups by maintaining a sorted data structure, trading write performance and storage for faster reads.",
-          "scenario": "technical", "slice_name": "databases", "severity": "medium"
+          "scenario": "technical",
+          "slice_name": "databases",
+          "severity": "medium"
         },
         {
           "prompt": "What is the difference between '==' and '===' in JavaScript?",
           "expected_keyword": "type coercion",
           "candidate_output": "'==' and '===' both check for equality; there's no real difference in modern JavaScript.",
           "reference_answer": "'==' performs type coercion before comparing values, while '===' checks both value and type without coercion.",
-          "scenario": "technical", "slice_name": "javascript", "severity": "medium"
+          "scenario": "technical",
+          "slice_name": "javascript",
+          "severity": "medium"
         },
         {
           "prompt": "What is a memory leak in software applications?",
           "expected_keyword": "memory",
           "candidate_output": "A memory leak occurs when a program allocates memory but fails to release it after it's no longer needed, causing memory usage to grow over time.",
           "reference_answer": "A memory leak happens when allocated memory is never freed after it's no longer needed, gradually exhausting available memory.",
-          "scenario": "technical", "slice_name": "performance", "severity": "high"
+          "scenario": "technical",
+          "slice_name": "performance",
+          "severity": "high"
         },
         {
           "prompt": "What does REST stand for in API design?",
           "expected_keyword": "Representational State Transfer",
           "candidate_output": "REST stands for Rapid External Service Transfer, a protocol for fast APIs.",
           "reference_answer": "REST stands for Representational State Transfer, an architectural style for designing networked APIs.",
-          "scenario": "technical", "slice_name": "web", "severity": "medium"
+          "scenario": "technical",
+          "slice_name": "web",
+          "severity": "medium"
         },
         {
           "prompt": "What is the primary benefit of using Docker containers?",
           "expected_keyword": "consistent",
           "candidate_output": "Docker containers package an application with its dependencies, ensuring it runs consistently across different environments.",
           "reference_answer": "Docker containers bundle an application and its dependencies together, providing consistent behavior across development, testing, and production environments.",
-          "scenario": "technical", "slice_name": "devops", "severity": "medium"
+          "scenario": "technical",
+          "slice_name": "devops",
+          "severity": "medium"
+        },
+        {
+          "prompt": "What is a deadlock in concurrent programming?",
+          "expected_keyword": "deadlock",
+          "candidate_output": "A deadlock occurs when two or more threads are each waiting on a resource held by the other, so none can proceed.",
+          "reference_answer": "A deadlock happens when two or more threads block each other, each waiting for a resource the other holds, so none can make progress.",
+          "scenario": "technical",
+          "slice_name": "concurrency",
+          "severity": "high"
+        },
+        {
+          "prompt": "What does CRUD stand for in software development?",
+          "expected_keyword": "CRUD",
+          "candidate_output": "CRUD stands for Create, Read, Update, Delete \u2014 the four basic operations on persistent data.",
+          "reference_answer": "CRUD stands for Create, Read, Update, and Delete.",
+          "scenario": "technical",
+          "slice_name": "fundamentals",
+          "severity": "low"
+        },
+        {
+          "prompt": "What is the time complexity of a linear search on an unsorted array?",
+          "expected_keyword": "O(n)",
+          "candidate_output": "Linear search is O(n) since it may need to check every element in the worst case.",
+          "reference_answer": "Linear search has O(n) time complexity in the worst case.",
+          "scenario": "technical",
+          "slice_name": "algorithms",
+          "severity": "medium"
+        },
+        {
+          "prompt": "What is the key difference between a stack and a queue?",
+          "expected_keyword": "LIFO",
+          "candidate_output": "A stack is LIFO (last in, first out), while a queue is FIFO (first in, first out).",
+          "reference_answer": "A stack follows LIFO order; a queue follows FIFO order.",
+          "scenario": "technical",
+          "slice_name": "data_structures",
+          "severity": "medium"
+        },
+        {
+          "prompt": "What does 'idempotent' mean when describing an HTTP method?",
+          "expected_keyword": "idempotent",
+          "candidate_output": "Idempotent means the request is processed faster than usual by the server.",
+          "reference_answer": "An idempotent HTTP method produces the same result no matter how many times an identical request is made (e.g. GET, PUT, DELETE).",
+          "scenario": "technical",
+          "slice_name": "http",
+          "severity": "high"
+        },
+        {
+          "prompt": "What is the difference between authentication and authorization?",
+          "expected_keyword": "authorization",
+          "candidate_output": "Authentication determines what a user is allowed to do, and authorization verifies who the user is.",
+          "reference_answer": "Authentication verifies who a user is; authorization determines what that user is allowed to do.",
+          "scenario": "technical",
+          "slice_name": "security",
+          "severity": "high"
+        },
+        {
+          "prompt": "What does each letter in the ACID database properties stand for?",
+          "expected_keyword": "Atomicity",
+          "candidate_output": "ACID stands for Availability, Consistency, Isolation, and Durability.",
+          "reference_answer": "ACID stands for Atomicity, Consistency, Isolation, and Durability.",
+          "scenario": "technical",
+          "slice_name": "databases",
+          "severity": "high"
+        },
+        {
+          "prompt": "What is a foreign key used for in a relational database?",
+          "expected_keyword": "foreign key",
+          "candidate_output": "A foreign key is used to link one table to another.",
+          "reference_answer": "A foreign key is a column that references the primary key of another table, enforcing referential integrity between the two tables.",
+          "scenario": "technical",
+          "slice_name": "databases",
+          "severity": "medium"
+        },
+        {
+          "prompt": "What causes a null pointer exception?",
+          "expected_keyword": "null",
+          "candidate_output": "It happens when you try to use a variable that's null, which causes an error.",
+          "reference_answer": "A null pointer exception occurs when code attempts to access a member (a field or method) on a reference that points to null.",
+          "scenario": "technical",
+          "slice_name": "errors",
+          "severity": "medium"
+        },
+        {
+          "prompt": "What is the purpose of a cache in system design?",
+          "expected_keyword": "cache",
+          "candidate_output": "A cache stores data temporarily so it can be accessed faster next time.",
+          "reference_answer": "A cache stores frequently accessed data in fast storage to reduce latency and load on the primary data source, trading off memory for speed and requiring an eviction/invalidation strategy to stay consistent.",
+          "scenario": "technical",
+          "slice_name": "system_design",
+          "severity": "medium"
         }
       ]
     }
