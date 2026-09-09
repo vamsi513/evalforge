@@ -86,6 +86,14 @@ resource "aws_security_group" "resume_projects" {
   }
 
   ingress {
+    description = "IncidentMemoryAI RAG app (app.main, LLM generation + citations)"
+    from_port   = 8003
+    to_port     = 8003
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description = "IncidentMemoryAI Streamlit UI"
     from_port   = 8501
     to_port     = 8501
