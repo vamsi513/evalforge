@@ -203,6 +203,8 @@ Release gate CI workflow queries `GET /api/v1/release-gates/ci-decision` and fai
 
 SSH on the host is locked to a single home IP, not open to the internet. Since the GitHub-hosted runner's IP is different on every run, the deploy job authorizes its own runner's IP on port 22 immediately before connecting, then revokes that access in a cleanup step that runs even if the deploy fails — so the actual open window is the length of one deploy, not standing access.
 
+Required GitHub Secrets: `EC2_HOST`, `EC2_SSH_KEY`, `DEPLOY_AWS_ACCESS_KEY_ID`, `DEPLOY_AWS_SECRET_ACCESS_KEY`
+
 ## Infrastructure
 
 The EC2 host, its security group, and its Elastic IP are managed as Terraform under `infra/` (`aws_instance`, `aws_security_group`, `aws_eip`). The host was originally provisioned by hand, so this was built by importing the real, running resources into Terraform state (`terraform import`) rather than standing up new ones — `terraform plan` against it returns no changes.
