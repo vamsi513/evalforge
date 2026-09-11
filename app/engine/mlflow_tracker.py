@@ -100,34 +100,41 @@ def tracked_run(
     if not _MLFLOW_AVAILABLE:
         return results, avg_score
 
-    _setup()
-    run_name = f"eval-{datetime.now(UTC):%Y%m%d-%H%M%S}"
+    # MLflow is a tracking side-effect, not part of the eval contract — a
+    # broken tracking store (e.g. a schema mismatch after an mlflow upgrade
+    # against a persisted database from an older version) must never fail
+    # the eval run itself. The caller already has real results at this point.
+    try:
+        _setup()
+        run_name = f"eval-{datetime.now(UTC):%Y%m%d-%H%M%S}"
 
-    with mlflow.start_run(run_name=run_name):
-        mlflow.log_params({
-            "dataset": payload.dataset_name if hasattr(payload, "dataset_name") else "inline",
-            "evaluator_profile": payload.evaluator_profile,
-            "num_samples": len(payload.samples),
-            "git_sha": _git_sha(),
-        })
+        with mlflow.start_run(run_name=run_name):
+            mlflow.log_params({
+                "dataset": payload.dataset_name if hasattr(payload, "dataset_name") else "inline",
+                "evaluator_profile": payload.evaluator_profile,
+                "num_samples": len(payload.samples),
+                "git_sha": _git_sha(),
+            })
 
-        mlflow.log_metric("avg_score", avg_score)
-        mlflow.log_metric("pass_rate", sum(1 for r in results if r.passed) / len(results) if results else 0.0)
-        mlflow.log_metric("avg_latency_ms", sum(r.latency_ms for r in results) / len(results) if results else 0.0)
-        mlflow.log_metric("avg_cost_usd", sum(r.cost_usd for r in results) / len(results) if results else 0.0)
+            mlflow.log_metric("avg_score", avg_score)
+            mlflow.log_metric("pass_rate", sum(1 for r in results if r.passed) / len(results) if results else 0.0)
+            mlflow.log_metric("avg_latency_ms", sum(r.latency_ms for r in results) / len(results) if results else 0.0)
+            mlflow.log_metric("avg_cost_usd", sum(r.cost_usd for r in results) / len(results) if results else 0.0)
 
-        _log_artifact({
-            "run_name": run_name,
-            "avg_score": avg_score,
-            "results": [r.model_dump() for r in results],
-        })
+            _log_artifact({
+                "run_name": run_name,
+                "avg_score": avg_score,
+                "results": [r.model_dump() for r in results],
+            })
 
-        logger.info(
-            "MLflow run '%s' — avg_score=%.4f pass_rate=%.2f",
-            run_name,
-            avg_score,
-            sum(1 for r in results if r.passed) / len(results) if results else 0.0,
-        )
+            logger.info(
+                "MLflow run '%s' — avg_score=%.4f pass_rate=%.2f",
+                run_name,
+                avg_score,
+                sum(1 for r in results if r.passed) / len(results) if results else 0.0,
+            )
+    except Exception:
+        logger.exception("MLflow tracking failed for eval run — results are unaffected")
 
     return results, avg_score
 
@@ -151,33 +158,38 @@ def tracked_compare(
     if not _MLFLOW_AVAILABLE:
         return response
 
-    _setup()
-    run_name = f"pairwise-{datetime.now(UTC):%Y%m%d-%H%M%S}"
+    # Same rationale as tracked_run above — tracking must not be able to
+    # fail a request that already has a real result.
+    try:
+        _setup()
+        run_name = f"pairwise-{datetime.now(UTC):%Y%m%d-%H%M%S}"
 
-    with mlflow.start_run(run_name=run_name):
-        mlflow.log_params({
-            "dataset": payload.dataset_name,
-            "model": payload.model_name,
-            "prompt_version_a": payload.prompt_version_a,
-            "prompt_version_b": payload.prompt_version_b,
-            "num_samples": len(payload.samples),
-            "git_sha": _git_sha(),
-        })
+        with mlflow.start_run(run_name=run_name):
+            mlflow.log_params({
+                "dataset": payload.dataset_name,
+                "model": payload.model_name,
+                "prompt_version_a": payload.prompt_version_a,
+                "prompt_version_b": payload.prompt_version_b,
+                "num_samples": len(payload.samples),
+                "git_sha": _git_sha(),
+            })
 
-        mlflow.log_metric("win_rate_a", response.win_rate_a)
-        mlflow.log_metric("win_rate_b", response.win_rate_b)
-        mlflow.log_metric("ties", response.ties)
+            mlflow.log_metric("win_rate_a", response.win_rate_a)
+            mlflow.log_metric("win_rate_b", response.win_rate_b)
+            mlflow.log_metric("ties", response.ties)
 
-        _log_artifact({
-            "run_name": run_name,
-            "win_rate_a": response.win_rate_a,
-            "win_rate_b": response.win_rate_b,
-            "results": [r.model_dump() for r in response.results],
-        })
+            _log_artifact({
+                "run_name": run_name,
+                "win_rate_a": response.win_rate_a,
+                "win_rate_b": response.win_rate_b,
+                "results": [r.model_dump() for r in response.results],
+            })
 
-        logger.info(
-            "MLflow pairwise '%s' — win_a=%.2f win_b=%.2f ties=%d",
-            run_name, response.win_rate_a, response.win_rate_b, response.ties,
-        )
+            logger.info(
+                "MLflow pairwise '%s' — win_a=%.2f win_b=%.2f ties=%d",
+                run_name, response.win_rate_a, response.win_rate_b, response.ties,
+            )
+    except Exception:
+        logger.exception("MLflow tracking failed for pairwise run — results are unaffected")
 
     return response
