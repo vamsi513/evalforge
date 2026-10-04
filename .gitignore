@@ -13,3 +13,4 @@ htmlcov/
 evalforge.db
 *.egg-info/
 mlruns/
+mlflow.db

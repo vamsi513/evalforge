@@ -38,6 +38,9 @@ dev = [
 ml = [
   "scikit-learn>=1.5.0",
   "numpy>=2.0.0",
+  # training/train_disclosure_classifier.py only. Kept out of the base install
+  # because it is a large dependency and nothing the API serves needs it.
+  "torch>=2.4.0",
 ]
 
 [tool.setuptools.packages.find]
