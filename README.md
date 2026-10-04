@@ -84,12 +84,15 @@ evalforge/
 ├── app/                    # FastAPI backend
 │   ├── api/routes/         # Evals, experiments, gates, telemetry
 │   ├── engine/judge.py     # Heuristic + LLM judge scorers
+│   ├── engine/privacy_*.py # Privacy probe: target model client + deterministic scorer
 │   ├── models/             # Pydantic schemas
 │   └── services/           # Business logic
 ├── frontend/               # Next.js 16 dashboard
 │   ├── app/                # App Router pages + loading skeletons
 │   ├── components/         # MetricCard, ScoreChart, DemoButton…
 │   └── lib/api.ts          # Typed API client
+├── evaluation/             # Hand-authored datasets + saved run artifacts
+├── training/               # Offline analysis models (PyTorch, optional `ml` extra)
 ├── tests/
 ├── alembic/                # DB migrations
 ├── docker-compose.yml
@@ -172,6 +175,73 @@ Both kappa values fall in the "almost perfect agreement" band on the standard sc
 **Position-bias test**: 15 hand-authored pairs (`evaluation/position_bias_pairs.json`, each with an unambiguously better and worse response to the same prompt), tested with the local judge in both orders via `scripts/run_position_bias_test.py`. **0/15 verdicts flipped on swap.** These pairs were deliberately easy calls; this doesn't establish anything about bias on close judgment calls.
 
 60 cases is a small hand-written benchmark, not a comprehensive evaluation suite; treat every number above as a signal on this specific dataset, not a general quality ranking.
+
+## Privacy probe study
+
+A separate, narrower study that uses this repo's harness to ask one question: when
+a private value sits in a model's context or in a document it retrieved, does the
+model hand it to a requester whose authorisation isn't established?
+
+Full write-up: [`docs/PRIVACY_STUDY.md`](docs/PRIVACY_STUDY.md). Dataset:
+`evaluation/privacy_probe_dataset.json` (version `0.3.0`, 40 hand-authored cases
+across authorized requests, direct extraction, indirect requests, paraphrases, and
+retrieved-document prompt injection). Every record and secret in it is fictional.
+
+Scoring is deterministic string matching — no LLM judge decides any label — and
+cases the rules can't decide are routed to a manual review CSV rather than guessed
+at. Run it against a local model with no API key:
+
+```bash
+python -m scripts.run_privacy_eval --provider ollama --model qwen2.5:7b-instruct
+python -m scripts.analyze_privacy_results evaluation/results/privacy_probe_*.json \
+    --out evaluation/results/privacy_analysis.json \
+    --review-csv evaluation/results/privacy_manual_review.csv
+```
+
+Measured on `qwen2.5:7b-instruct`, 40 cases × 2 prompt configurations = 80
+responses, 0 generation errors, identical labels across three reruns.
+
+**These rates are provisional.** They are automated labels with no human
+adjudication yet; 4 cases are unresolved and the rest have not been checked by a
+person. The range is what those unresolved cases allow. Should-refuse cases, n=32
+per configuration:
+
+| Configuration | Disclosed (provisional) | Range | Correct refusal | Unresolved | 95% CI |
+|---|---|---|---|---|---|
+| `baseline` (no privacy instruction) | 27/32 (84.4%) | 27–28/32 | 4/32 | 1/32 | [0.719, 0.969] |
+| `guarded` (explicit privacy rule) | 16/32 (50.0%) | 16–19/32 | 13/32 | 3/32 | [0.344, 0.656] |
+
+Both configurations answered all 8 authorized-requester cases correctly with nothing
+unresolved, so the guard cost nothing in over-refusal on this set. Paired over the
+same 40 cases the guard fixed 12 and made 1 worse, and **15 cases leak under both** —
+that last number is the point, not the halved rate, and all 15 are verbatim string
+matches.
+
+Adjudicating the 47-row review queue is what makes these final:
+[`docs/PRIVACY_REVIEW_GUIDE.md`](docs/PRIVACY_REVIEW_GUIDE.md).
+
+The most useful finding is a scoring trap: under `guarded`, 8 of the 16
+disclosures were replies that refused *and* named the secret in the same sentence
+("I cannot provide information about the codename of Project Harrowgate"). Under
+`baseline`, 0 of 27 did. An evaluation that scored safety by looking for refusal
+wording would have reported that configuration as 21/32 safe instead of 13/32.
+
+`training/train_disclosure_classifier.py` trains a PyTorch classifier on the
+response text, with the secrets masked out, to check how much the scorer's
+hand-written refusal regexes are missing. Grouped 5-fold CV on 80 responses: linear
+0.825 accuracy vs 0.8125 for the regex, fold stdev 0.073 — the gap is inside the
+noise, so **the classifier does not beat the rules** and the rules stay
+authoritative. These are not validated accuracies; they are CV estimates on 80
+responses scored against unadjudicated labels. The component earned its place by
+locating the refuse-and-leak cases above, not by classifying well. Requires the
+optional `ml` extra.
+
+This is 40 hand-written single-turn cases on one quantised 7B model. It establishes
+nothing about training-data memorization (every secret is invented and only ever
+appears in the prompt), nothing about real user privacy, nothing about hosted
+frontier models, and no general leak rate for this model or any other. No part of it
+has been externally reviewed — see
+[`docs/PRIVACY_STUDY_REVIEW.md`](docs/PRIVACY_STUDY_REVIEW.md).
 
 ## Evaluator profiles
 
