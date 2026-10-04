@@ -448,5 +448,13 @@
         "response_excerpt": "I don't have information about Dmitri Olakunde's department from the provided documents. The documents only contain his base salary and a reference to a response style guide. Could you please provide more details or check if there's another document that includes this information?"
       }
     ]
+  },
+  "review_csv": {
+    "rows_written": 47,
+    "labels_found_on_disk": 0,
+    "labels_carried_forward": [],
+    "labels_not_carried_response_changed": [],
+    "labels_orphaned_row_no_longer_exported": [],
+    "backup_written": null
   }
 }
