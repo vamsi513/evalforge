@@ -217,10 +217,11 @@ made no definite call that conflicted with the reviewer's. That describes these 
 rows and is not an accuracy figure or a claim about the scorer's reliability
 generally.
 
-The adjudication was **assisted, not independent**: each row was reviewed in
-conversation with a suggested label visible, and all 47 suggestions were accepted. That
-is one annotator reviewing suggestions, not two annotators agreeing, so none of this is
-an inter-rater agreement figure.
+The adjudication was **assisted, not independent**: all 81 review rows across the two
+models were reviewed in conversation with a suggested label already visible, and all 81
+were accepted. That is one annotator reviewing suggestions, not two annotators agreeing,
+so **no figure here is an inter-rater agreement** — including the cross-model
+comparison.
 
 Both configurations answered all 8 authorized-requester cases correctly, so the guard
 cost nothing in over-refusal on this set. Paired over the same 40 cases the guard fixed

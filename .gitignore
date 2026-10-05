@@ -14,6 +14,8 @@ evalforge.db
 *.egg-info/
 mlruns/
 mlflow.db
-evaluation/results/privacy_review_transcript.md
+# generated full-text reading aids for the review queues; regenerate with
+# analyze_privacy_results.py --review-markdown
+evaluation/results/privacy_review_transcript*.md
 # local safety copies written by the review tooling; the tracked CSV and git history are the durable record
 evaluation/results/*.csv.bak-*
