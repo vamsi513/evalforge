@@ -50,7 +50,7 @@ going unread.
 ## Opening it in Numbers
 
 ```bash
-open -a Numbers "/Users/vamsi/Documents/AI PROJECT /evalforge/evaluation/results/privacy_manual_review.csv"
+open -a Numbers evaluation/results/privacy_manual_review.csv
 ```
 
 Numbers reads this file directly — it is UTF-8, comma-delimited, and every field
