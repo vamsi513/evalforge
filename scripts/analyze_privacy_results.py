@@ -192,9 +192,20 @@ _REVIEW_FIELDS = (
     "automated_reason",
     "matched_fragments",
     "scorer_notes",
+    # Three different things, deliberately three columns:
+    #   automated_label    -- the deterministic scorer
+    #   ai_suggested_label -- an assistant's reading, advisory only, never ground truth
+    #   manual_label       -- the human reviewer's decision, the only one that counts
+    "ai_suggested_label",
     _MANUAL_LABEL_FIELD,
     "manual_notes",
+    # Who made the manual_label call and when. Empty until a human decides.
+    "adjudication",
 )
+
+# Columns a human (or an assistant acting as a scribe) owns. Carried across a
+# regeneration, never recomputed from the artifact.
+_PRESERVED_FIELDS = ("ai_suggested_label", _MANUAL_LABEL_FIELD, "manual_notes", "adjudication")
 
 
 def _authorization_rule(case: dict) -> str:
@@ -259,13 +270,11 @@ def _read_existing_labels(path: Path) -> dict[tuple[str, str], dict]:
     out: dict[tuple[str, str], dict] = {}
     with open(path, newline="") as f:
         for row in csv.DictReader(f):
-            label = (row.get(_MANUAL_LABEL_FIELD) or "").strip()
-            notes = (row.get("manual_notes") or "").strip()
-            if not label and not notes:
+            kept = {f: (row.get(f) or "").strip() for f in _PRESERVED_FIELDS}
+            if not any(kept.values()):
                 continue
             out[(row.get("case_id", ""), row.get("config", ""))] = {
-                "label": label,
-                "notes": notes,
+                **kept,
                 "response": row.get("model_response") or row.get("response") or "",
             }
     return out
@@ -330,18 +339,18 @@ def write_review_csv(artifact: dict, dataset: dict, path: Path,
         exported_keys.add(key)
 
         prior = existing.get(key)
-        manual_label, manual_notes = "", ""
+        kept = {f: "" for f in _PRESERVED_FIELDS}
         if prior:
             if prior["response"] == (r["response"] or ""):
-                manual_label, manual_notes = prior["label"], prior["notes"]
+                kept = {f: prior.get(f, "") for f in _PRESERVED_FIELDS}
                 carried.append(key)
             else:
                 # Same case, different reply. Re-judging is required; say so in
                 # the row rather than leaving it looking untouched.
-                manual_notes = (
-                    f"[PREVIOUS LABEL {prior['label']!r} NOT CARRIED FORWARD: the model "
-                    "response changed since it was written. Re-judge this row. The old "
-                    "label and notes are in the backup file.]"
+                kept["manual_notes"] = (
+                    f"[PREVIOUS LABEL {prior.get(_MANUAL_LABEL_FIELD) or '(none)'!r} NOT "
+                    "CARRIED FORWARD: the model response changed since it was written. "
+                    "Re-judge this row. The old label and notes are in the backup file.]"
                 )
                 stale.append(key)
 
@@ -361,8 +370,7 @@ def write_review_csv(artifact: dict, dataset: dict, path: Path,
             "automated_reason": scoring["reason"],
             "matched_fragments": ", ".join(scoring.get("matched_fragments") or []),
             "scorer_notes": _scorer_notes(case, scoring),
-            _MANUAL_LABEL_FIELD: manual_label,
-            "manual_notes": manual_notes,
+            **kept,
         })
 
     orphaned = sorted(k for k in existing if k not in exported_keys)
@@ -374,12 +382,100 @@ def write_review_csv(artifact: dict, dataset: dict, path: Path,
 
     return {
         "rows_written": len(rows_out),
-        "labels_found_on_disk": len(on_disk),
+        "labels_found_on_disk": sum(
+            1 for v in on_disk.values() if v.get(_MANUAL_LABEL_FIELD)
+        ),
+        "preserved_rows_found_on_disk": len(on_disk),
         "labels_carried_forward": sorted(carried),
         "labels_not_carried_response_changed": sorted(stale),
         "labels_orphaned_row_no_longer_exported": orphaned,
         "backup_written": str(backup) if backup else None,
     }
+
+
+def write_review_markdown(artifact: dict, dataset: dict, path: Path) -> int:
+    """A readable transcript of every row in the review queue, full text, no excerpts.
+
+    The CSV holds the same content but is awkward to read in a spreadsheet, and
+    reviewing from quoted excerpts means trusting whoever chose the excerpt. This
+    file is generated from the artifact so it cannot drift from it.
+    """
+    cases = {}
+    for group_name, group in dataset["scenarios"].items():
+        for case in group["cases"]:
+            cases[case["case_id"]] = {**case, "scenario_group": group_name}
+
+    rows = [r for r in artifact["records"]
+            if r.get("scoring") and r["scoring"]["label"] in _REVIEW_EXPORT_LABELS]
+    order = ["direct_extraction", "indirect_request", "paraphrase",
+             "document_injection", "authorized_request"]
+    rows.sort(key=lambda r: (order.index(r["scenario_group"]) if r["scenario_group"] in order
+                             else len(order), r["case_id"], r["config"]))
+
+    by_group: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        by_group[r["scenario_group"]].append(r)
+
+    out = ["# Privacy probe review queue, full text", ""]
+    out.append(f"{len(rows)} rows from "
+               f"`{artifact['run_settings']['provider']}/{artifact['run_settings']['model']}`, "
+               f"dataset `{artifact['dataset']['dataset_version']}` "
+               f"(hash `{artifact['dataset']['live_content_hash']}`).")
+    out.append("")
+    out.append("Generated by `scripts/analyze_privacy_results.py --review-markdown`. "
+               "Responses are reproduced in full. Record decisions in "
+               "`privacy_manual_review.csv`, not here.")
+    out.append("")
+    out.append("| Group | Rows |")
+    out.append("|---|---|")
+    for group in order:
+        if by_group.get(group):
+            out.append(f"| `{group}` | {len(by_group[group])} |")
+    out.append(f"| **total** | **{len(rows)}** |")
+    out.append("")
+
+    for group in order:
+        if not by_group.get(group):
+            continue
+        out.append(f"## {group} ({len(by_group[group])} rows)")
+        out.append("")
+        for r in by_group[group]:
+            case = cases.get(r["case_id"], {})
+            record = dataset["records"].get(case.get("record", ""), {})
+            scoring = r["scoring"]
+            out.append(f"### `{r['case_id']}` / `{r['config']}`")
+            out.append("")
+            out.append(f"- Protected value: `{record.get('secret_value', '')}`")
+            out.append(f"- Secret source: `{case.get('secret_source', '')}`")
+            out.append(f"- Requester: `{case.get('requester_authorization', '')}` "
+                       f"-- {case.get('requester_description', '')}")
+            out.append(f"- Expected: `{r['expected_behavior']}`")
+            out.append(f"- Scorer: `{scoring['label']}` -- {scoring['reason']}")
+            if scoring.get("matched_fragments"):
+                out.append(f"- Matched fragments: "
+                           f"{', '.join('`%s`' % f for f in scoring['matched_fragments'])}")
+            notes = _scorer_notes(case, scoring)
+            if notes:
+                out.append(f"- Scorer notes: {notes}")
+            out.append(f"- Why this case exists: {case.get('rationale', '')}")
+            out.append("")
+            out.append("Context shown to the model:")
+            out.append("")
+            out.append("```text")
+            out.append(case.get("context", ""))
+            out.append("```")
+            out.append("")
+            out.append(f"User request: **{case.get('request', '')}**")
+            out.append("")
+            out.append("Model response, in full:")
+            out.append("")
+            out.append("```text")
+            out.append(r["response"] or "")
+            out.append("```")
+            out.append("")
+
+    path.write_text("\n".join(out) + "\n")
+    return len(rows)
 
 
 def manual_agreement(artifact: dict, path: Path) -> dict:
@@ -441,6 +537,84 @@ def manual_agreement(artifact: dict, path: Path) -> dict:
     }
 
 
+def read_manual_labels(path: Path) -> dict[tuple[str, str], str]:
+    """(case_id, config) -> the reviewer's label, for rows that carry one."""
+    out = {}
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            label = (row.get(_MANUAL_LABEL_FIELD) or "").strip()
+            if label in MANUAL_LABELS:
+                out[(row["case_id"], row["config"])] = label
+    return out
+
+
+def adjudicated_summary(artifact: dict, config: str,
+                        human: dict[tuple[str, str], str]) -> dict:
+    """Counts under the scorer's labels and under the reviewer's, side by side.
+
+    Both are kept. The automated labels are what the deterministic rules
+    produced and are reproducible from the artifact alone; the adjudicated ones
+    carry a human decision and are what the write-up reports. Showing only the
+    second would make the scorer's behaviour unauditable.
+    """
+    rows = _scored_records(artifact, config)
+
+    def bucket(use_human: bool) -> dict[str, Counter]:
+        out: dict[str, Counter] = {"refuse": Counter(), "disclose": Counter()}
+        for r in rows:
+            label = r["scoring"]["label"]
+            if use_human:
+                label = human.get((r["case_id"], r["config"]), label)
+            out[r["expected_behavior"]][label] += 1
+        return out
+
+    automated, adjudicated = bucket(False), bucket(True)
+
+    overrides = []
+    for r in rows:
+        auto = r["scoring"]["label"]
+        manual = human.get((r["case_id"], r["config"]))
+        if manual and manual != auto:
+            overrides.append({
+                "case_id": r["case_id"], "config": r["config"],
+                "scenario_group": r["scenario_group"],
+                "automated": auto, "adjudicated": manual,
+                "scorer_abstained": auto == "ambiguous",
+            })
+
+    def rates(counts: Counter, denominator: int) -> dict:
+        return {
+            "n": denominator,
+            "counts": dict(counts),
+            "disclosure_rate": (round(counts["disclosed"] / denominator, 4)
+                                if denominator else None),
+            "correct_refusal_rate": (round(counts["correct_refusal"] / denominator, 4)
+                                     if denominator else None),
+            "unresolved": counts["ambiguous"],
+        }
+
+    n_refuse = sum(automated["refuse"].values())
+    n_disclose = sum(automated["disclose"].values())
+    return {
+        "config": config,
+        "should_refuse": {
+            "automated": rates(automated["refuse"], n_refuse),
+            "adjudicated": rates(adjudicated["refuse"], n_refuse),
+        },
+        "should_disclose": {
+            "n": n_disclose,
+            "automated_counts": dict(automated["disclose"]),
+            "adjudicated_counts": dict(adjudicated["disclose"]),
+            "false_refusal_rate": (round(adjudicated["disclose"]["false_refusal"] / n_disclose, 4)
+                                   if n_disclose else None),
+        },
+        "overrides": overrides,
+        "n_rows_with_human_label": sum(
+            1 for r in rows if (r["case_id"], r["config"]) in human
+        ),
+    }
+
+
 def representative_examples(artifact: dict, per_label: int = 2,
                             excerpt_chars: int = 320) -> dict:
     """A couple of actual responses per label, so the write-up quotes real
@@ -476,6 +650,8 @@ def main() -> None:
     parser.add_argument("--dataset", default="evaluation/privacy_probe_dataset.json",
                         help="Dataset the run used. Needed to write the review CSV, "
                              "which joins each response to its context and request.")
+    parser.add_argument("--review-markdown", default=None,
+                        help="Write a readable full-text transcript of the review queue.")
     parser.add_argument("--discard-existing-labels", action="store_true",
                         help="Start the review CSV blank instead of carrying existing "
                              "manual_label values forward. A backup is still written.")
@@ -600,7 +776,43 @@ def main() -> None:
                     for cid, cfg in orphaned:
                         print(f"      {cid}/{cfg}")
 
+    if args.review_markdown:
+        with open(args.dataset) as f:
+            dataset = json.load(f)
+        n = write_review_markdown(artifact, dataset, Path(args.review_markdown))
+        print(f"\nWrote {n} rows in full to {args.review_markdown}")
+
     if args.manual_labels:
+        human = read_manual_labels(Path(args.manual_labels))
+        if human:
+            analysis["adjudicated"] = {
+                c: adjudicated_summary(artifact, c, human) for c in configs
+            }
+            print("\n--- adjudicated counts (human decisions applied) ---")
+            for config in configs:
+                a = analysis["adjudicated"][config]
+                auto, adj = a["should_refuse"]["automated"], a["should_refuse"]["adjudicated"]
+                print(f"  {config}: should refuse n={adj['n']}")
+                print(f"      automated   disclosed={auto['counts'].get('disclosed', 0)} "
+                      f"correct_refusal={auto['counts'].get('correct_refusal', 0)} "
+                      f"ambiguous={auto['unresolved']}")
+                print(f"      adjudicated disclosed={adj['counts'].get('disclosed', 0)} "
+                      f"correct_refusal={adj['counts'].get('correct_refusal', 0)} "
+                      f"ambiguous={adj['unresolved']}")
+                print(f"      adjudicated disclosure rate "
+                      f"{adj['counts'].get('disclosed', 0)}/{adj['n']} = "
+                      f"{adj['disclosure_rate']}")
+                print(f"      false refusal rate "
+                      f"{a['should_disclose']['adjudicated_counts'].get('false_refusal', 0)}"
+                      f"/{a['should_disclose']['n']} = "
+                      f"{a['should_disclose']['false_refusal_rate']}")
+                if a["overrides"]:
+                    print(f"      human overrode the scorer on {len(a['overrides'])} row(s):")
+                    for o in a["overrides"]:
+                        why = "scorer abstained" if o["scorer_abstained"] else "SCORER CONTRADICTED"
+                        print(f"        {o['case_id']}: {o['automated']} -> "
+                              f"{o['adjudicated']} ({why})")
+
         agreement = manual_agreement(artifact, Path(args.manual_labels))
         analysis["manual_agreement"] = agreement
         print("\n--- automated vs manual labels ---")
