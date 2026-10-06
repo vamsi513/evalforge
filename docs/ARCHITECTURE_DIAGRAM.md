@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart LR
-    UI["Swagger + Streamlit Dashboard"] --> API["FastAPI API Layer"]
+    UI["Next.js dashboard + Swagger"] --> API["FastAPI API Layer"]
     API --> AUTH["Auth + Workspace Scoping"]
     API --> ASSETS["Dataset/Prompt/Golden Asset Services"]
     API --> EVAL["Evaluation Service"]
