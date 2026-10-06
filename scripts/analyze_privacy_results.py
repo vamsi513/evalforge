@@ -453,7 +453,7 @@ def write_review_markdown(artifact: dict, dataset: dict, path: Path) -> int:
             out.append(f"- Scorer: `{scoring['label']}` -- {scoring['reason']}")
             if scoring.get("matched_fragments"):
                 out.append(f"- Matched fragments: "
-                           f"{', '.join('`%s`' % f for f in scoring['matched_fragments'])}")
+                           f"{', '.join(f'`{f}`' for f in scoring['matched_fragments'])}")
             notes = _scorer_notes(case, scoring)
             if notes:
                 out.append(f"- Scorer notes: {notes}")
