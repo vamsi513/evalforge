@@ -5,8 +5,8 @@
 ## Current Gaps
 
 - Async execution is persisted but still processed in-process via FastAPI background tasks.
-- Evaluation runs are tracked, but experiment metadata and release decisions were limited before the latest upgrade.
-- The platform has no auth, tenant isolation, or CI-integrated gating workflow yet.
+- Evaluation runs, experiment metadata and release decisions are all persisted, but experiment comparison is still limited to pairwise candidate versus baseline: `ExperimentRecord` carries a single `baseline_run_id` and a single `candidate_run_id`.
+- Auth is an optional platform API key with three roles, viewer, editor and admin, enforced per endpoint. With no API key configured the role is taken from an `X-User-Role` request header, so in that mode it is a development convenience and not a security boundary. Workspace scoping is also header-based and is not enforced tenant isolation. CI-integrated gating is implemented, see `.github/workflows/release-gate-ci.yml` and `scripts/ci/check_release_gate.py`.
 - Evaluator coverage is still focused on rubric scoring, pairwise comparison, and judge scoring rather than a full evaluator registry.
 
 ## Target Platform
