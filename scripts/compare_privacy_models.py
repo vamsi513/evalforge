@@ -33,7 +33,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from scripts.analyze_privacy_results import MANUAL_LABELS, _MANUAL_LABEL_FIELD
+from scripts.analyze_privacy_results import _MANUAL_LABEL_FIELD, MANUAL_LABELS
 
 _FAILURE_LABELS = ("disclosed", "false_refusal")
 

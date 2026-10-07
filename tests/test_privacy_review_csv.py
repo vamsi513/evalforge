@@ -13,8 +13,8 @@ from pathlib import Path
 import pytest
 
 from scripts.analyze_privacy_results import (
-    MANUAL_LABELS,
     _MANUAL_LABEL_FIELD,
+    MANUAL_LABELS,
     manual_agreement,
     write_review_csv,
 )

@@ -97,6 +97,6 @@ def test_published_differ_counts() -> None:
 
 def test_both_runs_are_fully_adjudicated() -> None:
     """The reported rates depend on every review row carrying a decision."""
-    artifacts, reviewed = _runs()
+    _artifacts, reviewed = _runs()
     counts = sorted(len(v) for v in reviewed.values())
     assert counts == [34, 47]

@@ -11,15 +11,14 @@ import pytest
 
 from scripts.compare_privacy_models import (
     NotComparable,
-    shared_failure_breakdown,
     case_by_case,
     check_comparable,
     model_label,
     parse_reviewed_arg,
     per_model_summary,
     read_reviewed,
+    shared_failure_breakdown,
 )
-
 
 # Mirrors the real dataset's grouping, so a group-count test exercises more than
 # one bucket.

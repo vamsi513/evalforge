@@ -40,7 +40,7 @@ import shutil
 from datetime import UTC, datetime
 from pathlib import Path
 
-from scripts.analyze_privacy_results import MANUAL_LABELS, _MANUAL_LABEL_FIELD
+from scripts.analyze_privacy_results import _MANUAL_LABEL_FIELD, MANUAL_LABELS
 
 _REPO_ROOT = Path(__file__).parent.parent
 _DEFAULT_CSV = _REPO_ROOT / "evaluation" / "results" / "privacy_manual_review.csv"
