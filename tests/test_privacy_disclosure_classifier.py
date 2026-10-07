@@ -12,7 +12,7 @@ import pytest
 
 torch = pytest.importorskip("torch", reason="torch is in the optional ml extra")
 
-from training.train_disclosure_classifier import (
+from training.train_disclosure_classifier import (  # noqa: E402
     Example,
     featurise,
     grouped_folds,
