@@ -16,7 +16,7 @@ This is a small, hand-written benchmark for comparing judge providers on the sam
 |---|---|---|---|---|---|---|
 | openai | gpt-4o-mini | 60 | 0.645 | [0.5483, 0.7417] | 1529 | $0.006674 |
 | anthropic | claude-haiku-4-5 | 60 | 0.634 | [0.5417, 0.7267] | 4162 | $0.184357 |
-| mistral | — | 0 | — | — | — | 0 real calls (no successful (non-fallback) calls) |
+| mistral | - | 0 | - | - | - | 0 real calls (no successful (non-fallback) calls) |
 | ollama | qwen2.5:7b-instruct | 60 | 0.715 | [0.6417, 0.7817] | 6076 | local inference, no per-request API charge |
 
 Total real spend across paid providers this run: $0.191031.

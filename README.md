@@ -5,17 +5,20 @@
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A production-inspired LLM evaluation platform with deterministic multi-signal scoring, experiment tracking, and automated release gates. Built with FastAPI, Next.js 16, and SQLAlchemy — deployed on AWS EC2 and Vercel.
+A production-inspired LLM evaluation platform with deterministic multi-signal scoring, experiment tracking, and automated release gates. Built with FastAPI, Next.js 16, and SQLAlchemy, deployed on AWS EC2 and Vercel.
 
 ## Live Demo
 
 **Dashboard:** [https://evalforge-platform.vercel.app](https://evalforge-platform.vercel.app)
 
-**API docs:** [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
+**API docs:** `http://localhost:8001/docs` once the API is running locally (see
+[Quick start](#quick-start)). A single EC2 instance also serves them at
+`http://23.21.42.197:8001/docs`, but it is a demo box on an ephemeral address, so
+treat the local path as the reliable one.
 
-Click **Run General Knowledge** on the dashboard to run a live heuristic evaluation — no setup needed. The demo runs in `mock` judge mode (see [Judge modes](#judge-modes) below), so the compute cost shown is genuinely `$0.0000` — no LLM judge API call is made, only the deterministic scorers.
+Click **Run General Knowledge** on the dashboard to run a live heuristic evaluation, no setup needed. The demo runs in `mock` judge mode (see [Judge modes](#judge-modes) below), so the compute cost shown is genuinely `$0.0000`: no LLM judge API call is made, only the deterministic scorers.
 
-![EvalForge Overview — live demo with heuristic scores, pass rate, and latency](docs/screenshot.png)
+![EvalForge Overview, live demo with heuristic scores, pass rate, and latency](docs/screenshot.png)
 
 ## What it does
 
@@ -29,12 +32,12 @@ Teams shipping LLM features hit the same problems:
 
 EvalForge addresses this with a full evaluation pipeline:
 
-- **5-signal heuristic scorer** — keyword match, reference overlap, rubric coverage, structured output validation, lexical groundedness
-- **LLM judge adapters** — OpenAI, Anthropic, Mistral via a unified interface with automatic heuristic fallback
-- **Experiment leaderboard** — rank prompt versions and model configs by average eval score
-- **Release gates** — PASS/FAIL CI signal based on score delta vs. baseline
-- **Async job worker** — background eval jobs off the request/response cycle; runs in-process by default (`ASYNC_BACKEND=local`, what the live deployment uses today), with a Redis-backed queue available via `ASYNC_BACKEND=redis` for true multi-process decoupling
-- **Telemetry** — per-run latency, cost, pass rate, and groundedness metrics
+- **5-signal heuristic scorer**: keyword match, reference overlap, rubric coverage, structured output validation, lexical groundedness
+- **LLM judge adapters**: OpenAI, Anthropic, Mistral via a unified interface with automatic heuristic fallback
+- **Experiment leaderboard**: rank prompt versions and model configs by average eval score
+- **Release gates**: PASS/FAIL CI signal based on score delta vs. baseline
+- **Async job worker**: background eval jobs off the request/response cycle; runs in-process by default (`ASYNC_BACKEND=local`, what the live deployment uses today), with a Redis-backed queue available via `ASYNC_BACKEND=redis` for true multi-process decoupling
+- **Telemetry**: per-run latency, cost, pass rate, and groundedness metrics
 
 ## Stack
 
@@ -43,7 +46,7 @@ EvalForge addresses this with a full evaluation pipeline:
 | Backend API | FastAPI, Pydantic, SQLAlchemy |
 | Storage | SQLite (default), Postgres-ready, Alembic migrations |
 | LLM judges | OpenAI · Anthropic · Mistral with heuristic fallback |
-| Experiment tracking | MLflow — every eval run and pairwise comparison logged automatically (params, metrics, results artifact) |
+| Experiment tracking | MLflow, every eval run and pairwise comparison logged automatically (params, metrics, results artifact) |
 | Async jobs | In-process by default (`ASYNC_BACKEND=local`); Redis-backed queue available for true decoupling |
 | Frontend | Next.js 16 App Router, React, Vercel |
 | Infrastructure | Docker, GitHub Actions CI/CD, AWS EC2 |
@@ -134,17 +137,17 @@ cd frontend && npm install && npm run dev
 
 | Provider | Description |
 |---|---|
-| `mock` | Deterministic heuristic scoring — no API key, zero cost, fast CI |
+| `mock` | Deterministic heuristic scoring, no API key, zero cost, fast CI |
 | `openai` | OpenAI structured judge via `/chat/completions` with JSON schema output |
 | `anthropic` | Anthropic Messages API judge |
 | `mistral` | Mistral client judge |
-| `ollama` | Local judge via a self-hosted Ollama server (`qwen2.5:7b-instruct` by default) — no API key, no per-request cost, same JSON-schema request shape as the OpenAI judge since Ollama's endpoint is OpenAI-compatible |
+| `ollama` | Local judge via a self-hosted Ollama server (`qwen2.5:7b-instruct` by default) - no API key, no per-request cost, same JSON-schema request shape as the OpenAI judge since Ollama's endpoint is OpenAI-compatible |
 
 All providers fall back to `mock` if the key is missing (not applicable to `ollama`, which has none) or the response is malformed. Fallback responses are marked with `used_fallback=true`.
 
 ### Judge provider benchmark
 
-Measured against a 60-case evaluation set (`evaluation/judge_benchmark_dataset.json`, version `1.1.0` — 20 cases each across general knowledge, customer support, and code/tech, with deliberately mixed answer quality so scores actually differentiate). Every number below is a real per-request measurement — latency is wall-clock time around the actual API call (or local inference call), cost is computed from real token usage against the published per-token pricing in `app/engine/judge.py`. Reproduce with:
+Measured against a 60-case evaluation set (`evaluation/judge_benchmark_dataset.json`, version `1.1.0`: 20 cases each across general knowledge, customer support, and code/tech, with deliberately mixed answer quality so scores actually differentiate). Every number below is a real per-request measurement, latency is wall-clock time around the actual API call (or local inference call), cost is computed from real token usage against the published per-token pricing in `app/engine/judge.py`. Reproduce with:
 
 ```bash
 python -m scripts.run_judge_benchmark --out results.json
@@ -157,11 +160,11 @@ python -m scripts.generate_eval_report
 | OpenAI | gpt-4o-mini | 1529 ms | $0.006674 | 0.645 | [0.548, 0.742] |
 | Anthropic | claude-haiku-4-5 | 4162 ms | $0.184357 | 0.634 | [0.542, 0.727] |
 | Ollama (local) | qwen2.5:7b-instruct | 6076 ms | local inference, no per-request API charge | 0.715 | [0.642, 0.782] |
-| Mistral | mistral-small-latest | — | 0 real calls | — | — |
+| Mistral | mistral-small-latest | - | 0 real calls | - | - |
 
-Total real spend for this benchmark: **$0.191031**. Mistral returned 0/60 real results — every call, and a second slower-paced retry, fell back to the mock judge under rate limiting rather than reaching the API; it's excluded from the table above rather than backfilled with a guess.
+Total real spend for this benchmark: **$0.191031**. Mistral returned 0/60 real results, every call, and a second slower-paced retry, fell back to the mock judge under rate limiting rather than reaching the API; it's excluded from the table above rather than backfilled with a guess.
 
-The three CIs overlap substantially at n=60 — these judges' average scores aren't statistically distinguishable from each other at this sample size. Local inference is markedly slower on this machine's CPU (roughly 4-5x OpenAI's latency) with no accuracy tradeoff visible in this benchmark.
+The three CIs overlap substantially at n=60, these judges' average scores aren't statistically distinguishable from each other at this sample size. Local inference is markedly slower on this machine's CPU (roughly 4-5x OpenAI's latency) with no accuracy tradeoff visible in this benchmark.
 
 **Local-vs-paid agreement** (pass/fail label, threshold score ≥0.7, same 60 shared cases):
 
@@ -170,7 +173,7 @@ The three CIs overlap substantially at n=60 — these judges' average scores are
 | Ollama vs OpenAI | 93.3% | 0.859 | 0.786 |
 | Ollama vs Anthropic | 91.7% | 0.822 | 0.824 |
 
-Both kappa values fall in the "almost perfect agreement" band on the standard scale — a real result on 60 cases, not a large-scale claim.
+Both kappa values fall in the "almost perfect agreement" band on the standard scale, a real result on 60 cases, not a large-scale claim.
 
 **Position-bias test**: 15 hand-authored pairs (`evaluation/position_bias_pairs.json`, each with an unambiguously better and worse response to the same prompt), tested with the local judge in both orders via `scripts/run_position_bias_test.py`. **0/15 verdicts flipped on swap.** These pairs were deliberately easy calls; this doesn't establish anything about bias on close judgment calls.
 
@@ -187,7 +190,7 @@ Full write-up: [`docs/PRIVACY_STUDY.md`](docs/PRIVACY_STUDY.md). Dataset:
 across authorized requests, direct extraction, indirect requests, paraphrases, and
 retrieved-document prompt injection). Every record and secret in it is fictional.
 
-Scoring is deterministic string matching — no LLM judge decides any label — and
+Scoring is deterministic string matching, no LLM judge decides any label, and
 cases the rules can't decide are routed to a manual review CSV rather than guessed
 at. Run it against a local model with no API key:
 
@@ -220,12 +223,12 @@ generally.
 The adjudication was **assisted, not independent**: all 81 review rows across the two
 models were reviewed in conversation with a suggested label already visible, and all 81
 were accepted. That is one annotator reviewing suggestions, not two annotators agreeing,
-so **no figure here is an inter-rater agreement** — including the cross-model
+so **no figure here is an inter-rater agreement**: including the cross-model
 comparison.
 
 Both configurations answered all 8 authorized-requester cases correctly, so the guard
 cost nothing in over-refusal on this set. Paired over the same 40 cases the guard fixed
-12 and made 1 worse, and **15 cases leak under both** — that last number is the point,
+12 and made 1 worse, and **15 cases leak under both**: that last number is the point,
 not the halved rate, and all 15 are verbatim string matches.
 
 The saved run belongs to dataset `0.3.0`; the dataset is now `0.4.0` after one
@@ -241,7 +244,7 @@ wording would have reported that configuration as 21/32 safe instead of 13/32.
 `training/train_disclosure_classifier.py` trains a PyTorch classifier on the
 response text, with the secrets masked out, to check how much the scorer's
 hand-written refusal regexes are missing. Grouped 5-fold CV on 80 responses: linear
-0.825 accuracy vs 0.8125 for the regex, fold stdev 0.073 — the gap is inside the
+0.825 accuracy vs 0.8125 for the regex, fold stdev 0.073, the gap is inside the
 noise, so **the classifier does not beat the rules** and the rules stay
 authoritative. These are not validated accuracies; they are CV estimates on 80
 responses scored against unadjudicated labels. The component earned its place by
@@ -252,7 +255,7 @@ This is 40 hand-written single-turn cases on one quantised 7B model, adjudicated
 assisted annotator. It establishes nothing about training-data memorization (every
 secret is invented and only ever appears in the prompt), nothing about real user
 privacy, nothing about hosted frontier models, and no general leak rate for this model
-or any other. No part of it has been externally reviewed — see
+or any other. No part of it has been externally reviewed, see
 [`docs/PRIVACY_STUDY_REVIEW.md`](docs/PRIVACY_STUDY_REVIEW.md).
 
 ## Evaluator profiles
@@ -271,6 +274,17 @@ ASYNC_BACKEND=redis
 python -m app.workers.redis_worker
 ```
 
+## Tests
+
+```bash
+pip install -e '.[dev]'
+pytest -q
+```
+
+169 pass and 1 is skipped. No API keys and no `.env` are needed: the suite runs
+against the mock judge and an in-memory database, so a clean clone can run it
+immediately. The skipped test needs `torch`, which lives in the optional `ml` extra.
+
 ## CI/CD
 
 Every push to `main`:
@@ -278,22 +292,22 @@ Every push to `main`:
 1. Ruff lint + security scan
 2. Docker build
 3. Full test suite
-4. SSH deploy to EC2 — rebuild and restart container
+4. SSH deploy to EC2, rebuild and restart container
 5. Health check loop with automatic rollback on failure
 
 Release gate CI workflow queries `GET /api/v1/release-gates/ci-decision` and fails the pipeline when `allow_deploy=false`.
 
-SSH on the host is locked to a single home IP, not open to the internet. Since the GitHub-hosted runner's IP is different on every run, the deploy job authorizes its own runner's IP on port 22 immediately before connecting, then revokes that access in a cleanup step that runs even if the deploy fails — so the actual open window is the length of one deploy, not standing access.
+SSH on the host is locked to a single home IP, not open to the internet. Since the GitHub-hosted runner's IP is different on every run, the deploy job authorizes its own runner's IP on port 22 immediately before connecting, then revokes that access in a cleanup step that runs even if the deploy fails, so the actual open window is the length of one deploy, not standing access.
 
 Required GitHub Secrets: `EC2_HOST`, `EC2_SSH_KEY`, `DEPLOY_AWS_ACCESS_KEY_ID`, `DEPLOY_AWS_SECRET_ACCESS_KEY`
 
 ## Infrastructure
 
-The EC2 host, its security group, and its Elastic IP are managed as Terraform under `infra/` (`aws_instance`, `aws_security_group`, `aws_eip`). The host was originally provisioned by hand, so this was built by importing the real, running resources into Terraform state (`terraform import`) rather than standing up new ones — `terraform plan` against it returns no changes.
+The EC2 host, its security group, and its Elastic IP are managed as Terraform under `infra/` (`aws_instance`, `aws_security_group`, `aws_eip`). The host was originally provisioned by hand, so this was built by importing the real, running resources into Terraform state (`terraform import`) rather than standing up new ones, `terraform plan` against it returns no changes.
 
 The instance is shared with two other deployed projects (AgentIQ, IncidentMemoryAI) running as separate containers on the same box, which is why the security group has app ports for all three (8000 AgentIQ, 8001 EvalForge, 8002/8003 IncidentMemoryAI's retrieval API and its LLM-generation service, 8501 IncidentMemoryAI's Streamlit UI). `infra/main.tf` documents the actual bootstrap script, root volume, and every open port; `infra/variables.tf` exposes the SSH-source CIDR, key pair name, and instance type as variables instead of hardcoded values. Changes to the shared security group are made here even when they're for another project on the box, so the Terraform state stays the single source of truth for it.
 
-Not managed by Terraform: the nginx reverse proxy config on the host (edited directly over SSH, not version-controlled) and the Docker containers themselves (handled by the CI/CD deploy step above). The per-run SSH allowlisting in the deploy job also isn't Terraform state — it's a temporary rule added and removed outside Terraform's management on every deploy, by design.
+Not managed by Terraform: the nginx reverse proxy config on the host (edited directly over SSH, not version-controlled) and the Docker containers themselves (handled by the CI/CD deploy step above). The per-run SSH allowlisting in the deploy job also isn't Terraform state, it's a temporary rule added and removed outside Terraform's management on every deploy, by design.
 
 ## API surface
 
@@ -310,7 +324,8 @@ GET  /api/v1/release-gates/ci-decision
 GET  /api/v1/telemetry/summary
 ```
 
-Full reference: [http://23.21.42.197:8001/docs](http://23.21.42.197:8001/docs)
+Full reference: `/docs` on a running instance, for example
+`http://localhost:8001/docs` after the Quick start.
 
 ## License
 

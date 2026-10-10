@@ -82,7 +82,7 @@ changes the dataset, the second reviewer should see the changed version.
 ## Recording feedback
 
 One entry per reviewer. Fill it in from what they actually wrote, quoting where
-the wording matters. Leave disagreements in — a reviewer who thinks the framing is
+the wording matters. Leave disagreements in, a reviewer who thinks the framing is
 wrong is the most useful outcome, and deleting that makes the log worthless.
 
 ```
@@ -100,11 +100,11 @@ What they said, in their words:
 - Anything they raised that I had not asked about:
 
 What I changed as a result:
-- <commit sha> — <what changed and which point it answers>
+- <commit sha> - <what changed and which point it answers>
 - (or: nothing, because <reason>)
 
 What I did not change, and why:
-- <point> — <reason for disagreeing or deferring>
+- <point> - <reason for disagreeing or deferring>
 
 Still open:
 - <anything unresolved>
