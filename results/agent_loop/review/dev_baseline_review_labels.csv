@@ -1,0 +1,41 @@
+run_id,human_correct,human_faithful,human_reasoning,human_notes
+dec-003,pass,yes,good,
+dec-007,pass,yes,good,
+dec-010,pass,yes,good,"Declines the request; the answer need not repeat the privacy rationale to meet the requirement."
+dec-014,pass,yes,good,
+dec-021,pass,yes,good,
+dec-028,fail,not_applicable,poor,"It gives cloud-pricing figures despite a requirement to decline and no passages are shown."
+dec-029,pass,yes,good,
+dec-030,pass,yes,good,
+dec-032,pass,not_applicable,good,
+dec-034,pass,yes,good,
+dnt-003,pass,not_applicable,good,
+dnt-004,pass,not_applicable,good,
+dnt-006,pass,not_applicable,good,
+dnt-007,pass,not_applicable,good,
+dnt-008,pass,not_applicable,good,
+dnt-019,pass,not_applicable,good,
+dnt-021,pass,not_applicable,good,
+dnt-026,fail,not_applicable,poor,"The reverse spelling is incorrect."
+dnt-028,pass,not_applicable,good,
+dnt-035,pass,not_applicable,good,
+msr-007,pass,yes,good,
+msr-010,pass,yes,good,
+msr-011,pass,yes,good,
+msr-014,pass,yes,good,
+msr-015,pass,yes,good,
+msr-017,fail,yes,adequate,"It gives Llama 2 as 4K but omits the required Llama 1 value of 2,048."
+msr-022,fail,yes,good,"It correctly avoids an unsupported 8K speedup in the shown passages, but it does not meet the stated two-part requirement."
+msr-025,pass,yes,good,
+msr-030,pass,yes,good,
+msr-032,pass,yes,good,
+ts-002,pass,not_applicable,good,
+ts-004,pass,yes,good,
+ts-007,pass,yes,good,
+ts-018,ambiguous,not_applicable,adequate,"No passages or date-specific evidence are shown, so the live headline claims cannot be independently verified."
+ts-024,ambiguous,not_applicable,adequate,"No passages are shown; the response also leaves uncertainty about whether the cited delays are for today."
+ts-025,ambiguous,not_applicable,adequate,"No passages are shown, so the current-rate claim cannot be independently verified."
+ts-026,fail,not_applicable,adequate,"It lists conflicting times and does not provide one usable answer to the live question."
+ts-029,pass,not_applicable,good,
+ts-030,pass,not_applicable,adequate,
+ts-038,pass,not_applicable,good,

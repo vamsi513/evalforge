@@ -1,0 +1,85 @@
+{
+  "task_id": "ts-013",
+  "category": "tool_selection",
+  "question": "What is the difference between GPTQ and QLoRA as quantization approaches?",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-013-8ce9104e",
+  "route_decision": "retrieval",
+  "answer": "The **difference between GPTQ and QLoRA** as quantization approaches lies in their methodologies and applications:\n\n- **GPTQ (Post-Training Quantization)**:\n  - Developed by Frantar et al. in 2022, GPTQ uses the **Hessian of each layer** to determine optimal quantization.\n  - It achieves **4-bit quantization** of large models (e.g., OPT-175B) with only a **0.25 perplexity increase** on Wikitext-2.\n  - This method reduces the model size significantly, from **350GB to approximately 90GB**, and enables a **3.24x inference speedup** on NVIDIA A100 GPUs.\n\n- **QLoRA (Quantized Low-Rank Adaptation)**:\n  - Introduced by Dettmers et al. in 2023, QLoRA combines **4-bit quantization** of the base model with **LoRA fine-tuning** in full precision.\n  - It allows for fine-tuning of **65B parameter models** on a single **48GB NVIDIA A100 GPU**, reducing memory requirements from **130GB to approximately 41GB** through **4-bit NormalFloat (NF4) quantization**.\n  - QLoRA also incorporates innovations like **double quantization** and **paged optimizers** to enhance efficiency.\n\nIn summary, while both approaches aim to reduce model size and improve inference speed, GPTQ focuses on post-training quantization using layer-specific Hessians, whereas QLoRA integrates quantization with fine-tuning techniques to optimize memory usage and performance during training.",
+  "context": "[Source 1] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nModel quantization reduces the numerical precision of model weights and/or activations from 32-bit or 16-bit floating point to lower-bit representations (INT8, INT4, or INT2), dramatically reducing memory footprint and increasing inference throughput. QLoRA (Quantized Low-Rank Adaptation), introduced by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer at the University of Washington in 2023, combines 4-bit quantization of the base model with LoRA fine-tuning in full precision, enabling fine-tuning of 65B parameter models on a single 48GB NVIDIA A100 GPU. Without quantization, a 65B model in 16-bit precision requires approximately 130GB of GPU memory. QLoRA reduces this to approximately 41GB through 4-bit NormalFloat (NF4) quantization.\n\nQLoRA introduces three key innovations: NF4 quantization is information-theoretically optimal for normally distributed weights, distributing quantization levels such that each level corresponds to equal expected weight mass under a standard normal distribution, reducing quantization error by 0.5-1.0 perplexity points versus INT4. Double quantization compresses the quantization constants themselves from FP32 to 8-bit, saving approximately 0.37 bits per weight. Paged optimizers use NVIDIA unified memory to automatically page optimizer states between GPU and CPU memory during gradient spikes. GPTQ (Frantar et al., 2022) provides post-training quantization using the Hessian of each layer to determine optimal quantization, achieving 4-bit quantization of OPT-175B with only 0.25 perplexity increase on Wikitext-2 while reducing model size from 350GB to approximately 90GB and enabling 3.24x inference speedup on A100.\n\nGGUF (developed by Georgi Gerganov) provides a file format and inference framework optimized for CPU and mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-of\n\n---\n\n[Source 2] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.\n\n---\n\n[Source 3] LoRA: Low-Rank Adaptation for Large Language Models\nsuring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.\n\nThe broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard for task-specific adaptation, instruction tuning, and domain specialization of foundation models, enabling practitioners to create custom model variants at a fraction of the cost of full fine-tuning.",
+  "sources": [
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "Model quantization reduces the numerical precision of model weights and/or activations from 32-bit or 16-bit floating point to lower-bit representations (INT8, INT4, or INT2), dramatically reducing me\u2026",
+      "score": 0.5332484245300293,
+      "type": "retrieval"
+    },
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.414569228887558,
+      "type": "retrieval"
+    },
+    {
+      "title": "LoRA: Low-Rank Adaptation for Large Language Models",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "content": "suring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into t\u2026",
+      "score": 0.2874176800251007,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+    "LoRA: Low-Rank Adaptation for Large Language Models"
+  ],
+  "retrieval_score": 0.5332484245300293,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 4687.3,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 1328.4
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 56.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 3295.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1352,
+    "output_tokens": 330,
+    "cost_usd": 0.0004008,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:49:11.819045+00:00"
+}

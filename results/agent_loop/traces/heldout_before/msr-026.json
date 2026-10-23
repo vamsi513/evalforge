@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-026",
+  "category": "multi_step_retrieval",
+  "question": "In the chain-of-thought document, what GSM8K accuracy does CoT prompting reach with PaLM 540B, and what was the baseline accuracy?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-026-15486f3a",
+  "route_decision": "retrieval",
+  "answer": "The context provided does not mention **PaLM 540B** or its **GSM8K accuracy**. It states that with **GPT-4** and **CoT**, the **GSM8K accuracy** reaches **92%**, and the baseline accuracy with **GPT-3** (175B) is **17.9%**. However, there is no information regarding the performance of **PaLM 540B**. \n\nTherefore, I cannot answer the rest of your question about the GSM8K accuracy for **PaLM 540B** based on the available documents.",
+  "context": "[Source 1] Prompt Engineering Techniques and Best Practices for LLMs\nPrompt engineering encompasses the set of techniques for structuring inputs to language models to elicit desired outputs without modifying model parameters. Zero-shot prompting directly asks the model to perform a task without examples, relying on pretraining to generalize. Few-shot prompting (Brown et al., 2020) provides task demonstrations that establish the input-output format. Chain-of-Thought (CoT) prompting (Wei et al., 2022) instructs the model to produce explicit intermediate reasoning steps before the final answer, dramatically improving performance on mathematical and logical tasks. On GSM8K, CoT prompting with GPT-3 (175B) improves accuracy from 17.9% to 46.9%. With GPT-4 and CoT, GSM8K accuracy reaches 92%.\n\nZero-shot CoT (\"Let's think step by step\", Kojima et al., 2022) demonstrates that simply appending this phrase elicits chain-of-thought reasoning without demonstrations, achieving 78.7% on MultiArith and 40.7% on GSM8K with InstructGPT. Self-Consistency (Wang et al., 2022) samples multiple reasoning paths and takes the majority vote over final answers, improving accuracy by 5-15% across benchmarks. Tree-of-Thought (Yao et al., 2023) extends CoT to a tree search over reasoning steps, achieving 74% on Game of 24 (versus 4% for CoT) and 62% on Creative Writing quality scores. Automatic Prompt Engineer (APE, Zhou et al., 2022) uses the LLM itself to generate and optimize prompts, outperforming human-engineered prompts on 24 of 24 tasks from the Instruction Induction benchmark.\n\nPractical best practices synthesized from empirical research include: (1) Be specific and concrete\u2014vague instructions increase output variance; (2) Use delimiters (XML tags, triple backticks, markdown headers) to separate instruction, context, and input; (3) Specify output format explicitly (JSON schema, bullet points, length constraints); (4) For complex tasks, break into subtasks rather than asking for everything at once; (5) For reasoning tasks, always request explanation before conclusion; (6) Use system prompts for persist\n\n---\n\n[Source 2] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation\n serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. DeepSeek-V2 introduces Multi-head Latent Attention (MLA) and fine-grained expert routing with 160 experts and top-6 routing, achieving competitive performance with significantly reduced KV cache memory. MoE models represent the dominant scaling strategy for next-generation foundation models due to their favorable compute-to-capacity trade-offs.\n\n---\n\n[Source 3] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.",
+  "sources": [
+    {
+      "title": "Prompt Engineering Techniques and Best Practices for LLMs",
+      "url": "https://arxiv.org/abs/2302.11382",
+      "content": "Prompt engineering encompasses the set of techniques for structuring inputs to language models to elicit desired outputs without modifying model parameters. Zero-shot prompting directly asks the model\u2026",
+      "score": 0.38900285959243774,
+      "type": "retrieval"
+    },
+    {
+      "title": "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+      "url": "https://arxiv.org/abs/2401.04088",
+      "content": " serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total,\u2026",
+      "score": 0.350460410118103,
+      "type": "retrieval"
+    },
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.3069303035736084,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Prompt Engineering Techniques and Best Practices for LLMs",
+    "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques"
+  ],
+  "retrieval_score": 0.38900285959243774,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2679.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 614.9
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 42.2
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 2016.2
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1279,
+    "output_tokens": 123,
+    "cost_usd": 0.00026565,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:51:31.374376+00:00"
+}

@@ -1,0 +1,55 @@
+{
+  "task_id": "ts-028",
+  "category": "tool_selection",
+  "question": "Hello, how are you today?",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-028-efd5c564",
+  "route_decision": "direct",
+  "answer": "Hello! I'm doing well, thank you for asking. How about you?",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1307.7,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 646.8
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 654.2
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 253,
+    "output_tokens": 16,
+    "cost_usd": 4.755e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:52:25.009946+00:00"
+}

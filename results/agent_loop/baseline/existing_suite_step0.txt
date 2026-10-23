@@ -1,0 +1,23 @@
+EvalForge existing test suite, baseline for step 0
+date: 2026-10-23T02:19:20Z
+commit: c1299915ab9c8b8797addf1d905492a68cea82b0
+branch: agent-failure-loop
+interpreter: Python 3.11.14, clean venv, pip install -e '.[dev]'
+command: python -m pytest tests -q
+note: 'tests' is scoped deliberately. It is what .github/workflows/ci.yml runs,
+      and it excludes agent_loop/tests so this number stays comparable.
+---
+........................................................................ [ 42%]
+........................................................................ [ 85%]
+.........................                                                [100%]
+=============================== warnings summary ===============================
+../../.cache/agent_loop/venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/vamsi/.cache/agent_loop/venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_auth_roles.py::test_editor_can_mutate_but_cannot_call_admin_endpoints
+  /Users/vamsi/.cache/agent_loop/venv/lib/python3.11/site-packages/mlflow/store/tracking/sqlalchemy_store.py:327: SADeprecationWarning: The ``noload`` loader strategy is deprecated and will be removed in a future release.  This option produces incorrect results by returning ``None`` for related items. (deprecated since: 2.1)
+    sqlalchemy.orm.configure_mappers()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+169 passed, 1 skipped, 2 warnings in 7.63s

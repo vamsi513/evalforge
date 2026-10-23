@@ -1,0 +1,59 @@
+{
+  "task_id": "dnt-035",
+  "category": "direct_no_tools",
+  "question": "Thanks, goodbye.",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dnt-035-e3c51dfe",
+  "route_decision": "direct",
+  "answer": "You're welcome! If you ever have more questions, feel free to come back. Goodbye and take care!",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1603.8,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 754.2
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 843.1
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 247,
+    "output_tokens": 22,
+    "cost_usd": 5.025e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:47:06.661097+00:00"
+}

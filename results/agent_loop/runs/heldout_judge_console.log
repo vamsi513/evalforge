@@ -1,0 +1,226 @@
+### judging heldout_before
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+loaded 3 credentials: ANTHROPIC_API_KEY, OPENAI_API_KEY, TAVILY_API_KEY
+scoring 60 traces from heldout_before
+
+LAYER 1, RULES
+  overall 55/60 = 91.7%
+    direct_no_tools        14/14   100.0%
+    multi_step_retrieval   12/16    75.0%
+    tool_selection         16/16   100.0%
+    unanswerable_decline   13/14    92.9%
+  failure tags: {'answer': 4, 'decline': 1}
+  per check:
+    answer     24/28    85.7%
+    decline    13/14    92.9%
+    error      60/60   100.0%
+    latency    60/60   100.0%
+    route      46/46   100.0%
+
+ledger before judging: $0.4855 of $1.50
+  [  1/60] dec-002  pass  score=0.92  $0.00432
+  [  2/60] dec-004  pass  score=0.85  $0.00456
+  [  3/60] dec-008  pass  score=0.95  $0.00405
+  [  4/60] dec-011  pass  score=0.92  $0.00453
+  [  5/60] dec-013  pass  score=0.92  $0.00419
+  [  6/60] dec-015  pass  score=0.92  $0.00442
+  [  7/60] dec-016  pass  score=0.93  $0.00469
+  [  8/60] dec-018  pass  score=0.95  $0.00445
+  [  9/60] dec-020  pass  score=0.95  $0.00437
+  [ 10/60] dec-023  pass  score=0.95  $0.00430
+  [ 11/60] dec-025  pass  score=0.92  $0.00419
+  [ 12/60] dec-026  pass  score=0.92  $0.00421
+  [ 13/60] dec-031  pass  score=0.92  $0.00446
+  [ 14/60] dec-035  pass  score=0.85  $0.00353
+  [ 15/60] dnt-002  pass  score=0.75  $0.00327
+  [ 16/60] dnt-005  pass  score=0.75  $0.00330
+  [ 17/60] dnt-009  pass  score=0.95  $0.00317
+  [ 18/60] dnt-010  pass  score=0.85  $0.00321
+  [ 19/60] dnt-011  pass  score=0.85  $0.00315
+  [ 20/60] dnt-012  FAIL  score=0.50  $0.00333
+  [ 21/60] dnt-014  pass  score=1.00  $0.00318
+  [ 22/60] dnt-015  pass  score=0.75  $0.00316
+  [ 23/60] dnt-017  pass  score=1.00  $0.00282
+  [ 24/60] dnt-018  FAIL  score=0.50  $0.00328
+  [ 25/60] dnt-020  pass  score=0.75  $0.00316
+  [ 26/60] dnt-025  FAIL  score=0.50  $0.00345
+  [ 27/60] dnt-031  pass  score=0.85  $0.00328
+  [ 28/60] dnt-032  pass  score=0.95  $0.00325
+  [ 29/60] msr-001  pass  score=1.00  $0.00381
+  [ 30/60] msr-002  pass  score=1.00  $0.00392
+  [ 31/60] msr-004  pass  score=1.00  $0.00380
+  [ 32/60] msr-005  FAIL  score=0.00  $0.00417
+  [ 33/60] msr-008  pass  score=1.00  $0.00372
+  [ 34/60] msr-009  pass  score=0.95  $0.00408
+  [ 35/60] msr-016  FAIL  score=0.15  $0.00432
+  [ 36/60] msr-018  pass  score=1.00  $0.00374
+  [ 37/60] msr-021  pass  score=1.00  $0.00413
+  [ 38/60] msr-023  pass  score=1.00  $0.00407
+  [ 39/60] msr-024  pass  score=0.95  $0.00416
+  [ 40/60] msr-026  FAIL  score=0.15  $0.00530
+  [ 41/60] msr-029  FAIL  score=0.00  $0.00425
+  [ 42/60] msr-034  pass  score=0.95  $0.00401
+  [ 43/60] msr-037  pass  score=0.95  $0.00410
+  [ 44/60] msr-038  FAIL  score=0.00  $0.00427
+  [ 45/60] ts-003   pass  score=0.85  $0.00442
+  [ 46/60] ts-005   FAIL  score=0.75  $0.00532
+  [ 47/60] ts-006   pass  score=0.75  $0.00534
+  [ 48/60] ts-009   pass  score=0.92  $0.00465
+  [ 49/60] ts-010   FAIL  score=0.72  $0.00485
+  [ 50/60] ts-011   pass  score=0.95  $0.00408
+  [ 51/60] ts-012   pass  score=0.85  $0.00488
+  [ 52/60] ts-017   FAIL  score=0.20  $0.00502
+  [ 53/60] ts-020   FAIL  score=0.35  $0.00441
+  [ 54/60] ts-021   pass  score=0.75  $0.00459
+  [ 55/60] ts-023   FAIL  score=0.15  $0.00488
+  [ 56/60] ts-028   pass  score=0.85  $0.00309
+  [ 57/60] ts-034   FAIL  score=0.45  $0.00357
+  [ 58/60] ts-035   pass  score=0.90  $0.00320
+  [ 59/60] ts-036   pass  score=0.85  $0.00305
+  [ 60/60] ts-037   FAIL  score=0.50  $0.00324
+
+LAYER 2, JUDGE
+  model claude-haiku-4-5 via anthropic
+  overall 45/60 = 75.0%
+    direct_no_tools        11/14    78.6%
+    multi_step_retrieval   11/16    68.8%
+    tool_selection          9/16    56.2%
+    unanswerable_decline   14/14   100.0%
+  references truncated to fit the sample cap: 39
+  judge cost $0.2396; ledger now $0.7251
+### judging heldout_after
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+loaded 3 credentials: ANTHROPIC_API_KEY, OPENAI_API_KEY, TAVILY_API_KEY
+scoring 60 traces from heldout_after
+
+LAYER 1, RULES
+  overall 55/60 = 91.7%
+    direct_no_tools        14/14   100.0%
+    multi_step_retrieval   12/16    75.0%
+    tool_selection         16/16   100.0%
+    unanswerable_decline   13/14    92.9%
+  failure tags: {'answer': 4, 'decline': 1}
+  per check:
+    answer     24/28    85.7%
+    decline    13/14    92.9%
+    error      60/60   100.0%
+    latency    60/60   100.0%
+    route      46/46   100.0%
+
+ledger before judging: $0.7251 of $1.50
+  [  1/60] dec-002  pass  score=0.95  $0.00440
+  [  2/60] dec-004  pass  score=0.85  $0.00484
+  [  3/60] dec-008  pass  score=0.85  $0.00401
+  [  4/60] dec-011  pass  score=0.92  $0.00442
+  [  5/60] dec-013  pass  score=0.92  $0.00426
+  [  6/60] dec-015  FAIL  score=0.15  $0.00468
+  [  7/60] dec-016  pass  score=0.92  $0.00456
+  [  8/60] dec-018  pass  score=0.92  $0.00404
+  [  9/60] dec-020  pass  score=0.92  $0.00438
+  [ 10/60] dec-023  pass  score=0.92  $0.00428
+  [ 11/60] dec-025  FAIL  score=0.35  $0.00437
+  [ 12/60] dec-026  pass  score=0.95  $0.00403
+  [ 13/60] dec-031  pass  score=0.85  $0.00433
+  [ 14/60] dec-035  pass  score=0.75  $0.00338
+  [ 15/60] dnt-002  FAIL  score=0.50  $0.00327
+  [ 16/60] dnt-005  FAIL  score=0.50  $0.00333
+  [ 17/60] dnt-009  pass  score=1.00  $0.00301
+  [ 18/60] dnt-010  pass  score=0.85  $0.00317
+  [ 19/60] dnt-011  pass  score=0.80  $0.00317
+  [ 20/60] dnt-012  FAIL  score=0.50  $0.00339
+  [ 21/60] dnt-014  FAIL  score=0.50  $0.00333
+  [ 22/60] dnt-015  FAIL  score=0.50  $0.00342
+  [ 23/60] dnt-017  pass  score=1.00  $0.00273
+  [ 24/60] dnt-018  pass  score=0.75  $0.00317
+  [ 25/60] dnt-020  pass  score=0.75  $0.00340
+  [ 26/60] dnt-025  FAIL  score=0.50  $0.00368
+  [ 27/60] dnt-031  pass  score=0.75  $0.00313
+  [ 28/60] dnt-032  pass  score=0.95  $0.00310
+  [ 29/60] msr-001  pass  score=1.00  $0.00357
+  [ 30/60] msr-002  pass  score=1.00  $0.00375
+  [ 31/60] msr-004  pass  score=0.95  $0.00422
+  [ 32/60] msr-005  FAIL  score=0.00  $0.00447
+  [ 33/60] msr-008  pass  score=1.00  $0.00383
+  [ 34/60] msr-009  pass  score=0.95  $0.00401
+  [ 35/60] msr-016  FAIL  score=0.25  $0.00450
+  [ 36/60] msr-018  pass  score=1.00  $0.00389
+  [ 37/60] msr-021  pass  score=1.00  $0.00405
+  [ 38/60] msr-023  pass  score=1.00  $0.00400
+  [ 39/60] msr-024  pass  score=0.95  $0.00424
+  [ 40/60] msr-026  FAIL  score=0.00  $0.00460
+  [ 41/60] msr-029  FAIL  score=0.00  $0.00420
+  [ 42/60] msr-034  pass  score=0.95  $0.00391
+  [ 43/60] msr-037  pass  score=0.95  $0.00400
+  [ 44/60] msr-038  FAIL  score=0.00  $0.00473
+  [ 45/60] ts-003   pass  score=0.92  $0.00458
+  [ 46/60] ts-005   FAIL  score=0.78  $0.00552
+  [ 47/60] ts-006   pass  score=0.82  $0.00498
+  [ 48/60] ts-009   pass  score=0.92  $0.00461
+  [ 49/60] ts-010   FAIL  score=0.72  $0.00544
+  [ 50/60] ts-011   pass  score=0.95  $0.00456
+  [ 51/60] ts-012   pass  score=0.92  $0.00473
+  [ 52/60] ts-017   FAIL  score=0.30  $0.00506
+  [ 53/60] ts-020   FAIL  score=0.25  $0.00469
+  [ 54/60] ts-021   pass  score=0.95  $0.00431
+  [ 55/60] ts-023   FAIL  score=0.15  $0.00473
+  [ 56/60] ts-028   pass  score=0.85  $0.00333
+  [ 57/60] ts-034   FAIL  score=0.50  $0.00389
+  [ 58/60] ts-035   pass  score=0.95  $0.00317
+  [ 59/60] ts-036   pass  score=0.95  $0.00338
+  [ 60/60] ts-037   FAIL  score=0.50  $0.00334
+
+LAYER 2, JUDGE
+  model claude-haiku-4-5 via anthropic
+  overall 40/60 = 66.7%
+    direct_no_tools         8/14    57.1%
+    multi_step_retrieval   11/16    68.8%
+    tool_selection          9/16    56.2%
+    unanswerable_decline   12/14    85.7%
+  references truncated to fit the sample cap: 39
+  judge cost $0.2415; ledger now $0.9666

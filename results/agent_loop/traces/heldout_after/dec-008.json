@@ -1,0 +1,120 @@
+{
+  "task_id": "dec-008",
+  "category": "unanswerable_decline",
+  "question": "What is my current bank account balance?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-008-e2a316a2",
+  "route_decision": "web_search",
+  "answer": "The context provided does not contain specific information about your **current bank account balance**. It explains the definitions of **Current Balance** and **Available Balance** but does not provide a method to check your specific balance or any numerical values related to it.\n\n- **Current Balance**: Reflects the total amount of money in your account, including completed transactions and pending transactions that haven't cleared yet.\n- **Available Balance**: Represents the amount of money that can be withdrawn at a given time, which may be less than the Current Balance due to pending transactions.\n\nTo find your current bank account balance, you would typically need to log into your bank account online or use a banking app, as mentioned in [Source 4]. However, the specific balance is not available in the provided context.",
+  "context": "[Source 1] What is the difference between Current Balance and Available Balance? \u00a0| North Shore Bank\nURL: https://www.northshorebank.com/faqs/General/What-is-the-difference-between-balance-and-av\nCurrent Balance, also known as Account Balance or Ledger Balance, means the funds in your account, including deposits and withdrawals made to date. Not all your transactions will be immediately reflected. As a result, only part of this balance may be available for withdrawal. The Current Balance does not include checks or payments, including debit card transactions, that you have initiated but have not yet cleared your account.  \n   \nAvailable Balance means the amount of money that can be withdrawn at a point in time. The Available Balance will be less than the Current Balance when there are pending transactions such as: [...] ## FAQs\n\n### \n\nCurrent Balance, also known as Account Balance or Ledger Balance, means the funds in your account, including deposits and withdrawals made to date. Not all your transactions will be immediately reflected. As a result, only part of this balance may be available for withdrawal. The Current Balance does not include checks or payments, including debit card transactions, that you have initiated but have not yet cleared your account.  \n   \nAvailable Balance means the amount of money that can be withdrawn at a point in time. The Available Balance will be less than the Current Balance when there are pending transactions such as: [...] ### \n\nCurrent Balance, also known as Account Balance or Ledger Balance, means the funds in your account, including deposits and withdrawals made to date. Not all your transactions will be immediately reflected. As a result, only part of this balance may be available for withdrawal. The Current Balance does not include checks or payments, including debit card transactions, that you have initiated but have not yet cleared your account.  \n   \nAvailable Balance means the amount of money that can be withdrawn at a point in time. The Available Balance will be less than the Current Balance when there are pending transactions such as:\n\n---\n\n[Source 2] Current Balance vs Available Balance: Banking Differences Explained | Coosa Valley Credit Union\nURL: https://www.mycvcu.org/blog/what-is-the-difference-between-current-balance-and-available-balance\n## What Does Current Balance Mean?\n\nYour current balance reflects the total amount of money in your bank account at any given time. This number includes all completed transactions, such as deposits, withdrawals, and transfers, along with any pending transactions that haven't yet cleared. For example, if you recently deposited a check, or made a purchase with your debit card, those amounts will appear in your current balance, even if the funds haven't been fully processed by the bank yet. [...] This is usually caused by pending transactions, holds, or authorized payments that haven't fully processed yet, such as debit card authorization holds or checks that haven't cleared.\n\n### When will my current balance become available?\n\nIt depends on the transaction type. Check deposits may take a few business days to clear as the bank verifies funds with the issuing bank, while debit card transactions and authorizations typically take a day or two to clear.\n\n### What counts as part of my current balance?\n\nYour current balance includes all completed transactions: deposits, withdrawals, and transfers, plus pending transactions that haven't cleared yet, like a recent check deposit or debit card purchase.\n\nShare:\n\n Facebook\n Twitter\n LinkedIn\n Email\n\n## Contact Us [...] Similarly, if you deposit a check, your current balance may show the full amount right away, but the funds may not be accessible until the check clears. Banks often place holds on checks, especially for large amounts, to ensure the funds are available from the issuing bank before releasing them to you.\n\nOther scenarios that can cause differences between the two balances include automatic bill payments, debit card authorizations at gas stations or hotels, or pending transfers. These holds safeguard both you and the merchant by ensuring there are sufficient funds to cover the transaction.\n\nUnderstanding why your available balance is sometimes less than your current balance helps you avoid accidental overdrafts and maintain better control over your spending.\n\n---\n\n[Source 3] Current Balance vs. Available Balance\nURL: https://smartasset.com/checking-account/current-balance-vs-available-balance\nA woman reviewing current balance vs available balance.\n\nComparing your current balance vs. available balance can be a little confusing because the numbers do not always line up. While your current balance shows transactions that have been posted to your account, your available balance includes both pending and posted transactions. It is critical to keep an eye on both, so you can better budget and manage your money.\n\nFor help managing your wealth and finances, consider working with a financial advisor.\n\n## What Is Current Balance?\n\nYour current balance reflects all of the money in your bank account right now. This balance might include pending transactions, like a credit card payment or a check that has not yet cleared. [...] If there has not been any activity on your account in at least a week, your current balance might be the same as your available balance. However, if there has been recent activity on your account, the amount of money you are able to spend might differ from your current balance.\n\nFor example, suppose your current balance is $500, so you make your $350 car payment. However, you forgot that you made a $200 credit card payment yesterday that is still processing. Unless you have another deposit that clears in the meantime, you may end up overdrawing your account by $50 because of this discrepancy in your current balance vs. your available balance. Depending on your bank, that may result in an overdraft or NSF fee.\n\n## What Is Available Balance? [...] ## What Is Available Balance?\n\nAvailable balance is your current balance with any pending transactions or holds included. Thus, there are many reasons why your available balance may differ from your current balance. A deposit, a check you have written or a payment you made with your debit card are examples of pending transactions that might cause discrepancies between these two balances.\n\nSuppose you spent $150 at the grocery store and paid with your debit card. Or maybe you asked for a refund on a purchase and the refund is still processing. All of these transactions could cause your available balance to be less than or more than your current balance. That is why it is so important to check both figures before making a purchase.\n\n---\n\n[Source 4] How do I check my Current Account balance? \u2013 Current Support Center\nURL: https://support.current.com/hc/en-us/articles/4410976516891-How-do-I-check-my-Current-Account-balance\nLogo\n\n# How do I check my Current Account balance?\n\nYou can find your account balance on the Overview tab of the Current app under Spending. This balance reflects the money available for spending, not including any funds you've moved into Savings Pods. To see your transaction history, simply tap on your balance and then tap on a specific transaction for more details.\n\ndescription\n\n### Get in touch\n\ncurrent logo\n\n### Help\n\n### Company [...] Current is a financial technology company, not an FDIC-insured bank. FDIC insurance up to $250,000 only covers the failure of an FDIC-insured bank. Certain conditions must be satisfied for pass-through deposit insurance coverage to apply. Banking services provided by Choice Financial Group, Member FDIC, and Cross River Bank, Member FDIC. The Current Visa\u00ae Debit Card is issued by Choice Financial Group pursuant to a license from Visa U.S.A. Inc. and may be used everywhere Visa debit cards are accepted. The Current Visa\u00ae secured charge card is issued by Cross River Bank pursuant to a license from Visa U.S.A. Inc. and may be used everywhere Visa credit cards are accepted. Please see the back of your Card for its issuing bank. Current Individual Account required to apply for the Current Visa\u00ae [...] Fee-free Overdraft\nActual overdraft amount may vary and is subject to change at any time, at Current\u2019s sole discretion. In order to qualify and enroll in the Fee-Free Overdraft feature, you must receive a minimum of $200 or more in Eligible Direct Deposits into your Current Account over the preceding 35-day period and fulfill other requirements subject to Current\u2019s discretion. Negative balances must be repaid within 60 days of the first Eligible Transaction that caused the negative balance. For more information, please refer to\nFee-free Overdraft Terms and Conditions\n. Individual Current Accounts only.\n\n---\n\n[Source 5] How to Check My Bank Account Balance\nURL: https://www.huntington.com/learn/checking-basics/account-balance\nSimply go to huntington.com and log into your account, where your account number and balance will appear on the screen. From here, you can see your account",
+  "sources": [
+    {
+      "title": "What is the difference between Current Balance and Available Balance? \u00a0| North Shore Bank",
+      "url": "https://www.northshorebank.com/faqs/General/What-is-the-difference-between-balance-and-av",
+      "content": "Current Balance, also known as Account Balance or Ledger Balance, means the funds in your account, including deposits and withdrawals made to date. Not all your transactions will be immediately reflec\u2026",
+      "score": 0.7598145,
+      "type": "web_search"
+    },
+    {
+      "title": "Current Balance vs Available Balance: Banking Differences Explained | Coosa Valley Credit Union",
+      "url": "https://www.mycvcu.org/blog/what-is-the-difference-between-current-balance-and-available-balance",
+      "content": "## What Does Current Balance Mean?\n\nYour current balance reflects the total amount of money in your bank account at any given time. This number includes all completed transactions, such as deposits, w\u2026",
+      "score": 0.7443038,
+      "type": "web_search"
+    },
+    {
+      "title": "Current Balance vs. Available Balance",
+      "url": "https://smartasset.com/checking-account/current-balance-vs-available-balance",
+      "content": "A woman reviewing current balance vs available balance.\n\nComparing your current balance vs. available balance can be a little confusing because the numbers do not always line up. While your current ba\u2026",
+      "score": 0.71995544,
+      "type": "web_search"
+    },
+    {
+      "title": "How do I check my Current Account balance? \u2013 Current Support Center",
+      "url": "https://support.current.com/hc/en-us/articles/4410976516891-How-do-I-check-my-Current-Account-balance",
+      "content": "Logo\n\n# How do I check my Current Account balance?\n\nYou can find your account balance on the Overview tab of the Current app under Spending. This balance reflects the money available for spending, not\u2026",
+      "score": 0.7004242,
+      "type": "web_search"
+    },
+    {
+      "title": "How to Check My Bank Account Balance",
+      "url": "https://www.huntington.com/learn/checking-basics/account-balance",
+      "content": "Simply go to huntington.com and log into your account, where your account number and balance will appear on the screen. From here, you can see your account\u2026",
+      "score": 0.53531766,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "What is the difference between Current Balance and Available Balance? \u00a0| North Shore Bank",
+    "Current Balance vs Available Balance: Banking Differences Explained | Coosa Valley Credit Union",
+    "Current Balance vs. Available Balance",
+    "How do I check my Current Account balance? \u2013 Current Support Center",
+    "How to Check My Bank Account Balance"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2988.3,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 639.8
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 235.8
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 2104.7
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "What is my current bank account balance?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 222.6,
+      "outcome": "ok",
+      "ts": "2026-10-23T03:52:47.170Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 2145,
+    "output_tokens": 159,
+    "cost_usd": 0.00041715,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:52:49.277374+00:00"
+}

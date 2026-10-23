@@ -1,0 +1,348 @@
+{
+  "label": "dev_baseline",
+  "built_at": "2026-10-23T03:31:15.350296+00:00",
+  "development_tasks": 90,
+  "failures": 9,
+  "failure_ids": [
+    "dec-028",
+    "dnt-026",
+    "msr-012",
+    "msr-017",
+    "msr-022",
+    "msr-031",
+    "msr-039",
+    "msr-040",
+    "ts-026"
+  ],
+  "failure_set_definition": "Union of layer 1 rule failures across all development tasks and human failures on the subset that was labelled.",
+  "cluster_counts": {
+    "retrieval_miss": 4,
+    "ignored_retrieved_evidence": 2,
+    "direct_answer_error": 1,
+    "failure_to_decline": 1,
+    "unverifiable_live_answer": 1
+  },
+  "by_category": {
+    "retrieval_miss": {
+      "multi_step_retrieval": 4
+    },
+    "ignored_retrieved_evidence": {
+      "multi_step_retrieval": 2
+    },
+    "direct_answer_error": {
+      "direct_no_tools": 1
+    },
+    "failure_to_decline": {
+      "unanswerable_decline": 1
+    },
+    "unverifiable_live_answer": {
+      "tool_selection": 1
+    }
+  },
+  "detection_by_layer": {
+    "retrieval_miss": {
+      "total": 4,
+      "caught_by_rules": 4,
+      "judged": 4,
+      "caught_by_judge": 3,
+      "human_reviewed": 1,
+      "human_called_fail": 1
+    },
+    "ignored_retrieved_evidence": {
+      "total": 2,
+      "caught_by_rules": 2,
+      "judged": 2,
+      "caught_by_judge": 1,
+      "human_reviewed": 1,
+      "human_called_fail": 1
+    },
+    "direct_answer_error": {
+      "total": 1,
+      "caught_by_rules": 1,
+      "judged": 1,
+      "caught_by_judge": 1,
+      "human_reviewed": 1,
+      "human_called_fail": 1
+    },
+    "failure_to_decline": {
+      "total": 1,
+      "caught_by_rules": 0,
+      "judged": 1,
+      "caught_by_judge": 1,
+      "human_reviewed": 1,
+      "human_called_fail": 1
+    },
+    "unverifiable_live_answer": {
+      "total": 1,
+      "caught_by_rules": 0,
+      "judged": 1,
+      "caught_by_judge": 1,
+      "human_reviewed": 1,
+      "human_called_fail": 1
+    }
+  },
+  "clusters": {
+    "retrieval_miss": [
+      {
+        "task_id": "msr-022",
+        "category": "multi_step_retrieval",
+        "question": "What speedup does FlashAttention-2 give at sequence length 8K, and what RoPE base frequency does Llama 3 use?",
+        "route": "retrieval",
+        "answer_excerpt": "The context does not provide specific information about the speedup that **FlashAttention-2** gives at a sequence length of **8K**. It mentions that **FlashAttention** enables training on significantly longer sequences and targets **H100 hardware**, achieving **740+ TFLOPs/s for FP16**, but does not",
+        "evidence": {
+          "missing_groups": [
+            [
+              "9x",
+              "9 times"
+            ]
+          ],
+          "missing_but_present_in_retrieved_context": [],
+          "retrieved_titles": [
+            "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+            "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+            "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants"
+          ],
+          "retrieval_score": 0.5416765213012695
+        },
+        "caught_by_rule": true,
+        "rule_tags": [
+          "answer"
+        ],
+        "caught_by_judge": true,
+        "human_pass": false
+      },
+      {
+        "task_id": "msr-031",
+        "category": "multi_step_retrieval",
+        "question": "According to the evaluation frameworks document, what MMLU scores do GPT-3 175B, GPT-4 and Llama 3 70B Instruct reach?",
+        "route": "retrieval",
+        "answer_excerpt": "The context provided does not include specific MMLU scores for GPT-3 175B, GPT-4, or Llama 3 70B Instruct. It discusses various evaluation frameworks and methodologies but does not detail the scores for these specific models. Therefore, I cannot answer the question regarding their MMLU scores from t",
+        "evidence": {
+          "missing_groups": [
+            [
+              "43.9"
+            ],
+            [
+              "86.4"
+            ],
+            [
+              "82.0"
+            ]
+          ],
+          "missing_but_present_in_retrieved_context": [],
+          "retrieved_titles": [
+            "GPT-4 Technical Report \u2014 Capabilities and Safety",
+            "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+            "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants"
+          ],
+          "retrieval_score": 0.4278075695037842
+        },
+        "caught_by_rule": true,
+        "rule_tags": [
+          "answer"
+        ],
+        "caught_by_judge": true,
+        "human_pass": null
+      },
+      {
+        "task_id": "msr-039",
+        "category": "multi_step_retrieval",
+        "question": "What expected calibration error does GPT-4 achieve, and what does LLaMA 2 70B achieve?",
+        "route": "retrieval",
+        "answer_excerpt": "The provided context does not include information about the **expected calibration error** for either **GPT-4** or **LLaMA 2 70B**. It covers various capabilities and performance metrics for GPT-4, such as its scores on professional and academic benchmarks, but does not mention calibration error. Si",
+        "evidence": {
+          "missing_groups": [
+            [
+              "0.05"
+            ],
+            [
+              "0.19"
+            ]
+          ],
+          "missing_but_present_in_retrieved_context": [],
+          "retrieved_titles": [
+            "GPT-4 Technical Report \u2014 Capabilities and Safety",
+            "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+            "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants"
+          ],
+          "retrieval_score": 0.423977255821228
+        },
+        "caught_by_rule": true,
+        "rule_tags": [
+          "answer"
+        ],
+        "caught_by_judge": false,
+        "human_pass": null
+      },
+      {
+        "task_id": "msr-040",
+        "category": "multi_step_retrieval",
+        "question": "How much more memory efficient is DPO than PPO-based RLHF, and what MT-Bench scores are reported for each on LLaMA 7B?",
+        "route": "retrieval",
+        "answer_excerpt": "The provided context does not contain any information regarding the memory efficiency of DPO compared to PPO-based RLHF, nor does it mention MT-Bench scores for either method on LLaMA 7B. \n\nIt covers details about **Mixture of Experts (MoE) models**, **FlashAttention**, and their respective performa",
+        "evidence": {
+          "missing_groups": [
+            [
+              "3x",
+              "3 times",
+              "three times"
+            ],
+            [
+              "5.34"
+            ],
+            [
+              "5.51"
+            ]
+          ],
+          "missing_but_present_in_retrieved_context": [],
+          "retrieved_titles": [
+            "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+            "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+            "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness"
+          ],
+          "retrieval_score": 0.4396727681159973
+        },
+        "caught_by_rule": true,
+        "rule_tags": [
+          "answer"
+        ],
+        "caught_by_judge": true,
+        "human_pass": null
+      }
+    ],
+    "ignored_retrieved_evidence": [
+      {
+        "task_id": "msr-012",
+        "category": "multi_step_retrieval",
+        "question": "What quantization data type does QLoRA use, and approximately how many bits per weight does double quantization save?",
+        "route": "retrieval",
+        "answer_excerpt": "**QLoRA** uses **4-bit quantization** of the base model. According to the context, **double quantization** saves approximately **0.37 bits per weight**.",
+        "evidence": {
+          "missing_groups": [
+            [
+              "nf4",
+              "normalfloat"
+            ]
+          ],
+          "missing_but_present_in_retrieved_context": [
+            [
+              "nf4",
+              "normalfloat"
+            ]
+          ],
+          "retrieved_titles": [
+            "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+            "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+            "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI"
+          ],
+          "retrieval_score": 0.6699986457824707
+        },
+        "caught_by_rule": true,
+        "rule_tags": [
+          "answer"
+        ],
+        "caught_by_judge": false,
+        "human_pass": null
+      },
+      {
+        "task_id": "msr-017",
+        "category": "multi_step_retrieval",
+        "question": "What is the context window of Llama 2 and what was the context window of Llama 1?",
+        "route": "retrieval",
+        "answer_excerpt": "The context window of **Llama 2** is **4K tokens**. However, the provided context does not specify the context window of **Llama 1**. Therefore, I cannot answer the rest regarding Llama 1's context window from the available documents.",
+        "evidence": {
+          "missing_groups": [
+            [
+              "4096",
+              "4,096"
+            ],
+            [
+              "2048",
+              "2,048"
+            ]
+          ],
+          "missing_but_present_in_retrieved_context": [
+            [
+              "4096",
+              "4,096"
+            ]
+          ],
+          "retrieved_titles": [
+            "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+            "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+            "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness"
+          ],
+          "retrieval_score": 0.5342921614646912
+        },
+        "caught_by_rule": true,
+        "rule_tags": [
+          "answer"
+        ],
+        "caught_by_judge": true,
+        "human_pass": false
+      }
+    ],
+    "direct_answer_error": [
+      {
+        "task_id": "dnt-026",
+        "category": "direct_no_tools",
+        "question": "Spell the word necessary backwards.",
+        "route": "direct",
+        "answer_excerpt": "The word \"necessary\" spelled backwards is \"yssarenec.\"",
+        "evidence": {
+          "missing_groups": [
+            [
+              "yrassecen"
+            ]
+          ],
+          "missing_but_present_in_retrieved_context": [],
+          "retrieved_titles": [],
+          "retrieval_score": 0.0
+        },
+        "caught_by_rule": true,
+        "rule_tags": [
+          "answer"
+        ],
+        "caught_by_judge": true,
+        "human_pass": false
+      }
+    ],
+    "failure_to_decline": [
+      {
+        "task_id": "dec-028",
+        "category": "unanswerable_decline",
+        "question": "What is the per-token inference cost of running Mixtral on AWS?",
+        "route": "web_search",
+        "answer_excerpt": "The **per-token inference cost** of running **Mixtral 8x7B** on **Amazon AWS** is **$0.450 per 1 million input tokens**. This pricing is consistent across the tracked pricing mode for this model, as stated in the context from [Source 1]. \n\nAdditionally, it is noted that the **lowest output token pri",
+        "evidence": {
+          "route": "web_search",
+          "missed_by_decline_rule": true,
+          "matched_phrases": [
+            "the context does not"
+          ]
+        },
+        "caught_by_rule": false,
+        "rule_tags": [],
+        "caught_by_judge": true,
+        "human_pass": false
+      }
+    ],
+    "unverifiable_live_answer": [
+      {
+        "task_id": "ts-026",
+        "category": "tool_selection",
+        "question": "What time does the sun set in Seattle today?",
+        "route": "web_search",
+        "answer_excerpt": "The sunset time in Seattle today varies slightly across different sources:\n\n- According to [Source 1], the sunset is at **6:13 PM**.\n- [Source 2] states the sunset is at **6:09 PM**.\n- [Source 3] indicates the sunset is at **6:08 PM**.\n- [Source 4] mentions the sunset at **6:10 PM**.\n\nThe context do",
+        "evidence": {
+          "sources_returned": 5,
+          "route": "web_search"
+        },
+        "caught_by_rule": false,
+        "rule_tags": [],
+        "caught_by_judge": true,
+        "human_pass": false
+      }
+    ]
+  }
+}

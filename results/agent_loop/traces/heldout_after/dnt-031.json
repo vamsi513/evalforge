@@ -1,0 +1,59 @@
+{
+  "task_id": "dnt-031",
+  "category": "direct_no_tools",
+  "question": "Name the three primary additive colours of light.",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dnt-031-5b5a4651",
+  "route_decision": "direct",
+  "answer": "The three primary additive colors of light are red, green, and blue. When combined in various ways, they can create a wide spectrum of colors!",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1491.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 619.5
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 868.0
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 257,
+    "output_tokens": 31,
+    "cost_usd": 5.715e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:53:58.510350+00:00"
+}

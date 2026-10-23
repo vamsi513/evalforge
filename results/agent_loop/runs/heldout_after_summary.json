@@ -1,0 +1,41 @@
+{
+  "label": "heldout_after",
+  "variant": "subquestion_guard",
+  "split": "held_out",
+  "mock": false,
+  "run_at": "2026-10-23T03:55:31.724184+00:00",
+  "tasks_requested": 60,
+  "tasks_run": 60,
+  "aborted": null,
+  "cost_usd": 0.01684065,
+  "cost_per_task_usd": 0.00028068,
+  "usage_source": [
+    "tiktoken_estimate"
+  ],
+  "llm_calls": 167,
+  "input_tokens": 87955,
+  "output_tokens": 6079,
+  "routes": {
+    "direct": 20,
+    "retrieval": 35,
+    "web_search": 5
+  },
+  "errors": 0,
+  "guard_triggered": 9,
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "variant_env": {},
+  "ledger_before_usd": 0.46863335,
+  "ledger_after_usd": 0.485474
+}

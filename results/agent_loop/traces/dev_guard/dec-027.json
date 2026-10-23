@@ -1,0 +1,89 @@
+{
+  "task_id": "dec-027",
+  "category": "unanswerable_decline",
+  "question": "Name all eleven NLP benchmarks on which BERT set state of the art results.",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-027-57fd1e7b",
+  "route_decision": "retrieval",
+  "answer": "The context does not specify the names of the eleven NLP benchmarks on which BERT set state-of-the-art results. It only mentions that BERT achieved new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering and the GLUE benchmark. Therefore, I cannot provide the names of all eleven benchmarks from the available documents.",
+  "context": "[Source 1] BERT \u2014 Bidirectional Encoder Representations from Transformers\nBERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.\n\n---\n\n[Source 2] Vector Embeddings and Semantic Search\nVector embeddings map discrete objects \u2014 words, sentences, documents, images \u2014 into continuous high-dimensional spaces where geometric proximity reflects semantic similarity. Sentence-BERT (Reimers & Gurevych, 2019) extended BERT to produce fixed-size sentence embeddings by adding a pooling layer and fine-tuning on Natural Language Inference datasets with a siamese network objective. The resulting embeddings support efficient semantic search: given a query embedding, approximate nearest-neighbor (ANN) algorithms like FAISS (Facebook AI Similarity Search) can retrieve the most similar documents from millions of candidates in milliseconds. FAISS supports multiple index types: Flat (exact brute-force), IVF (inverted file, fast approximate), and HNSW (hierarchical navigable small world graphs). For production RAG systems, the IVFFlat or IVFPQ indices offer the best speed-recall trade-off. Embedding models are evaluated on the MTEB (Massive Text Embedding Benchmark), which covers 56 datasets across 8 retrieval, clustering, and classification tasks.\n\n---\n\n[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI\nained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.",
+  "sources": [
+    {
+      "title": "BERT \u2014 Bidirectional Encoder Representations from Transformers",
+      "url": "https://arxiv.org/abs/1810.04805",
+      "content": "BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) ob\u2026",
+      "score": 0.6624760627746582,
+      "type": "retrieval"
+    },
+    {
+      "title": "Vector Embeddings and Semantic Search",
+      "url": "https://arxiv.org/abs/1908.10084",
+      "content": "Vector embeddings map discrete objects \u2014 words, sentences, documents, images \u2014 into continuous high-dimensional spaces where geometric proximity reflects semantic similarity. Sentence-BERT (Reimers & \u2026",
+      "score": 0.5310567021369934,
+      "type": "retrieval"
+    },
+    {
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+      "url": "https://arxiv.org/abs/2307.09288",
+      "content": "ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\u2026",
+      "score": 0.4622724652290344,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "BERT \u2014 Bidirectional Encoder Representations from Transformers",
+    "Vector Embeddings and Semantic Search",
+    "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI"
+  ],
+  "retrieval_score": 0.6624760627746582,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2064.6,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 648.2
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 50.8
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1359.3
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 892,
+    "output_tokens": 75,
+    "cost_usd": 0.0001788,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "question did not decompose"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:46:11.927295+00:00"
+}

@@ -1,0 +1,116 @@
+{
+  "task_id": "ts-024",
+  "category": "tool_selection",
+  "question": "Are there any flight delays at Heathrow today?",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-024-e6ee9aad",
+  "route_decision": "web_search",
+  "answer": "Yes, there are flight delays at Heathrow today. According to [Source 1], there are **89 total delays** today at Heathrow. Additionally, [Source 2] reports **533 delays** at Heathrow, making it the worst European airport for delays today. \n\nThe context does not specify the exact date of these delays or provide further details on the reasons for the delays.",
+  "context": "[Source 1] Live Airline Flight Cancellations Info & Statistics\nURL: https://www.flightaware.com/live/cancelled/today/LHR\nTotal delays today at Heathrow: 89 Total delays within, into, or out of the United States today at Heathrow: 14 Total cancellations today at Heathrow: 0\n\n---\n\n[Source 2] Europe Flight Chaos Oct 4, 2026: 297 Cancellations, 3,938 Delays \u2014 14 Airports\nURL: https://www.traveltourister.com/news/europe-flight-chaos-october-4-2026-297-cancellations-3938-delays-heathrow-533-delays-paris-cdg-frankfurt-milan-dublin-manchester-14-airports-atfm-ba-air-france-ryanair-easyjet-eu261-rights\n### \u2708\ufe0f PART 2: Airport-by-Airport Breakdown \u2014 Every Hub\n\n#### \ud83c\uddec\ud83c\udde7 London Heathrow (LHR) \u2014 533 Delays, 64 Cancellations \u2014 Europe\u2019s Worst Today\n\nLondon Heathrow recorded the highest US-connected delays at 73, with live tracking reports showing average departure delays ranging between 39 and 48 minutes. Hub operators like British Airways initiate tactical cancellations to prevent aircraft and crew duty-time expirations from cascading into transatlantic schedules.\n\nHeathrow\u2019s 533 delays and 64 cancellations make it the single worst European airport today by both metrics. A 39% departure delay rate means more than one in three Heathrow departures ran late on Sunday \u2014 a significant operational failure at the world\u2019s third-busiest international hub. [...] #### \ud83c\udde6\ud83c\uddfa \ud83c\uddf3\ud83c\uddff Australian and New Zealand Travellers\n\nQantas operates the Kangaroo Route through Heathrow. Heathrow\u2019s 39% delay rate on Sunday means Qantas services both arriving and departing London on October 4 were disrupted. Emirates (DXB hub), Singapore Airlines and Cathay Pacific all connect through European hubs affected today. If you were transiting Heathrow on a Qantas or oneworld partner itinerary on October 4, your Qantas Conditions of Carriage entitle you to rebooking at no additional cost.\n\n### \ud83d\udee1\ufe0f PART 6: EU261 and UK261 Rights \u2014 October 4, 2026 [...] Why Heathrow is most exposed: Heathrow operates at 98%+ slot utilisation \u2014 the closest to capacity of any major hub in Europe. When ATFM restrictions reduce the number of aircraft the network can process per hour, Heathrow has no slack in its schedule to absorb the difference. Every delayed aircraft blocks a gate needed for the next departure.\n\n#### \ud83c\uddeb\ud83c\uddf7 Paris Charles de Gaulle (CDG) \u2014 275 Delays, 33 Cancellations\n\nParis Charles de Gaulle recorded 275 delays and 33 cancellations, with a 23% departure delay rate and 17% arrival delay rate.\n\nCDG\u2019s 33 cancellations are the second-highest in Europe today. Air France, which operates CDG as its primary hub, accounts for the largest share of delays \u2014 alongside Lufthansa, which operates significant feeder connections between CDG and Frankfurt.\n\n---\n\n[Source 3] Thunderstorms delay hundreds of Heathrow and Gatwick flights\nURL: https://www.bbc.com/news/articles/cjwgynnwyw2o\n# Thunderstorms delay hundreds of Heathrow and Gatwick flights\n\nGetty Images Easyjet planes on the tarmac at Gatwick airport.\n\nHundreds of flights at London's Heathrow and Gatwick airports have been delayed as the UK's air traffic control service warned disruption was expected to continue into Sunday.\n\nMore than 900 inbound and outbound flights at the two travel hubs have been delayed for up to 11 hours and dozens cancelled, according to tracker FlightAware, many due to thunderstorms.\n\nNATS, the UK's air traffic control service, said adverse weather conditions meant aircraft needed to \"avoid affected areas and be spaced further apart\" and this would impact flights for the \"remainder of Saturday and overnight\". [...] However, other UK airports remain largely unaffected.\n\nIn an updated statement on Saturday afternoon, NATS said: \"Severe thunderstorms across the south east of England and Europe continue to impact flights, and this is expected to continue for the remainder of today and overnight.\n\n\"To ensure the safety of the travelling public, aircraft need to avoid affected areas and be spaced further apart, which limits the number of flights that can operate safely.\n\n\"We understand disruption is frustrating, but we're working closely with airlines and airports to reduce disruption as much as possible.\n\n\"Passengers should continue to contact their airline for the latest information on their flight.\" [...] Gatwick and Heathrow advised passengers to check the status of their flights with airlines before travelling.\n\nMore than 474 flights arriving at or departing from Heathrow were delayed and another 439 in and out of Gatwick on Saturday, according to FlightAware.\n\nDelays to affected flights vary. Heathrow's arrival board showed a British Airways flight from Santiago, Chile, that was due to land at 10:00 BST was not expected to arrive until 21:00.\n\n## Thunderstorms delay hundreds of Heathrow and Gatwick flights\n\nEurope-wide aviation agencyEurocontrol mapping showed the most severe air traffic control delays were in airspace between south-east England and north-western Europe, where the storm clouds were located.\n\nHowever, other UK airports remain largely unaffected.\n\n---\n\n[Source 4] Flight Delays on 9 October 2026: What Airlines Owed Passengers\nURL: https://checkflightcompensation.com/delays/2026-10-09\nThis isn't CAA punctuality data, it's our own live tracking of flights. We sweep 22 airports today: Heathrow, Gatwick, Manchester, Stansted, Luton, Edinburgh, JFK, Newark, Birmingham, Bristol, Glasgow, London City, Belfast International, Newcastle, Liverpool, Leeds Bradford, Belfast City, Aberdeen, East Midlands, Southampton, Jersey and Bournemouth. That list grew from 8 on 27 August 2026, so a day before then covers the original eight only. It is not a national or worldwide count. Not every airport has a delay or cancellation every day: 9 of them had a flight land 3 hours or more late or be cancelled on 9 October 2026, Bristol, Edinburgh, Newark, JFK, Gatwick, Heathrow, Luton, Manchester and Stansted. Every flight that landed 3 hours or more late that day, or was cancelled, was logged [...] Ranked\n\n## Worst airports that day\n\n| Airport | Late3 hours or more late | Cancelled | Est. owed |\n ---  --- |\n| John F. Kennedy International Airport | 6 | 6 | \u00a30 |\n| Manchester Airport | 2 | 6 | \u20ac500 |\n| London Heathrow Airport | 4 | 2 | \u00a3260 + \u20ac400 |\n| Newark Liberty International Airport | 3 | 2 | \u00a30 |\n| London Gatwick Airport | 1 | 3 | \u20ac250 |\n| London Stansted Airport | 2 | 2 | \u20ac650 |\n| Edinburgh Airport | 0 | 2 | \u00a30 |\n| London Luton Airport | 1 | 1 | \u20ac400 |\n| Bristol Airport | 0 | 1 | \u00a30 |\n\nBy airline\n\n## Every airline with delays that day [...] AC854\n\nAir Canada\n\n5 hrs 5 min late\n\nToronto \u2192 London Heathrow Airport\n\ndue 06:35, landed 11:40\n\nNot covered by UK or EU rules\n\nB6216\n\nJetBlue\n\n4 hrs 52 min late\n\nSan Francisco \u2192 John F. Kennedy International Airport\n\ndue 20:40, landed 01:32\n\nNot covered by UK or EU rules\n\nDL5702\n\nDelta Air Lines\n\n4 hrs 4 min late\n\nBoston \u2192 John F. Kennedy International Airport\n\ndue 22:47, landed 02:51\n\nNot covered by UK or EU rules\n\nUA929\n\nUnited Airlines\n\n3 hrs 40 min late\n\nChicago \u2192 London Heathrow Airport\n\ndue 06:45, landed 10:25\n\nNot covered by UK or EU rules\n\nUA327\n\nUnited Airlines\n\n3 hrs 12 min late\n\nSan Diego \u2192 Newark Liberty International Airport\n\ndue 21:58, landed 01:10\n\nNot covered by UK or EU rules\n\nAA1175\n\nAmerican Airlines\n\n3 hrs 8 min late\n\nLas Vegas \u2192 John F. Kennedy International Airport\n\n---\n\n[Source 5] Widespread flight delays hit major British airports\nURL: https://www.nbcnews.com/world/europe/flight-delays-hit-london-airports-heathrow-rcna596581\nLondon\u2019s Heathrow Airport said in a statement Tuesday that it was working with Britain\u2019s National Air Traffic Service to resolve the issue, advising passengers to check with their airlines for more information regarding their flights.\n\n\u201cArriving flights are not currently impacted,\u201d Heathrow said, although it advised passengers to check flight times.\n\nLondon Gatwick Airport also said on X that it had been affected, and farther north, Manchester Airport took to social media to warn that the issue \u201cmay result in delays.\u201d Edinburgh Airport in Scotland issued a similar warning.\n\nAfter earlier blaming a \u201ctechnical issue,\u201d the National Air Traffic Service said in an update on X that its engineers had \u201cimplemented a fix, and our flight system is starting to recover.\u201d [...] IE 11 is not supported. For an optimal experience visit our site on another browser.\n\n# Widespread flight delays hit major British airports\n\n\u201cWe are investigating a technical issue which is causing some disruption to flight departures,\u201d Heathrow said.\n\nListen to this article with a free profile\n\n00:0000:00\n\nFlights departing from London's Heathrow Airport have been grounded.Yui Mok / PA Images via Getty Images file\n\nAdd NBC News to Google\n\nBy Henry Austin\n\nLONDON \u2014 Flights departing from at least two major British airports have been grounded following a \u201ctechnical issue,\u201d officials said Tuesday. [...] ### FOR SUBSCRIBERSCalifornia\u2019s billionaire tax faces a mountain of opposition \u2014 and not just from the rich\n\nSlide 1 of 1\n\nAirline Ryanair said in a statement that 65,000 of its passengers were disrupted and 50 scheduled flights were canceled because of the disruption.\n\nBritish Airways canceled 96 flights, easyJet 92 and KLM 20, according to the aviation tracking site FlightRadar24.\n\nTravel from Heathrow was severely disrupted in March last year when a massive fire at an electricity substation caused a predawn power outage at the global transport hub.\n\nThe closure affected more than 1,300 flights and 200,000 passengers.",
+  "sources": [
+    {
+      "title": "Live Airline Flight Cancellations Info & Statistics",
+      "url": "https://www.flightaware.com/live/cancelled/today/LHR",
+      "content": "Total delays today at Heathrow: 89 Total delays within, into, or out of the United States today at Heathrow: 14 Total cancellations today at Heathrow: 0\u2026",
+      "score": 0.9291904,
+      "type": "web_search"
+    },
+    {
+      "title": "Europe Flight Chaos Oct 4, 2026: 297 Cancellations, 3,938 Delays \u2014 14 Airports",
+      "url": "https://www.traveltourister.com/news/europe-flight-chaos-october-4-2026-297-cancellations-3938-delays-heathrow-533-delays-paris-cdg-frankfurt-milan-dublin-manchester-14-airports-atfm-ba-air-france-ryanair-easyjet-eu261-rights",
+      "content": "### \u2708\ufe0f PART 2: Airport-by-Airport Breakdown \u2014 Every Hub\n\n#### \ud83c\uddec\ud83c\udde7 London Heathrow (LHR) \u2014 533 Delays, 64 Cancellations \u2014 Europe\u2019s Worst Today\n\nLondon Heathrow recorded the highest US-connected delays a\u2026",
+      "score": 0.8891543,
+      "type": "web_search"
+    },
+    {
+      "title": "Thunderstorms delay hundreds of Heathrow and Gatwick flights",
+      "url": "https://www.bbc.com/news/articles/cjwgynnwyw2o",
+      "content": "# Thunderstorms delay hundreds of Heathrow and Gatwick flights\n\nGetty Images Easyjet planes on the tarmac at Gatwick airport.\n\nHundreds of flights at London's Heathrow and Gatwick airports have been d\u2026",
+      "score": 0.8533396,
+      "type": "web_search"
+    },
+    {
+      "title": "Flight Delays on 9 October 2026: What Airlines Owed Passengers",
+      "url": "https://checkflightcompensation.com/delays/2026-10-09",
+      "content": "This isn't CAA punctuality data, it's our own live tracking of flights. We sweep 22 airports today: Heathrow, Gatwick, Manchester, Stansted, Luton, Edinburgh, JFK, Newark, Birmingham, Bristol, Glasgow\u2026",
+      "score": 0.84918517,
+      "type": "web_search"
+    },
+    {
+      "title": "Widespread flight delays hit major British airports",
+      "url": "https://www.nbcnews.com/world/europe/flight-delays-hit-london-airports-heathrow-rcna596581",
+      "content": "London\u2019s Heathrow Airport said in a statement Tuesday that it was working with Britain\u2019s National Air Traffic Service to resolve the issue, advising passengers to check with their airlines for more in\u2026",
+      "score": 0.776708,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "Live Airline Flight Cancellations Info & Statistics",
+    "Europe Flight Chaos Oct 4, 2026: 297 Cancellations, 3,938 Delays \u2014 14 Airports",
+    "Thunderstorms delay hundreds of Heathrow and Gatwick flights",
+    "Flight Delays on 9 October 2026: What Airlines Owed Passengers",
+    "Widespread flight delays hit major British airports"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 6232.3,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 1191.9
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 3067.7
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1966.4
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "Are there any flight delays at Heathrow today?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 3067.2,
+      "outcome": "ok",
+      "ts": "2026-10-23T02:31:12.989Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 2545,
+    "output_tokens": 78,
+    "cost_usd": 0.00042855,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "pilot",
+  "run_at": "2026-10-23T02:31:14.958779+00:00"
+}

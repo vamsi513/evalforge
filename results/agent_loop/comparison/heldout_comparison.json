@@ -1,0 +1,189 @@
+{
+  "before_label": "heldout_before",
+  "after_label": "heldout_after",
+  "compared_at": "2026-10-23T04:05:59.282532+00:00",
+  "primary_measure": "layer 1 rules",
+  "rules": {
+    "n": 60,
+    "overall": {
+      "accuracy_before": 0.9167,
+      "accuracy_after": 0.9167,
+      "difference": 0.0,
+      "ci_95_low": 0.0,
+      "ci_95_high": 0.0,
+      "n": 60,
+      "n_resamples": 2000
+    },
+    "mcnemar": {
+      "n_pairs": 60,
+      "improved_fail_to_pass": 0,
+      "regressed_pass_to_fail": 0,
+      "discordant": 0,
+      "p_value": 1.0,
+      "test": "exact McNemar, two sided binomial on discordant pairs"
+    },
+    "by_category": {
+      "direct_no_tools": {
+        "n": 14,
+        "before_passed": 14,
+        "after_passed": 14,
+        "before_accuracy": 1.0,
+        "after_accuracy": 1.0,
+        "difference": 0.0
+      },
+      "multi_step_retrieval": {
+        "n": 16,
+        "before_passed": 12,
+        "after_passed": 12,
+        "before_accuracy": 0.75,
+        "after_accuracy": 0.75,
+        "difference": 0.0
+      },
+      "tool_selection": {
+        "n": 16,
+        "before_passed": 16,
+        "after_passed": 16,
+        "before_accuracy": 1.0,
+        "after_accuracy": 1.0,
+        "difference": 0.0
+      },
+      "unanswerable_decline": {
+        "n": 14,
+        "before_passed": 13,
+        "after_passed": 13,
+        "before_accuracy": 0.9286,
+        "after_accuracy": 0.9286,
+        "difference": 0.0
+      }
+    },
+    "categories_that_got_worse": [],
+    "tasks_changed": {
+      "fixed": [],
+      "broken": []
+    }
+  },
+  "judge": {
+    "n": 60,
+    "overall": {
+      "accuracy_before": 0.75,
+      "accuracy_after": 0.6667,
+      "difference": -0.0833,
+      "ci_95_low": -0.1667,
+      "ci_95_high": 0.0,
+      "n": 60,
+      "n_resamples": 2000
+    },
+    "mcnemar": {
+      "n_pairs": 60,
+      "improved_fail_to_pass": 1,
+      "regressed_pass_to_fail": 6,
+      "discordant": 7,
+      "p_value": 0.125,
+      "test": "exact McNemar, two sided binomial on discordant pairs"
+    },
+    "by_category": {
+      "direct_no_tools": {
+        "n": 14,
+        "before_passed": 11,
+        "after_passed": 8,
+        "before_accuracy": 0.7857,
+        "after_accuracy": 0.5714,
+        "difference": -0.2143
+      },
+      "multi_step_retrieval": {
+        "n": 16,
+        "before_passed": 11,
+        "after_passed": 11,
+        "before_accuracy": 0.6875,
+        "after_accuracy": 0.6875,
+        "difference": 0.0
+      },
+      "tool_selection": {
+        "n": 16,
+        "before_passed": 9,
+        "after_passed": 9,
+        "before_accuracy": 0.5625,
+        "after_accuracy": 0.5625,
+        "difference": 0.0
+      },
+      "unanswerable_decline": {
+        "n": 14,
+        "before_passed": 14,
+        "after_passed": 12,
+        "before_accuracy": 1.0,
+        "after_accuracy": 0.8571,
+        "difference": -0.1429
+      }
+    },
+    "categories_that_got_worse": [
+      {
+        "category": "direct_no_tools",
+        "n": 14,
+        "before_passed": 11,
+        "after_passed": 8,
+        "before_accuracy": 0.7857,
+        "after_accuracy": 0.5714,
+        "difference": -0.2143
+      },
+      {
+        "category": "unanswerable_decline",
+        "n": 14,
+        "before_passed": 14,
+        "after_passed": 12,
+        "before_accuracy": 1.0,
+        "after_accuracy": 0.8571,
+        "difference": -0.1429
+      }
+    ],
+    "tasks_changed": {
+      "fixed": [
+        "dnt-018"
+      ],
+      "broken": [
+        "dec-015",
+        "dec-025",
+        "dnt-002",
+        "dnt-005",
+        "dnt-014",
+        "dnt-015"
+      ]
+    }
+  },
+  "run_settings": {
+    "before": {
+      "variant": "baseline",
+      "variant_env": {},
+      "settings": {
+        "openai_model": "gpt-4o-mini",
+        "embedding_model": "all-MiniLM-L6-v2",
+        "temperature": 0.2,
+        "max_tokens": 1024,
+        "top_k_retrieval": 5,
+        "max_web_results": 5,
+        "enable_query_rewriting": false,
+        "budgets_enabled": false,
+        "audit_log_enabled": true,
+        "mock_llm": false,
+        "mock_tavily": false
+      }
+    },
+    "after": {
+      "variant": "subquestion_guard",
+      "variant_env": {},
+      "settings": {
+        "openai_model": "gpt-4o-mini",
+        "embedding_model": "all-MiniLM-L6-v2",
+        "temperature": 0.2,
+        "max_tokens": 1024,
+        "top_k_retrieval": 5,
+        "max_web_results": 5,
+        "enable_query_rewriting": false,
+        "budgets_enabled": false,
+        "audit_log_enabled": true,
+        "mock_llm": false,
+        "mock_tavily": false
+      }
+    }
+  },
+  "settings_differences": {}
+}

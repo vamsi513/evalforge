@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-005",
+  "category": "multi_step_retrieval",
+  "question": "What does Mixtral 8x7B score on MMLU with 5-shot prompting?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-005-e1e28fb6",
+  "route_decision": "retrieval",
+  "answer": "The context does not provide any information about Mixtral 8x7B or its score on MMLU with 5-shot prompting. It only mentions Llama 2 achieving 82.0% on MMLU. Therefore, I cannot answer the rest of your question based on the available documents.",
+  "context": "[Source 1] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.\n\n---\n\n[Source 2] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks\ntect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman \u03c1\u22480.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.\n\n---\n\n[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI\nained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.",
+  "sources": [
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.32645127177238464,
+      "type": "retrieval"
+    },
+    {
+      "title": "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "content": "tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et a\u2026",
+      "score": 0.29594188928604126,
+      "type": "retrieval"
+    },
+    {
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+      "url": "https://arxiv.org/abs/2307.09288",
+      "content": "ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\u2026",
+      "score": 0.27752378582954407,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+    "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+    "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI"
+  ],
+  "retrieval_score": 0.32645127177238464,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1931.2,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 669.2
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 47.3
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1208.2
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 882,
+    "output_tokens": 64,
+    "cost_usd": 0.0001707,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:51:16.052825+00:00"
+}

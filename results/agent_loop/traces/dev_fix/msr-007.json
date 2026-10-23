@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-007",
+  "category": "multi_step_retrieval",
+  "question": "In the InstructGPT result described in the documents, which model size was preferred by human raters over the 175B next-token-prediction model?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-msr-007-4f5019be",
+  "route_decision": "retrieval",
+  "answer": "According to [Source 1], human raters preferred a **1.3B RLHF-tuned model** over the **175B model** that was trained only with next-token prediction.",
+  "context": "[Source 1] Reinforcement Learning from Human Feedback (RLHF)\nReinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised fine-tuning (SFT) on high-quality human-written demonstrations of desired behavior; (2) reward model training, where human raters rank model outputs and a separate neural network learns to predict those rankings; (3) PPO (Proximal Policy Optimization) fine-tuning of the SFT model against the reward model's scores. InstructGPT (Ouyang et al., 2022), the precursor to ChatGPT, demonstrated that a 1.3B RLHF-tuned model was preferred by human raters over a 175B model trained only with next-token prediction. RLHF is now standard practice for all major commercial LLMs including GPT-4, Claude, and Gemini, though it requires expensive human annotation and can introduce reward hacking if the reward model is misspecified.\n\n---\n\n[Source 2] Large Language Models and Emergent Capabilities\nLarge language models (LLMs) exhibit emergent capabilities \u2014 abilities that appear suddenly at certain scale thresholds and were not present in smaller models. Wei et al. (2022) documented over 130 such emergent abilities across models ranging from GPT-3 (175B) to PaLM (540B). Notable emergent capabilities include multi-step arithmetic reasoning, chain-of-thought problem solving, code generation, and few-shot learning from in-context examples. The scaling hypothesis suggests these capabilities arise from the model internalizing more complex statistical patterns as parameter count and training data increase. However, emergent capabilities introduce unpredictability: developers cannot reliably anticipate which capabilities will appear at which scale. This has prompted new evaluation paradigms such as BIG-Bench, which includes 200+ tasks specifically designed to probe capabilities that benchmark saturation renders invisible in standard evaluations.\n\n---\n\n[Source 3] Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback\ner evasive refusal patterns. Model scale matters significantly: larger models (52B parameters) show much stronger constitutional reasoning than smaller models (13B). Subsequent work by Google demonstrated that RLAIF can match or exceed human feedback quality for summarization tasks at scale, enabling annotation of datasets orders of magnitude larger than human-labeled corpora. CAI informed the development of Claude models (Claude 1, 2, 3 series), providing interpretability advantages through explicit, auditable principles guiding model behavior.",
+  "sources": [
+    {
+      "title": "Reinforcement Learning from Human Feedback (RLHF)",
+      "url": "https://arxiv.org/abs/2203.02155",
+      "content": "Reinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised f\u2026",
+      "score": 0.4971570372581482,
+      "type": "retrieval"
+    },
+    {
+      "title": "Large Language Models and Emergent Capabilities",
+      "url": "https://arxiv.org/abs/2206.07682",
+      "content": "Large language models (LLMs) exhibit emergent capabilities \u2014 abilities that appear suddenly at certain scale thresholds and were not present in smaller models. Wei et al. (2022) documented over 130 su\u2026",
+      "score": 0.4562382698059082,
+      "type": "retrieval"
+    },
+    {
+      "title": "Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback",
+      "url": "https://arxiv.org/abs/2212.08073",
+      "content": "er evasive refusal patterns. Model scale matters significantly: larger models (52B parameters) show much stronger constitutional reasoning than smaller models (13B). Subsequent work by Google demonstr\u2026",
+      "score": 0.44071757793426514,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Reinforcement Learning from Human Feedback (RLHF)",
+    "Large Language Models and Emergent Capabilities",
+    "Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback"
+  ],
+  "retrieval_score": 0.4971570372581482,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2861.6,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 667.3
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 1298.9
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 889.3
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 3,
+    "input_tokens": 1026,
+    "output_tokens": 106,
+    "cost_usd": 0.0002175,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:37:37.382281+00:00"
+}

@@ -1,0 +1,120 @@
+{
+  "task_id": "ts-015",
+  "category": "tool_selection",
+  "question": "What is the current price of Bitcoin in US dollars?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-ts-015-7d525bcb",
+  "route_decision": "web_search",
+  "answer": "The current price of Bitcoin (BTC) is **$81,695.15 USD** according to multiple sources, including Binance and CoinMarketCap. The price has changed by **-2.04%** over the past 24 hours, with a 24-hour high of **$84,840.04** and a low of **$81,567.58**. \n\nAdditionally, other sources report slightly different prices, such as **$81,673 USD** and **$81,710.92 USD**, but the most consistent figure across the provided context is **$81,695.15 USD**.",
+  "context": "[Source 1] Bitcoin Price (BTC/USD) Today | Live Price, Market Cap & Chart\nURL: https://www.binance.com/en/price/bitcoin\n### What Is the Current Price of Bitcoin (BTC)?\n\nThe current price of Bitcoin (BTC) is $81.7K. Top cryptocurrency prices are updated in real-time on Binance\u2019s price directory.\n\n## What is Bitcoin (BTC)?\n\nBitcoin, represented by the ticker BTC, is the first decentralized cryptocurrency and top cryptocurrency by market capitalization. Launched in 2009 by the pseudonymous creator Satoshi Nakamoto, Bitcoin allows users to transfer value through a peer-to-peer network without relying on a central bank or payment intermediary.\n\nBitcoin allows value to be transferred directly between participants through a peer-to-peer network. Transactions are recorded on a shared public ledger known as the Bitcoin blockchain and verified by computers distributed around the world. [...] Buy BTC\n\nNo Data\n\n## Price of Bitcoin Today in USD\n\nThe live Bitcoin price today is $81,695.15 USD. Track the latest BTC to USD price, 24-hour price movement, market capitalization and trading volume in real time. Bitcoin price has changed by -2.04% over the past 24 hours, with a circulating supply of 20.1M.\n\n### 24H Trading Activity\n\nReflects Bitcoin (BTC) trading activity in the last 24 hours\n\nSeller\n\n42.9%\n\n57.1%\n\nBuyer\n\n## Bitcoin Price History\n\n24H\n\n7D\n\n1M\n\n3M\n\n1Y\n\n### All Time High\n\nOct 6, 2025\n\n$126,198.07\n\n### Current\n\n$81,695.15\n\n### 24H High\n\n$84,840.04\n\n### 24H Low\n\n$81,567.58\n\n### 24H Change\n\n-2.04%\n\n### All Time High\n\nOct 6, 2025\n\n$126,198.07\n\n### Current\n\n$81,695.15\n\n### 24H High\n\n$84,840.04\n\n### 24H Low\n\n$81,567.58\n\n### 24H Change\n\n-2.04% [...] ### 24H Low\n\n$81,567.58\n\n### 24H Change\n\n-2.04%\n\n## Bitcoin (BTC) to USD Conversion Calculator\n\nBTC/USD conversion rates\n\n0.1 BTC\n\n$8,169.51\n\n1 BTC\n\n$81,695.15\n\n10 BTC\n\n$816,951.5\n\n100 BTC\n\n$8,169,514.97\n\n0.5 BTC\n\n$40,847.57\n\n2 BTC\n\n$163,390.3\n\n5 BTC\n\n$408,475.75\n\n50 BTC\n\n$4,084,757.49\n\n200 BTC\n\n$16,339,029.94\n\n500 BTC\n\n$40,847,574.85\n\nView More\n\nUSD/BTC conversion rates\n\n$100\n\n0.00122406 BTC\n\n$1,000\n\n0.01224063 BTC\n\n$10,000\n\n0.12240629 BTC\n\n$100,000\n\n1.22406288 BTC\n\n$200\n\n0.00244813 BTC\n\n$500\n\n0.00612031 BTC\n\n$2,000\n\n0.02448126 BTC\n\n$5,000\n\n0.06120314 BTC\n\n$20,000\n\n0.24481258 BTC\n\n$50,000\n\n0.61203144 BTC\n\nView More\n\n(Use our BTC to USD conversion table to check how much Bitcoin is worth in US dollars at the current live rate).\n\n## Crypto Market Sentiments\n\n### Fear & Greed Index\n\n49\n\n---\n\n[Source 2] BTC USD \u2014 Bitcoin Price and Chart \u2014 TradingView\nURL: https://www.tradingview.com/symbols/BTCUSD\nImage 77\n\nBTCI NEOS Bitcoin High Income ETF\n\nImage 78\n\nFBTC Fidelity Advantage Bitcoin ETF Series L Trust Units\n\n## Frequently asked questions\n\nWhat is Bitcoin price today?\n\nThe current price of Bitcoin (BTC) is 81,673 USD \u2014 it has fallen \u22122.80% in the past 24 hours. Try placing this info into the context by checking out what coins are also gaining and losing at the moment and seeing BTC price chart.\n\nWhat is Bitcoin market cap?\n\nThe current market capitalization of Bitcoin (BTC) is \u202a1.64 T\u202cUSD. To see this number in a context check out our list of crypto coins ranked by their market caps or see crypto market cap charts.\n\nWhat is the daily trading volume of Bitcoin?\n\nBitcoin (BTC) trading volume in 24 hours is \u202a30.49 B\u202cUSD. See how often other coins are traded in this list.\n\n---\n\n[Source 3] BTC to USD: Convert Bitcoin (BTC) to US Dollar (USD) | Coinbase: btc to usd converter, bitcoin calculator, bitcoin converter\nURL: https://www.coinbase.com/converter/btc/usd\nSign up \udb81\udc32\n\nImage 8\n\nSum of median estimated savings and rewards earned, per user in 2021 across multiple Coinbase programs (excluding sweepstakes). This amount includes fee waivers from Coinbase One (excluding the subscription cost), rewards from Coinbase Card, and staking rewards.\n\n## About Bitcoin\n\n#### Bitcoin is climbing this week. The current price of Bitcoin is $85,474.07 per BTC. With a circulating supply of 20,093,390 BTC, it means that Bitcoin has a total market cap of $1,715,884,217,035.49. The amount of Bitcoin traded has fallen by -$1,047,354,494.74 in the last 24 hours, which is a 8.59% decrease. Additionally, in the last day, $12,188,074,343.78 worth of BTC has been traded. [...] The exchange rate of Bitcoin is increasing. The current value of 1 BTC is $85,474.07 USD. In other words, to buy 5 Bitcoin, it would cost you $427,370.35 USD. Inversely, $1.00 USD would allow you to trade for 0.0000117 BTC while $50.00 USD would convert to 0.000585 BTC, not including platform or gas fees.\n\nIn the last 7 days, the exchange rate has increased by 0.84%. Meanwhile, in the last 24 hours, the rate has changed by 0.66%, which means that the highest exchange rate of 1 BTC to USD was $85,560.90 USD and the lowest 24 hour value was 1 BTC for $84,537.73 USD. Last month, 1 BTC was worth $79,812.90 USD. Today, it's up 7.04%. Looking back a year, Bitcoin has changed by $126,279.63 USD. That means that in a single year, the value of Bitcoin has shrank by 32.35%. [...] ## Frequently asked questions\n\n### How much is 1 Bitcoin in USD?\n\nRight now, 1 Bitcoin is worth about $85,474.07.\n\n### How much BTC could I buy for 1 USD?\n\nBased on the current rate, you could get 0.0000117 BTC for 1 USD.\n\n### How much has the price of Bitcoin changed?\n\nBitcoin price has been on the rise. Since yesterday, the exchange rate of Bitcoin has increased. Since last month, the exchange rate of Bitcoin has increased. Since this time last year, the price of Bitcoin has decreased.\n\n### How do I calculate or convert BTC to USD?\n\n---\n\n[Source 4] Bitcoin price today, BTC to USD live price, marketcap and chart | CoinMarketCap\nURL: https://coinmarketcap.com/currencies/bitcoin\n### Bitcoin Price Live Data\n\nThe live Bitcoin price today is $81,710.92 USD with a 24-hour trading volume of $38,420,625,987 USD.We update our BTC to USD price in real-time.Bitcoin is down 2.09% in the last 24 hours.The current CoinMarketCap ranking is #1, with a live market cap of $1,642,542,851,069 USD.It has a circulating supply of 20,101,878 BTC coins and a max. supply of 21,000,000 BTC coins.\n\n1.   CoinMarketCap\n2.   Cryptocurrencies\n3.   Bitcoin\n\nImage 160: ISO 27001 and ISO 27701 certified\n\nImage 161: SOC 1 attestedImage 162: SOC 2 attested\n\nProducts\n   Academy\n   Advertise\n   CMC Labs\n   CMC Max\n   Top Stories\n   CMC Updates\n   Bitcoin ETFs\n   Crypto API\n   DexScan\n   Real-World Assets\n   Global Charts\n   NFTs\n   Portfolio\n   Watchlist\n   Doodles\n   Sitemap [...] Watchlist\n\nSearch\n\n/\n\nLog In\n\nImage 60\n\nImage 61: BTC\n\n# Bitcoin price\n\nBTC\n\n#1\n\n6M\n\n$81,744.19\n\n2.04%(24h)\n\nWhy is BTC\u2019s price down today?\n\n## Bitcoin to USD Chart\n\nLoading Data\n\nPlease wait, we are loading chart data\n\n## Bitcoin statistics\n\n   SpotSpot  \n   DerivativesDerivatives  \n\nMarket cap\n\n$1.64T\n\n2.04%\n\nVolume (24h)\n\n$38.48B\n\n46.06%\n\nVol/Mkt Cap (24h)\n\n2.33%\n\nFDV\n\n$1.71T\n\nTotal supply\n\n20.1M BTC\n\nMax. supply\n\n21M BTC\n\nCirculating supply\n\n20.1M BTC\n\n95.7233142857143%\n\nTreasury Holdings\n\n1.36M BTC\n\nProfile Score\n\n100%\n\nBoost\n\nAd\n\nWebsite\n\nWebsite\n\nWhitepaper\n\nSocials\n\n\n\n4.9\n\nExplorers\n\nblockchain.info\n\nWallets\n\nImage 62\n\nImage 63\n\nImage 64\n\nImage 65\n\nUCID\n\n1\n\nBTC to USD converter\n\nBTC\n\nUSD\n\nPrice performance\n\n24h\n\nLow\n\n$81,567.58\n\nHigh\n\n$84,840.04\n\nAll-time high [...] Thanks to its pioneering nature, BTC remains at the top of this energetic market after over a decade of existence. Even after Bitcoin has lost its undisputed dominance, it remains the largest cryptocurrency, with a market capitalization that surpassed the $1 trillion mark in 2021, after Bitcoin price hit an all-time high of $64,863.10 on April 14, 2021. This is owing in large part to growing institutional interest in Bitcoin, and the ubiquitousness of platforms that provide use-cases for BTC: wallets, exchanges, payment services, online games and more.\n\n### How Much Bitcoin Is in Circulation?\n\n---\n\n[Source 5] Bitcoin (BTC) Price USD Today, News, Charts, Market Cap | Coinbase\nURL: https://www.coinbase.com/price/bitcoin\nSource\u2197\n\n## Recent trends\n\nThe latest BTC price is $83,461.52. Compared to Bitcoin's value of $82,486.06 from 24 hours ago, there's been a 1% increase, while the current price is -2% down from $85,527.23 which was recorded one week ago. Bitcoin's all time high is $126,210.50, which was reached on October 6, 2025. This is a -34% change from its price today.\n\nThe current circulating supply of Bitcoin is 20,097,818. This is 96% of its max supply of 21,000,000 BTC and 100% of its total supply of 20,097,818. The market cap is currently $1.68T, which is a result of multiplying the current price of Bitcoin($83,461.52) by the total supply(20,097,818 BTC). The fully diluted valuation of Bitcoin is $1.75T. The diluted valuation of Bitcoin is $1.75T. [...] ### What is the market cap of Bitcoin?\n\n\udb80\udc0e\n\nThe current market cap of Bitcoin is $1.677T. A high market cap implies that the asset is highly valued by the market.\n\n### What is the all time high of Bitcoin?\n\n\udb80\udc0e\n\nThe all-time high of Bitcoin is $126,210.50. This all-time high is highest price paid for Bitcoin since it was launched.\n\n### What is the 24 hour trading volume of Bitcoin?\n\n\udb80\udc0e\n\nOver the last 24 hours, the trading volume of Bitcoin is $32.114B.\n\n### What other assets are similar to Bitcoin?\n\n\udb80\udc0e\n\nAssets that have a similar market cap to Bitcoin include Ethereum, Tether, BNB, and many others. To see a full list, see our comparable market cap assets.\n\n### How many Bitcoin are there?\n\n\udb80\udc0e\n\nThe current circulating supply of Bitcoin is 20 million. [...] ### What is the history of Bitcoin?\n\n\udb80\udc0e\n\nBitcoin was first launched in January 2009 when its creator, Satoshi Nakamoto, mined the genesis block (Block 0). The first documented exchange of Bitcoin for goods occurred on May 22, 2010, when 10,000 BTC were used to purchase two pizzas. This date is now known as Bitcoin Pizza Day.\n\nIn the years that followed, Bitcoin began trading on various exchanges, with its BTC/USD price starting at just a fraction of a cent. By February 2011, Bitcoin reached parity with the U.S. dollar. Since then, its price has experienced significant rises and declines, reaching multiple all\u2011time highs, including above $122,000 in July 2025. The Bitcoin price today reflects a mix of global demand, adoption trends, and developments within the cryptocurrency ecosystem.",
+  "sources": [
+    {
+      "title": "Bitcoin Price (BTC/USD) Today | Live Price, Market Cap & Chart",
+      "url": "https://www.binance.com/en/price/bitcoin",
+      "content": "### What Is the Current Price of Bitcoin (BTC)?\n\nThe current price of Bitcoin (BTC) is $81.7K. Top cryptocurrency prices are updated in real-time on Binance\u2019s price directory.\n\n## What is Bitcoin (BTC\u2026",
+      "score": 0.9168945,
+      "type": "web_search"
+    },
+    {
+      "title": "BTC USD \u2014 Bitcoin Price and Chart \u2014 TradingView",
+      "url": "https://www.tradingview.com/symbols/BTCUSD",
+      "content": "Image 77\n\nBTCI NEOS Bitcoin High Income ETF\n\nImage 78\n\nFBTC Fidelity Advantage Bitcoin ETF Series L Trust Units\n\n## Frequently asked questions\n\nWhat is Bitcoin price today?\n\nThe current price of Bitco\u2026",
+      "score": 0.9126935,
+      "type": "web_search"
+    },
+    {
+      "title": "BTC to USD: Convert Bitcoin (BTC) to US Dollar (USD) | Coinbase: btc to usd converter, bitcoin calculator, bitcoin converter",
+      "url": "https://www.coinbase.com/converter/btc/usd",
+      "content": "Sign up \udb81\udc32\n\nImage 8\n\nSum of median estimated savings and rewards earned, per user in 2021 across multiple Coinbase programs (excluding sweepstakes). This amount includes fee waivers from Coinbase One (\u2026",
+      "score": 0.9094659,
+      "type": "web_search"
+    },
+    {
+      "title": "Bitcoin price today, BTC to USD live price, marketcap and chart | CoinMarketCap",
+      "url": "https://coinmarketcap.com/currencies/bitcoin",
+      "content": "### Bitcoin Price Live Data\n\nThe live Bitcoin price today is $81,710.92 USD with a 24-hour trading volume of $38,420,625,987 USD.We update our BTC to USD price in real-time.Bitcoin is down 2.09% in th\u2026",
+      "score": 0.8941352,
+      "type": "web_search"
+    },
+    {
+      "title": "Bitcoin (BTC) Price USD Today, News, Charts, Market Cap | Coinbase",
+      "url": "https://www.coinbase.com/price/bitcoin",
+      "content": "Source\u2197\n\n## Recent trends\n\nThe latest BTC price is $83,461.52. Compared to Bitcoin's value of $82,486.06 from 24 hours ago, there's been a 1% increase, while the current price is -2% down from $85,527\u2026",
+      "score": 0.89030397,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "Bitcoin Price (BTC/USD) Today | Live Price, Market Cap & Chart",
+    "BTC USD \u2014 Bitcoin Price and Chart \u2014 TradingView",
+    "BTC to USD: Convert Bitcoin (BTC) to US Dollar (USD) | Coinbase: btc to usd converter, bitcoin calculator, bitcoin converter",
+    "Bitcoin price today, BTC to USD live price, marketcap and chart | CoinMarketCap",
+    "Bitcoin (BTC) Price USD Today, News, Charts, Market Cap | Coinbase"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2832.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 756.4
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 312.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1756.4
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "What is the current price of Bitcoin in US dollars?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 312.1,
+      "outcome": "ok",
+      "ts": "2026-10-23T03:48:47.394Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 3261,
+    "output_tokens": 128,
+    "cost_usd": 0.00056595,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:48:49.153235+00:00"
+}

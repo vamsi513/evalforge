@@ -1,0 +1,89 @@
+{
+  "task_id": "ts-014",
+  "category": "tool_selection",
+  "question": "Describe the checkpointer options LangGraph offers for conversation memory.",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-ts-014-dbb6beac",
+  "route_decision": "retrieval",
+  "answer": "LangGraph offers two **checkpointer** options for conversation memory:\n\n- **MemorySaver**: This option is for in-memory persistence.\n- **SqliteSaver**: This option is for disk-based persistence.\n\nThese checkpointers enable **multi-turn conversation memory** and support **fault-tolerant long-running workflows** according to the information provided in [Source 1].",
+  "context": "[Source 1] LangGraph \u2014 Stateful Multi-Agent Orchestration\nLangGraph is an open-source library from LangChain that extends the LangChain Expression Language to support stateful, multi-step, and cyclical agent workflows as explicit directed graphs. Unlike LangChain's linear chains or simple AgentExecutor loops, LangGraph models agent behavior as a StateGraph where nodes are Python functions and edges are either deterministic or conditional. State is a TypedDict that flows through the graph; each node receives the full state and returns a partial update. LangGraph's key features include: (1) built-in persistence via checkpointers (MemorySaver for in-memory, SqliteSaver for disk), enabling multi-turn conversation memory and fault-tolerant long-running workflows; (2) human-in-the-loop support through interrupt_before and interrupt_after hooks; (3) streaming at both the node level and token level; (4) support for subgraphs, parallel fan-out, and map-reduce patterns. LangGraph is used in production by teams building complex agentic systems that require reliable state management across multiple LLM calls.\n\n---\n\n[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI\nLlama 2, released by Meta AI in July 2023, presents a family of open-weight large language models trained from scratch on 2 trillion tokens of publicly available data. The model family includes 7B, 13B, 34B, and 70B parameter sizes. Improvements over Llama 1 include a 40% larger pretraining corpus, doubled context window (4096 vs. 2048 tokens), grouped-query attention (GQA) for the 34B and 70B models for efficient inference, and better training stability. The pretraining data mix includes CommonCrawl, C4, GitHub, Wikipedia, books, ArXiv papers, and StackExchange, with upsampled high-quality sources.\n\nThe instruction-tuned variants (Llama 2-Chat) use supervised fine-tuning (SFT) on 27,540 high-quality human-written demonstration prompts, followed by RLHF with PPO using two reward models trained on over 1 million pairwise comparisons. A novel Ghost Attention (GAtt) mechanism maintains instruction consistency across long multi-turn conversations. Llama 2 70B achieves 68.9% on MMLU (5-shot), 85.1% on HellaSwag, and 35.4% on HumanEval. Safety evaluations show that Llama 2-Chat models exhibit significantly lower rates of harmful responses than Llama 1 (0.7% vs. 15.3% violation rate on Anthropic's red-teaming dataset).\n\nLlama 2's open release under a commercial-friendly license catalyzed an explosion of open-source LLM development. Derivative models including Code Llama (code-specialized, 7B-34B with 100K context), WizardLM-2, and Orca 2 proliferated rapidly. The architecture\u2014RoPE positional embeddings, SwiGLU activation, RMSNorm\u2014became the de facto standard for subsequent open models. Mistral 7B used the same architecture with sliding window attention, outperforming Llama 2 13B while being smaller. Llama 3 (Meta, April 2024) extended the series to 8B and 70B models trained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\n\n---\n\n[Source 3] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs\nThe base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.",
+  "sources": [
+    {
+      "title": "LangGraph \u2014 Stateful Multi-Agent Orchestration",
+      "url": "https://blog.langchain.dev/langgraph",
+      "content": "LangGraph is an open-source library from LangChain that extends the LangChain Expression Language to support stateful, multi-step, and cyclical agent workflows as explicit directed graphs. Unlike Lang\u2026",
+      "score": 0.626375675201416,
+      "type": "retrieval"
+    },
+    {
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+      "url": "https://arxiv.org/abs/2307.09288",
+      "content": "Llama 2, released by Meta AI in July 2023, presents a family of open-weight large language models trained from scratch on 2 trillion tokens of publicly available data. The model family includes 7B, 13\u2026",
+      "score": 0.467203825712204,
+      "type": "retrieval"
+    },
+    {
+      "title": "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+      "url": "https://arxiv.org/abs/2104.09864",
+      "content": "The base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Pra\u2026",
+      "score": 0.3926379978656769,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "LangGraph \u2014 Stateful Multi-Agent Orchestration",
+    "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+    "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs"
+  ],
+  "retrieval_score": 0.626375675201416,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2474.1,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 744.0
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 57.5
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1666.1
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1314,
+    "output_tokens": 77,
+    "cost_usd": 0.0002433,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:48:46.319584+00:00"
+}

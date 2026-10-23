@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-022",
+  "category": "multi_step_retrieval",
+  "question": "What speedup does FlashAttention-2 give at sequence length 8K, and what RoPE base frequency does Llama 3 use?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-022-73d27d70",
+  "route_decision": "retrieval",
+  "answer": "The context does not provide specific information about the speedup that **FlashAttention-2** gives at a sequence length of **8K**. It mentions that **FlashAttention** enables training on significantly longer sequences and targets **H100 hardware**, achieving **740+ TFLOPs/s for FP16**, but does not specify the speedup for 8K sequences.\n\nRegarding the **RoPE base frequency**, **Llama 3** increases it to **\u03b8=500000** to support longer sequences before interpolation degrades, as stated in the context.",
+  "context": "[Source 1] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness\nn. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.\n\n---\n\n[Source 2] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs\nThe base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.\n\n---\n\n[Source 3] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants\nCode Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.\n\nFill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling\u2014given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.\n\nProduction code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res",
+  "sources": [
+    {
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+      "url": "https://arxiv.org/abs/2205.14135",
+      "content": "n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), a\u2026",
+      "score": 0.5416765213012695,
+      "type": "retrieval"
+    },
+    {
+      "title": "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+      "url": "https://arxiv.org/abs/2104.09864",
+      "content": "The base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Pra\u2026",
+      "score": 0.5237594246864319,
+      "type": "retrieval"
+    },
+    {
+      "title": "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+      "url": "https://arxiv.org/abs/2308.12950",
+      "content": "Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context f\u2026",
+      "score": 0.3753792941570282,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+    "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+    "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants"
+  ],
+  "retrieval_score": 0.5416765213012695,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2543.2,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 765.1
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 55.8
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1713.9
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1240,
+    "output_tokens": 114,
+    "cost_usd": 0.0002544,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:48:29.692014+00:00"
+}

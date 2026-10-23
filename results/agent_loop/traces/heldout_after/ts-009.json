@@ -1,0 +1,89 @@
+{
+  "task_id": "ts-009",
+  "category": "tool_selection",
+  "question": "What are the main failure modes of production agentic AI systems?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-ts-009-1a0126e9",
+  "route_decision": "retrieval",
+  "answer": "The main failure modes of production agentic AI systems include:\n\n- **Hallucinated tool calls**: The model may invent non-existent APIs.\n- **Compounding errors**: Mistakes made in early steps can propagate to later steps.\n- **Infinite loops**: The system may not have a termination condition, leading to endless execution.\n- **Latency**: Each LLM and tool call can add 1\u20135 seconds of wall time, affecting performance.\n\nAdditionally, in multi-agent systems, key failure modes include:\n\n- **Cascading errors**: Errors can escalate through the system.\n- **Communication bottlenecks**: Issues may arise from orchestrator context overflow.\n- **Conflicting agent outputs**: Different agents may produce outputs that conflict with each other.\n\nThese challenges highlight the complexities involved in deploying agentic AI systems effectively.",
+  "context": "[Source 1] Agentic AI Systems \u2014 Design Patterns and Challenges\nAgentic AI systems are LLM-powered applications that can plan, use tools, and take multi-step actions to accomplish goals specified in natural language. Unlike single-shot prompting, agents operate in a loop: perceive state, reason about actions, execute a tool, observe the result, and repeat until the task is complete. Common architectural patterns include ReAct (Reasoning + Acting), which interleaves chain-of-thought reasoning with tool calls; Plan-and-Execute, which separates high-level planning from low-level execution; and Reflection, which adds a self-critique step to identify and correct errors. Key challenges in production agentic systems include: hallucinated tool calls (the model invents non-existent APIs), compounding errors (mistakes in early steps propagate to later steps), infinite loops (no termination condition), and latency (each LLM + tool call adds 1\u20135 seconds of wall time). Mitigations include structured output validation (Pydantic), maximum step limits, explicit state tracking (LangGraph), and human-in-the-loop checkpoints for high-stakes actions.\n\n---\n\n[Source 2] Multi-Agent Systems and Collaborative AI: Architectures for LLM Agent Coordination\natabases, file systems) enables persistent structured data. AgentBench (Liu et al., 2023) evaluates multi-agent systems across 8 environments and finds that agent coordination significantly outperforms single agents on long-horizon tasks but requires careful orchestration to avoid compounding errors. Key failure modes include cascading errors, communication bottlenecks (orchestrator context overflow), and conflicting agent outputs. Production deployments include GitHub Copilot Workspace (multi-agent code generation), Devin (software engineering agent), and enterprise AI orchestration platforms built on OpenAI Assistants and Anthropic Claude APIs. LangGraph enables stateful multi-agent workflows as directed graphs with cycles, conditional branching, and persistent memory across steps.\n\n---\n\n[Source 3] Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems\nd graphs with cycles, enabling stateful multi-step agents with conditional branching and parallel execution. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles (Product Manager, Architect, Engineer, QA Engineer) with structured communication via standardized documents, generating complete executable code from one-sentence requirements. The SWE-agent benchmark evaluates agents on real software engineering tasks from GitHub issues, with Claude 3.7 Sonnet with extended thinking achieving over 70% on SWE-bench Verified. Key challenges remain: long-horizon planning, reliable tool error recovery, cost efficiency, and preventing agents from taking irreversible harmful actions.",
+  "sources": [
+    {
+      "title": "Agentic AI Systems \u2014 Design Patterns and Challenges",
+      "url": "https://arxiv.org/abs/2309.07864",
+      "content": "Agentic AI systems are LLM-powered applications that can plan, use tools, and take multi-step actions to accomplish goals specified in natural language. Unlike single-shot prompting, agents operate in\u2026",
+      "score": 0.6361325979232788,
+      "type": "retrieval"
+    },
+    {
+      "title": "Multi-Agent Systems and Collaborative AI: Architectures for LLM Agent Coordination",
+      "url": "https://arxiv.org/abs/2308.00352",
+      "content": "atabases, file systems) enables persistent structured data. AgentBench (Liu et al., 2023) evaluates multi-agent systems across 8 environments and finds that agent coordination significantly outperform\u2026",
+      "score": 0.4921492040157318,
+      "type": "retrieval"
+    },
+    {
+      "title": "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems",
+      "url": "https://arxiv.org/abs/2210.03629",
+      "content": "d graphs with cycles, enabling stateful multi-step agents with conditional branching and parallel execution. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles (Product Manag\u2026",
+      "score": 0.38335737586021423,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Agentic AI Systems \u2014 Design Patterns and Challenges",
+    "Multi-Agent Systems and Collaborative AI: Architectures for LLM Agent Coordination",
+    "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems"
+  ],
+  "retrieval_score": 0.6361325979232788,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2807.6,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 745.6
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 48.0
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 2007.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 937,
+    "output_tokens": 172,
+    "cost_usd": 0.00024375,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:55:03.462795+00:00"
+}

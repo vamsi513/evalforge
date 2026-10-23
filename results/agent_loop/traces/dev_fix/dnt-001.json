@@ -1,0 +1,55 @@
+{
+  "task_id": "dnt-001",
+  "category": "direct_no_tools",
+  "question": "What is 48 divided by 6?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-dnt-001-d651452a",
+  "route_decision": "direct",
+  "answer": "48 divided by 6 is 8.",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1335.8,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 584.1
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 745.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 257,
+    "output_tokens": 10,
+    "cost_usd": 4.455e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:36:56.180137+00:00"
+}

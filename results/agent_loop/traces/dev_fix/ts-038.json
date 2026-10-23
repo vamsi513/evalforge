@@ -1,0 +1,55 @@
+{
+  "task_id": "ts-038",
+  "category": "tool_selection",
+  "question": "What is the chemical symbol for gold?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-ts-038-84463016",
+  "route_decision": "direct",
+  "answer": "The chemical symbol for gold is Au.",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1185.7,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 568.8
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 610.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 255,
+    "output_tokens": 9,
+    "cost_usd": 4.365e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:40:11.711653+00:00"
+}

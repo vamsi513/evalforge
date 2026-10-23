@@ -1,0 +1,134 @@
+{
+  "task_id": "dec-031",
+  "category": "unanswerable_decline",
+  "question": "How many tokens per second does llama.cpp reach on an Apple M4 chip?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-031-f7e27dc9",
+  "route_decision": "retrieval",
+  "answer": "**How many tokens per second does llama.cpp reach?**\n\nThe provided context does not contain any information regarding the number of tokens per second that **llama.cpp** reaches. It discusses various models, their capabilities, and performance metrics, but does not mention **llama.cpp** or its token processing speed. Therefore, I cannot answer the question about the tokens per second for **llama.cpp** from the available documents.\n\n**What is the performance of llama.cpp on an Apple M4 chip?**\n\nThe context does not provide information about the performance of **llama.cpp** on an **Apple M4 chip**. It specifically mentions that llama.cpp achieves **30-50 tokens/second** on the **Apple M2 Pro** for Llama 3 8B in **Q4_K_M quantization**. Therefore, I cannot answer the rest regarding the performance on an Apple M4 chip from the available documents.",
+  "context": "[Source 1] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.\n\n---\n\n[Source 2] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants\nCode Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.\n\nFill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling\u2014given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.\n\nProduction code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res\n\n---\n\n[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI\nained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\n\n---",
+  "sources": [
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.47668445110321045,
+      "type": "retrieval"
+    },
+    {
+      "title": "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+      "url": "https://arxiv.org/abs/2308.12950",
+      "content": "Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context f\u2026",
+      "score": 0.3809424042701721,
+      "type": "retrieval"
+    },
+    {
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+      "url": "https://arxiv.org/abs/2307.09288",
+      "content": "ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\u2026",
+      "score": 0.358598917722702,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+    "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+    "LoRA: Low-Rank Adaptation for Large Language Models",
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+    "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs"
+  ],
+  "retrieval_score": 0.47668445110321045,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 6175.1,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 624.2
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 43.9
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1115.5
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 7,
+    "input_tokens": 3853,
+    "output_tokens": 267,
+    "cost_usd": 0.00073815,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": true,
+    "reason": "retrieval run reported missing evidence",
+    "sub_questions": [
+      "How many tokens per second does llama.cpp reach?",
+      "What is the performance of llama.cpp on an Apple M4 chip?"
+    ],
+    "sub_traces": [
+      {
+        "question": "How many tokens per second does llama.cpp reach?",
+        "route": "retrieval",
+        "retrieved_titles": [
+          "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+          "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+          "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs"
+        ],
+        "answer": "The provided context does not contain any information regarding the number of tokens per second that **llama.cpp** reaches. It discusses various models, their capabilities, and performance metrics, but does not mention **llama.cpp** or its token processing speed. Therefore, I cannot answer the question about the tokens per second for **llama.cpp** from the available documents.",
+        "usage": {
+          "llm_calls": 2,
+          "input_tokens": 1169,
+          "output_tokens": 75,
+          "cost_usd": 0.00022035,
+          "usage_source": "tiktoken_estimate"
+        },
+        "latency_ms": 2522.5
+      },
+      {
+        "question": "What is the performance of llama.cpp on an Apple M4 chip?",
+        "route": "retrieval",
+        "retrieved_titles": [
+          "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+          "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+          "LoRA: Low-Rank Adaptation for Large Language Models"
+        ],
+        "answer": "The context does not provide information about the performance of **llama.cpp** on an **Apple M4 chip**. It specifically mentions that llama.cpp achieves **30-50 tokens/second** on the **Apple M2 Pro** for Llama 3 8B in **Q4_K_M quantization**. Therefore, I cannot answer the rest regarding the performance on an Apple M4 chip from the available documents.",
+        "usage": {
+          "llm_calls": 2,
+          "input_tokens": 1398,
+          "output_tokens": 88,
+          "cost_usd": 0.0002625,
+          "usage_source": "tiktoken_estimate"
+        },
+        "latency_ms": 1860.6
+      }
+    ],
+    "first_answer": "The context does not provide information about the performance of llama.cpp on an Apple M4 chip. It only states that llama.cpp achieves **30-50 tokens/second** on an **Apple M2 Pro** for Llama 3 8B in Q4_K_M quantization. Therefore, I cannot answer how many tokens per second it reaches on an Apple M4 chip."
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:53:36.185008+00:00"
+}

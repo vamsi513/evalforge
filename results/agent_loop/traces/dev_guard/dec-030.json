@@ -1,0 +1,89 @@
+{
+  "task_id": "dec-030",
+  "category": "unanswerable_decline",
+  "question": "What does the speculative decoding document say about running on Groq hardware?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-030-1fbab06a",
+  "route_decision": "retrieval",
+  "answer": "The provided context does not mention anything about running speculative decoding on Groq hardware. It discusses speculative decoding in general, its mechanisms, and its performance improvements, but there is no specific information regarding Groq hardware. Therefore, I cannot answer the rest of your question based on the available documents.",
+  "context": "[Source 1] Speculative Decoding for Accelerated LLM Inference\nto serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additional parameters. Production deployments at scale use speculative decoding in various forms: Google uses a 7B model to accelerate Gemini Pro inference. The approach combines naturally with quantization, FlashAttention, and continuous batching (vLLM) for production LLM serving. Key limitations include sensitivity to draft-target model distribution match and reduced benefit at large batch sizes where compute utilization is already high.\n\n---\n\n[Source 2] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.\n\n---\n\n[Source 3] Speculative Decoding for Accelerated LLM Inference\nSpeculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: each new token requires a full forward pass, making generation memory-bandwidth bound rather than compute-bound on modern accelerators. The key insight is that a small, fast \"draft\" model can propose multiple candidate tokens cheaply, and the large \"target\" model can verify all proposed tokens in parallel in a single forward pass (since verification only requires teacher-forcing, which is parallelizable unlike generation). If draft proposals are accepted via rejection sampling, multiple tokens are produced per forward pass of the large model, increasing throughput without changing the output distribution.\n\nThe acceptance criterion guarantees that the output distribution matches exactly that of the target model (lossless speedup). For each draft token proposed by the draft model with probability q, the target model's probability p is compared. The token is accepted with probability min(1, p/q), and if rejected, a corrected token is sampled from an adjusted distribution. This rejection sampling scheme ensures the marginal distribution over output sequences is identical to sampling from the target model alone. In expectation, the number of tokens produced per target forward pass equals 1/(1-\u03b1) where \u03b1 is the mean acceptance rate. With a well-matched draft model achieving \u03b1\u22480.8, this yields approximately 3-5 tokens per target model forward pass.\n\nIn practice, speculative decoding achieves 2-3x wall-clock speedup for text generation with T5-XXL (11B) using T5-Small (77M) as the draft model. Medusa (Cai et al., 2024) adds multiple prediction heads to the target model itself to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additio",
+  "sources": [
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate dr\u2026",
+      "score": 0.44936275482177734,
+      "type": "retrieval"
+    },
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.3985735774040222,
+      "type": "retrieval"
+    },
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "Speculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: eac\u2026",
+      "score": 0.36776548624038696,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Speculative Decoding for Accelerated LLM Inference",
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+    "Speculative Decoding for Accelerated LLM Inference"
+  ],
+  "retrieval_score": 0.44936275482177734,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2397.5,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 804.8
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 48.1
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1537.1
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1202,
+    "output_tokens": 60,
+    "cost_usd": 0.0002163,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "question did not decompose"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:46:20.903097+00:00"
+}

@@ -1,0 +1,116 @@
+{
+  "task_id": "dec-028",
+  "category": "unanswerable_decline",
+  "question": "What is the per-token inference cost of running Mixtral on AWS?",
+  "variant": "baseline",
+  "session_id": "agentloop-dec-028-b492e57d",
+  "route_decision": "web_search",
+  "answer": "The **per-token inference cost** of running **Mixtral 8x7B** on **Amazon AWS** is **$0.450 per 1 million input tokens**. This pricing is consistent across the tracked pricing mode for this model, as stated in the context from [Source 1]. \n\nAdditionally, it is noted that the **lowest output token pricing** for Mixtral 8x7B Instruct on Amazon is **$0.70 per 1 million output tokens** according to [Source 3]. However, the context does not provide further details on other potential costs or variations in pricing.",
+  "context": "[Source 1] Mixtral 8x7B API Price on Amazon AWS: $0.450/1M\nURL: https://computeprices.com/providers/aws/models/mixtral-8x7b\nHow much does Mixtral 8x7B cost on Amazon AWS? Amazon AWS serves Mixtral 8x7B from $0.450 per 1M input tokens, across 1 tracked pricing mode.\n\n---\n\n[Source 2] Mixtral | AI Wiki\nURL: https://aiwiki.ai/wiki/mixtral\nOther engines. TensorRT-LLM, MLC-LLM, ExLlamaV2, AutoAWQ, GPTQ-for-LLaMA, and Apple's MLX framework all added Mixtral support during 2024. Microsoft's DeepSpeed-MoE work, which predates Mixtral, had already shown that MoE inference could be made several times cheaper than equivalently sized dense models through expert parallelism and specialized kernels, and these techniques carried over directly to serving Mixtral at scale. AWS released Mixtral 8x22B as part of Amazon SageMaker JumpStart on April 23, 2024, and Together AI, Anyscale, Replicate, Fireworks, and Groq all offered hosted inference, in many cases at lower per-token cost than GPT-3.5 Turbo.\n\n## Use in Mistral products [...] ### Memory and compute trade-off\n\nThe key practical property of Mixtral is that compute scales with active parameters while memory scales with total parameters. A forward pass over one token activates roughly 12.9 billion parameters, so latency per token is similar to a dense 13B model. But all 46.7 billion parameters must be resident in VRAM (or fast-loadable from CPU) because any token at any layer might pick any pair of experts. This gives Mixtral the inference cost profile of a 13B dense model and the memory footprint of a 47B dense model. The full bfloat16 checkpoint is approximately 87 GB, which is too large for a single consumer GPU but fits on two RTX 3090s or 4090s, or on a single A100 80GB or H100 80GB.\n\n### Training [...] Topics\n\n## Cite this article\n\nMixtral is a family of open-weight Sparse Mixture of Experts (SMoE) large language models developed by Mistral AI, a French artificial intelligence company founded in April 2023. The family contains two main models: Mixtral 8x7B, released on December 11, 2023, and Mixtral 8x22B, released on April 10, 2024. In Mixtral 8x7B, as the original paper states, \"each token has access to 47B parameters, but only uses 13B active parameters during inference,\" because a learned router selects two of eight expert subnetworks at every layer. This design lets the model carry a large total parameter count for capacity while activating only a fraction of those parameters per token, so it runs much faster than a dense model of comparable quality and is cheaper to serve.\n\n---\n\n[Source 3] Mixtral 8x7B: API Provider Performance Benchmarking & Price Analysis | Artificial Analysis\nURL: https://artificialanalysis.ai/models/mixtral-8x7b-instruct/providers\nThe most affordable provider for Mixtral 8x7B Instruct by blended price is Amazon ($0.47 per 1M tokens). Blended price uses a 7:2:1 cache hit/input/output token ratio.\n\nThe provider with the lowest input token pricing for Mixtral 8x7B Instruct is Amazon ($0.45 per 1M input tokens).\n\nThe provider with the lowest output token pricing for Mixtral 8x7B Instruct is Amazon ($0.70 per 1M output tokens).\n\nAmazon leads across all key metrics for Mixtral 8x7B Instruct, offering the fastest speed, lowest latency, and most competitive pricing. [...] $0.47\n\nBlended price (per 1M tokens)\n\nTotal 1 provider\n\nMixtral 8x7B is available through Amazon.\n\n### Speed\n\nOutput tokens per second \u00b7 Higher is better\n\n### Latency\n\nSeconds to first answer token received \u00b7 Lower is better\n\n### Price\n\nUSD per 1M tokens (blended) \u00b7 Lower is better\n\n## Pricing\n\n### Pricing: Cache Hit, Input, and Output: Mixtral 8x7B Providers\n\nPrice (USD per M Tokens) \u00b7 Lower is better \u00b7 10,000 input tokens\n\nPrice per token for cached prompts (previously processed), typically offering a significant discount compared to regular input price, represented as USD per million tokens. The values shown here are the cache hit price; cache write and cache storage are billed separately and vary by provider \u2014 see \"Cache pricing by provider\" for detail. [...] Artificial Analysis\n\nThis model is deprecated. We only continue performance benchmarking for the default 10k input token workload. Results for other workloads are historical and no longer updated.\n\nMistral has launched a newer release, Mistral Small 3.2. We suggest considering it instead.\n\n\u2022\n\nOpen weightsmodel\n\n\u2022\n\nReleased December 2023\n\n# Mixtral 8x7B InstructAPI Provider Benchmarking & Analysis\n\nModel Comparison\n\nThis analysis is intended to support you in choosing the best API provider of Mixtral 8x7B Instruct for your use-case.\n\n#1\n25.5 t/s\n\nOutput speed\n\nTotal 1 provider\n\n### Lowest Latency\n\n#1\n\nAmazonAmazon\n\n1.11 s\n\nTime to first token\n\nTotal 1 provider\n\n### Lowest Price\n\n#1\n\nAmazonAmazon\n\n$0.47\n\nBlended price (per 1M tokens)\n\nTotal 1 provider\n\n---\n\n[Source 4] Deploy Mixtral 8x7B on AWS Inferentia2 with Hugging Face Optimum\nURL: https://www.philschmid.de/inferentia2-mixtral-8x7b\nWe achieved a throughput of `288.00 tokens/sec` with an average inter-token latency of `10.67ms/token` and a time-to-first-token of `2435.47ms` for Mixtral 8x7B on inf2.48xlarge with 5 concurrent requests. The fastest latency was `6.45ms/token` with a time-to-first-token of `643.33ms` at 1 concurrent request. [...] We ran the benchmark for different concurrent requests and got the following results:\n\nMixtral 8x7B results on inf2.48xlarge:\n\n| Metric | 1 | 2 | 5 | 10 | 25 |\n ---  ---  --- |\n| Avg. Input Token Length | 568 | 559 | 562 | 538 | 561 |\n| Avg. Output Token Length | 676 | 668 | 676 | 658 | 667 |\n| Avg. Time-to-First-Token (ms) | 643.33 | 890.52 | 2435.47 | 5977.68 | 11051.98 |\n| Avg. Inter-Token Latency (ms/token) | 6.45 | 7.44 | 10.67 | 17.97 | 34.05 |\n| Avg. Throughput (tokens/sec) | 136.06 | 193.89 | 288.00 | 337.28 | 354.68 |\n| Requests per Minute (RPM) | 12.07 | 17.41 | 25.54 | 30.72 | 31.87 | [...] \")print(f\"Avg. Time-to-first-Token: {data['results_ttft_s_mean']1000:.2f}ms\")print(f\"Avg. Time-to-first-Token: {data['results_ttft_s_mean'] 1000:.2f} ms\")print(f\"Avg. Inter-Token-Latency: {data['results_inter_token_latency_s_mean']1000:.2f}ms/token\")print(f\"Avg. Inter-Token-Latency: {data['results_inter_token_latency_s_mean'] 1000:.2f}ms/token\")print(f\"Avg. Thorughput: {data['results_mean_output_throughput_token_per_s']:.2f} tokens/sec\")print(f\"Avg. Thorughput: {data['results_mean_output_throughput_token_per_s']:.2f} tokens/sec\")print(f\"Request per minute (RPM): {data['results_num_completed_requests_per_min']:.2f} req/min\")print(f\"Request per minute (RPM): {data['results_num_completed_requests_per_min']:.2f} req/min\")\n\n---\n\n[Source 5] Mixtral of experts | Mistral AI\nURL: https://mistral.ai/news/mixtral-of-experts\nMixtral is a sparse mixture-of-experts network. It is a decoder-only model where the feedforward block picks from a set of 8 distinct groups of parameters. At every layer, for every token, a router network chooses two of these groups (the \u201cexperts\u201d) to process the token and combine their output additively.\n\nThis technique increases the number of parameters of a model while controlling cost and latency, as the model only uses a fraction of the total set of parameters per token. Concretely, Mixtral has 46.7B total parameters but only uses 12.9B parameters per token. It, therefore, processes input and generates output at the same speed and for the same cost as a 12.9B model.\n\nMixtral is pre-trained on data extracted from the open Web \u2013 we train experts and routers simultaneously. [...] Today, the team is proud to release Mixtral 8x7B, a high-quality sparse mixture of experts model (SMoE) with open weights. Licensed under Apache 2.0. Mixtral outperforms Llama 2 70B on most benchmarks with 6x faster inference. It is the strongest open-weight model with a permissive license and the best model overall regarding cost/performance trade-offs. In particular, it matches or outperforms GPT3.5 on most standard benchmarks.\n\nMixtral has the following capabilities.\n\n It gracefully handles a context of 32k tokens.\n It handles English, French, Italian, German and Spanish.\n It shows strong performance in code generation.\n It can be finetuned into an instruction-following model that achieves a score of 8.3 on MT-Bench.\n\n#### Pushing the frontier of open models with sparse architectures",
+  "sources": [
+    {
+      "title": "Mixtral 8x7B API Price on Amazon AWS: $0.450/1M",
+      "url": "https://computeprices.com/providers/aws/models/mixtral-8x7b",
+      "content": "How much does Mixtral 8x7B cost on Amazon AWS? Amazon AWS serves Mixtral 8x7B from $0.450 per 1M input tokens, across 1 tracked pricing mode.\u2026",
+      "score": 0.8452414,
+      "type": "web_search"
+    },
+    {
+      "title": "Mixtral | AI Wiki",
+      "url": "https://aiwiki.ai/wiki/mixtral",
+      "content": "Other engines. TensorRT-LLM, MLC-LLM, ExLlamaV2, AutoAWQ, GPTQ-for-LLaMA, and Apple's MLX framework all added Mixtral support during 2024. Microsoft's DeepSpeed-MoE work, which predates Mixtral, had a\u2026",
+      "score": 0.72465646,
+      "type": "web_search"
+    },
+    {
+      "title": "Mixtral 8x7B: API Provider Performance Benchmarking & Price Analysis | Artificial Analysis",
+      "url": "https://artificialanalysis.ai/models/mixtral-8x7b-instruct/providers",
+      "content": "The most affordable provider for Mixtral 8x7B Instruct by blended price is Amazon ($0.47 per 1M tokens). Blended price uses a 7:2:1 cache hit/input/output token ratio.\n\nThe provider with the lowest in\u2026",
+      "score": 0.7092009,
+      "type": "web_search"
+    },
+    {
+      "title": "Deploy Mixtral 8x7B on AWS Inferentia2 with Hugging Face Optimum",
+      "url": "https://www.philschmid.de/inferentia2-mixtral-8x7b",
+      "content": "We achieved a throughput of `288.00 tokens/sec` with an average inter-token latency of `10.67ms/token` and a time-to-first-token of `2435.47ms` for Mixtral 8x7B on inf2.48xlarge with 5 concurrent requ\u2026",
+      "score": 0.65412235,
+      "type": "web_search"
+    },
+    {
+      "title": "Mixtral of experts | Mistral AI",
+      "url": "https://mistral.ai/news/mixtral-of-experts",
+      "content": "Mixtral is a sparse mixture-of-experts network. It is a decoder-only model where the feedforward block picks from a set of 8 distinct groups of parameters. At every layer, for every token, a router ne\u2026",
+      "score": 0.5815176,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "Mixtral 8x7B API Price on Amazon AWS: $0.450/1M",
+    "Mixtral | AI Wiki",
+    "Mixtral 8x7B: API Provider Performance Benchmarking & Price Analysis | Artificial Analysis",
+    "Deploy Mixtral 8x7B on AWS Inferentia2 with Hugging Face Optimum",
+    "Mixtral of experts | Mistral AI"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 7819.6,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 2628.7
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 3461.0
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1723.4
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "What is the per-token inference cost of running Mixtral on AWS?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 3448.2,
+      "outcome": "ok",
+      "ts": "2026-10-23T02:47:05.681Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 2604,
+    "output_tokens": 127,
+    "cost_usd": 0.0004668,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:47:07.407875+00:00"
+}

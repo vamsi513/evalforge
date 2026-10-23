@@ -1,0 +1,89 @@
+{
+  "task_id": "msr-024",
+  "category": "multi_step_retrieval",
+  "question": "How many sequential denoising steps does DDPM require, and how few steps can DDIM use?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-msr-024-8f99850c",
+  "route_decision": "retrieval",
+  "answer": "According to the context, **DDPM** requires **1000 sequential denoising steps**. In contrast, **DDIM** can achieve high-quality generation with as few as **10-50 steps**.",
+  "context": "[Source 1] Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion\nDenoising Diffusion Probabilistic Models (DDPM), introduced by Jonathan Ho, Ajay Jain, and Pieter Abbeel at UC Berkeley in 2020, establish the theoretical foundation for modern diffusion-based image generation. The forward process gradually corrupts an image by adding Gaussian noise over T timesteps (typically T=1000), and the reverse process, parameterized by a U-Net neural network, learns to denoise iteratively. At inference, starting from pure Gaussian noise, the model iteratively denoises to generate novel images. DDPM achieves an FID score of 3.17 on CIFAR-10 and 3.85 on LSUN Bedrooms (256\u00d7256), surpassing GANs on sample quality metrics.\n\nDDIM (Denoising Diffusion Implicit Models, Song et al., 2020) provides critical inference acceleration. DDPM requires 1000 sequential denoising steps (~20 seconds per image on a V100 GPU). DDIM reformulates the process as non-Markovian, enabling high-quality generation with as few as 10-50 steps (50x speedup). Latent Diffusion Models (LDM, Rombach et al., arXiv:2112.10752) shift diffusion to a compressed latent space, reducing computational complexity by a factor proportional to the compression ratio squared. An autoencoder compresses images from pixel space (512\u00d7512\u00d73) to latent space (64\u00d764\u00d74), and diffusion operates on these compact representations. Stable Diffusion, built on LDM and trained by Stability AI on LAION-5B (5 billion image-text pairs), uses a CLIP text encoder to condition generation via cross-attention layers, achieving an FID of 12.63 on MS-COCO.\n\nThe practical impact of diffusion models has been extraordinary. Stable Diffusion, Midjourney (v3-v6), DALL-E 2 and 3, Imagen (Google Brain), and Adobe Firefly are all built on diffusion principles. Classifier-Free Guidance (Ho & Salimans, 2022) enables strong conditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with structural conditioning (depth maps, edge maps, poses) fo\n\n---\n\n[Source 2] Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion\nonditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with structural conditioning (depth maps, edge maps, poses) for precise spatial control. SDXL introduces a two-stage pipeline with a 3.5B parameter base model and 6.6B parameter refiner. Modern diffusion models with flow matching objectives (Stable Diffusion 3, Flux) further improve sample efficiency and quality across text-to-image, video, and 3D generation tasks.\n\n---\n\n[Source 3] Speculative Decoding for Accelerated LLM Inference\nSpeculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: each new token requires a full forward pass, making generation memory-bandwidth bound rather than compute-bound on modern accelerators. The key insight is that a small, fast \"draft\" model can propose multiple candidate tokens cheaply, and the large \"target\" model can verify all proposed tokens in parallel in a single forward pass (since verification only requires teacher-forcing, which is parallelizable unlike generation). If draft proposals are accepted via rejection sampling, multiple tokens are produced per forward pass of the large model, increasing throughput without changing the output distribution.\n\nThe acceptance criterion guarantees that the output distribution matches exactly that of the target model (lossless speedup). For each draft token proposed by the draft model with probability q, the target model's probability p is compared. The token is accepted with probability min(1, p/q), and if rejected, a corrected token is sampled from an adjusted distribution. This rejection sampling scheme ensures the marginal distribution over output sequences is identical to sampling from the target model alone. In expectation, the number of tokens produced per target forward pass equals 1/(1-\u03b1) where \u03b1 is the mean acceptance rate. With a well-matched draft model achieving \u03b1\u22480.8, this yields approximately 3-5 tokens per target model forward pass.\n\nIn practice, speculative decoding achieves 2-3x wall-clock speedup for text generation with T5-XXL (11B) using T5-Small (77M) as the draft model. Medusa (Cai et al., 2024) adds multiple prediction heads to the target model itself to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additio",
+  "sources": [
+    {
+      "title": "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+      "url": "https://arxiv.org/abs/2006.11239",
+      "content": "Denoising Diffusion Probabilistic Models (DDPM), introduced by Jonathan Ho, Ajay Jain, and Pieter Abbeel at UC Berkeley in 2020, establish the theoretical foundation for modern diffusion-based image g\u2026",
+      "score": 0.5978164672851562,
+      "type": "retrieval"
+    },
+    {
+      "title": "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+      "url": "https://arxiv.org/abs/2006.11239",
+      "content": "onditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with s\u2026",
+      "score": 0.3192427158355713,
+      "type": "retrieval"
+    },
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "Speculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: eac\u2026",
+      "score": 0.29791101813316345,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+    "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+    "Speculative Decoding for Accelerated LLM Inference"
+  ],
+  "retrieval_score": 0.5978164672851562,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1587.0,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 679.0
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 45.0
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 856.0
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1504,
+    "output_tokens": 45,
+    "cost_usd": 0.0002526,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:54:24.335155+00:00"
+}

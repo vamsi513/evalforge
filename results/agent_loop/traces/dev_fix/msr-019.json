@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-019",
+  "category": "multi_step_retrieval",
+  "question": "What formula do the documents give for the expected number of tokens produced per target model forward pass in speculative decoding?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-msr-019-213b4b57",
+  "route_decision": "retrieval",
+  "answer": "The expected number of tokens produced per target model forward pass in speculative decoding is given by the formula **1/(1-\u03b1)**, where **\u03b1** is the mean acceptance rate. According to the context, with a well-matched draft model achieving **\u03b1\u22480.8**, this yields approximately **3-5 tokens per target model forward pass**. This information is provided in [Source 1].",
+  "context": "[Source 1] Speculative Decoding for Accelerated LLM Inference\nSpeculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: each new token requires a full forward pass, making generation memory-bandwidth bound rather than compute-bound on modern accelerators. The key insight is that a small, fast \"draft\" model can propose multiple candidate tokens cheaply, and the large \"target\" model can verify all proposed tokens in parallel in a single forward pass (since verification only requires teacher-forcing, which is parallelizable unlike generation). If draft proposals are accepted via rejection sampling, multiple tokens are produced per forward pass of the large model, increasing throughput without changing the output distribution.\n\nThe acceptance criterion guarantees that the output distribution matches exactly that of the target model (lossless speedup). For each draft token proposed by the draft model with probability q, the target model's probability p is compared. The token is accepted with probability min(1, p/q), and if rejected, a corrected token is sampled from an adjusted distribution. This rejection sampling scheme ensures the marginal distribution over output sequences is identical to sampling from the target model alone. In expectation, the number of tokens produced per target forward pass equals 1/(1-\u03b1) where \u03b1 is the mean acceptance rate. With a well-matched draft model achieving \u03b1\u22480.8, this yields approximately 3-5 tokens per target model forward pass.\n\nIn practice, speculative decoding achieves 2-3x wall-clock speedup for text generation with T5-XXL (11B) using T5-Small (77M) as the draft model. Medusa (Cai et al., 2024) adds multiple prediction heads to the target model itself to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additio\n\n---\n\n[Source 2] Speculative Decoding for Accelerated LLM Inference\nto serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additional parameters. Production deployments at scale use speculative decoding in various forms: Google uses a 7B model to accelerate Gemini Pro inference. The approach combines naturally with quantization, FlashAttention, and continuous batching (vLLM) for production LLM serving. Key limitations include sensitivity to draft-target model distribution match and reduced benefit at large batch sizes where compute utilization is already high.\n\n---\n\n[Source 3] Introduction to Transformer Architecture\nThe Transformer architecture, introduced in \"Attention Is All You Need\" (Vaswani et al., 2017), revolutionized natural language processing by replacing recurrent networks entirely with self-attention mechanisms. Unlike RNNs and LSTMs that process tokens sequentially, Transformers process all tokens in parallel, enabling vastly better GPU utilization. The core building block is the multi-head self-attention layer, which computes three projections \u2014 Query, Key, and Value \u2014 for each token and uses scaled dot-product attention to produce context-aware representations. Positional encodings are added to the input embeddings to inject sequential order information that the attention mechanism itself cannot capture. The original architecture uses 6 encoder layers and 6 decoder layers, each with 512-dimensional embeddings and 8 attention heads, totaling 65 million parameters. This design became the blueprint for virtually every major language model developed since 2017.",
+  "sources": [
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "Speculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: eac\u2026",
+      "score": 0.5833576917648315,
+      "type": "retrieval"
+    },
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate dr\u2026",
+      "score": 0.48974859714508057,
+      "type": "retrieval"
+    },
+    {
+      "title": "Introduction to Transformer Architecture",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "content": "The Transformer architecture, introduced in \"Attention Is All You Need\" (Vaswani et al., 2017), revolutionized natural language processing by replacing recurrent networks entirely with self-attention \u2026",
+      "score": 0.36685776710510254,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Speculative Decoding for Accelerated LLM Inference",
+    "Speculative Decoding for Accelerated LLM Inference",
+    "Introduction to Transformer Architecture"
+  ],
+  "retrieval_score": 0.5833576917648315,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2828.5,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 600.0
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 1020.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1202.0
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 3,
+    "input_tokens": 1263,
+    "output_tokens": 135,
+    "cost_usd": 0.00027045,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:38:03.159141+00:00"
+}

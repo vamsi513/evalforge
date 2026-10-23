@@ -1,0 +1,142 @@
+{
+  "label": "dev_baseline",
+  "scored_at": "2026-10-23T03:10:55.311397+00:00",
+  "summary": {
+    "n": 3,
+    "passed": 1,
+    "accuracy": 0.3333,
+    "by_category": {
+      "unanswerable_decline": {
+        "n": 3,
+        "passed": 1,
+        "accuracy": 0.3333
+      }
+    },
+    "judge_provider": "anthropic",
+    "judge_model": "claude-haiku-4-5",
+    "judge_prompt_fingerprint": "57483f88002140d5",
+    "cost_usd": 0.012653,
+    "references_truncated": 2
+  },
+  "judgments": [
+    {
+      "task_id": "dec-001",
+      "category": "unanswerable_decline",
+      "variant": "baseline",
+      "judge_provider": "anthropic",
+      "judge_model": "claude-haiku-4-5",
+      "judge_prompt_fingerprint": "57483f88002140d5",
+      "judge_score": 0.15,
+      "judge_passed": false,
+      "judge_reasoning": "The candidate answer demonstrates partial reasoning quality (0.3) by correctly identifying that the reference material doesn't contain training cost data. However, it fails on faithfulness (0.0) because: (1) The expected keyword \"decline\" is entirely absent from the response, suggesting the candidate output doesn't match what was expected; (2) The response provides no attempt to answer the question despite what appears to be incomplete reference material (the reference ends with \"At sc\" suggesting truncation). The rubric requires addressing the question with correct reasoning and factual support. Since the reference material is incomplete and doesn't contain the answer, and the candidate cannot be faulted for this, but the expected keyword is missing entirely, the overall score is very low.",
+      "criterion_scores": {
+        "reasoning_quality": 0.3,
+        "faithfulness": 0.0,
+        "groundedness": 0.0735
+      },
+      "groundedness_score": 0.0735,
+      "unsupported_terms": [
+        "about",
+        "answer",
+        "architecture",
+        "cannot",
+        "comparisons",
+        "context",
+        "costs",
+        "covers",
+        "details",
+        "dollars",
+        "financial",
+        "include",
+        "information",
+        "mention",
+        "metrics",
+        "other",
+        "provided",
+        "question",
+        "regarding",
+        "therefore",
+        "training"
+      ],
+      "cost_usd": 0.004074,
+      "latency_ms": 5180,
+      "reference_was_truncated": true,
+      "reference_chars": 2000
+    },
+    {
+      "task_id": "dec-003",
+      "category": "unanswerable_decline",
+      "variant": "baseline",
+      "judge_provider": "anthropic",
+      "judge_model": "claude-haiku-4-5",
+      "judge_prompt_fingerprint": "57483f88002140d5",
+      "judge_score": 0.0,
+      "judge_passed": false,
+      "judge_reasoning": "The candidate output fails to address the prompt effectively. The expected keyword is \"decline,\" which should appear in a correct answer about BERT-Large's learning rate schedule. The reference answer provided does not contain information about the learning rate schedule either, making this a case where the candidate correctly identifies a gap in the provided context. However, from a reasoning_quality perspective, the answer is too dismissive and doesn't explore whether the information might be available or provide any useful context. The candidate gets full marks for faithfulness (1.0) since it doesn't make false claims, but reasoning_quality is severely penalized (0.2) because a production-quality response should better address the user's actual information need. The overall score reflects that the candidate failed to answer the question and missed the expected keyword entirely.",
+      "criterion_scores": {
+        "reasoning_quality": 0.2,
+        "faithfulness": 1.0,
+        "groundedness": 0.1429
+      },
+      "groundedness_score": 0.1429,
+      "unsupported_terms": [
+        "about",
+        "answer",
+        "architecture",
+        "cannot",
+        "covers",
+        "details",
+        "documents",
+        "information",
+        "learning",
+        "performance",
+        "pre-train",
+        "provided",
+        "regarding",
+        "schedule",
+        "specify",
+        "therefore"
+      ],
+      "cost_usd": 0.004212,
+      "latency_ms": 5417,
+      "reference_was_truncated": true,
+      "reference_chars": 2000
+    },
+    {
+      "task_id": "dec-005",
+      "category": "unanswerable_decline",
+      "variant": "baseline",
+      "judge_provider": "anthropic",
+      "judge_model": "claude-haiku-4-5",
+      "judge_prompt_fingerprint": "57483f88002140d5",
+      "judge_score": 0.95,
+      "judge_passed": true,
+      "judge_reasoning": "The candidate output correctly addresses the question by examining the provided documents (Sources 1-3) and accurately determining that Mixtral 8x22B is not mentioned. The answer is faithful to the reference materials, citing the correct MMLU score of 82.0% for Llama 2 from Source 2. The reasoning is sound and logically coherent - the candidate properly concludes that without documentation, they cannot answer the question about Mixtral 8x22B's performance. This is a high-quality response that properly handles an unanswerable question. The only minor issue is the disconnect between the expected keyword \"decline\" and the actual content, which appears to be a mismatch in the evaluation setup rather than a flaw in the candidate's response.",
+      "criterion_scores": {
+        "reasoning_quality": 0.95,
+        "faithfulness": 1.0,
+        "groundedness": 0.0488
+      },
+      "groundedness_score": 0.0488,
+      "unsupported_terms": [
+        "about",
+        "achieved",
+        "answer",
+        "available",
+        "cannot",
+        "context",
+        "documents",
+        "information",
+        "mentions",
+        "mixtral",
+        "provide",
+        "reference",
+        "therefore"
+      ],
+      "cost_usd": 0.004367,
+      "latency_ms": 4949,
+      "reference_was_truncated": false,
+      "reference_chars": 1989
+    }
+  ]
+}

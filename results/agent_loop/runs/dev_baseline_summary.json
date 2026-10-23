@@ -1,0 +1,39 @@
+{
+  "label": "dev_baseline",
+  "variant": "baseline",
+  "split": "dev",
+  "mock": false,
+  "run_at": "2026-10-23T02:50:17.364991+00:00",
+  "tasks_requested": 90,
+  "tasks_run": 90,
+  "aborted": null,
+  "cost_usd": 0.0184437,
+  "cost_per_task_usd": 0.00020493,
+  "usage_source": [
+    "tiktoken_estimate"
+  ],
+  "llm_calls": 180,
+  "input_tokens": 96586,
+  "output_tokens": 6593,
+  "routes": {
+    "direct": 32,
+    "retrieval": 48,
+    "web_search": 10
+  },
+  "errors": 0,
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "ledger_before_usd": 0.00251565,
+  "ledger_after_usd": 0.02095935
+}

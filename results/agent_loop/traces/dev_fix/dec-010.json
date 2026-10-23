@@ -1,0 +1,85 @@
+{
+  "task_id": "dec-010",
+  "category": "unanswerable_decline",
+  "question": "What is the home address of the first author of the LoRA paper?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-dec-010-e0343153",
+  "route_decision": "retrieval",
+  "answer": "The context provided does not contain any information regarding the home address of the first author of the LoRA paper or any personal details about the authors. It only discusses the LoRA method, its applications, and its performance in fine-tuning large language models. Therefore, I cannot answer the question regarding the home address of the first author.",
+  "context": "[Source 1] LoRA: Low-Rank Adaptation for Large Language Models\nLoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter-efficient fine-tuning method that dramatically reduces the cost of adapting large pre-trained language models to downstream tasks. The core insight is that the weight updates during fine-tuning have a low intrinsic rank. Rather than updating the full weight matrix W during fine-tuning, LoRA freezes the original weights and injects trainable low-rank decomposition matrices A and B such that the update is represented as \u0394W = BA, where B \u2208 R^(d\u00d7r) and A \u2208 R^(r\u00d7k), with rank r much smaller than d and k. Only A and B are trained, reducing the number of trainable parameters by orders of magnitude.\n\nFor GPT-3 (175B parameters), LoRA reduces the number of trainable parameters by 10,000x compared to full fine-tuning and decreases GPU memory requirements by 3x. A rank of r=4 or r=8 is typically sufficient for most adaptation tasks, with higher ranks used for more complex domain shifts. The method achieves comparable or superior performance to full fine-tuning on benchmarks such as GLUE, SuperGLUE, and E2E NLG, while using only 0.1\u20131% of the parameters. For RoBERTa-base fine-tuned on GLUE, LoRA matches or exceeds the performance of full fine-tuning across all tasks. On GPT-2 fine-tuning for natural language generation, LoRA achieves a BLEU score of 70.4 on E2E NLG compared to 68.2 for fine-tuning with the same compute budget.\n\nLoRA is applied specifically to the attention weight matrices (Q, K, V projections) in transformer blocks, though it can be applied to any linear layer. Initialization is critical: matrix A is initialized with random Gaussian values and B with zeros, ensuring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in ze\n\n---\n\n[Source 2] LoRA: Low-Rank Adaptation for Large Language Models\nsuring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.\n\nThe broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard for task-specific adaptation, instruction tuning, and domain specialization of foundation models, enabling practitioners to create custom model variants at a fraction of the cost of full fine-tuning.\n\n---\n\n[Source 3] Graph Neural Networks for Knowledge Reasoning and Relational Learning\nGraph Convolutional Networks (GCN), introduced by Thomas Kipf and Max Welling at the University of Amsterdam in 2016, establish the foundational framework for applying neural networks to graph-structured data. The key operation is spectral graph convolution approximated in the spatial domain, effectively computing a weighted average of each node's features and its neighbors' features through a normalized adjacency matrix. GCN achieves 81.5% classification accuracy on Citeseer, 79.0% on Cora, and 70.3% on Pubmed citation networks in semi-supervised node classification, surpassing previous methods by 3-8% while using only a small fraction of labeled nodes. Graph Attention Networks (GAT, Veli\u010dkovi\u0107 et al., 2018) extend GCN by replacing uniform neighbor aggregation with learned attention weights, achieving 83.0% on Cora and 97.3% F1 micro on PPI (protein-protein interaction) with multi-head attention.\n\nKnowledge Graph Embeddings extend GNN reasoning to large relational databases. TransE (Bordes et al., 2013) models relations as translations in embedding space: h + r \u2248 t for head, relation, tail triples. RotatE (Sun et al., 2019) models relations as rotations in complex space, achieving 58.0% Hits@10 on FB15k-237. KGQA systems like EmbedKGQA combine KG embeddings with question embeddings to answer multi-hop questions (66.6% Hits@1 on WebQSP). Think-on-Graph (Sun et al., 2024) implements beam search over knowledge graphs guided by LLM scoring, achieving 78.5% on WebQSP compared to 66.7% for standard RAG.\n\nRecent advances address scalability and expressivity. Graph Transformers (Graphormer, Ying et al., 2021, winner of OGB-LSC competition) integrate global attention with structural encodings, achieving state-of-the-art on molecular property prediction. GraphSAGE (Hamilton et al., 2017) with minibatch sampling enables training on graphs with billions of nodes (Pinterest's PinSage generates recommendations for 3B items). Heterogeneous GNNs (HGT, Hu et al., 2020) handle multi-type nodes and edges in enterprise knowledge gr",
+  "sources": [
+    {
+      "title": "LoRA: Low-Rank Adaptation for Large Language Models",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "content": "LoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter\u2026",
+      "score": 0.222604438662529,
+      "type": "retrieval"
+    },
+    {
+      "title": "LoRA: Low-Rank Adaptation for Large Language Models",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "content": "suring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into t\u2026",
+      "score": 0.20765367150306702,
+      "type": "retrieval"
+    },
+    {
+      "title": "Graph Neural Networks for Knowledge Reasoning and Relational Learning",
+      "url": "https://arxiv.org/abs/1609.02907",
+      "content": "Graph Convolutional Networks (GCN), introduced by Thomas Kipf and Max Welling at the University of Amsterdam in 2016, establish the foundational framework for applying neural networks to graph-structu\u2026",
+      "score": 0.1272066980600357,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "LoRA: Low-Rank Adaptation for Large Language Models",
+    "LoRA: Low-Rank Adaptation for Large Language Models",
+    "Graph Neural Networks for Knowledge Reasoning and Relational Learning"
+  ],
+  "retrieval_score": 0.222604438662529,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2755.3,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 609.1
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 923.9
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1216.7
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 3,
+    "input_tokens": 1713,
+    "output_tokens": 102,
+    "cost_usd": 0.00031815,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:36:06.281456+00:00"
+}

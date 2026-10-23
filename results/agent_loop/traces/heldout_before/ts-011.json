@@ -1,0 +1,85 @@
+{
+  "task_id": "ts-011",
+  "category": "tool_selection",
+  "question": "What index types does FAISS support for semantic search?",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-011-952b71a9",
+  "route_decision": "retrieval",
+  "answer": "FAISS supports multiple index types for semantic search, including:\n\n- **Flat** (exact brute-force)\n- **IVF** (inverted file, fast approximate)\n- **HNSW** (hierarchical navigable small world graphs)\n\nFor production RAG systems, the **IVFFlat** or **IVFPQ** indices are noted to offer the best speed-recall trade-off according to [Source 1].",
+  "context": "[Source 1] Vector Embeddings and Semantic Search\nVector embeddings map discrete objects \u2014 words, sentences, documents, images \u2014 into continuous high-dimensional spaces where geometric proximity reflects semantic similarity. Sentence-BERT (Reimers & Gurevych, 2019) extended BERT to produce fixed-size sentence embeddings by adding a pooling layer and fine-tuning on Natural Language Inference datasets with a siamese network objective. The resulting embeddings support efficient semantic search: given a query embedding, approximate nearest-neighbor (ANN) algorithms like FAISS (Facebook AI Similarity Search) can retrieve the most similar documents from millions of candidates in milliseconds. FAISS supports multiple index types: Flat (exact brute-force), IVF (inverted file, fast approximate), and HNSW (hierarchical navigable small world graphs). For production RAG systems, the IVFFlat or IVFPQ indices offer the best speed-recall trade-off. Embedding models are evaluated on the MTEB (Massive Text Embedding Benchmark), which covers 56 datasets across 8 retrieval, clustering, and classification tasks.\n\n---\n\n[Source 2] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nRetrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate responses. Chunking\u2014how documents are divided into retrievable units\u2014is a critical design decision that significantly impacts retrieval quality and downstream generation accuracy. Naive fixed-size chunking (e.g., every 512 tokens) is simple but cuts sentences, splits code blocks, and separates tables from captions, degrading retrieval precision. Semantic chunking adapts chunk boundaries to the natural semantic structure of documents by detecting topic transitions via embedding similarity between consecutive sentences, splitting at points where cosine similarity drops sharply below a threshold.\n\nLangChain's SemanticChunker uses percentile-based threshold selection: a split is made between sentences if their cosine similarity falls below the p-th percentile (typically p=90), resulting in chunks that respect paragraph and topic boundaries. On BEIR retrieval benchmarks, semantic chunking improves NDCG@10 by 3-8% compared to fixed-size chunking at equivalent average chunk size. Small-to-big retrieval (parent-child chunking) uses small chunks (100-150 tokens) for precise retrieval but returns the larger parent chunk (400-600 tokens) as context. Document-aware chunking preserves structural elements: section headers are prepended to child chunks to maintain topical context; code blocks are kept intact; tables are converted to text with column headers retained.\n\nHierarchical chunking (Raptor, Sarthi et al., 2024) recursively summarizes clusters of chunks into higher-level summaries, building a tree structure that enables multi-scale retrieval for both detail-oriented and high-level questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On Trivi\n\n---\n\n[Source 3] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nquestions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On TriviaQA, proper semantic chunking with reranking achieves F1 of 76.3 compared to 68.9 for naive chunking. Chunk overlap (10-20%) prevents information loss at boundaries. Contextual retrieval (Anthropic, 2024) prepends a model-generated context summary to each chunk before embedding, improving retrieval accuracy by 35% on document Q&A benchmarks by enriching embeddings with document-level context. Cross-encoder rerankers (e.g., ms-marco-MiniLM-L-6-v2) applied after initial FAISS retrieval typically improve NDCG@3 by 5-15% with minimal latency cost.",
+  "sources": [
+    {
+      "title": "Vector Embeddings and Semantic Search",
+      "url": "https://arxiv.org/abs/1908.10084",
+      "content": "Vector embeddings map discrete objects \u2014 words, sentences, documents, images \u2014 into continuous high-dimensional spaces where geometric proximity reflects semantic similarity. Sentence-BERT (Reimers & \u2026",
+      "score": 0.4373829960823059,
+      "type": "retrieval"
+    },
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "Retrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate response\u2026",
+      "score": 0.3513258397579193,
+      "type": "retrieval"
+    },
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer addres\u2026",
+      "score": 0.34522104263305664,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Vector Embeddings and Semantic Search",
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems"
+  ],
+  "retrieval_score": 0.4373829960823059,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2097.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 685.1
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 33.0
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1374.1
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1212,
+    "output_tokens": 88,
+    "cost_usd": 0.0002346,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:51:57.039881+00:00"
+}

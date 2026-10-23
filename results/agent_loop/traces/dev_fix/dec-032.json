@@ -1,0 +1,55 @@
+{
+  "task_id": "dec-032",
+  "category": "unanswerable_decline",
+  "question": "What is the filesystem path of the vector index on the server you are running on?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-dec-032-bd08abb4",
+  "route_decision": "direct",
+  "answer": "I'm sorry, but I can't provide specific filesystem paths or details about the server I'm running on. However, I can help answer questions about vector indexes or related topics if you'd like!",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1509.2,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 633.7
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 872.3
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 273,
+    "output_tokens": 37,
+    "cost_usd": 6.315e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:36:48.394526+00:00"
+}

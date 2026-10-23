@@ -1,0 +1,85 @@
+{
+  "task_id": "ts-008",
+  "category": "tool_selection",
+  "question": "How does RoPE encode relative position information in the attention dot product?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-ts-008-f9c60ad5",
+  "route_decision": "retrieval",
+  "answer": "**Rotary Position Embeddings (RoPE)** encode **relative position information** in the attention dot product by utilizing a method that involves the **rotation of query and key vectors**. Specifically, RoPE encodes position \\( m \\) by multiplying it with a **rotation matrix \\( R_m \\)**. This approach ensures that the inner product between the query at position \\( m \\) and the key at position \\( n \\) depends solely on the content vectors and their **relative position** \\( (m-n) \\) rather than on their absolute positions.\n\nThis mechanism allows RoPE to inherently produce relative position information during the attention calculation, differentiating it from other methods like learned absolute position embeddings or sinusoidal embeddings, which do not provide this relative context in the same manner. Thus, RoPE effectively integrates both absolute and relative positional information within the transformer architecture.",
+  "context": "[Source 1] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs\nRotary Position Embeddings (RoPE), introduced by Jianlin Su, Yu Lu, Shengfeng Pan, and colleagues in 2021, provide an elegant solution to position encoding in transformers that encodes absolute position information through rotation of query and key vectors, while inherently producing relative position information in the attention dot product. Unlike learned absolute position embeddings (GPT series) or sinusoidal embeddings (original Transformer), RoPE encodes position m by multiplying by a rotation matrix R_m, such that the inner product between query at position m and key at position n depends only on the content vectors and their relative position (m-n). For a d-dimensional vector, RoPE applies 2D rotation matrices to d/2 pairs of dimensions using angles \u03b8_k = 10000^(-2k/d), producing a multi-scale positional encoding. RoPE has been adopted in LLaMA (all versions), PaLM 2, Falcon, Mistral, Qwen, and most modern open-source LLMs.\n\nLong context extension via RoPE modification has become an active research area. Position Interpolation (Chen et al., 2023, Meta AI) linearly scales position indices by the ratio (original_length/target_length), extending LLaMA to 32K context with fine-tuning on only 1000 steps and achieving 95% performance retention on Passkey Retrieval at 32K. YaRN (Peng et al., 2023) improves on interpolation using non-uniform scaling: high-frequency components (short-range dependencies) are unscaled while low-frequency components (long-range) are interpolated, combined with a temperature scaling factor for attention entropy. YaRN-Mistral 7B extends to 128K context with strong performance on RULER benchmarks. LongRoPE (Ding et al., 2024, Microsoft) extends context to 2048K tokens using non-uniform positional interpolation via evolutionary search.\n\nThe base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensi\n\n---\n\n[Source 2] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs\nThe base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.\n\n---\n\n[Source 3] Introduction to Transformer Architecture\nThe Transformer architecture, introduced in \"Attention Is All You Need\" (Vaswani et al., 2017), revolutionized natural language processing by replacing recurrent networks entirely with self-attention mechanisms. Unlike RNNs and LSTMs that process tokens sequentially, Transformers process all tokens in parallel, enabling vastly better GPU utilization. The core building block is the multi-head self-attention layer, which computes three projections \u2014 Query, Key, and Value \u2014 for each token and uses scaled dot-product attention to produce context-aware representations. Positional encodings are added to the input embeddings to inject sequential order information that the attention mechanism itself cannot capture. The original architecture uses 6 encoder layers and 6 decoder layers, each with 512-dimensional embeddings and 8 attention heads, totaling 65 million parameters. This design became the blueprint for virtually every major language model developed since 2017.",
+  "sources": [
+    {
+      "title": "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+      "url": "https://arxiv.org/abs/2104.09864",
+      "content": "Rotary Position Embeddings (RoPE), introduced by Jianlin Su, Yu Lu, Shengfeng Pan, and colleagues in 2021, provide an elegant solution to position encoding in transformers that encodes absolute positi\u2026",
+      "score": 0.6365318298339844,
+      "type": "retrieval"
+    },
+    {
+      "title": "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+      "url": "https://arxiv.org/abs/2104.09864",
+      "content": "The base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Pra\u2026",
+      "score": 0.38421791791915894,
+      "type": "retrieval"
+    },
+    {
+      "title": "Introduction to Transformer Architecture",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "content": "The Transformer architecture, introduced in \"Attention Is All You Need\" (Vaswani et al., 2017), revolutionized natural language processing by replacing recurrent networks entirely with self-attention \u2026",
+      "score": 0.35306403040885925,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+    "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+    "Introduction to Transformer Architecture"
+  ],
+  "retrieval_score": 0.6365318298339844,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 4343.2,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 614.8
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 1131.0
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 2591.2
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 3,
+    "input_tokens": 1294,
+    "output_tokens": 208,
+    "cost_usd": 0.0003189,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:39:02.315933+00:00"
+}

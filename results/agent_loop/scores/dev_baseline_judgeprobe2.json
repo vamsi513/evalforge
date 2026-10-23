@@ -1,0 +1,168 @@
+{
+  "label": "dev_baseline",
+  "scored_at": "2026-10-23T03:13:08.039437+00:00",
+  "summary": {
+    "n": 4,
+    "passed": 4,
+    "accuracy": 1.0,
+    "by_category": {
+      "direct_no_tools": {
+        "n": 1,
+        "passed": 1,
+        "accuracy": 1.0
+      },
+      "multi_step_retrieval": {
+        "n": 1,
+        "passed": 1,
+        "accuracy": 1.0
+      },
+      "unanswerable_decline": {
+        "n": 2,
+        "passed": 2,
+        "accuracy": 1.0
+      }
+    },
+    "judge_provider": "anthropic",
+    "judge_model": "claude-haiku-4-5",
+    "judge_prompt_fingerprint": "57483f88002140d5",
+    "cost_usd": 0.015457,
+    "references_truncated": 3
+  },
+  "judgments": [
+    {
+      "task_id": "dec-001",
+      "category": "unanswerable_decline",
+      "variant": "baseline",
+      "judge_provider": "anthropic",
+      "judge_model": "claude-haiku-4-5",
+      "judge_prompt_fingerprint": "57483f88002140d5",
+      "judge_score": 0.95,
+      "judge_passed": true,
+      "judge_reasoning": "The candidate output aligns perfectly with the expected keyword (\"a statement that the available documents do not provide this\"). The answer demonstrates strong reasoning by explicitly acknowledging what the context does cover (architecture, performance metrics, comparisons) while correctly noting the absence of training cost data. The response is faithful to the reference material\u2014which indeed contains no financial information about training costs\u2014and appropriately refuses to fabricate an answer. This is exactly the correct behavior per the rubric's appropriate_refusal criterion (weight 0.4). Minor deduction from perfect only due to slightly verbose phrasing.",
+      "criterion_scores": {
+        "reasoning_quality": 0.95,
+        "faithfulness": 1.0,
+        "appropriate_refusal": 0.95,
+        "groundedness": 0.0735
+      },
+      "groundedness_score": 0.0735,
+      "unsupported_terms": [
+        "about",
+        "answer",
+        "architecture",
+        "cannot",
+        "comparisons",
+        "context",
+        "costs",
+        "covers",
+        "details",
+        "dollars",
+        "financial",
+        "include",
+        "information",
+        "mention",
+        "metrics",
+        "other",
+        "provided",
+        "question",
+        "regarding",
+        "therefore",
+        "training"
+      ],
+      "cost_usd": 0.004006,
+      "latency_ms": 4491,
+      "reference_was_truncated": true,
+      "reference_chars": 2000
+    },
+    {
+      "task_id": "dec-003",
+      "category": "unanswerable_decline",
+      "variant": "baseline",
+      "judge_provider": "anthropic",
+      "judge_model": "claude-haiku-4-5",
+      "judge_prompt_fingerprint": "57483f88002140d5",
+      "judge_score": 0.95,
+      "judge_passed": true,
+      "judge_reasoning": "The candidate output aligns perfectly with the expected keyword requirement (a statement that documents do not provide the information) and follows the rubric criteria exceptionally well. For reasoning_quality (0.95): The answer directly addresses the question by clarifying what information is available (architecture, tasks, benchmarks) versus what is missing (learning rate schedule), showing coherent reasoning with clear support. A minor deduction only because more specificity about what IS in the reference documents could strengthen transparency. For faithfulness (1.0): The answer makes no unsupported factual claims and accurately reflects the limitations of the provided sources. For appropriate_refusal (0.95): The answer exemplifies correct behavior by explicitly declining to guess and clearly stating the information is unavailable. The response is well-structured and professional. This is production-quality work that satisfies the requirements.",
+      "criterion_scores": {
+        "reasoning_quality": 0.95,
+        "faithfulness": 1.0,
+        "appropriate_refusal": 0.95,
+        "groundedness": 0.1429
+      },
+      "groundedness_score": 0.1429,
+      "unsupported_terms": [
+        "about",
+        "answer",
+        "architecture",
+        "cannot",
+        "covers",
+        "details",
+        "documents",
+        "information",
+        "learning",
+        "performance",
+        "pre-train",
+        "provided",
+        "regarding",
+        "schedule",
+        "specify",
+        "therefore"
+      ],
+      "cost_usd": 0.004289,
+      "latency_ms": 4385,
+      "reference_was_truncated": true,
+      "reference_chars": 2000
+    },
+    {
+      "task_id": "dnt-022",
+      "category": "direct_no_tools",
+      "variant": "baseline",
+      "judge_provider": "anthropic",
+      "judge_model": "claude-haiku-4-5",
+      "judge_prompt_fingerprint": "57483f88002140d5",
+      "judge_score": 0.85,
+      "judge_passed": true,
+      "judge_reasoning": "The candidate output successfully addresses the prompt by providing a brief, direct, conversational reply as requested. It introduces the agent with a greeting and explains its purpose. Reasoning quality is high (0.9) as the response directly and coherently addresses the question with a clear line of reasoning. Faithfulness scores lower (0.8) because with no reference answer provided, claims about identity (\"AgentIQ\") and capabilities cannot be verified against retrieved passages, though this is a structural limitation rather than a substantive failure. The response passes production quality standards for an introduction prompt.",
+      "criterion_scores": {
+        "reasoning_quality": 0.9,
+        "faithfulness": 0.8,
+        "groundedness": 1.0
+      },
+      "groundedness_score": 1.0,
+      "unsupported_terms": [],
+      "cost_usd": 0.003267,
+      "latency_ms": 4380,
+      "reference_was_truncated": false,
+      "reference_chars": 0
+    },
+    {
+      "task_id": "msr-006",
+      "category": "multi_step_retrieval",
+      "variant": "baseline",
+      "judge_provider": "anthropic",
+      "judge_model": "claude-haiku-4-5",
+      "judge_prompt_fingerprint": "57483f88002140d5",
+      "judge_score": 1.0,
+      "judge_passed": true,
+      "judge_reasoning": "The candidate output perfectly addresses the prompt by naming the three RLHF stages in the order provided by the documents: (1) Supervised fine-tuning (SFT), (2) Reward model training, and (3) PPO fine-tuning. The response directly matches the reference answer from Source 2, including the expected keyword \"supervised fine-tuning.\" Every factual claim is faithfully supported by the retrieved passages. The reasoning is clear, coherent, and directly addresses the question without unsupported leaps. Both rubric criteria are fully satisfied.",
+      "criterion_scores": {
+        "reasoning_quality": 1.0,
+        "faithfulness": 1.0,
+        "groundedness": 0.6809
+      },
+      "groundedness_score": 0.6809,
+      "unsupported_terms": [
+        "detailed",
+        "documents",
+        "information",
+        "order",
+        "provided"
+      ],
+      "cost_usd": 0.003895,
+      "latency_ms": 4098,
+      "reference_was_truncated": true,
+      "reference_chars": 2000
+    }
+  ]
+}

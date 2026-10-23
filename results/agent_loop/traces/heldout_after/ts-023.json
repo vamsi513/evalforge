@@ -1,0 +1,120 @@
+{
+  "task_id": "ts-023",
+  "category": "tool_selection",
+  "question": "Which AI model did OpenAI release most recently?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-ts-023-f45bf970",
+  "route_decision": "web_search",
+  "answer": "The most recently released AI model by OpenAI is **GPT-6 Astra**, which was launched on **September 3, 2026**. According to the AI Release Tracker, this model is part of the GPT-6 family, which includes other models released shortly after, such as **GPT-6 Sol** and **GPT-6 Luna** on **September 22, 2026**, and **GPT-6.1 Sol** on **September 29, 2026**.",
+  "context": "[Source 1] AI Release Tracker \u2014 AI Model Release Timeline\nURL: https://aireleasetracker.com\nThe most recently tracked frontier model is Claude Sonnet 5.5 by Anthropic, released on Sep 28 2026. See the live homepage for the up-to-the-minute timeline.\n\nOn GPQA Diamond (graduate-level science reasoning), the current leader is GPT-6 Astra by OpenAI with a score of 96%. On SWE-Bench Verified (real-world software engineering), the current leader is Claude Opus 4.7 by Anthropic with a score of 87.6%. Both benchmarks are tracked live on the Analytics page.\n\nAI Release Tracker covers releases from Anthropic, OpenAI, Google, Meta, SpaceXAI, DeepSeek, Mistral, Moonshot AI, Z.ai, Qwen, NVIDIA. Each company has a dedicated page listing every model it has shipped, with release dates and benchmark scores. [...] Every model page includes release date, parameter count, context window, model type, and benchmark scores (GPQA Diamond, SWE-Bench Verified, MMMU) when published. The analytics page shows cumulative release charts, monthly release frequency, year-over-year totals, benchmark frontier progression, and release cadence by company.\n\n### Browse by company\n\n## Frequently asked questions\n\nAI Release Tracker is a free, continuously updated timeline of every major AI model release from the world's leading AI labs. It currently tracks 254 models from 11 companies \u2014 including OpenAI, Anthropic, Google DeepMind, Meta, SpaceXAI, DeepSeek, Mistral, Moonshot AI, Z.ai, and Qwen \u2014 from the launch of ChatGPT on November 30 2022 through today. [...] # AI Model Release Tracker - Timeline of Major AI Models from 2022-2026\n\nYour brand here\n\nReach developers, founders and AI enthusiasts who follow every new model release.\n\nAudience\n\nWhat you get\n\nMENU\n\n## Get model releases and AI news.\n\nOne email, every other Monday.\n\n## About AI Release Tracker\n\nAs featured in Business Insider, which cited our data showing the monthly cadence of major AI releases has roughly quadrupled since 2023.\n\nAI Release Tracker is a free, continuously updated timeline of every major AI model release from the world's leading AI labs. We cover 254 tracked frontier models from Anthropic, OpenAI, Google, Meta, SpaceXAI, DeepSeek, Mistral, Moonshot AI, Z.ai, Qwen, NVIDIA, starting with the launch of ChatGPT on November 30 2022.\n\n---\n\n[Source 2] OpenAI announces GPT-5.5, its latest artificial intelligence model\nURL: https://www.cnbc.com/2026/04/23/openai-announces-latest-artificial-intelligence-model.html\nPower Lunch\n\nOpenAI on Thursday announced its latest artificial intelligence model, GPT-5.5, which the company says is better at coding, using computers and pursuing deeper research capabilities.\n\nThe launch comes less than two months after OpenAI released GPT 5.4, the latest sign of the breakneck pace of development that's driving the AI sector.\n\n\"What is really special about this model is how much more it can do with less guidance,\" OpenAI President Greg Brockman said during a briefing with reporters on Thursday. \"It can look at an unclear problem and figure out just what needs to happen next. It really, to me, feels like it's setting the foundation for how we're going to use computers, how we're going to do computer work going forward.\" [...] OpenAI said GPT-5.5 excels at analyzing data, writing and debugging code, operating software, researching online and creating documents and spreadsheets. The company added that the model does not cross its \"Critical\" cybersecurity risk threshold, which could bring \"unprecedented new pathways to severe harm,\" but it does meet the criteria for its \"High\" risk classification, which could \"amplify existing pathways to severe harm.\"\n\n\"GPT-5.5 underwent extensive third-party safeguard testing and red teaming for cyber and bio [risks], and we've been iterating on our cyber safeguards for months with increasingly cyber capable models,\" Mia Glaese, OpenAI's vice president of research, said during the briefing on Thursday. [...] The cybersecurity risks presented by AI have been top of mind for tech executives and government officials since Anthropic announced its Mythos model earlier this month. The company decided to limit Mythos' rollout because of its ability to identifying weaknesses and security flaws within software.\n\nGPT-5.5 is rolling out to OpenAI's paid subscribers, including its Plus, Pro, Business, and Enterprise users, in ChatGPT and its coding assistant Codex on Thursday. The company said the model will come to its application programming interface \"very soon,\" but that those deployments require \"different safeguards.\"\n\nWATCH: Bradley Tusk: Hard to see why investors would want OpenAI shares when they\u2019re public\n\nBradley Tusk: Hard to see why investors would want OpenAI shares when they're public\n\n---\n\n[Source 3] Updates on New AI Model Releases\nURL: https://www.linkedin.com/top-content/artificial-intelligence/ai-model-development/updates-on-new-ai-model-releases\nLast week in AI revealed a structural shift that many people are missing. For the past two years, the conversation has centered on one question: who has the best model? But the latest announcements suggest something deeper is happening. AI is becoming infrastructure. OpenAI: -- released GPT-5.4, its newest frontier model designed for complex professional tasks. On benchmarks, it scored 57.7% on SWE-Bench Pro for software engineering, 82.7% on BrowseComp, and 92.8% on the GPQA Diamond science benchmark. -- The company also introduced Codex Security, an AI agent designed to detect software vulnerabilities, and -- launched ChatGPT for Excel, which allows users to analyze spreadsheets using natural language while connecting to financial data providers like FactSet and Moody\u2019s. At the same [...] volume and computational resources) and bespoke shaping up (including post-filtering, fine tuning or use of human feedback). However, larger and more instructable large language models may have become less reliable.\" Recent information from analyses of OpenAI\u2019s newest model, Orion, suggest it is no better than ChatGPT4 in terms of hallucinations. The official release of Sora has also disappointed many because it still violates laws of physics, objects sometimes disappear, and other hallucinations are common. Similar stories are emerging from Google (Gemini 2.0 is barely better than 1.0) and Anthropic (Claude 3.5 Opus has been likely scrapped or at least the timetable has significantly slipped) while Apple's much awaited AI update (iOS 18.2) is more for entertainment than business [...] \ud83d\udea8Big week in AI.Four major updates, one clear signal: the AI frontier is rapidly opening up \u2014 and transforming. \ud83d\udd13OpenAI launches gpt-oss: two open-weight language models (120B and 20B) that rival their closed counterparts on reasoning, coding, and health benchmarks. These models are available under the Apache 2.0 license and optimized for on-device deployment. With safety at the forefront, OpenAI even adversarially fine-tuned the models to test worst-case misuse scenarios \u2014 a first-of-its-kind for open model releases. \ud83c\udf0dGoogle DeepMind unveils Genie 3, a real-time world model capable of simulating rich, navigable 3D environments from a single text prompt. It marks a leap toward embodied agents and AGI training grounds \u2014 combining physics modeling, long-horizon memory, and interactive world\n\n---\n\n[Source 4] AI Updates Today (October 2026) \u2013 Latest AI Model Releases\nURL: https://llm-stats.com/llm-updates\n1Claude Haiku 5.5\n\n2Claude Sonnet 5.5\n\n3Claude Opus 5.5\n\n9 models in 6 mo\n\nMJJASO### Google\n\n60 models\u2022Updated 2w ago\n\nRecent Models\n\n1Gemini Nano Banana 2.1\n\n2Gemini 4 Argon\n\n3Gemini 3.8 Flash\n\n10 models in 6 mo\n\nMJJASO### Mistral AI\n\n35 models\u2022Updated 2w ago\n\nRecent Models\n\n1Mistral Large 4\n\n2Shieldstral 1.0 (3B)\n\n3Mistral Medium 3.5\n\n2 models in 6 mo\n\nMJJASO### OpenAI\n\n71 models\u2022Updated 3w ago\n\nRecent Models\n\n1GPT-6.1 Sol\n\n2GPT-6 Sol\n\n3GPT-6 Luna\n\n10 models in 6 mo\n\nMJJASO### Fireworks AI\n\n3 models\u2022Updated 3w ago\n\nRecent Models\n\n1Ember-1\n\n2Whisper V3 Turbo\n\n3Whisper V3 Large\n\n1 models in 6 mo\n\nMJJASO\n\nSide by side\n\n## Compare AI models\n\nFree head-to-head playgrounds across image, video, website, game and chat modalities.\n\nAll arenas\n\nImage\n\n+18Video\n\n+12Website\n\n+24Game\n\n---\n\n[Source 5] OpenAI GPT Model Release Timeline - Model Lineage, ChatGPT and Codex Milestones, and Platform Availability | hidekazu-konishi.com\nURL: https://hidekazu-konishi.com/entry/openai_gpt_model_release_timeline.html\nOpenAI was founded as a non-profit artificial-intelligence research laboratory on December 11, 2015, with the stated mission of ensuring that artificial general intelligence benefits all of humanity.  \n The first Generative Pre-trained Transformer (GPT) arrived in June 2018 as a research model, followed by GPT-2 in 2019 and GPT-3 in 2020. GPT-3 was the first model OpenAI commercialized broadly, through the OpenAI API private beta in June 2020.  \n The inflection point came on November 30, 2022, when OpenAI released ChatGPT as a free research preview built on the GPT-3.5 series. ChatGPT made conversational GPT models accessible to a general audience and triggered the wave of generative-AI adoption that followed. [...] | Date | Event |\n --- |\n| 2015-12-11 | OpenAI is founded as a non-profit AI research laboratory. Source: Introducing OpenAI. |\n| 2018-06-11 | GPT-1 is published - the first Generative Pre-trained Transformer, introducing the unsupervised pre-training plus supervised fine-tuning recipe. Source: Improving language understanding with unsupervised learning. |\n| 2019-02-14 | GPT-2 is announced with a staged release; the full 1.5B-parameter model followed in November 2019. Source: Better language models and their implications. |\n| 2020-06-11 | GPT-3 is released through the OpenAI API (private beta) - the first GPT model OpenAI commercialized broadly. Source: OpenAI API. | [...] Microsoft announced the Azure OpenAI Service in November 2021 and made it generally available on January 16, 2023. GPT-4 reached Azure in preview on March 21, 2023, and recent models such as GPT-4o (May 2024), the GPT-5 family (August 2025), GPT-5.6 (July 9, 2026), GPT-6 Astra (September 3, 2026), GPT-6 Sol and GPT-6 Luna (September 22, 2026), and GPT-6.1 Sol (September 29, 2026) have arrived on Azure at or near their OpenAI launch. The surrounding development platform was renamed from Azure AI Studio to Azure AI Foundry in November 2024, and to Microsoft Foundry in November 2025. See the Azure OpenAI \"What's new\" page.  \n\n### What powered GitHub Copilot, and when did it launch?",
+  "sources": [
+    {
+      "title": "AI Release Tracker \u2014 AI Model Release Timeline",
+      "url": "https://aireleasetracker.com",
+      "content": "The most recently tracked frontier model is Claude Sonnet 5.5 by Anthropic, released on Sep 28 2026. See the live homepage for the up-to-the-minute timeline.\n\nOn GPQA Diamond (graduate-level science r\u2026",
+      "score": 0.90039873,
+      "type": "web_search"
+    },
+    {
+      "title": "OpenAI announces GPT-5.5, its latest artificial intelligence model",
+      "url": "https://www.cnbc.com/2026/04/23/openai-announces-latest-artificial-intelligence-model.html",
+      "content": "Power Lunch\n\nOpenAI on Thursday announced its latest artificial intelligence model, GPT-5.5, which the company says is better at coding, using computers and pursuing deeper research capabilities.\n\nThe\u2026",
+      "score": 0.8989177,
+      "type": "web_search"
+    },
+    {
+      "title": "Updates on New AI Model Releases",
+      "url": "https://www.linkedin.com/top-content/artificial-intelligence/ai-model-development/updates-on-new-ai-model-releases",
+      "content": "Last week in AI revealed a structural shift that many people are missing. For the past two years, the conversation has centered on one question: who has the best model? But the latest announcements su\u2026",
+      "score": 0.86632514,
+      "type": "web_search"
+    },
+    {
+      "title": "AI Updates Today (October 2026) \u2013 Latest AI Model Releases",
+      "url": "https://llm-stats.com/llm-updates",
+      "content": "1Claude Haiku 5.5\n\n2Claude Sonnet 5.5\n\n3Claude Opus 5.5\n\n9 models in 6 mo\n\nMJJASO### Google\n\n60 models\u2022Updated 2w ago\n\nRecent Models\n\n1Gemini Nano Banana 2.1\n\n2Gemini 4 Argon\n\n3Gemini 3.8 Flash\n\n10 mo\u2026",
+      "score": 0.8536326,
+      "type": "web_search"
+    },
+    {
+      "title": "OpenAI GPT Model Release Timeline - Model Lineage, ChatGPT and Codex Milestones, and Platform Availability | hidekazu-konishi.com",
+      "url": "https://hidekazu-konishi.com/entry/openai_gpt_model_release_timeline.html",
+      "content": "OpenAI was founded as a non-profit artificial-intelligence research laboratory on December 11, 2015, with the stated mission of ensuring that artificial general intelligence benefits all of humanity. \u2026",
+      "score": 0.8446273,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "AI Release Tracker \u2014 AI Model Release Timeline",
+    "OpenAI announces GPT-5.5, its latest artificial intelligence model",
+    "Updates on New AI Model Releases",
+    "AI Updates Today (October 2026) \u2013 Latest AI Model Releases",
+    "OpenAI GPT Model Release Timeline - Model Lineage, ChatGPT and Codex Milestones, and Platform Availability | hidekazu-konishi.com"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2614.0,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 821.7
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 202.2
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1582.5
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "Which AI model did OpenAI release most recently?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 201.6,
+      "outcome": "ok",
+      "ts": "2026-10-23T03:55:19.786Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 2874,
+    "output_tokens": 103,
+    "cost_usd": 0.0004929,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:55:21.372591+00:00"
+}

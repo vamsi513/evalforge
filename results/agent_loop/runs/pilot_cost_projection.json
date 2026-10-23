@@ -1,0 +1,22 @@
+{
+  "pilot_tasks": 10,
+  "pilot_cost_usd": 0.00231105,
+  "mean_cost_per_task_usd": 0.00023111,
+  "mean_cost_by_route_usd": {
+    "retrieval": 0.00023385,
+    "direct": 5.945e-05,
+    "web_search": 0.00048173
+  },
+  "usage_source": "tiktoken_estimate",
+  "usage_caveat": "AgentIQ builds ChatOpenAI with streaming=True, so the provider reports no usage on invoke. Token counts are tiktoken counts of prompt and completion text plus the documented chat envelope, which errs high.",
+  "agent_runs_remaining": 210,
+  "agent_cost_projection_usd": 0.048532,
+  "judge_model": "claude-haiku-4-5",
+  "judge_judgments_remaining": 210,
+  "judge_cost_per_judgment_usd": 0.00257492,
+  "judge_cost_projection_usd": 0.540734,
+  "judge_cost_caveat": "Unmeasured. Derived from pilot trace sizes and the published price table.",
+  "spent_to_date_usd": 0.00251565,
+  "projected_grand_total_usd": 0.591782,
+  "cap_usd": 1.5
+}

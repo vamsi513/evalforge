@@ -1,0 +1,85 @@
+{
+  "task_id": "dec-016",
+  "category": "unanswerable_decline",
+  "question": "What does the RLHF document say about Direct Preference Optimization?",
+  "variant": "baseline",
+  "session_id": "agentloop-dec-016-e5288d67",
+  "route_decision": "retrieval",
+  "answer": "The **RLHF** document does not mention **Direct Preference Optimization (DPO)**. Therefore, I cannot provide any information regarding DPO from the available documents. The context primarily discusses the stages of RLHF, its application in models like InstructGPT, and the challenges associated with it.",
+  "context": "[Source 1] Reinforcement Learning from Human Feedback (RLHF)\nReinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised fine-tuning (SFT) on high-quality human-written demonstrations of desired behavior; (2) reward model training, where human raters rank model outputs and a separate neural network learns to predict those rankings; (3) PPO (Proximal Policy Optimization) fine-tuning of the SFT model against the reward model's scores. InstructGPT (Ouyang et al., 2022), the precursor to ChatGPT, demonstrated that a 1.3B RLHF-tuned model was preferred by human raters over a 175B model trained only with next-token prediction. RLHF is now standard practice for all major commercial LLMs including GPT-4, Claude, and Gemini, though it requires expensive human annotation and can introduce reward hacking if the reward model is misspecified.\n\n---\n\n[Source 2] AI Safety: Alignment, Red-Teaming, and Robustness in Large Language Models\nAI safety for large language models encompasses alignment (ensuring models pursue intended objectives), robustness (maintaining correct behavior under distribution shift and adversarial inputs), and red-teaming (systematically probing for failure modes). Perez et al. (2022) introduce LLM-based automated red-teaming, using a separate \"attacker\" LLM to generate adversarial prompts that elicit harmful outputs from a target model, scaling red-teaming beyond what human teams can achieve. The attacker model is fine-tuned using reinforcement learning to maximize harmfulness scores, generating 4.78\u00d7 more unique successful attacks than human red teamers across offensive language (63.6% success rate), information disclosure (45.3%), and hate speech (38.2%) categories.\n\nDirect Preference Optimization (DPO, Rafailov et al., 2023, arXiv:2305.18290) provides a simpler alternative to RLHF by directly optimizing the language model policy using preference data, without training a separate reward model. DPO achieves comparable alignment to PPO-based RLHF on summarization and dialogue tasks while being 3\u00d7 more memory efficient. On MT-Bench, DPO-trained LLaMA 7B achieves 5.34 versus PPO's 5.51 while using significantly less compute. Jailbreaking\u2014techniques that bypass safety fine-tuning\u2014remains a persistent challenge. GCG (Greedy Coordinate Gradient, Zou et al., 2023) finds universal jailbreak suffixes achieving 79.6% harmful behavior rate on Llama-2-7B-Chat and transferring to GPT-4 (53.6% success rate). Many-shot jailbreaking (Anthropic, 2024) exploits long-context models by including hundreds of harmful Q&A examples in context before the harmful query.\n\nRobustness evaluation reveals surprising sensitivity to superficial prompt changes, with model behavior varying by up to 20% on TruthfulQA based on prompt phrasing. Calibration\u2014the alignment between expressed confidence and actual accuracy\u2014is measured by Expected Calibration Error (ECE): GPT-4 achieves ECE of 0.05 versus 0.19 for LLaMA 2 70B. Scalable oversight (Bowman et al., 202\n\n---\n\n[Source 3] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation\n serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. DeepSeek-V2 introduces Multi-head Latent Attention (MLA) and fine-grained expert routing with 160 experts and top-6 routing, achieving competitive performance with significantly reduced KV cache memory. MoE models represent the dominant scaling strategy for next-generation foundation models due to their favorable compute-to-capacity trade-offs.",
+  "sources": [
+    {
+      "title": "Reinforcement Learning from Human Feedback (RLHF)",
+      "url": "https://arxiv.org/abs/2203.02155",
+      "content": "Reinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised f\u2026",
+      "score": 0.32449787855148315,
+      "type": "retrieval"
+    },
+    {
+      "title": "AI Safety: Alignment, Red-Teaming, and Robustness in Large Language Models",
+      "url": "https://arxiv.org/abs/2209.07858",
+      "content": "AI safety for large language models encompasses alignment (ensuring models pursue intended objectives), robustness (maintaining correct behavior under distribution shift and adversarial inputs), and r\u2026",
+      "score": 0.29861509799957275,
+      "type": "retrieval"
+    },
+    {
+      "title": "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+      "url": "https://arxiv.org/abs/2401.04088",
+      "content": " serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total,\u2026",
+      "score": 0.2965036630630493,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Reinforcement Learning from Human Feedback (RLHF)",
+    "AI Safety: Alignment, Red-Teaming, and Robustness in Large Language Models",
+    "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation"
+  ],
+  "retrieval_score": 0.32449787855148315,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2280.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 626.1
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 49.1
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1598.9
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1242,
+    "output_tokens": 61,
+    "cost_usd": 0.0002229,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:50:33.587640+00:00"
+}

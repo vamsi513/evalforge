@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-007",
+  "category": "multi_step_retrieval",
+  "question": "In the InstructGPT result described in the documents, which model size was preferred by human raters over the 175B next-token-prediction model?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-007-7cb4554d",
+  "route_decision": "retrieval",
+  "answer": "In the InstructGPT result described in the documents, a **1.3B RLHF-tuned model** was preferred by human raters over the **175B model** trained only with next-token prediction. This information is provided in [Source 1].",
+  "context": "[Source 1] Reinforcement Learning from Human Feedback (RLHF)\nReinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised fine-tuning (SFT) on high-quality human-written demonstrations of desired behavior; (2) reward model training, where human raters rank model outputs and a separate neural network learns to predict those rankings; (3) PPO (Proximal Policy Optimization) fine-tuning of the SFT model against the reward model's scores. InstructGPT (Ouyang et al., 2022), the precursor to ChatGPT, demonstrated that a 1.3B RLHF-tuned model was preferred by human raters over a 175B model trained only with next-token prediction. RLHF is now standard practice for all major commercial LLMs including GPT-4, Claude, and Gemini, though it requires expensive human annotation and can introduce reward hacking if the reward model is misspecified.\n\n---\n\n[Source 2] BERT \u2014 Bidirectional Encoder Representations from Transformers\nBERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.\n\n---\n\n[Source 3] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks\nHolistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional evaluation framework for LLMs that goes beyond single-metric leaderboards. HELM evaluates 30 models across 42 scenarios (tasks), 7 metrics dimensions (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency), and multiple prompt formats to reduce sensitivity to prompt choice. The framework covers scenarios across knowledge (NaturalQuestions, TriviaQA), reasoning (BoolQ, HellaSwag), code (HumanEval), legal (LegalSupport), medical (MedQA), and social fairness (BBQ) domains.\n\nBIG-Bench (Beyond the Imitation Game, Srivastava et al., 2022) is a collaborative benchmark comprising 204 tasks contributed by 450 researchers from 132 institutions, designed to probe capabilities at and beyond the frontier of current models. BIG-Bench Hard (BBH) extracts 23 tasks where large models previously performed below human rater level. With Chain-of-Thought prompting, GPT-4 achieves an average of 89.2% on BBH tasks. MMLU (Massive Multitask Language Understanding, Hendrycks et al., 2021) provides 4-choice multiple-choice evaluation across 57 academic subjects ranging from elementary mathematics to professional law and medicine, totaling 15,908 questions. Performance milestones: GPT-3 (175B) achieves 43.9% (5-shot), GPT-4 achieves 86.4%, Claude 3 Opus achieves 88.7%, Gemini Ultra achieves 90.0%, and Llama 3 70B Instruct achieves 82.0%. Human expert performance is estimated at ~90% on professional-level subjects.\n\nEvaluation methodology is an active research area. Benchmark contamination\u2014models trained on data containing evaluation examples\u2014inflates scores and is difficult to detect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conv",
+  "sources": [
+    {
+      "title": "Reinforcement Learning from Human Feedback (RLHF)",
+      "url": "https://arxiv.org/abs/2203.02155",
+      "content": "Reinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised f\u2026",
+      "score": 0.4971570372581482,
+      "type": "retrieval"
+    },
+    {
+      "title": "BERT \u2014 Bidirectional Encoder Representations from Transformers",
+      "url": "https://arxiv.org/abs/1810.04805",
+      "content": "BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) ob\u2026",
+      "score": 0.4084499478340149,
+      "type": "retrieval"
+    },
+    {
+      "title": "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "content": "Holistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional eval\u2026",
+      "score": 0.39132362604141235,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Reinforcement Learning from Human Feedback (RLHF)",
+    "BERT \u2014 Bidirectional Encoder Representations from Transformers",
+    "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks"
+  ],
+  "retrieval_score": 0.4971570372581482,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1644.8,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 588.3
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 88.2
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 961.3
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1345,
+    "output_tokens": 55,
+    "cost_usd": 0.00023475,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:48:08.651114+00:00"
+}

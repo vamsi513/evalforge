@@ -1,0 +1,120 @@
+{
+  "task_id": "ts-021",
+  "category": "tool_selection",
+  "question": "Which team is leading the Premier League table at the moment?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-ts-021-5badd0c1",
+  "route_decision": "web_search",
+  "answer": "According to the context, **Manchester City** is leading the Premier League table as of **18 October 2026**, with **21 points** from **7 matches**, having won all seven games. **Arsenal** is in second place with **18 points**, followed by **Brighton** in third with **16 points**. The standings indicate a competitive race for the title and European qualification spots this season.",
+  "context": "[Source 1] Premier League Table as at 18 October 2026 | Latest EPL Standings\nURL: https://www.youtube.com/shorts/O0Qf2Q9WTmA\n# Premier League Table as at 18 October 2026 | Latest EPL Standings\n## Channel: WAPKING Sports Tv\n6.99K subscribers\n353 likes\n\n### Description\n197,483 views\nPosted: 2026-10-18\n\ud83d\udd25 Premier League Table as at 18 October 2026 | Latest EPL Standings\n\n\ud83c\udfc6 The Premier League Table as at 18 October 2026 is here! Who is leading the race for the Premier League title? Check out the latest English Premier League standings, points table, club rankings, wins, draws, losses, matches played and goals for!\n\n\ud83d\udd35 Manchester City sit at the top of the table with 21 points from 7 matches, winning all seven games! \ud83d\udd34 Arsenal are in second place with 18 points, while Brighton occupy third place with 16 points. Chelsea sit fourth with 13 points, followed by Liverpool in fifth with 12 points. [...] \u26bd The battle for the top four, European qualification and survival continues as clubs fight for every point. Which team will finish as Premier League champions this season?\n\n\ud83d\udcca PREMIER LEAGUE STANDINGS \u2014 18/10/2026 \ud83e\udd47 1. Manchester City \u2014 21 points\n\ud83e\udd48 2. Arsenal \u2014 18 points\n\ud83e\udd49 3. Brighton \u2014 16 points\n4\ufe0f\u20e3 Chelsea \u2014 13 points\n5\ufe0f\u20e3 Liverpool \u2014 12 points\n6\ufe0f\u20e3 Brentford \u2014 10 points\n7\ufe0f\u20e3 Leeds United \u2014 10 points\n8\ufe0f\u20e3 Everton \u2014 10 points\n\n\ud83d\udce2 Follow WAPKING SPORTS TV for the latest Premier League table updates, football news, match results, live football updates, match highlights, predictions, reactions, fixtures and standings from the biggest leagues in the world!\n\n\ud83d\udc4d Like the video, share it with fellow football fans, and subscribe for more football content.\n\n---\n\n[Source 2] Premier League Table | Sky Sports\nURL: https://www.skysports.com/premier-league-table\n| Position | Team Team | Pl Played | W Won | D Drawn | L Lost | F Goals For | A Goals Against | GD Goal Difference | Pts Points |\n ---  ---  ---  ---  --- |\n| 1 | Team Badge Manchester City | 6 | 6 | 0 | 0 | 16 | 5 | +11 | 18 |\n| 2 | Team Badge Arsenal | 6 | 5 | 0 | 1 | 10 | 5 | +5 | 15 |\n| 3 | Team Badge Brighton and Hove Albion | 6 | 4 | 1 | 1 | 18 | 5 | +13 | 13 |\n| 4 | Team Badge Brentford | 6 | 2 | 4 | 0 | 12 | 6 | +6 | 10 |\n| 5 | Team Badge Everton | 6 | 2 | 4 | 0 | 8 | 5 | +3 | 10 |\n| 6 | Team Badge Chelsea | 6 | 3 | 1 | 2 | 15 | 13 | +2 | 10 |\n| 7 | Team Badge Leeds United | 6 | 2 | 3 | 1 | 8 | 5 | +3 | 9 |\n| 8 | Team Badge Hull City | 6 | 2 | 3 | 1 | 8 | 6 | +2 | 9 |\n| 9 | Team Badge Liverpool | 6 | 2 | 3 | 1 | 7 | 7 | 0 | 9 | [...] | 10 | Team Badge Ipswich Town | 6 | 3 | 0 | 3 | 9 | 12 | -3 | 9 |\n| 11 | Team Badge Newcastle United | 6 | 2 | 2 | 2 | 10 | 13 | -3 | 8 |\n| 12 | Team Badge Crystal Palace | 6 | 2 | 1 | 3 | 9 | 12 | -3 | 7 |\n| 13 | Team Badge Manchester United | 6 | 1 | 3 | 2 | 9 | 9 | 0 | 6 |\n| 14 | Team Badge Coventry City | 6 | 2 | 0 | 4 | 5 | 11 | -6 | 6 |\n| 15 | Team Badge Nottingham Forest | 6 | 1 | 2 | 3 | 5 | 8 | -3 | 5 |\n| 16 | Team Badge Aston Villa | 6 | 1 | 2 | 3 | 6 | 11 | -5 | 5 |\n| 17 | Team Badge Sunderland | 6 | 1 | 1 | 4 | 6 | 12 | -6 | 4 |\n| 18 | Team Badge Bournemouth | 6 | 0 | 3 | 3 | 7 | 13 | -6 | 3 |\n| 19 | Team Badge Tottenham Hotspur | 6 | 0 | 3 | 3 | 3 | 9 | -6 | 3 |\n| 20 | Team Badge Fulham | 6 | 0 | 2 | 4 | 6 | 10 | -4 | 2 | [...] #### Eredivisie\n\nADO Den Haag\nAZ Alkmaar\nAjax\nExcelsior\nFC Twente\nFC Utrecht\nFeyenoord\nFortuna Sittard\nGo Ahead Eagles\nGroningen\nHeerenveen\nNEC Nijmegen\nPEC Zwolle\nPSV Eindhoven\nSC Cambuur\nSparta Rotterdam\nTelstar\nWillem II\n\n#### Internationals\n\n---\n\n[Source 3] 172 reactions | \ud83c\udfc6 PREMIER LEAGUE TABLE | 5 OCTOBER 2026 \u26bd\nThe latest Premier League standings are here! \ud83d\udcca\ud83d\udd25\nManchester City currently sit at the top of the table, with Arsenal and Brighton & Hove Albion following closely behind. The battle for European places is already getting interesting, while the fight at the bottom is heating up. \ud83d\udd25\nEvery point matters. Every match can change the table. The season is only getting started, but the competition is already intense! \ud83d\udc40\u26bd\n\ud83d\udcc5 Updated: 5 October 2026\n\ud83c\udfdf\ufe0f Competition: Premier League\n\ud83d\udcca Latest standings shown in the graphic\nWho do you think will finish TOP of the Premier League this season? \ud83d\udc51\nFollow AI LIVE for more football news, tables, fixtures, results and updates. \u26bd\ud83d\udcf2\n#PremierLeague #EPL #PremierLeagueTable #Football #FootballNews ManchesterCity Arsenal Liverpool ManchesterUnited Chelsea AI_LIVE FootballUpdates EPL2026 Soccer | Zeccoo Zeecoo\nURL: https://www.facebook.com/61591477487783/posts/-premier-league-table-5-october-2026-the-latest-premier-league-standings-are-her/122131524663382582\n\ud83c\uddeb\ud83c\uddf7\ud83c\udfc6 LIGUE 1 2026/27 \u2014 FULL LEAGUE TABLE UPDATE! \u26bd\ud83d\udd25 The battle for French football supremacy is heating up! \ud83d\udca5 Check out the Ligue 1 standings and see which clubs are leading the race for glory this season. \ud83c\uddeb\ud83c\uddf7 \ud83d\udcca WHAT DOES YOUR TEAM'S POSITION LOOK LIKE? \ud83d\udd1d AS Monaco \ud83e\udd48 Lille \ud83e\udd49 Stade Rennais \ud83d\udc99 Lyon \ud83d\udd25 Paris FC \ud83d\udc51 Paris Saint-Germain \u26bd Every point matters as the teams compete for victories, European qualification and a strong finish to the season! \ud83d\udcac LET'S TALK FOOTBALL! \ud83d\udc47 Which team do you think will win the Ligue 1 title this season? \u2764\ufe0f PSG \ud83d\udd34 Monaco \ud83d\udd35 Marseille \u26aa Lyon Or will another team surprise everyone? \ud83c\udfc6 \ud83d\udccc SAVE \u2022 SHARE \u2022 FOLLOW for more football tables, match fixtures, results and updates! \u26a0\ufe0f Note: Standings can change after every match. Check the latest official table for confirmed [...] \u26bd\ud83d\udd25 LALIGA UPCOMING MATCHES | 15\u201320 OCTOBER 2026 \ud83c\uddea\ud83c\uddf8\ud83c\udfc6 Get ready for another exciting week of Spanish football! \ud83d\udd25 The biggest clubs are ready to battle for crucial points as the race for LaLiga glory continues! \ud83d\udca5\u26bd \ud83d\udcc5 UPCOMING FIXTURES \ud83d\udd34 FRIDAY, 16 OCTOBER \u2694\ufe0f Deportivo La Coru\u00f1a \ud83c\udd9a Levante \ud83d\udd25 SATURDAY, 17 OCTOBER \u2694\ufe0f Espanyol \ud83c\udd9a Atl\u00e9tico Madrid \u2694\ufe0f Villarreal \ud83c\udd9a Elche \u2694\ufe0f Real Betis \ud83c\udd9a Barcelona \u2694\ufe0f Valencia \ud83c\udd9a Athletic Club \ud83d\udca5 SUNDAY, 18 OCTOBER \u2694\ufe0f Osasuna \ud83c\udd9a Racing Santander \u2694\ufe0f Celta Vigo \ud83c\udd9a Deportivo Alav\u00e9s \u2694\ufe0f M\u00e1laga \ud83c\udd9a Real Sociedad \u2694\ufe0f Real Madrid \ud83c\udd9a Sevilla \u26a1 MONDAY, 19 OCTOBER \u2694\ufe0f Getafe \ud83c\udd9a Rayo Vallecano \ud83d\udc51 WHICH TEAM WILL DOMINATE THIS WEEK? Will Real Madrid claim another victory? Can Barcelona make a statement? Or will Atl\u00e9tico Madrid surprise everyone? \ud83d\udd25\ud83c\udfc6 \ud83d\udc47 COMMENT YOUR PREDICTIONS! \u2764\ufe0f LIKE | \ud83d\udd04 SHARE [...] Log In\n\nLog In\n\nForgot Account?\n\n# Video\n\nHome\n\nLive\n\nReels\n\nExplore\n\nMore\n\nHome\n\nLive\n\nReels\n\nExplore\n\nImage 1\n\nVideo 1\n\n---\n\n[Source 4] Premier League Table & Standings - Football Rankings | TNT Sports\nURL: https://www.tntsports.co.uk/football/premier-league/standings.shtml\n| Teams | Latest results | P | W | D | L | GF | GA | +/- | Pts |\n ---  ---  ---  ---  --- |\n| 1 | Manchester CityMCI | 6 | 6 | 0 | 0 | 16 | 5 | 11 | 18 |\n| 2 | ArsenalARS | 6 | 5 | 0 | 1 | 10 | 5 | 5 | 15 |\n| 3 | Brighton & Hove AlbionBHA | 6 | 4 | 1 | 1 | 18 | 5 | 13 | 13 |\n| 4 | BrentfordBRE | 6 | 2 | 4 | 0 | 12 | 6 | 6 | 10 |\n| 5 | EvertonEVE | 6 | 2 | 4 | 0 | 8 | 5 | 3 | 10 |\n| 6 | ChelseaCHE | 6 | 3 | 1 | 2 | 15 | 13 | 2 | 10 |\n| 7 | Leeds UnitedLEE | 6 | 2 | 3 | 1 | 8 | 5 | 3 | 9 |\n| 8 | Hull CityHUL | 6 | 2 | 3 | 1 | 8 | 6 | 2 | 9 |\n| 9 | LiverpoolLIV | 6 | 2 | 3 | 1 | 7 | 7 | 0 | 9 |\n| 10 | Ipswich TownIPS | 6 | 3 | 0 | 3 | 9 | 12 | -3 | 9 |\n| 11 | Newcastle UnitedNEW | 6 | 2 | 2 | 2 | 10 | 13 | -3 | 8 |\n| 12 | Crystal PalaceCRY | 6 | 2 | 1 | 3 | 9 | 12 | -3 | 7 | [...] | 13 | Manchester UnitedMUN | 6 | 1 | 3 | 2 | 9 | 9 | 0 | 6 |\n| 14 | Coventry CityCOV | 6 | 2 | 0 | 4 | 5 | 11 | -6 | 6 |\n| 15 | Nottingham ForestNOT | 6 | 1 | 2 | 3 | 5 | 8 | -3 | 5 |\n| 16 | Aston VillaAVL | 6 | 1 | 2 | 3 | 6 | 11 | -5 | 5 |\n| 17 | SunderlandSUN | 6 | 1 | 1 | 4 | 6 | 12 | -6 | 4 |\n| 18 | BournemouthBOU | 6 | 0 | 3 | 3 | 7 | 13 | -6 | 3 |\n| 19 | Tottenham HotspurTOT | 6 | 0 | 3 | 3 | 3 | 9 | -6 | 3 |\n|  | FulhamFUL | 6 | 0 | 2 | 4 | 6 | 10 |  | 2 |\n\n---\n\n[Source 5] Premier League standings 11 October 2026\nURL: https://www.facebook.com/truedreamstv/posts/premier-league-standings-as-it-stands-today-sunday-october-11th-the-league-table/1899189318229229\nArsenal remain at the top of the Premier League table with 36 points, closely followed by Manchester City (34) and Aston Villa (33) after 16",
+  "sources": [
+    {
+      "title": "Premier League Table as at 18 October 2026 | Latest EPL Standings",
+      "url": "https://www.youtube.com/shorts/O0Qf2Q9WTmA",
+      "content": "# Premier League Table as at 18 October 2026 | Latest EPL Standings\n## Channel: WAPKING Sports Tv\n6.99K subscribers\n353 likes\n\n### Description\n197,483 views\nPosted: 2026-10-18\n\ud83d\udd25 Premier League Table a\u2026",
+      "score": 0.9242583,
+      "type": "web_search"
+    },
+    {
+      "title": "Premier League Table | Sky Sports",
+      "url": "https://www.skysports.com/premier-league-table",
+      "content": "| Position | Team Team | Pl Played | W Won | D Drawn | L Lost | F Goals For | A Goals Against | GD Goal Difference | Pts Points |\n ---  ---  ---  ---  --- |\n| 1 | Team Badge Manchester City | 6 | 6 | \u2026",
+      "score": 0.91175514,
+      "type": "web_search"
+    },
+    {
+      "title": "172 reactions | \ud83c\udfc6 PREMIER LEAGUE TABLE | 5 OCTOBER 2026 \u26bd\nThe latest Premier League standings are here! \ud83d\udcca\ud83d\udd25\nManchester City currently sit at the top of the table, with Arsenal and Brighton & Hove Albion following closely behind. The battle for European places is already getting interesting, while the fight at the bottom is heating up. \ud83d\udd25\nEvery point matters. Every match can change the table. The season is only getting started, but the competition is already intense! \ud83d\udc40\u26bd\n\ud83d\udcc5 Updated: 5 October 2026\n\ud83c\udfdf\ufe0f Competition: Premier League\n\ud83d\udcca Latest standings shown in the graphic\nWho do you think will finish TOP of the Premier League this season? \ud83d\udc51\nFollow AI LIVE for more football news, tables, fixtures, results and updates. \u26bd\ud83d\udcf2\n#PremierLeague #EPL #PremierLeagueTable #Football #FootballNews ManchesterCity Arsenal Liverpool ManchesterUnited Chelsea AI_LIVE FootballUpdates EPL2026 Soccer | Zeccoo Zeecoo",
+      "url": "https://www.facebook.com/61591477487783/posts/-premier-league-table-5-october-2026-the-latest-premier-league-standings-are-her/122131524663382582",
+      "content": "\ud83c\uddeb\ud83c\uddf7\ud83c\udfc6 LIGUE 1 2026/27 \u2014 FULL LEAGUE TABLE UPDATE! \u26bd\ud83d\udd25 The battle for French football supremacy is heating up! \ud83d\udca5 Check out the Ligue 1 standings and see which clubs are leading the race for glory this sea\u2026",
+      "score": 0.9071234,
+      "type": "web_search"
+    },
+    {
+      "title": "Premier League Table & Standings - Football Rankings | TNT Sports",
+      "url": "https://www.tntsports.co.uk/football/premier-league/standings.shtml",
+      "content": "| Teams | Latest results | P | W | D | L | GF | GA | +/- | Pts |\n ---  ---  ---  ---  --- |\n| 1 | Manchester CityMCI | 6 | 6 | 0 | 0 | 16 | 5 | 11 | 18 |\n| 2 | ArsenalARS | 6 | 5 | 0 | 1 | 10 | 5 | 5 \u2026",
+      "score": 0.8830044,
+      "type": "web_search"
+    },
+    {
+      "title": "Premier League standings 11 October 2026",
+      "url": "https://www.facebook.com/truedreamstv/posts/premier-league-standings-as-it-stands-today-sunday-october-11th-the-league-table/1899189318229229",
+      "content": "Arsenal remain at the top of the Premier League table with 36 points, closely followed by Manchester City (34) and Aston Villa (33) after 16\u2026",
+      "score": 0.86331123,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "Premier League Table as at 18 October 2026 | Latest EPL Standings",
+    "Premier League Table | Sky Sports",
+    "172 reactions | \ud83c\udfc6 PREMIER LEAGUE TABLE | 5 OCTOBER 2026 \u26bd\nThe latest Premier League standings are here! \ud83d\udcca\ud83d\udd25\nManchester City currently sit at the top of the table, with Arsenal and Brighton & Hove Albion following closely behind. The battle for European places is already getting interesting, while the fight at the bottom is heating up. \ud83d\udd25\nEvery point matters. Every match can change the table. The season is only getting started, but the competition is already intense! \ud83d\udc40\u26bd\n\ud83d\udcc5 Updated: 5 October 2026\n\ud83c\udfdf\ufe0f Competition: Premier League\n\ud83d\udcca Latest standings shown in the graphic\nWho do you think will finish TOP of the Premier League this season? \ud83d\udc51\nFollow AI LIVE for more football news, tables, fixtures, results and updates. \u26bd\ud83d\udcf2\n#PremierLeague #EPL #PremierLeagueTable #Football #FootballNews ManchesterCity Arsenal Liverpool ManchesterUnited Chelsea AI_LIVE FootballUpdates EPL2026 Soccer | Zeccoo Zeecoo",
+    "Premier League Table & Standings - Football Rankings | TNT Sports",
+    "Premier League standings 11 October 2026"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1990.1,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 662.5
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 202.6
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1117.8
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "Which team is leading the Premier League table at the moment?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 202.0,
+      "outcome": "ok",
+      "ts": "2026-10-23T03:55:17.636Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 3233,
+    "output_tokens": 85,
+    "cost_usd": 0.00053595,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:55:18.757419+00:00"
+}

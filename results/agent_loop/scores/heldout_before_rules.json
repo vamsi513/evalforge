@@ -1,0 +1,2197 @@
+{
+  "label": "heldout_before",
+  "scored_at": "2026-10-23T03:56:15.123823+00:00",
+  "summary": {
+    "n": 60,
+    "passed": 55,
+    "accuracy": 0.9167,
+    "by_category": {
+      "direct_no_tools": {
+        "n": 14,
+        "passed": 14,
+        "accuracy": 1.0
+      },
+      "multi_step_retrieval": {
+        "n": 16,
+        "passed": 12,
+        "accuracy": 0.75
+      },
+      "tool_selection": {
+        "n": 16,
+        "passed": 16,
+        "accuracy": 1.0
+      },
+      "unanswerable_decline": {
+        "n": 14,
+        "passed": 13,
+        "accuracy": 0.9286
+      }
+    },
+    "failure_tag_counts": {
+      "answer": 4,
+      "decline": 1
+    },
+    "per_check": {
+      "answer": {
+        "applicable": 28,
+        "passed": 24,
+        "pass_rate": 0.8571
+      },
+      "decline": {
+        "applicable": 14,
+        "passed": 13,
+        "pass_rate": 0.9286
+      },
+      "error": {
+        "applicable": 60,
+        "passed": 60,
+        "pass_rate": 1.0
+      },
+      "latency": {
+        "applicable": 60,
+        "passed": 60,
+        "pass_rate": 1.0
+      },
+      "route": {
+        "applicable": 46,
+        "passed": 46,
+        "pass_rate": 1.0
+      }
+    }
+  },
+  "results": [
+    {
+      "task_id": "dec-002",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "does not contain",
+            "does not specify"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 7106.5,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-004",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2429.5,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-008",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot provide",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 4134.1,
+          "budget_ms": 25000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-011",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2670.2,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-013",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "does not mention"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1938.1,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-015",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "no mention",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1943.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-016",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot provide",
+            "does not mention"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2280.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-018",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "does not mention",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1926.1,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-020",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "does not provide",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2622.7,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-023",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "does not specify",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2005.3,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-025",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "does not specify",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2225.9,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-026",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot provide",
+            "does not include",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1822.7,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-031",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": true,
+          "matched_phrases": [
+            "cannot answer",
+            "the context does not"
+          ]
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2424.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dec-035",
+      "category": "unanswerable_decline",
+      "checks": {
+        "route": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": true,
+          "passed": false,
+          "matched_phrases": []
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1538.5,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [
+        "decline"
+      ],
+      "rule_pass": false
+    },
+    {
+      "task_id": "dnt-002",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1450.3,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-005",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1550.6,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-009",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1294.0,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-010",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1259.8,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-011",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1391.2,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-012",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1473.5,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-014",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1581.0,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-015",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1767.9,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-017",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1276.8,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-018",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1684.4,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-020",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1594.7,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-025",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1862.2,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-031",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1530.9,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "dnt-032",
+      "category": "direct_no_tools",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1447.9,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-001",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1552.8,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-002",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1597.3,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-004",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1624.2,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-005",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": false,
+          "missing_groups": [
+            [
+              "75.1"
+            ]
+          ]
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1931.2,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [
+        "answer"
+      ],
+      "rule_pass": false
+    },
+    {
+      "task_id": "msr-008",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1602.9,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-009",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2162.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-016",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1742.3,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-018",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1457.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-021",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2074.8,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-023",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1878.6,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-024",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1712.8,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-026",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": false,
+          "missing_groups": [
+            [
+              "56.9"
+            ]
+          ]
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2679.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [
+        "answer"
+      ],
+      "rule_pass": false
+    },
+    {
+      "task_id": "msr-029",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": false,
+          "missing_groups": [
+            [
+              "57"
+            ],
+            [
+              "15,908",
+              "15908"
+            ]
+          ]
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1897.7,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [
+        "answer"
+      ],
+      "rule_pass": false
+    },
+    {
+      "task_id": "msr-034",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2102.6,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-037",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": true,
+          "missing_groups": []
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1991.8,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "msr-038",
+      "category": "multi_step_retrieval",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": true,
+          "passed": false,
+          "missing_groups": [
+            [
+              "79.6"
+            ],
+            [
+              "53.6"
+            ]
+          ]
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1968.6,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [
+        "answer"
+      ],
+      "rule_pass": false
+    },
+    {
+      "task_id": "ts-003",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2884.2,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-005",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 3000.2,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-006",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2903.7,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-009",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2546.1,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-010",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 4260.5,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-011",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 2097.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-012",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "retrieval",
+          "actual": "retrieval"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 3402.4,
+          "budget_ms": 15000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-017",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "web_search",
+          "actual": "web_search"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 6262.6,
+          "budget_ms": 25000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-020",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "web_search",
+          "actual": "web_search"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 7322.2,
+          "budget_ms": 25000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-021",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "web_search",
+          "actual": "web_search"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 5151.1,
+          "budget_ms": 25000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-023",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "web_search",
+          "actual": "web_search"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 4517.3,
+          "budget_ms": 25000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-028",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1307.7,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-034",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1406.0,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-035",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1402.0,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-036",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1460.8,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    },
+    {
+      "task_id": "ts-037",
+      "category": "tool_selection",
+      "checks": {
+        "route": {
+          "applicable": true,
+          "passed": true,
+          "expected": "direct",
+          "actual": "direct"
+        },
+        "answer": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "decline": {
+          "applicable": false,
+          "reason": "not_applicable"
+        },
+        "latency": {
+          "applicable": true,
+          "passed": true,
+          "latency_ms": 1603.7,
+          "budget_ms": 10000
+        },
+        "error": {
+          "applicable": true,
+          "passed": true,
+          "state_error": null,
+          "invoke_exception": null
+        }
+      },
+      "failure_tags": [],
+      "rule_pass": true
+    }
+  ]
+}

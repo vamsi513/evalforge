@@ -1,0 +1,85 @@
+{
+  "task_id": "dec-020",
+  "category": "unanswerable_decline",
+  "question": "How many transformer layers does Mixtral 8x7B have?",
+  "variant": "baseline",
+  "session_id": "agentloop-dec-020-eb4f95bd",
+  "route_decision": "retrieval",
+  "answer": "The context does not specify the number of transformer layers in the Mixtral 8x7B model. It provides information about the Mixture of Experts (MoE) architecture and its performance but does not detail the specific architecture, including the number of layers. \n\nThe context does mention that the original Transformer architecture uses **6 encoder layers and 6 decoder layers** according to [Source 1], but it does not provide similar information for Mixtral 8x7B. Therefore, I cannot answer the rest of your question regarding the number of transformer layers in Mixtral 8x7B from the available documents.",
+  "context": "[Source 1] Introduction to Transformer Architecture\nThe Transformer architecture, introduced in \"Attention Is All You Need\" (Vaswani et al., 2017), revolutionized natural language processing by replacing recurrent networks entirely with self-attention mechanisms. Unlike RNNs and LSTMs that process tokens sequentially, Transformers process all tokens in parallel, enabling vastly better GPU utilization. The core building block is the multi-head self-attention layer, which computes three projections \u2014 Query, Key, and Value \u2014 for each token and uses scaled dot-product attention to produce context-aware representations. Positional encodings are added to the input embeddings to inject sequential order information that the attention mechanism itself cannot capture. The original architecture uses 6 encoder layers and 6 decoder layers, each with 512-dimensional embeddings and 8 attention heads, totaling 65 million parameters. This design became the blueprint for virtually every major language model developed since 2017.\n\n---\n\n[Source 2] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation\nMixture of Experts (MoE) is an architectural approach that scales model capacity without proportionally scaling computation. In a standard dense transformer, every token activates all model parameters. In an MoE model, each transformer layer contains multiple parallel feed-forward networks (experts), and a learned routing mechanism selects a small subset of experts (typically top-2) for each token. This sparse activation pattern allows models to have far more total parameters than a dense model of equivalent computational cost. The landmark paper \"Mixtral of Experts\" (Jiang et al., Mistral AI, 2024, arXiv:2401.04088) demonstrated that a 46.7B total-parameter MoE model using only 12.9B active parameters per token matches or outperforms LLaMA 2 70B on most benchmarks while requiring less than half the compute during inference.\n\nThe routing mechanism is central to MoE performance. A gating network assigns each token to the top-K experts based on learned affinity scores. Load balancing is a critical challenge: without explicit regularization, the router collapses to using only a few experts, wasting capacity. This is addressed through auxiliary balancing losses that encourage uniform expert utilization across a batch. Expert capacity buffers handle overflow when too many tokens are routed to the same expert. Switch Transformer (Fedus et al., Google Brain, 2022) demonstrated that even top-1 routing is sufficient for strong performance, achieving a 4-7x speedup over T5-XXL with equivalent quality. Mixtral 8x7B uses 8 experts with top-2 routing, meaning each forward pass activates 2 of 8 FFN experts per layer.\n\nMixtral 8x7B achieves 75.1% on MMLU (5-shot), 74.2% on HellaSwag, and 56.0% on HumanEval, outperforming LLaMA 2 70B (69.8%) while being significantly cheaper to serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. De\n\n---\n\n[Source 3] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.",
+  "sources": [
+    {
+      "title": "Introduction to Transformer Architecture",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "content": "The Transformer architecture, introduced in \"Attention Is All You Need\" (Vaswani et al., 2017), revolutionized natural language processing by replacing recurrent networks entirely with self-attention \u2026",
+      "score": 0.35002610087394714,
+      "type": "retrieval"
+    },
+    {
+      "title": "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+      "url": "https://arxiv.org/abs/2401.04088",
+      "content": "Mixture of Experts (MoE) is an architectural approach that scales model capacity without proportionally scaling computation. In a standard dense transformer, every token activates all model parameters\u2026",
+      "score": 0.330646812915802,
+      "type": "retrieval"
+    },
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.23803195357322693,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Introduction to Transformer Architecture",
+    "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques"
+  ],
+  "retrieval_score": 0.35002610087394714,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2622.7,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 687.6
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 50.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1877.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1299,
+    "output_tokens": 127,
+    "cost_usd": 0.00027105,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:50:38.138552+00:00"
+}
