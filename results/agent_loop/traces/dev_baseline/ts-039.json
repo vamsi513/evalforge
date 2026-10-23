@@ -1,0 +1,55 @@
+{
+  "task_id": "ts-039",
+  "category": "tool_selection",
+  "question": "Is 97 a prime number?",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-039-98b6a13f",
+  "route_decision": "direct",
+  "answer": "Yes, 97 is a prime number! It has no divisors other than 1 and itself.",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1480.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 750.7
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 723.3
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 253,
+    "output_tokens": 22,
+    "cost_usd": 5.115e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:50:15.844469+00:00"
+}

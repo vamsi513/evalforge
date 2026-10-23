@@ -1,0 +1,116 @@
+{
+  "task_id": "dec-028",
+  "category": "unanswerable_decline",
+  "question": "What is the per-token inference cost of running Mixtral on AWS?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-dec-028-3d5ca609",
+  "route_decision": "web_search",
+  "answer": "The per-token inference cost of running **Mixtral 8x7B** on **Amazon AWS** is as follows:\n\n- **Input Cost**: $0.450 per 1 million tokens\n- **Output Cost**: $0.700 per 1 million tokens\n\nThese prices indicate that Amazon AWS currently offers the lowest input price among the providers tracked for Mixtral 8x7B, while the output price is higher compared to another provider, Together AI, which has an output price of $0.600 per million tokens. This information is sourced from multiple documents, including [Source 1] and [Source 3].",
+  "context": "[Source 1] Mixtral 8x7B API Pricing on Amazon AWS: $0.450/1M\nURL: https://computeprices.com/providers/aws/models/mixtral-8x7b\nCreator\n:   Mistral\n\nContext\n:   32K\n\nModalities\n:   text\n\nKnowledge cutoff\n:   Sep 2023\n\nTool calling\n:   Yes\n\nOpen weights\n:   Yes\n\nFull Mixtral 8x7B details and every provider \u2192Compare API pricing for every Mistral model \u2192\n\n## Mixtral 8x7Bon other providers\n\n Together AI$0.600/1M\n\n## About Amazon AWS\n\nAWS provides a comprehensive suite of cloud computing services, including compute, storage, and GPU solutions for diverse workloads.\n\nAll Amazon AWS modelsVisit Amazon AWS\n\n## Frequently Asked Questions\n\nHow much does Mixtral 8x7B cost on Amazon AWS?\n\nAmazon AWS serves Mixtral 8x7B from $0.450 per 1M input tokens, across 1 tracked pricing mode. Prices are collected daily \u2014 see the table above for current input, output, and cached-input rates. [...] Is Amazon AWS the cheapest way to run Mixtral 8x7B?\n\nOf the 2 providers we track serving Mixtral 8x7B, Amazon AWS currently has the lowest input price. The lowest output price is $0.600/1M on Together AI. Rates change often, and throughput, latency and context limits differ between providers \u2014 check the comparison above before committing.\n\nDoes Amazon AWS offer batch or cached pricing for Mixtral 8x7B?\n\nWe track 1 Mixtral 8x7B offering from Amazon AWS. Batch and cached-input rates appear in the table above when the provider publishes them; blank cells mean we have no current figure for that mode. [...] Amazon AWS logo\n\n# Mixtral 8x7B API pricing on Amazon AWS\n\nEvery Amazon AWSMixtral 8x7Brate we track, compared against2providersserving the same model.\n\nInput from /1M\n\n$0.450\n\nOutput /1M\n\n$0.700\n\nInput price rank\n\n#1 of 2\n\nLast updated\n\nOctober 22, 2026\n\nAmazon AWScurrently has the cheapest Mixtral 8x7Binput price among the 2providers we track.\n\nThe cheapest Mixtral 8x7Boutput price is $0.600/1M onTogether AI.\n\n## Amazon AWSMixtral 8x7Brates\n\nPrices per 1M tokens. Batch and cached-input rates are shown where the provider publishes them.\n\nAmazon AWS Mixtral 8x7B pricing by mode\n\n| Mode | Input | Output | Updated | Source |\n| Standard | $0.450/1M | $0.700/1M | October 22, 2026 | View |\n\n## About Mixtral 8x7B\n\nCreator\n:   Mistral\n\nContext\n:   32K\n\nModalities\n:   text\n\n---\n\n[Source 2] Mixtral 8x7B: API Provider Performance Benchmarking & Price Analysis | Artificial Analysis\nURL: https://artificialanalysis.ai/models/mixtral-8x7b-instruct/providers\nThe most affordable provider for Mixtral 8x7B Instruct by blended price is Amazon ($0.47 per 1M tokens). Blended price uses a 7:2:1 cache hit/input/output token ratio.\n\nThe provider with the lowest input token pricing for Mixtral 8x7B Instruct is Amazon ($0.45 per 1M input tokens).\n\nThe provider with the lowest output token pricing for Mixtral 8x7B Instruct is Amazon ($0.70 per 1M output tokens).\n\nAmazon leads across all key metrics for Mixtral 8x7B Instruct, offering the fastest speed, lowest latency, and most competitive pricing. [...] $0.47\n\nBlended price (per 1M tokens)\n\nTotal 1 provider\n\nMixtral 8x7B is available through Amazon.\n\n### Speed\n\nOutput tokens per second \u00b7 Higher is better\n\n### Latency\n\nSeconds to first answer token received \u00b7 Lower is better\n\n### Price\n\nUSD per 1M tokens (blended) \u00b7 Lower is better\n\n## Pricing\n\n### Pricing: Cache Hit, Input, and Output: Mixtral 8x7B Providers\n\nPrice (USD per M Tokens) \u00b7 Lower is better \u00b7 10,000 input tokens\n\nPrice per token for cached prompts (previously processed), typically offering a significant discount compared to regular input price, represented as USD per million tokens. The values shown here are the cache hit price; cache write and cache storage are billed separately and vary by provider \u2014 see \"Cache pricing by provider\" for detail. [...] Artificial Analysis\n\nThis model is deprecated. We only continue performance benchmarking for the default 10k input token workload. Results for other workloads are historical and no longer updated.\n\nMistral has launched a newer release, Mistral Small 3.2. We suggest considering it instead.\n\n\u2022\n\nOpen weightsmodel\n\n\u2022\n\nReleased December 2023\n\n# Mixtral 8x7B InstructAPI Provider Benchmarking & Analysis\n\nModel Comparison\n\nThis analysis is intended to support you in choosing the best API provider of Mixtral 8x7B Instruct for your use-case.\n\n#1\n25.5 t/s\n\nOutput speed\n\nTotal 1 provider\n\n### Lowest Latency\n\n#1\n\nAmazonAmazon\n\n1.11 s\n\nTime to first token\n\nTotal 1 provider\n\n### Lowest Price\n\n#1\n\nAmazonAmazon\n\n$0.47\n\nBlended price (per 1M tokens)\n\nTotal 1 provider\n\n---\n\n[Source 3] Mixtral 8x7B API Pricing: from $0.45/1M, 2+ Providers\nURL: https://computeprices.com/models/mixtral-8x7b\nLightweightOpen SourceMistral\n\n# Mixtral 8x7B\n\nMixtral 8x7B is Mistral's open-source mixture-of-experts model offering efficient performance through sparse activation with a 32K token context window.\n\nContext 32K\n\nTier Lightweight\n\nKnowledge Sep 2023\n\nTools Supported\n\nLicense Open Source\n\nInput from\n\n$0.450 / 1M tokens\n\nacross 2providers\n\nCompare PricesModel Page \u2192Paper\n\n## API Pricing\n\nCheapest on Amazon AWS \u2014 14% below avg\n\n| Provider | Input / 1M | Output / 1M | Updated | Source |\n ---  --- \n| Amazon AWS logo Amazon AWS | $0.450 | $0.700 | 10/18/2026 | Visit |\n| Together AI logo Together AI | $0.600 | $0.600 | 10/18/2026 | Visit |\n\nPrices updated daily. Last check: Oct 18, 2026\n\nCompare API pricing for every Mistral model \u2192\n\n## Mixtral 8x7B pricing by provider [...] ### Capabilities\n\nTool Calling\n:   Yes\n\nOpen Source\n:   Yes\n\nSubtypes\n:   Chat Completion\n\n## Strengths & Limitations\n\n### Strengths\n\n Open-source model with full weights and architecture available\n Mixture-of-experts architecture provides computational efficiency through sparse activation\n 32,000 token context window supports substantial document processing\n Tool calling support enables function execution and structured workflows\n Strong multilingual capabilities across multiple languages\n Efficient inference costs due to sparse parameter activation\n No proprietary API dependencies required for deployment\n\n### Limitations [...] ## Mixtral 8x7B pricing by provider\n\nInput, output, and batch rates, plus alternatives, for one provider at a time.\n\n Amazon AWS logoAmazon AWS2 providers comparedfrom $0.450/1M\n Together AI logoTogether AI2 providers comparedfrom $0.600/1M\n\n## Performance & Benchmarks\n\nSource: Artificial Analysis \u2192\n\nIntelligence\n\n5.1 / 100\n\n### Reasoning & Knowledge\n\n MMLU-Pro38.7%\n GPQA Diamond29.2%\n Humanity's Last Exam4.7%\n\n### Coding\n\n LiveCodeBench6.6%\n\n### Math\n\n AIME0.0%\n MATH-50029.9%\n\nBenchmarks measured Oct 2026. Scores are independent evaluations, not vendor-reported.\n\n## Model Details\n\n### General\n\nCreator\n:   Mistral\n\nFamily\n:   Mixtral\n\nTier\n:   Lightweight\n\nContext Window\n:   32K\n\nKnowledge Cutoff\n:   Sep 2023\n\nModalities\n:   Text\n\n### Capabilities\n\nTool Calling\n:   Yes\n\n---\n\n[Source 4] how much does it cost for you to use mistral at production level??\nURL: https://www.reddit.com/r/LocalLLaMA/comments/18v8ikz/how_much_does_it_cost_for_you_to_use_mistral_at\nthe API pricing is 0.14\u20ac / 1M tokens input, and 0.42\u20ac / 1M tokens output. so go use their API if your production has not scaled up to 1M tokens\n\n---\n\n[Source 5] AWS Bedrock Pricing: Every Model and Feature Cost \u2014 Wring\nURL: https://wring.co/blog/aws-bedrock-pricing-guide\n### Meta Llama Models\n\n| Model | Input/1K tokens | Output/1K tokens | Context Window |\n ---  --- |\n| Llama 3.1 405B | $0.00532 | $0.016 | 128K |\n| Llama 3.1 70B | $0.00099 | $0.00099 | 128K |\n| Llama 3.1 8B | $0.00022 | $0.00022 | 128K |\n\n### Mistral Models\n\n| Model | Input/1K tokens | Output/1K tokens | Context Window |\n ---  --- |\n| Mistral Large | $0.004 | $0.012 | 128K |\n| Mistral Small | $0.001 | $0.003 | 128K |\n| Mixtral 8x7B | $0.00045 | $0.0007 | 32K |\n\n### Amazon Titan Models\n\n| Model | Input/1K tokens | Output/1K tokens | Context Window |\n ---  --- |\n| Titan Text Premier | $0.0005 | $0.0015 | 32K |\n| Titan Text Express | $0.0002 | $0.0006 | 8K |\n| Titan Text Lite | $0.00015 | $0.0002 | 4K |\n\nBedrock Pricing Guide savings comparison\n\n## Image Model Pricing",
+  "sources": [
+    {
+      "title": "Mixtral 8x7B API Pricing on Amazon AWS: $0.450/1M",
+      "url": "https://computeprices.com/providers/aws/models/mixtral-8x7b",
+      "content": "Creator\n:   Mistral\n\nContext\n:   32K\n\nModalities\n:   text\n\nKnowledge cutoff\n:   Sep 2023\n\nTool calling\n:   Yes\n\nOpen weights\n:   Yes\n\nFull Mixtral 8x7B details and every provider \u2192Compare API pricing \u2026",
+      "score": 0.81025416,
+      "type": "web_search"
+    },
+    {
+      "title": "Mixtral 8x7B: API Provider Performance Benchmarking & Price Analysis | Artificial Analysis",
+      "url": "https://artificialanalysis.ai/models/mixtral-8x7b-instruct/providers",
+      "content": "The most affordable provider for Mixtral 8x7B Instruct by blended price is Amazon ($0.47 per 1M tokens). Blended price uses a 7:2:1 cache hit/input/output token ratio.\n\nThe provider with the lowest in\u2026",
+      "score": 0.7092009,
+      "type": "web_search"
+    },
+    {
+      "title": "Mixtral 8x7B API Pricing: from $0.45/1M, 2+ Providers",
+      "url": "https://computeprices.com/models/mixtral-8x7b",
+      "content": "LightweightOpen SourceMistral\n\n# Mixtral 8x7B\n\nMixtral 8x7B is Mistral's open-source mixture-of-experts model offering efficient performance through sparse activation with a 32K token context window.\n\u2026",
+      "score": 0.6708892,
+      "type": "web_search"
+    },
+    {
+      "title": "how much does it cost for you to use mistral at production level??",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/18v8ikz/how_much_does_it_cost_for_you_to_use_mistral_at",
+      "content": "the API pricing is 0.14\u20ac / 1M tokens input, and 0.42\u20ac / 1M tokens output. so go use their API if your production has not scaled up to 1M tokens\u2026",
+      "score": 0.6260562,
+      "type": "web_search"
+    },
+    {
+      "title": "AWS Bedrock Pricing: Every Model and Feature Cost \u2014 Wring",
+      "url": "https://wring.co/blog/aws-bedrock-pricing-guide",
+      "content": "### Meta Llama Models\n\n| Model | Input/1K tokens | Output/1K tokens | Context Window |\n ---  --- |\n| Llama 3.1 405B | $0.00532 | $0.016 | 128K |\n| Llama 3.1 70B | $0.00099 | $0.00099 | 128K |\n| Llama \u2026",
+      "score": 0.60274047,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "Mixtral 8x7B API Pricing on Amazon AWS: $0.450/1M",
+    "Mixtral 8x7B: API Provider Performance Benchmarking & Price Analysis | Artificial Analysis",
+    "Mixtral 8x7B API Pricing: from $0.45/1M, 2+ Providers",
+    "how much does it cost for you to use mistral at production level??",
+    "AWS Bedrock Pricing: Every Model and Feature Cost \u2014 Wring"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 11177.0,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 699.7
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 6815.6
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 3657.2
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "What is the per-token inference cost of running Mixtral on AWS?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 6808.5,
+      "outcome": "ok",
+      "ts": "2026-10-23T03:36:36.961Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 2637,
+    "output_tokens": 132,
+    "cost_usd": 0.00047475,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:36:40.621616+00:00"
+}

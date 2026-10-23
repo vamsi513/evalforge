@@ -1,0 +1,55 @@
+{
+  "task_id": "msr-039",
+  "category": "multi_step_retrieval",
+  "question": "What expected calibration error does GPT-4 achieve, and what does LLaMA 2 70B achieve?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-039-479bba41",
+  "route_decision": "direct",
+  "answer": "This is a mocked answer produced during load testing.",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 102.8,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 56.1
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 39.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": 0.0,
+    "usage_source": "provider_reported"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": true,
+    "mock_tavily": true
+  },
+  "label": "smoke",
+  "run_at": "2026-10-23T02:29:10.601350+00:00"
+}

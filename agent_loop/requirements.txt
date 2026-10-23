@@ -1,0 +1,25 @@
+# Dependencies for the agent failure loop.
+#
+# This folder runs on top of two things it does not install:
+#
+#   1. AgentIQ, imported read only through its public graph API. Install its own
+#      requirements.txt in the same environment, or point PYTHONPATH at the
+#      AgentIQ checkout. Nothing here writes to it.
+#   2. EvalForge itself, for app.engine.judge and app.models.eval_run. Already
+#      satisfied by an editable install of this repository.
+#
+# Import order matters when both are on the path: AgentIQ has an app.py at its
+# root which shadows EvalForge's app/ package. Run from the EvalForge repository
+# root with AgentIQ on PYTHONPATH, not the other way round.
+#
+# Everything the loop itself adds on top of those two is listed below.
+
+# Statistics for the agreement and held out comparison work. The bootstrap and
+# Cohen's kappa come from EvalForge's own scripts/analyze_judge_agreement.py;
+# scipy is here for the exact binomial McNemar test in phase 5, which has no
+# existing implementation in this repository.
+scipy>=1.14.0
+
+# Test runner. Also in EvalForge's own dev extra; pinned here so this folder
+# can be installed and tested on its own.
+pytest>=8.3.0

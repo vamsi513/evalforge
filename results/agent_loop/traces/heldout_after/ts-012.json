@@ -1,0 +1,89 @@
+{
+  "task_id": "ts-012",
+  "category": "tool_selection",
+  "question": "How does CLIP learn visual representations from natural language supervision?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-ts-012-487034aa",
+  "route_decision": "retrieval",
+  "answer": "CLIP learns visual representations from natural language supervision by utilizing a method that involves training on **400 million (image, text) pairs** collected from the internet. It employs a **contrastive objective** where the model jointly trains an **image encoder** and a **text encoder** to predict which images and captions are paired together. This is achieved through a **symmetric cross-entropy loss** that maximizes the cosine similarity between correct (image, text) pairs while minimizing similarity for incorrect pairs, operating in a shared embedding space.\n\nThe training process involves maximizing cosine similarity between N correct pairs in a batch of N\u00d7N possible pairs. CLIP explores two architectures for the image encoder: **modified ResNets** (up to ResNet-101) and **Vision Transformers** (ViT-B/32, ViT-B/16, ViT-L/14). The text encoder is a transformer with **63 million parameters**, consisting of 12 layers and 512 embedding dimensions. The model's design allows it to achieve **remarkable zero-shot transfer capabilities**, enabling it to perform well on various downstream tasks without needing specific training on those datasets.",
+  "context": "[Source 1] CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision\nCLIP (Contrastive Language-Image Pre-training), developed by Alec Radford, Jong Wook Kim, and colleagues at OpenAI in 2021, introduces a method for learning visual representations from natural language supervision at scale. Unlike previous vision models trained on fixed label sets with expensive curated datasets, CLIP is trained on 400 million (image, text) pairs collected from the internet using a contrastive objective. The model jointly trains an image encoder and a text encoder to predict which images and captions were paired together, using a symmetric cross-entropy loss over cosine similarity scores in a shared embedding space.\n\nThe training objective maximizes cosine similarity between N correct (image, text) pairs in a batch of N\u00d7N possible pairs while minimizing similarity for incorrect pairs. Two architectures are explored for the image encoder: modified ResNets (up to ResNet-101) and Vision Transformers (ViT-B/32, ViT-B/16, ViT-L/14). The text encoder is a 63M parameter transformer with 12 layers and 512 embedding dimensions. The largest model, ViT-L/14@336px, achieves the best zero-shot performance. Training uses a batch size of 32,768 and mixed precision. The contrastive temperature \u03c4 is a learnable scalar controlling the sharpness of the similarity distribution.\n\nCLIP achieves remarkable zero-shot transfer capabilities. On ImageNet, zero-shot CLIP with ViT-L/14 achieves 76.2% top-1 accuracy, matching supervised ResNet-50 performance without any ImageNet training examples. On 27 diverse downstream datasets (OCR, action recognition, geo-localization, fine-grained classification), zero-shot CLIP matches or exceeds fully supervised models on 16 of them. CLIP's impact on the broader vision-language ecosystem has been transformative: its embeddings serve as the vision backbone for DALL-E 2, Stable Diffusion (via CLIP text encoder), and numerous image retrieval systems. Extensions include ALIGN (Jia et al., Google, trained on 1.8B image-text pairs), SigLIP (Zhai et al., 2023, using sigmoid loss), and OpenCL\n\n---\n\n[Source 2] CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision\nas the vision backbone for DALL-E 2, Stable Diffusion (via CLIP text encoder), and numerous image retrieval systems. Extensions include ALIGN (Jia et al., Google, trained on 1.8B image-text pairs), SigLIP (Zhai et al., 2023, using sigmoid loss), and OpenCLIP (Schuhmann et al., LAION, trained on LAION-5B). The model established that language-supervised visual learning at scale is a viable alternative to supervised pretraining with fixed label taxonomies.\n\n---\n\n[Source 3] BERT \u2014 Bidirectional Encoder Representations from Transformers\nBERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.",
+  "sources": [
+    {
+      "title": "CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision",
+      "url": "https://arxiv.org/abs/2103.00020",
+      "content": "CLIP (Contrastive Language-Image Pre-training), developed by Alec Radford, Jong Wook Kim, and colleagues at OpenAI in 2021, introduces a method for learning visual representations from natural languag\u2026",
+      "score": 0.5973402261734009,
+      "type": "retrieval"
+    },
+    {
+      "title": "CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision",
+      "url": "https://arxiv.org/abs/2103.00020",
+      "content": "as the vision backbone for DALL-E 2, Stable Diffusion (via CLIP text encoder), and numerous image retrieval systems. Extensions include ALIGN (Jia et al., Google, trained on 1.8B image-text pairs), Si\u2026",
+      "score": 0.5207857489585876,
+      "type": "retrieval"
+    },
+    {
+      "title": "BERT \u2014 Bidirectional Encoder Representations from Transformers",
+      "url": "https://arxiv.org/abs/1810.04805",
+      "content": "BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) ob\u2026",
+      "score": 0.4325096309185028,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision",
+    "CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision",
+    "BERT \u2014 Bidirectional Encoder Representations from Transformers"
+  ],
+  "retrieval_score": 0.5973402261734009,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2935.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 636.2
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 41.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 2251.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1197,
+    "output_tokens": 234,
+    "cost_usd": 0.00031995,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:55:12.030093+00:00"
+}

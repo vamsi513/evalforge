@@ -1,0 +1,121 @@
+{
+  "before_label": "dev_baseline",
+  "after_label": "dev_fix",
+  "compared_at": "2026-10-23T03:40:34.058444+00:00",
+  "primary_measure": "layer 1 rules",
+  "rules": {
+    "n": 90,
+    "overall": {
+      "accuracy_before": 0.9222,
+      "accuracy_after": 0.9111,
+      "difference": -0.0111,
+      "ci_95_low": -0.0333,
+      "ci_95_high": 0.0,
+      "n": 90,
+      "n_resamples": 2000
+    },
+    "mcnemar": {
+      "n_pairs": 90,
+      "improved_fail_to_pass": 0,
+      "regressed_pass_to_fail": 1,
+      "discordant": 1,
+      "p_value": 1.0,
+      "test": "exact McNemar, two sided binomial on discordant pairs"
+    },
+    "by_category": {
+      "direct_no_tools": {
+        "n": 21,
+        "before_passed": 20,
+        "after_passed": 20,
+        "before_accuracy": 0.9524,
+        "after_accuracy": 0.9524,
+        "difference": 0.0
+      },
+      "multi_step_retrieval": {
+        "n": 24,
+        "before_passed": 18,
+        "after_passed": 18,
+        "before_accuracy": 0.75,
+        "after_accuracy": 0.75,
+        "difference": 0.0
+      },
+      "tool_selection": {
+        "n": 24,
+        "before_passed": 24,
+        "after_passed": 24,
+        "before_accuracy": 1.0,
+        "after_accuracy": 1.0,
+        "difference": 0.0
+      },
+      "unanswerable_decline": {
+        "n": 21,
+        "before_passed": 21,
+        "after_passed": 20,
+        "before_accuracy": 1.0,
+        "after_accuracy": 0.9524,
+        "difference": -0.0476
+      }
+    },
+    "categories_that_got_worse": [
+      {
+        "category": "unanswerable_decline",
+        "n": 21,
+        "before_passed": 21,
+        "after_passed": 20,
+        "before_accuracy": 1.0,
+        "after_accuracy": 0.9524,
+        "difference": -0.0476
+      }
+    ],
+    "tasks_changed": {
+      "fixed": [],
+      "broken": [
+        "dec-028"
+      ]
+    }
+  },
+  "run_settings": {
+    "before": {
+      "variant": "baseline",
+      "variant_env": null,
+      "settings": {
+        "openai_model": "gpt-4o-mini",
+        "embedding_model": "all-MiniLM-L6-v2",
+        "temperature": 0.2,
+        "max_tokens": 1024,
+        "top_k_retrieval": 5,
+        "max_web_results": 5,
+        "enable_query_rewriting": false,
+        "budgets_enabled": false,
+        "audit_log_enabled": true,
+        "mock_llm": false,
+        "mock_tavily": false
+      }
+    },
+    "after": {
+      "variant": "query_expansion",
+      "variant_env": {
+        "ENABLE_QUERY_REWRITING": "true"
+      },
+      "settings": {
+        "openai_model": "gpt-4o-mini",
+        "embedding_model": "all-MiniLM-L6-v2",
+        "temperature": 0.2,
+        "max_tokens": 1024,
+        "top_k_retrieval": 5,
+        "max_web_results": 5,
+        "enable_query_rewriting": true,
+        "budgets_enabled": false,
+        "audit_log_enabled": true,
+        "mock_llm": false,
+        "mock_tavily": false
+      }
+    }
+  },
+  "settings_differences": {
+    "enable_query_rewriting": {
+      "before": false,
+      "after": true
+    }
+  }
+}

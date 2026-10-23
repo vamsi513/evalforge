@@ -1,0 +1,417 @@
+{
+  "label": "dev_baseline",
+  "computed_at": "2026-10-23T03:29:21.562881+00:00",
+  "review_csv": "/Users/vamsi/portfolio-audit/evalforge/results/agent_loop/review/dev_baseline_review.csv",
+  "rows_in_sheet": 40,
+  "rows_labelled": 40,
+  "rows_unlabelled": 0,
+  "rows_ambiguous_excluded": 3,
+  "ambiguous_ids": [
+    "ts-018",
+    "ts-024",
+    "ts-025"
+  ],
+  "unrecognised_values": [],
+  "n_compared": 37,
+  "annotators": 1,
+  "annotator_caveat": "One annotator, who also wrote the tasks. These figures measure agreement with that person's judgment, not with ground truth, and carry no inter-annotator reliability estimate.",
+  "overall": {
+    "rule_vs_human": {
+      "pair": "rule vs human",
+      "n": 37,
+      "percent_agreement": 0.9459,
+      "cohens_kappa": {
+        "point_estimate": 0.7218,
+        "ci_95_low": 0.0,
+        "ci_95_high": 1.0,
+        "n": 37,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": true
+      },
+      "confusion": {
+        "both_pass": 32,
+        "both_fail": 3,
+        "rule_pass_human_fail": 2,
+        "rule_fail_human_pass": 0
+      }
+    },
+    "judge_vs_human": {
+      "pair": "judge vs human",
+      "n": 37,
+      "percent_agreement": 0.8378,
+      "cohens_kappa": {
+        "point_estimate": 0.5394,
+        "ci_95_low": 0.2128,
+        "ci_95_high": 0.8263,
+        "n": 37,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": false
+      },
+      "confusion": {
+        "both_pass": 26,
+        "both_fail": 5,
+        "judge_pass_human_fail": 0,
+        "judge_fail_human_pass": 6
+      }
+    },
+    "rule_vs_judge": {
+      "pair": "rule vs judge",
+      "n": 37,
+      "percent_agreement": 0.7838,
+      "cohens_kappa": {
+        "point_estimate": 0.3451,
+        "ci_95_low": 0.0,
+        "ci_95_high": 0.6542,
+        "n": 37,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": false
+      },
+      "confusion": {
+        "both_pass": 26,
+        "both_fail": 3,
+        "rule_pass_judge_fail": 8,
+        "rule_fail_judge_pass": 0
+      }
+    }
+  },
+  "flagged_rows": [
+    "dnt-004",
+    "dnt-026",
+    "msr-017",
+    "msr-022"
+  ],
+  "flagged_reason": "The annotator had already been shown this row's automated verdict in an earlier report, so the label is not independent of the automation.",
+  "excluding_flagged": {
+    "rule_vs_human": {
+      "pair": "rule vs human",
+      "n": 33,
+      "percent_agreement": 0.9394,
+      "cohens_kappa": {
+        "point_estimate": 0.0,
+        "ci_95_low": 0.0,
+        "ci_95_high": 1.0,
+        "n": 33,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": [
+          "a"
+        ],
+        "uninformative": true
+      },
+      "confusion": {
+        "both_pass": 31,
+        "both_fail": 0,
+        "rule_pass_human_fail": 2,
+        "rule_fail_human_pass": 0
+      }
+    },
+    "judge_vs_human": {
+      "pair": "judge vs human",
+      "n": 33,
+      "percent_agreement": 0.8182,
+      "cohens_kappa": {
+        "point_estimate": 0.3356,
+        "ci_95_low": 0.0,
+        "ci_95_high": 0.7179,
+        "n": 33,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": false
+      },
+      "confusion": {
+        "both_pass": 25,
+        "both_fail": 2,
+        "judge_pass_human_fail": 0,
+        "judge_fail_human_pass": 6
+      }
+    },
+    "rule_vs_judge": {
+      "pair": "rule vs judge",
+      "n": 33,
+      "percent_agreement": 0.7576,
+      "cohens_kappa": {
+        "point_estimate": 0.0,
+        "ci_95_low": 0.0,
+        "ci_95_high": 0.0,
+        "n": 33,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": [
+          "a"
+        ],
+        "uninformative": false
+      },
+      "confusion": {
+        "both_pass": 25,
+        "both_fail": 0,
+        "rule_pass_judge_fail": 8,
+        "rule_fail_judge_pass": 0
+      }
+    }
+  },
+  "n_excluding_flagged": 33,
+  "rule_vs_human": {
+    "pair": "rule vs human",
+    "n": 37,
+    "percent_agreement": 0.9459,
+    "cohens_kappa": {
+      "point_estimate": 0.7218,
+      "ci_95_low": 0.0,
+      "ci_95_high": 1.0,
+      "n": 37,
+      "n_resamples": 2000,
+      "undefined_resamples": 0,
+      "constant_rater": null,
+      "uninformative": true
+    },
+    "confusion": {
+      "both_pass": 32,
+      "both_fail": 3,
+      "rule_pass_human_fail": 2,
+      "rule_fail_human_pass": 0
+    }
+  },
+  "judge_vs_human": {
+    "pair": "judge vs human",
+    "n": 37,
+    "percent_agreement": 0.8378,
+    "cohens_kappa": {
+      "point_estimate": 0.5394,
+      "ci_95_low": 0.2128,
+      "ci_95_high": 0.8263,
+      "n": 37,
+      "n_resamples": 2000,
+      "undefined_resamples": 0,
+      "constant_rater": null,
+      "uninformative": false
+    },
+    "confusion": {
+      "both_pass": 26,
+      "both_fail": 5,
+      "judge_pass_human_fail": 0,
+      "judge_fail_human_pass": 6
+    }
+  },
+  "rule_vs_judge": {
+    "pair": "rule vs judge",
+    "n": 37,
+    "percent_agreement": 0.7838,
+    "cohens_kappa": {
+      "point_estimate": 0.3451,
+      "ci_95_low": 0.0,
+      "ci_95_high": 0.6542,
+      "n": 37,
+      "n_resamples": 2000,
+      "undefined_resamples": 0,
+      "constant_rater": null,
+      "uninformative": false
+    },
+    "confusion": {
+      "both_pass": 26,
+      "both_fail": 3,
+      "rule_pass_judge_fail": 8,
+      "rule_fail_judge_pass": 0
+    }
+  },
+  "by_category": {
+    "direct_no_tools": {
+      "n": 10,
+      "rule_vs_human": {
+        "point_estimate": 1.0,
+        "ci_95_low": 1.0,
+        "ci_95_high": 1.0,
+        "n": 10,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": false
+      },
+      "judge_vs_human": {
+        "point_estimate": 0.2,
+        "ci_95_low": 0.0,
+        "ci_95_high": 0.7368,
+        "n": 10,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": false
+      }
+    },
+    "multi_step_retrieval": {
+      "n": 10,
+      "rule_vs_human": {
+        "point_estimate": 1.0,
+        "ci_95_low": 1.0,
+        "ci_95_high": 1.0,
+        "n": 10,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": false
+      },
+      "judge_vs_human": {
+        "point_estimate": 0.7368,
+        "ci_95_low": 0.0,
+        "ci_95_high": 1.0,
+        "n": 10,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": true
+      }
+    },
+    "tool_selection": {
+      "n": 7,
+      "rule_vs_human": {
+        "point_estimate": 0.0,
+        "ci_95_low": 0.0,
+        "ci_95_high": 1.0,
+        "n": 7,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": [
+          "a"
+        ],
+        "uninformative": true
+      },
+      "judge_vs_human": {
+        "point_estimate": 0.5882,
+        "ci_95_low": 0.0,
+        "ci_95_high": 1.0,
+        "n": 7,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": true
+      }
+    },
+    "unanswerable_decline": {
+      "n": 10,
+      "rule_vs_human": {
+        "point_estimate": 0.0,
+        "ci_95_low": 0.0,
+        "ci_95_high": 1.0,
+        "n": 10,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": [
+          "a"
+        ],
+        "uninformative": true
+      },
+      "judge_vs_human": {
+        "point_estimate": 1.0,
+        "ci_95_low": 1.0,
+        "ci_95_high": 1.0,
+        "n": 10,
+        "n_resamples": 2000,
+        "undefined_resamples": 0,
+        "constant_rater": null,
+        "uninformative": false
+      }
+    }
+  },
+  "unreliable_slices": [
+    {
+      "category": "direct_no_tools",
+      "comparison": "judge_vs_human",
+      "cohens_kappa": 0.2,
+      "n": 10,
+      "constant_rater": null,
+      "reading": "below 0.4, genuinely weak agreement on this slice"
+    },
+    {
+      "category": "tool_selection",
+      "comparison": "rule_vs_human",
+      "cohens_kappa": 0.0,
+      "n": 7,
+      "constant_rater": [
+        "a"
+      ],
+      "reading": "degenerate, not disagreement: one rater gave the same label to every row in this slice, so kappa is 0 however closely the two agree. Read the percent agreement and the confusion counts instead."
+    },
+    {
+      "category": "unanswerable_decline",
+      "comparison": "rule_vs_human",
+      "cohens_kappa": 0.0,
+      "n": 10,
+      "constant_rater": [
+        "a"
+      ],
+      "reading": "degenerate, not disagreement: one rater gave the same label to every row in this slice, so kappa is 0 however closely the two agree. Read the percent agreement and the confusion counts instead."
+    }
+  ],
+  "disagreements": [
+    {
+      "task_id": "dec-028",
+      "category": "unanswerable_decline",
+      "human": "fail",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": "It gives cloud-pricing figures despite a requirement to decline and no passages are shown."
+    },
+    {
+      "task_id": "dnt-006",
+      "category": "direct_no_tools",
+      "human": "pass",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": ""
+    },
+    {
+      "task_id": "dnt-007",
+      "category": "direct_no_tools",
+      "human": "pass",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": ""
+    },
+    {
+      "task_id": "dnt-008",
+      "category": "direct_no_tools",
+      "human": "pass",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": ""
+    },
+    {
+      "task_id": "dnt-019",
+      "category": "direct_no_tools",
+      "human": "pass",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": ""
+    },
+    {
+      "task_id": "msr-014",
+      "category": "multi_step_retrieval",
+      "human": "pass",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": ""
+    },
+    {
+      "task_id": "ts-007",
+      "category": "tool_selection",
+      "human": "pass",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": ""
+    },
+    {
+      "task_id": "ts-026",
+      "category": "tool_selection",
+      "human": "fail",
+      "rule": "pass",
+      "judge": "fail",
+      "notes": "It lists conflicting times and does not provide one usable answer to the live question."
+    }
+  ]
+}

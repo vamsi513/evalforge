@@ -1,0 +1,55 @@
+{
+  "task_id": "ts-040",
+  "category": "tool_selection",
+  "question": "How many continents are there?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-ts-040-c79c4d26",
+  "route_decision": "direct",
+  "answer": "There are seven continents: Africa, Antarctica, Asia, Australia, Europe, North America, and South America. If you have any more questions about them, feel free to ask!",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1611.3,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 666.2
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 939.6
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 251,
+    "output_tokens": 37,
+    "cost_usd": 5.985e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:40:14.762744+00:00"
+}

@@ -1,0 +1,59 @@
+{
+  "task_id": "dnt-024",
+  "category": "direct_no_tools",
+  "question": "How many hours are in a week?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dnt-024-51cecfd7",
+  "route_decision": "direct",
+  "answer": "There are 168 hours in a week. That's calculated by multiplying 24 hours in a day by 7 days in a week!",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1292.6,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 613.6
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 672.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 255,
+    "output_tokens": 28,
+    "cost_usd": 5.505e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:46:53.359015+00:00"
+}

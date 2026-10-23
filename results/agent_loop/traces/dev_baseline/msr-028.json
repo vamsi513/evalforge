@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-028",
+  "category": "multi_step_retrieval",
+  "question": "What does Tree-of-Thought achieve on Game of 24, and what does chain-of-thought achieve on the same task?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-028-d89572a4",
+  "route_decision": "retrieval",
+  "answer": "According to [Source 3], **Tree-of-Thought** achieves **74%** on the **Game of 24**, while **chain-of-thought** achieves only **4%** on the same task.",
+  "context": "[Source 1] Chain-of-Thought Prompting in Large Language Models\nChain-of-thought (CoT) prompting, introduced by Wei et al. (2022), elicits multi-step reasoning in large language models by including example reasoning chains in the few-shot prompt. Instead of showing only input-output pairs, CoT prompts show the intermediate reasoning steps that lead to the answer. For example, a math word problem prompt includes the full arithmetic reasoning trace before the final numerical answer. Experiments on PaLM (540B) showed CoT prompting improved accuracy on GSM8K grade-school math from 17.9% to 56.9% \u2014 a 3\u00d7 improvement. Zero-shot CoT (Kojima et al., 2022) discovered that simply appending \"Let's think step by step\" to a question elicits similar reasoning chains without any examples. Subsequent work introduced self-consistency (sample multiple reasoning paths and majority-vote), tree-of-thought (explore multiple reasoning branches), and least-to-most prompting (decompose complex problems into simpler sub-problems). These techniques are now standard in production prompt engineering for tasks involving arithmetic, logic, and multi-hop reasoning.\n\n---\n\n[Source 2] Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems\nReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for interleaving chain-of-thought reasoning with action execution in language model agents. Unlike chain-of-thought prompting (reasoning only) or action-only approaches, ReAct alternates between Thought steps (free-form reasoning), Action steps (invoking tools such as Wikipedia search, calculator, or code execution), and Observation steps (results returned by actions). This structured loop enables dynamic replanning based on new information and self-correction when actions produce unexpected results.\n\nOn HotpotQA multi-hop question answering, ReAct achieves 35.1% exact match using GPT-3 with Wikipedia search, compared to 29.4% for chain-of-thought alone and 27.4% for action-only approaches. On FEVER (fact verification), ReAct achieves 60.9% compared to 56.3% for CoT. Error analysis shows that ReAct reduces hallucination by 8% compared to CoT alone, since factual claims can be verified against retrieved evidence. AutoGPT (Significant Gravitas, April 2023) demonstrated the viability of open-ended autonomous agents built on GPT-4, using persistent memory (via a vector database), internet browsing, code execution, and file management to autonomously pursue user-defined goals. AgentBench (Liu et al., 2023) evaluates agent performance across web browsing, database interaction, OS tasks, and games, finding GPT-4 (3.44) significantly outperforms open-source models (<1.0).\n\nModern agent frameworks have matured significantly. OpenAI's Assistants API provides built-in thread management, tool calling, and file handling for production agents. LangGraph models agent workflows as directed graphs with cycles, enabling stateful multi-step agents with conditional branching and parallel execution. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles (Product Manager, Architect, Engineer, QA Engineer) with structured co\n\n---\n\n[Source 3] Prompt Engineering Techniques and Best Practices for LLMs\nPrompt engineering encompasses the set of techniques for structuring inputs to language models to elicit desired outputs without modifying model parameters. Zero-shot prompting directly asks the model to perform a task without examples, relying on pretraining to generalize. Few-shot prompting (Brown et al., 2020) provides task demonstrations that establish the input-output format. Chain-of-Thought (CoT) prompting (Wei et al., 2022) instructs the model to produce explicit intermediate reasoning steps before the final answer, dramatically improving performance on mathematical and logical tasks. On GSM8K, CoT prompting with GPT-3 (175B) improves accuracy from 17.9% to 46.9%. With GPT-4 and CoT, GSM8K accuracy reaches 92%.\n\nZero-shot CoT (\"Let's think step by step\", Kojima et al., 2022) demonstrates that simply appending this phrase elicits chain-of-thought reasoning without demonstrations, achieving 78.7% on MultiArith and 40.7% on GSM8K with InstructGPT. Self-Consistency (Wang et al., 2022) samples multiple reasoning paths and takes the majority vote over final answers, improving accuracy by 5-15% across benchmarks. Tree-of-Thought (Yao et al., 2023) extends CoT to a tree search over reasoning steps, achieving 74% on Game of 24 (versus 4% for CoT) and 62% on Creative Writing quality scores. Automatic Prompt Engineer (APE, Zhou et al., 2022) uses the LLM itself to generate and optimize prompts, outperforming human-engineered prompts on 24 of 24 tasks from the Instruction Induction benchmark.\n\nPractical best practices synthesized from empirical research include: (1) Be specific and concrete\u2014vague instructions increase output variance; (2) Use delimiters (XML tags, triple backticks, markdown headers) to separate instruction, context, and input; (3) Specify output format explicitly (JSON schema, bullet points, length constraints); (4) For complex tasks, break into subtasks rather than asking for everything at once; (5) For reasoning tasks, always request explanation before conclusion; (6) Use system prompts for persist",
+  "sources": [
+    {
+      "title": "Chain-of-Thought Prompting in Large Language Models",
+      "url": "https://arxiv.org/abs/2201.11903",
+      "content": "Chain-of-thought (CoT) prompting, introduced by Wei et al. (2022), elicits multi-step reasoning in large language models by including example reasoning chains in the few-shot prompt. Instead of showin\u2026",
+      "score": 0.472597599029541,
+      "type": "retrieval"
+    },
+    {
+      "title": "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems",
+      "url": "https://arxiv.org/abs/2210.03629",
+      "content": "ReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for int\u2026",
+      "score": 0.4208773076534271,
+      "type": "retrieval"
+    },
+    {
+      "title": "Prompt Engineering Techniques and Best Practices for LLMs",
+      "url": "https://arxiv.org/abs/2302.11382",
+      "content": "Prompt engineering encompasses the set of techniques for structuring inputs to language models to elicit desired outputs without modifying model parameters. Zero-shot prompting directly asks the model\u2026",
+      "score": 0.3565288186073303,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Chain-of-Thought Prompting in Large Language Models",
+    "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems",
+    "Prompt Engineering Techniques and Best Practices for LLMs"
+  ],
+  "retrieval_score": 0.472597599029541,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1898.2,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 574.4
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 45.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1272.2
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1604,
+    "output_tokens": 46,
+    "cost_usd": 0.0002682,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:48:34.974495+00:00"
+}

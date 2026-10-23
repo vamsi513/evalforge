@@ -1,0 +1,85 @@
+{
+  "task_id": "ts-004",
+  "category": "tool_selection",
+  "question": "How does Mixtral decide which experts to activate for a token?",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-004-0ad9017b",
+  "route_decision": "retrieval",
+  "answer": "Mixtral decides which experts to activate for a token using a **routing mechanism** that involves a **gating network**. This network assigns each token to the **top-K experts** based on **learned affinity scores**. Typically, Mixtral uses **top-2 routing**, meaning that for each token, it activates a small subset of experts (specifically, 2 out of the available experts) for processing. This approach allows for **sparse activation**, enabling the model to utilize a larger number of total parameters without a proportional increase in computational cost. \n\nAdditionally, to address the challenge of **load balancing**, the routing mechanism incorporates **auxiliary balancing losses** that encourage uniform expert utilization across a batch, preventing the router from collapsing to using only a few experts and thereby wasting capacity. Expert capacity buffers are also employed to handle situations where too many tokens are routed to the same expert.",
+  "context": "[Source 1] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation\nMixture of Experts (MoE) is an architectural approach that scales model capacity without proportionally scaling computation. In a standard dense transformer, every token activates all model parameters. In an MoE model, each transformer layer contains multiple parallel feed-forward networks (experts), and a learned routing mechanism selects a small subset of experts (typically top-2) for each token. This sparse activation pattern allows models to have far more total parameters than a dense model of equivalent computational cost. The landmark paper \"Mixtral of Experts\" (Jiang et al., Mistral AI, 2024, arXiv:2401.04088) demonstrated that a 46.7B total-parameter MoE model using only 12.9B active parameters per token matches or outperforms LLaMA 2 70B on most benchmarks while requiring less than half the compute during inference.\n\nThe routing mechanism is central to MoE performance. A gating network assigns each token to the top-K experts based on learned affinity scores. Load balancing is a critical challenge: without explicit regularization, the router collapses to using only a few experts, wasting capacity. This is addressed through auxiliary balancing losses that encourage uniform expert utilization across a batch. Expert capacity buffers handle overflow when too many tokens are routed to the same expert. Switch Transformer (Fedus et al., Google Brain, 2022) demonstrated that even top-1 routing is sufficient for strong performance, achieving a 4-7x speedup over T5-XXL with equivalent quality. Mixtral 8x7B uses 8 experts with top-2 routing, meaning each forward pass activates 2 of 8 FFN experts per layer.\n\nMixtral 8x7B achieves 75.1% on MMLU (5-shot), 74.2% on HellaSwag, and 56.0% on HumanEval, outperforming LLaMA 2 70B (69.8%) while being significantly cheaper to serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. De\n\n---\n\n[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI\nained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\n\n---\n\n[Source 3] Multi-Agent Systems and Collaborative AI: Architectures for LLM Agent Coordination\nMulti-agent systems (MAS) for LLMs extend single-agent frameworks by enabling multiple specialized agents to collaborate on complex tasks, with each agent having different tools, memory, context, and expertise. The key motivation is that decomposing complex tasks across specialized agents reduces each agent's context load, enables parallelism, and allows specialized fine-tuning or prompting per agent role. Agent coordination patterns include: debate-based frameworks (multiple agents arguing for different positions with a judge synthesizing the answer), hierarchical orchestration (a planner delegating subtasks to worker agents), and collaborative coding (multiple specialized agents for planning, coding, testing, and reviewing).\n\nDebate-based multi-agent frameworks show that 3-agent debate with GPT-3.5-turbo achieves 88.0% accuracy on GSM8K versus 77.5% for single-agent CoT. AutoGen (Wu et al., 2023, Microsoft) provides a framework for defining conversational agents with customizable personas, code execution, and human-in-the-loop capabilities. In a math benchmark, AutoGen's two-agent setup (Coder + Executor) achieves 96.3% on AMC-level problems using GPT-4. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles with structured communication via standardized documents (PRD, system design, code, test cases), generating complete executable code from one-sentence requirements and achieving 85.9% on the SoftwareDev benchmark versus 70.0% for AutoGPT.\n\nMemory architecture is critical for effective multi-agent coordination. Shared memory (vector databases accessible to all agents) provides long-term knowledge persistence. Individual agent memory (conversation history within context window) provides short-term working memory. External storage (SQL databases, file systems) enables persistent structured data. AgentBench (Liu et al., 2023) evaluates multi-agent systems across 8 environments and finds that agent coordination significantly outperforms single agents on long-horizon tasks but requires caref",
+  "sources": [
+    {
+      "title": "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+      "url": "https://arxiv.org/abs/2401.04088",
+      "content": "Mixture of Experts (MoE) is an architectural approach that scales model capacity without proportionally scaling computation. In a standard dense transformer, every token activates all model parameters\u2026",
+      "score": 0.3671742379665375,
+      "type": "retrieval"
+    },
+    {
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+      "url": "https://arxiv.org/abs/2307.09288",
+      "content": "ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\u2026",
+      "score": 0.2850249409675598,
+      "type": "retrieval"
+    },
+    {
+      "title": "Multi-Agent Systems and Collaborative AI: Architectures for LLM Agent Coordination",
+      "url": "https://arxiv.org/abs/2308.00352",
+      "content": "Multi-agent systems (MAS) for LLMs extend single-agent frameworks by enabling multiple specialized agents to collaborate on complex tasks, with each agent having different tools, memory, context, and \u2026",
+      "score": 0.24417269229888916,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+    "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+    "Multi-Agent Systems and Collaborative AI: Architectures for LLM Agent Coordination"
+  ],
+  "retrieval_score": 0.3671742379665375,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2881.8,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 624.0
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 42.2
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 2210.1
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1382,
+    "output_tokens": 182,
+    "cost_usd": 0.0003165,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:48:58.884038+00:00"
+}

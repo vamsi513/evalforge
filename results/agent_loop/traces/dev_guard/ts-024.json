@@ -1,0 +1,120 @@
+{
+  "task_id": "ts-024",
+  "category": "tool_selection",
+  "question": "Are there any flight delays at Heathrow today?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-ts-024-c40dc336",
+  "route_decision": "web_search",
+  "answer": "Yes, there are **flight delays** at Heathrow Airport today. The airport has reported that flights departing have been grounded due to a **technical issue** affecting the National Air Traffic Service. While arriving flights are not currently impacted, passengers are advised to check with their airlines for more information regarding their flights. The issue has led to significant disruptions, with multiple airlines, including British Airways and Ryanair, canceling numerous flights due to the delays caused by this situation [Source 1][Source 5].",
+  "context": "[Source 1] Widespread flight delays hit major British airports\nURL: https://www.nbcnews.com/world/europe/flight-delays-hit-london-airports-heathrow-rcna596581\nLondon\u2019s Heathrow Airport said in a statement Tuesday that it was working with Britain\u2019s National Air Traffic Service to resolve the issue, advising passengers to check with their airlines for more information regarding their flights.\n\n\u201cArriving flights are not currently impacted,\u201d Heathrow said, although it advised passengers to check flight times.\n\nLondon Gatwick Airport also said on X that it had been affected, and farther north, Manchester Airport took to social media to warn that the issue \u201cmay result in delays.\u201d Edinburgh Airport in Scotland issued a similar warning.\n\nAfter earlier blaming a \u201ctechnical issue,\u201d the National Air Traffic Service said in an update on X that its engineers had \u201cimplemented a fix, and our flight system is starting to recover.\u201d [...] IE 11 is not supported. For an optimal experience visit our site on another browser.\n\n# Widespread flight delays hit major British airports\n\n\u201cWe are investigating a technical issue which is causing some disruption to flight departures,\u201d Heathrow said.\n\nListen to this article with a free profile\n\n00:0000:00\n\nFlights departing from London's Heathrow Airport have been grounded.Yui Mok / PA Images via Getty Images file\n\nAdd NBC News to Google\n\nBy Henry Austin\n\nLONDON \u2014 Flights departing from at least two major British airports have been grounded following a \u201ctechnical issue,\u201d officials said Tuesday. [...] ### FOR SUBSCRIBERSCalifornia\u2019s billionaire tax faces a mountain of opposition \u2014 and not just from the rich\n\nSlide 1 of 1\n\nAirline Ryanair said in a statement that 65,000 of its passengers were disrupted and 50 scheduled flights were canceled because of the disruption.\n\nBritish Airways canceled 96 flights, easyJet 92 and KLM 20, according to the aviation tracking site FlightRadar24.\n\nTravel from Heathrow was severely disrupted in March last year when a massive fire at an electricity substation caused a predawn power outage at the global transport hub.\n\nThe closure affected more than 1,300 flights and 200,000 passengers.\n\n---\n\n[Source 2] Air traffic control issue disrupts flights at major UK airports\nURL: https://www.reuters.com/world/uk/some-uk-departing-flights-disrupted-by-nats-technical-issue-heathrow-says-2026-09-08\nEarlier, data on flight-tracking platform FlightAware said some 490 departures were delayed at six airports, including Heathrow, Gatwick, London\n\n---\n\n[Source 3] London Heathrow (LHR) (EGLL) arrivals, departures, routes and reviews | Flightradar24\nURL: https://www.flightradar24.com/data/airports/lhr\n## Delays\n\nLast 7 days\n\nHow punctual departures from London Heathrow Airport were over the last 7 days\n\n 954\n 3,550\n 727\n\n On time0\u201315 min\n Minor delay16\u201345 min\n Major delay46+ min\n\n## Ratings & reviews 1,086 reviews\n\nAll reviews\n\n4.1out of 5\n\n5 stars37,959\n\n4 stars29,113\n\n3 stars15,574\n\n2 stars3,902\n\n1 star2,738\n\n A quick visit through immigration and a short wait for the luggage to arrive, meant I was outside fairly quickly.\n I ended up with a shorter connection than expected, so didn't have much interaction with the terminal. My inbound flight took an\u2026 more of the review by AlphaMikeEcho\n A truly awful airport. Overcrowded, not particularly clean, retail so expensive and airport facilities dire.\n\n## Closest airports\n\n RAF Northolt\n\n  United KingdomUnited Kingdom\n\n  NHTEGWU [...] Flightradar24 - Flight Tracker\n\nUnited Kingdom\n\n# London Heathrow Airport\n\nLHRAirport IATA codeEGLLAirport ICAO code\n\nLive arrival, departure, weather and delay data for LHR/EGLL. Comprehensive, real-time operations board for London Heathrow Airport.\n\nLocal time at the airport\n:   8:34 PMlocal time\n\nDate at the airport\n:   Oct 21\n\n:   Elevation83 ft\n\nShow live map\n\nConditions\n:   Clear\n\nTemperature\n:   9 \u00b0C\n\nWind\n:   240\u00b0 16 kts\n\nAverage delay\n:   15min\n\nDisruption index\n:   Low1.3Rising\n\nDelayed\n:   High592(44%)\n\nCanceled\n:   Low2(0%)\n\n## Departures\n\nAll departures\n\n 9:10 PM\n\n  To: Bologna\n\n  BLQLIPE\n\n  BA544\n\n  Est. dep. 9:10 PMEstimated dep. 9:10 PM\n 8:40 PM\n\n  To: Athens\n\n  ATHLGAV\n\n  BA638\n\n  Est. dep. 8:40 PMEstimated dep. 8:40 PM\n 8:37 PM\n\n  To: Geneva\n\n  GVALSGG\n\n  BA756 [...] To: Geneva\n\n  GVALSGG\n\n  BA756\n\n  Est. dep. 8:37 PMEstimated dep. 8:37 PM\n 8:54 PM\n\n  To: Malta\n\n  MLALMML\n\n  KM103\n\n  Est. dep. 8:54 PMEstimated dep. 8:54 PM\n 9:12 PM\n\n  To: Delhi\n\n  DELVIDP\n\n  AI2018\n\n  Est. dep. 9:12 PMEstimated dep. 9:12 PM\n\n## Arrivals\n\nAll arrivals\n\n 8:33 PM\n\n  From: Jeddah\n\n  JEDOEJN\n\n  SV117\n\n  Landed 8:33 PM\n 8:42 PM\n\n  From: Milan\n\n  LINLIML\n\n  BA579\n\n  Est. 8:42 PMEstimated 8:42 PM\n 8:17 PM\n\n  From: Hong Kong\n\n  HKGVHHH\n\n  CX253\n\n  Landed 8:17 PM\n 8:15 PM\n\n  From: Helsinki\n\n  HELEFHK\n\n  AY1339\n\n  Est. 8:15 PMEstimated 8:15 PM\n 9:11 PM\n\n  From: Bologna\n\n  BLQLIPE\n\n  BA543\n\n  Est. 9:11 PMEstimated 9:11 PM\n\n## On ground\n\nAll on ground\n\n B789HZ-AR23\n B7724X-ECA\n B763N658UA\n A21ND-AIEA\n A320G-EUUH\n\n## Delays\n\nLast 7 days\n\n---\n\n[Source 4] LHR - London Heathrow Airport Current Weather and Airport Delay Conditions\nURL: https://www.flightstats.com/v2/airport-conditions/LHR\nbackground\n\nFlightStats logo\n\nFlights\n\nFlight Tracker\n\nIcon\n\nHistorical Flight Status\n\nAirports\n\nCurrent Conditions\n\nIcon\n\nDepartures and Arrivals\n\nAirport Delays\n\nOn-Time Performance\n\nOn-Time Performance Reports\n\nOn-Time Monthly Update\n\nOn-Time Performance Articles\n\nCirium\n\nAbout\n\nCirium\n\nThought Cloud\n\nResources\n\nSupport\n\nDeveloper Studio\n\nCareers\n\nContact\n\nMy FlightStats\n\nIcon\n\nMy Alerts\n\nMy Account\n\nFollow us on\n\nIconIconIcon\n\n#### Search for an Airport\n\n# LHR - London Heathrow Airport Current Conditions\n\nLondon, GB\n\n--\n\n--\n\nAt this airport, it is currently\n\n-- --  -- --\n\nCurrent Delay Status\n\nDELAY STATUSVERY LOW and decreasing\n\nCurrent Weather Conditions\n\nsun\n\nNo cloud detected\n\n50\u00b0F(10\u00b0C)\n\nWind\n\n7 kts\n\nNW\n\nVisibility\n\n6 miles\n\nVIEW OTP REPORT\n\n---\n\n[Source 5] Heathrow Flyers Snap: Angry Crowds Left Fuming After 1000 UK Flights Cancelled | Firstpost America\nURL: https://www.youtube.com/watch?v=hKcKHPBLdjM\n0:00 \u2013 UK Air Traffic Control System Failure Grounds Flights\n0:15 \u2013 NATS Flight Processing Glitch Explained\n0:50 \u2013 Passenger Chaos & Stranded Crowds at Heathrow\n1:06 \u2013 Ryanair Demands NATS Chief Executive Resignation\n1:27 \u2013 Passenger Compensation & Government Clarification\n2:10 \u2013 Ripple Effects Across UK & International Airspace\n3:02 \u2013 History of NATS Failures & Lack of Reform\n3:38 \u2013 Upcoming 18th BRICS Summit in New Delhi Preview\n\nUK Airport Disruption | Heathrow Airport | UK Flight Delays | Firstpost \n\n#uk #britishairways #heathrow #airportnews #caryjohnston #firstpostamerica #firstpost\n\nFirstpost is an Indian news and media website. Get all the incisive opinions, in-depth analyses and other visual stories that matter to you and the world right here on this channel. [...] ### Description\n28,553 views\nPosted: 2026-09-09\nA technical failure in the National Air Traffic Services flight processing system grounded departures across Britain on Tuesday, affecting more than 15 airports including Heathrow, Gatwick, Manchester and Birmingham. Over 1,000 flights were cancelled or delayed. 65,000 Ryanair passengers alone were disrupted. The issue lasted nearly seven hours before being resolved. Britain's Transport Secretary apologised. Ryanair called for the NATS chief executive to resign. It is the fourth major NATS failure since 2014 and the second time its flight processing system has specifically failed \u2014 the first being the August 2023 outage that affected 800,000 passengers. Cary Johnston brings you the details on Firstpost America. [...] [2:04] possible to resolve this as quickly as possible.\n[2:10] While Heathrow bore the brunt of the disruption, the failure rippled across the entire country. airports affected, including Gatwick, Stanstead, and\n[2:19] Manchester, among others. By 8:00 PM on Tuesday, flight radar 24 confirmed that more than 1,000 flights, I should say,\n[2:28] had been cancelled or delayed across different airlines. Well, the disruption even crossed borders. Dublin airport\n[2:35] confirmed flights leaving and arriving were also affected because many services use UK controlled airspace. and a\n[2:43] knock-on effect also affected flights coming into the UK. British Airways described the disruption as entirely out of our control.",
+  "sources": [
+    {
+      "title": "Widespread flight delays hit major British airports",
+      "url": "https://www.nbcnews.com/world/europe/flight-delays-hit-london-airports-heathrow-rcna596581",
+      "content": "London\u2019s Heathrow Airport said in a statement Tuesday that it was working with Britain\u2019s National Air Traffic Service to resolve the issue, advising passengers to check with their airlines for more in\u2026",
+      "score": 0.776708,
+      "type": "web_search"
+    },
+    {
+      "title": "Air traffic control issue disrupts flights at major UK airports",
+      "url": "https://www.reuters.com/world/uk/some-uk-departing-flights-disrupted-by-nats-technical-issue-heathrow-says-2026-09-08",
+      "content": "Earlier, data on flight-tracking platform FlightAware said some 490 departures were delayed at six airports, including Heathrow, Gatwick, London\u2026",
+      "score": 0.72605723,
+      "type": "web_search"
+    },
+    {
+      "title": "London Heathrow (LHR) (EGLL) arrivals, departures, routes and reviews | Flightradar24",
+      "url": "https://www.flightradar24.com/data/airports/lhr",
+      "content": "## Delays\n\nLast 7 days\n\nHow punctual departures from London Heathrow Airport were over the last 7 days\n\n 954\n 3,550\n 727\n\n On time0\u201315 min\n Minor delay16\u201345 min\n Major delay46+ min\n\n## Ratings & revie\u2026",
+      "score": 0.6739866,
+      "type": "web_search"
+    },
+    {
+      "title": "LHR - London Heathrow Airport Current Weather and Airport Delay Conditions",
+      "url": "https://www.flightstats.com/v2/airport-conditions/LHR",
+      "content": "background\n\nFlightStats logo\n\nFlights\n\nFlight Tracker\n\nIcon\n\nHistorical Flight Status\n\nAirports\n\nCurrent Conditions\n\nIcon\n\nDepartures and Arrivals\n\nAirport Delays\n\nOn-Time Performance\n\nOn-Time Perform\u2026",
+      "score": 0.6701125,
+      "type": "web_search"
+    },
+    {
+      "title": "Heathrow Flyers Snap: Angry Crowds Left Fuming After 1000 UK Flights Cancelled | Firstpost America",
+      "url": "https://www.youtube.com/watch?v=hKcKHPBLdjM",
+      "content": "0:00 \u2013 UK Air Traffic Control System Failure Grounds Flights\n0:15 \u2013 NATS Flight Processing Glitch Explained\n0:50 \u2013 Passenger Chaos & Stranded Crowds at Heathrow\n1:06 \u2013 Ryanair Demands NATS Chief Execu\u2026",
+      "score": 0.65940565,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "Widespread flight delays hit major British airports",
+    "Air traffic control issue disrupts flights at major UK airports",
+    "London Heathrow (LHR) (EGLL) arrivals, departures, routes and reviews | Flightradar24",
+    "LHR - London Heathrow Airport Current Weather and Airport Delay Conditions",
+    "Heathrow Flyers Snap: Angry Crowds Left Fuming After 1000 UK Flights Cancelled | Firstpost America"
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 3523.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 695.2
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 199.7
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 2620.9
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "Are there any flight delays at Heathrow today?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 199.2,
+      "outcome": "ok",
+      "ts": "2026-10-23T03:49:03.231Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 2546,
+    "output_tokens": 102,
+    "cost_usd": 0.0004431,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:49:05.856329+00:00"
+}

@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-009",
+  "category": "multi_step_retrieval",
+  "question": "Which two rank values does the LoRA document say are typically sufficient for most adaptation tasks?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-009-c6dfcb0b",
+  "route_decision": "retrieval",
+  "answer": "The **two rank values** that the LoRA document states are typically sufficient for most adaptation tasks are **r=4** and **r=8**.",
+  "context": "[Source 1] LoRA: Low-Rank Adaptation for Large Language Models\nLoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter-efficient fine-tuning method that dramatically reduces the cost of adapting large pre-trained language models to downstream tasks. The core insight is that the weight updates during fine-tuning have a low intrinsic rank. Rather than updating the full weight matrix W during fine-tuning, LoRA freezes the original weights and injects trainable low-rank decomposition matrices A and B such that the update is represented as \u0394W = BA, where B \u2208 R^(d\u00d7r) and A \u2208 R^(r\u00d7k), with rank r much smaller than d and k. Only A and B are trained, reducing the number of trainable parameters by orders of magnitude.\n\nFor GPT-3 (175B parameters), LoRA reduces the number of trainable parameters by 10,000x compared to full fine-tuning and decreases GPU memory requirements by 3x. A rank of r=4 or r=8 is typically sufficient for most adaptation tasks, with higher ranks used for more complex domain shifts. The method achieves comparable or superior performance to full fine-tuning on benchmarks such as GLUE, SuperGLUE, and E2E NLG, while using only 0.1\u20131% of the parameters. For RoBERTa-base fine-tuned on GLUE, LoRA matches or exceeds the performance of full fine-tuning across all tasks. On GPT-2 fine-tuning for natural language generation, LoRA achieves a BLEU score of 70.4 on E2E NLG compared to 68.2 for fine-tuning with the same compute budget.\n\nLoRA is applied specifically to the attention weight matrices (Q, K, V projections) in transformer blocks, though it can be applied to any linear layer. Initialization is critical: matrix A is initialized with random Gaussian values and B with zeros, ensuring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in ze\n\n---\n\n[Source 2] LoRA: Low-Rank Adaptation for Large Language Models\nsuring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.\n\nThe broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard for task-specific adaptation, instruction tuning, and domain specialization of foundation models, enabling practitioners to create custom model variants at a fraction of the cost of full fine-tuning.\n\n---\n\n[Source 3] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks\ntect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman \u03c1\u22480.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.",
+  "sources": [
+    {
+      "title": "LoRA: Low-Rank Adaptation for Large Language Models",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "content": "LoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter\u2026",
+      "score": 0.6659842133522034,
+      "type": "retrieval"
+    },
+    {
+      "title": "LoRA: Low-Rank Adaptation for Large Language Models",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "content": "suring \u0394W = 0 at the start of training. The scaling factor \u03b1/r is applied to the update, where \u03b1 is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into t\u2026",
+      "score": 0.5327634811401367,
+      "type": "retrieval"
+    },
+    {
+      "title": "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "content": "tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et a\u2026",
+      "score": 0.31992602348327637,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "LoRA: Low-Rank Adaptation for Large Language Models",
+    "LoRA: Low-Rank Adaptation for Large Language Models",
+    "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks"
+  ],
+  "retrieval_score": 0.6659842133522034,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2162.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 1171.4
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 50.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 933.7
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1369,
+    "output_tokens": 34,
+    "cost_usd": 0.00022575,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:51:19.820794+00:00"
+}

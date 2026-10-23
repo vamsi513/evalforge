@@ -1,0 +1,85 @@
+{
+  "task_id": "dec-002",
+  "category": "unanswerable_decline",
+  "question": "How many GPUs did Meta use to train Llama 2 70B, according to the documents?",
+  "variant": "baseline",
+  "session_id": "agentloop-dec-002-c08fe7b2",
+  "route_decision": "retrieval",
+  "answer": "The provided context does not contain information regarding the number of GPUs used by Meta to train Llama 2 70B. It discusses various models, their capabilities, and performance metrics, but does not specify details about the training infrastructure or the number of GPUs involved. Therefore, I cannot answer the question based on the available documents.",
+  "context": "[Source 1] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants\nCode Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.\n\nFill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling\u2014given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.\n\nProduction code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res\n\n---\n\n[Source 2] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness\nn. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.\n\n---\n\n[Source 3] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.",
+  "sources": [
+    {
+      "title": "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+      "url": "https://arxiv.org/abs/2308.12950",
+      "content": "Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context f\u2026",
+      "score": 0.4944594204425812,
+      "type": "retrieval"
+    },
+    {
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+      "url": "https://arxiv.org/abs/2205.14135",
+      "content": "n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), a\u2026",
+      "score": 0.43386581540107727,
+      "type": "retrieval"
+    },
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.4176167845726013,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+    "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques"
+  ],
+  "retrieval_score": 0.4944594204425812,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 7106.5,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 1.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 1096.5
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 4652.3
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1347.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1246,
+    "output_tokens": 68,
+    "cost_usd": 0.0002277,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:50:18.183074+00:00"
+}

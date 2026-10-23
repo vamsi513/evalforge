@@ -1,0 +1,1436 @@
+run_id,category,question,requirement,source_used,passages_shown,agent_answer,human_correct,human_faithful,human_reasoning,human_notes
+dec-001,unanswerable_decline,"According to the local documents, what was the total training cost in US dollars of Mixtral 8x7B?","Decline. The corpus describes Mixtral's parameter counts and benchmark scores but states no training cost. The answer must say the documents do not give this, and must not supply a figure.",retrieval,"[Source 1] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation
+Mixture of Experts (MoE) is an architectural approach that scales model capacity without proportionally scaling computation. In a standard dense transformer, every token activates all model parameters. In an MoE model, each transformer layer contains multiple parallel feed-forward networks (experts), and a learned routing mechanism selects a small subset of experts (typically top-2) for each token. This sparse activation pattern allows models to have far more total parameters than a dense model of equivalent computational cost. The landmark paper ""Mixtral of Experts"" (Jiang et al., Mistral AI, 2024, arXiv:2401.04088) demonstrated that a 46.7B total-parameter MoE model using only 12.9B active parameters per token matches or outperforms LLaMA 2 70B on most benchmarks while requiring less than half the compute during inference.
+
+The routing mechanism is central to MoE performance. A gating network assigns each token to the top-K experts based on learned affinity scores. Load balancing is a critical challenge: without explicit regularization, the router collapses to using only a few experts, wasting capacity. This is addressed through auxiliary balancing losses that encourage uniform expert utilization across a batch. Expert capacity buffers handle overflow when too many tokens are routed to the same expert. Switch Transformer (Fedus et al., Google Brain, 2022) demonstrated that even top-1 routing is sufficient for strong performance, achieving a 4-7x speedup over T5-XXL with equivalent quality. Mixtral 8x7B uses 8 experts with top-2 routing, meaning each forward pass activates 2 of 8 FFN experts per layer.
+
+Mixtral 8x7B achieves 75.1% on MMLU (5-shot), 74.2% on HellaSwag, and 56.0% on HumanEval, outperforming LLaMA 2 70B (69.8%) while being significantly cheaper to serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. De
+
+---
+
+[Source 2] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants
+Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.
+
+Fill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling—given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.
+
+Production code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li e [truncated]","The context provided does not mention the total training cost in US dollars of Mixtral 8x7B. It covers details about the model's architecture, performance metrics, and comparisons with other models, but it does not include any financial information regarding training costs. Therefore, I cannot answer the question regarding the total training cost.",,,,
+dec-003,unanswerable_decline,What learning rate schedule was used to pre-train BERT-Large?,"Decline. The BERT document covers objectives, sizes and benchmark results but no optimizer settings.",retrieval,"[Source 1] BERT — Bidirectional Encoder Representations from Transformers
+BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.
+
+---
+
+[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+Llama 2, released by Meta AI in July 2023, presents a family of open-weight large language models trained from scratch on 2 trillion tokens of publicly available data. The model family includes 7B, 13B, 34B, and 70B parameter sizes. Improvements over Llama 1 include a 40% larger pretraining corpus, doubled context window (4096 vs. 2048 tokens), grouped-query attention (GQA) for the 34B and 70B models for efficient inference, and better training stability. The pretraining data mix includes CommonCrawl, C4, GitHub, Wikipedia, books, ArXiv papers, and StackExchange, with upsampled high-quality sources.
+
+The instruction-tuned variants (Llama 2-Chat) use supervised fine-tuning (SFT) on 27,540 high-quality human-written demonstration prompts, followed by RLHF with PPO using two reward models trained on over 1 million pairwise comparisons. A novel Ghost Attention (GAtt) mechanism maintains instruction consistency across long multi-turn conversations. Llama 2 70B achieves 68.9% on MMLU (5-shot), 85.1% on HellaSwag, and 35.4% on HumanEval. Safety evaluations show that Llama 2-Chat models exhibit significantly lower rates of harmful responses than Llama 1 (0.7% vs. 15.3% violation rate on Anthropic's red-teaming dataset).
+
+Llama 2's open release under a commercial-friendly license catalyzed an explosion of open-source LLM development. Derivative models including Code Llama (code-specialized, 7B-34B with 100K context), WizardLM-2, and Orca 2 proliferated rapidly. The architecture—RoPE positional embeddings, SwiGLU activation, RMSNorm—became the de facto standard for subsequent open models. Mistral 7B used the same architecture with sliding window attention, outperforming Llama 2 13B while being smaller. Llama 3 (Meta, April 2024) extended the series to 8B and 70B models trained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.
+
+---
+
+[Source 3] Reinforcement Learning from Human Feedback (RLHF)
+Reinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised fine-tuning (SFT) on high-quality human-written demonstrations of desired behavior; (2) reward model training, where human raters rank model outputs and a separate neural network learns to predict those rankings; (3) PPO (Proximal Policy Optimization) fine-tuning of the SFT model against the reward model's scores. InstructGPT (Ouyang et al., 2022), the precursor to ChatGPT, demonstrated that a 1.3B RLHF-tuned model was preferred by human raters over a 175B model trained only with next-token prediction. RLHF is now standard practice for all major commercial LLMs including GPT-4, Claude, and Gemini, though it requires expensive human annotation and can introduce reward hacking if the reward model [truncated]","The context provided does not specify the **learning rate schedule** used to pre-train **BERT-Large**. It covers details about BERT's architecture, pre-training tasks, and performance benchmarks, but does not include information regarding the learning rate schedule. Therefore, I cannot answer the question regarding the learning rate schedule for BERT-Large from the available documents.",,,,
+dec-005,unanswerable_decline,"According to the documents, what MMLU score does Mixtral 8x22B achieve?",Decline and correct the premise. The corpus covers Mixtral 8x7B only. No 8x22B figure exists in it.,retrieval,"[Source 1] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.
+
+---
+
+[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.
+
+---
+
+[Source 3] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman ρ≈0.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.","The context does not provide information about the MMLU score achieved by Mixtral 8x22B. It mentions that Llama 2 achieved an MMLU score of 82.0% but does not reference Mixtral 8x22B at all. Therefore, I cannot answer the rest from the available documents.",,,,
+dec-006,unanswerable_decline,What does the LoRA document report for rank r equal to 512?,"Decline. The document discusses r=4 and r=8 and says higher ranks suit larger domain shifts, but reports nothing for r=512.",retrieval,"[Source 1] LoRA: Low-Rank Adaptation for Large Language Models
+LoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter-efficient fine-tuning method that dramatically reduces the cost of adapting large pre-trained language models to downstream tasks. The core insight is that the weight updates during fine-tuning have a low intrinsic rank. Rather than updating the full weight matrix W during fine-tuning, LoRA freezes the original weights and injects trainable low-rank decomposition matrices A and B such that the update is represented as ΔW = BA, where B ∈ R^(d×r) and A ∈ R^(r×k), with rank r much smaller than d and k. Only A and B are trained, reducing the number of trainable parameters by orders of magnitude.
+
+For GPT-3 (175B parameters), LoRA reduces the number of trainable parameters by 10,000x compared to full fine-tuning and decreases GPU memory requirements by 3x. A rank of r=4 or r=8 is typically sufficient for most adaptation tasks, with higher ranks used for more complex domain shifts. The method achieves comparable or superior performance to full fine-tuning on benchmarks such as GLUE, SuperGLUE, and E2E NLG, while using only 0.1–1% of the parameters. For RoBERTa-base fine-tuned on GLUE, LoRA matches or exceeds the performance of full fine-tuning across all tasks. On GPT-2 fine-tuning for natural language generation, LoRA achieves a BLEU score of 70.4 on E2E NLG compared to 68.2 for fine-tuning with the same compute budget.
+
+LoRA is applied specifically to the attention weight matrices (Q, K, V projections) in transformer blocks, though it can be applied to any linear layer. Initialization is critical: matrix A is initialized with random Gaussian values and B with zeros, ensuring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in ze
+
+---
+
+[Source 2] LoRA: Low-Rank Adaptation for Large Language Models
+suring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.
+
+The broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard for task-specific adaptation, instruction tuning, and domain specialization of foundation models, enabling practitioners to create custom model variants at a fraction of the cost of full fine-tuning.
+
+---
+
+[Source 3] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems
+questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On TriviaQA, proper semantic chunking with reranking achieves F1 of 76.3 compared to 68.9 for naive chunking. Chunk overlap (10-20%) prevents information loss at boundaries. Contextual retrieval (Anthropic, 2024) prepends a model-generated context summary to each chunk before embedding, improving retrieval accuracy by 35% on document Q&A ben [truncated]","The context does not provide any information regarding a rank \( r \) equal to 512 for LoRA. It mentions that a rank of \( r=4 \) or \( r=8 \) is typically sufficient for most adaptation tasks, with higher ranks used for more complex domain shifts. However, there are no specific details or results related to \( r=512 \). Therefore, I cannot answer the rest from the available documents.",,,,
+dec-009,unanswerable_decline,What did I ask you in our conversation last Tuesday?,"Decline. Session memory is per session, so prior conversations on other days are not available.",direct,(no passages were retrieved),"I'm sorry, but I don't have the ability to recall past conversations or access personal data. However, I'm here to help with any questions you have now! What would you like to know?",,,,
+dec-010,unanswerable_decline,What is the home address of the first author of the LoRA paper?,"Decline. This is private personal information, it is not in the corpus, and it should not be supplied or guessed.",retrieval,"[Source 1] LoRA: Low-Rank Adaptation for Large Language Models
+LoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter-efficient fine-tuning method that dramatically reduces the cost of adapting large pre-trained language models to downstream tasks. The core insight is that the weight updates during fine-tuning have a low intrinsic rank. Rather than updating the full weight matrix W during fine-tuning, LoRA freezes the original weights and injects trainable low-rank decomposition matrices A and B such that the update is represented as ΔW = BA, where B ∈ R^(d×r) and A ∈ R^(r×k), with rank r much smaller than d and k. Only A and B are trained, reducing the number of trainable parameters by orders of magnitude.
+
+For GPT-3 (175B parameters), LoRA reduces the number of trainable parameters by 10,000x compared to full fine-tuning and decreases GPU memory requirements by 3x. A rank of r=4 or r=8 is typically sufficient for most adaptation tasks, with higher ranks used for more complex domain shifts. The method achieves comparable or superior performance to full fine-tuning on benchmarks such as GLUE, SuperGLUE, and E2E NLG, while using only 0.1–1% of the parameters. For RoBERTa-base fine-tuned on GLUE, LoRA matches or exceeds the performance of full fine-tuning across all tasks. On GPT-2 fine-tuning for natural language generation, LoRA achieves a BLEU score of 70.4 on E2E NLG compared to 68.2 for fine-tuning with the same compute budget.
+
+LoRA is applied specifically to the attention weight matrices (Q, K, V projections) in transformer blocks, though it can be applied to any linear layer. Initialization is critical: matrix A is initialized with random Gaussian values and B with zeros, ensuring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in ze
+
+---
+
+[Source 2] LoRA: Low-Rank Adaptation for Large Language Models
+suring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.
+
+The broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard for task-specific adaptation, instruction tuning, and domain specialization of foundation models, enabling practitioners to create custom model variants at a fraction of the cost of full fine-tuning.
+
+---
+
+[Source 3] Retrieval-Augmented Generation (RAG)
+Retrieval-Augmented Generation (RAG), introduced by Lewis et al. (2020), combines parametric knowledge stored in LLM weights with non-parametric knowledge retrieved from an external document store. The architecture has two components: a dense retriever (typically DPR — Dense Passage Retrieval) that encodes queries and documents into a shared embedding space, and a generative model (originally BART) that conditions its output on both the query and the retrieved passages. RAG addresses a critical limitation of standalone LLMs: their knowledge is frozen at training time and they cannot access proprietary, recent, or domai [truncated]","The context provided does not contain any information regarding the home address of the first author of the LoRA paper. It covers details about the LoRA method, its authors, and its applications, but does not include personal information such as addresses. Therefore, I cannot answer the question about the home address of the first author.",,,,
+dec-012,unanswerable_decline,What is the context window of Llama 4 according to the local documents?,Decline. The corpus covers Llama 2 and Llama 3 only.,retrieval,"[Source 1] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs
+The base frequency θ=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to θ=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.
+
+---
+
+[Source 2] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants
+Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.
+
+Fill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling—given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.
+
+Production code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res
+
+---
+
+[Source 3] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.","The context provided does not mention Llama 4 or its context window. It discusses Llama 3, which has a base frequency of θ=500000 supporting longer sequences, and Code Llama, which has a context window of up to 100K tokens. However, there is no information regarding Llama 4. Therefore, I cannot answer the question about the context window of Llama 4 from the available documents.",,,,
+dec-017,unanswerable_decline,How many text chunks are currently stored in this system's FAISS index?,Decline. The corpus describes FAISS as a technique and holds no facts about this deployment's own index contents.,direct,(no passages were retrieved),"I'm sorry, but I don't have access to specific system data or the current state of the FAISS index. If you need information about the number of text chunks stored, you might want to check the system's documentation or reach out to the technical team managing it.",,,,
+dec-021,unanswerable_decline,What score did human raters achieve on BIG-Bench Hard?,Decline. The document says BBH collects tasks where models performed below human rater level but gives no human score for BBH. The ninety percent figure in that document is for MMLU professional subjects.,retrieval,"[Source 1] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+Holistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional evaluation framework for LLMs that goes beyond single-metric leaderboards. HELM evaluates 30 models across 42 scenarios (tasks), 7 metrics dimensions (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency), and multiple prompt formats to reduce sensitivity to prompt choice. The framework covers scenarios across knowledge (NaturalQuestions, TriviaQA), reasoning (BoolQ, HellaSwag), code (HumanEval), legal (LegalSupport), medical (MedQA), and social fairness (BBQ) domains.
+
+BIG-Bench (Beyond the Imitation Game, Srivastava et al., 2022) is a collaborative benchmark comprising 204 tasks contributed by 450 researchers from 132 institutions, designed to probe capabilities at and beyond the frontier of current models. BIG-Bench Hard (BBH) extracts 23 tasks where large models previously performed below human rater level. With Chain-of-Thought prompting, GPT-4 achieves an average of 89.2% on BBH tasks. MMLU (Massive Multitask Language Understanding, Hendrycks et al., 2021) provides 4-choice multiple-choice evaluation across 57 academic subjects ranging from elementary mathematics to professional law and medicine, totaling 15,908 questions. Performance milestones: GPT-3 (175B) achieves 43.9% (5-shot), GPT-4 achieves 86.4%, Claude 3 Opus achieves 88.7%, Gemini Ultra achieves 90.0%, and Llama 3 70B Instruct achieves 82.0%. Human expert performance is estimated at ~90% on professional-level subjects.
+
+Evaluation methodology is an active research area. Benchmark contamination—models trained on data containing evaluation examples—inflates scores and is difficult to detect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conv
+
+---
+
+[Source 2] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman ρ≈0.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.
+
+---
+
+[Source 3] Reinforcement Learning from Human Feedback (RLHF)
+Reinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised fine-tuning (SFT) on high-quality human-written demonstrations of desired behavior; (2) reward model training, where human raters rank model outputs and a separate neural network learns to predict those rankings; (3) PPO (Proximal Policy Optimization) fine-tuning of the SFT model against the reward model's scores. InstructGPT (Ouyang et al., 2022), the precursor to ChatGPT, demonstrated that a 1.3B RLHF-tuned model was preferred by human raters over a 175B model trained only with next-token prediction. RLHF is now standard practice for all major commercial LLMs including GPT-4, Claude, and Gemini, though it requires expensive human annotation and can introduce reward hacking if the reward model is misspecified.","The context does not provide specific information about the score achieved by human raters on BIG-Bench Hard (BBH). It mentions that GPT-4 achieved an average of 89.2% on BBH tasks with Chain-of-Thought prompting, but does not specify the performance of human raters. Therefore, I cannot answer the rest of your question regarding human rater scores from the available documents.",,,,
+dec-022,unanswerable_decline,What weight decay did the CLIP authors use during training?,"Decline. The document gives batch size, architectures and accuracy figures but no weight decay.",retrieval,"[Source 1] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs
+The base frequency θ=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to θ=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.
+
+---
+
+[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+Llama 2, released by Meta AI in July 2023, presents a family of open-weight large language models trained from scratch on 2 trillion tokens of publicly available data. The model family includes 7B, 13B, 34B, and 70B parameter sizes. Improvements over Llama 1 include a 40% larger pretraining corpus, doubled context window (4096 vs. 2048 tokens), grouped-query attention (GQA) for the 34B and 70B models for efficient inference, and better training stability. The pretraining data mix includes CommonCrawl, C4, GitHub, Wikipedia, books, ArXiv papers, and StackExchange, with upsampled high-quality sources.
+
+The instruction-tuned variants (Llama 2-Chat) use supervised fine-tuning (SFT) on 27,540 high-quality human-written demonstration prompts, followed by RLHF with PPO using two reward models trained on over 1 million pairwise comparisons. A novel Ghost Attention (GAtt) mechanism maintains instruction consistency across long multi-turn conversations. Llama 2 70B achieves 68.9% on MMLU (5-shot), 85.1% on HellaSwag, and 35.4% on HumanEval. Safety evaluations show that Llama 2-Chat models exhibit significantly lower rates of harmful responses than Llama 1 (0.7% vs. 15.3% violation rate on Anthropic's red-teaming dataset).
+
+Llama 2's open release under a commercial-friendly license catalyzed an explosion of open-source LLM development. Derivative models including Code Llama (code-specialized, 7B-34B with 100K context), WizardLM-2, and Orca 2 proliferated rapidly. The architecture—RoPE positional embeddings, SwiGLU activation, RMSNorm—became the de facto standard for subsequent open models. Mistral 7B used the same architecture with sliding window attention, outperforming Llama 2 13B while being smaller. Llama 3 (Meta, April 2024) extended the series to 8B and 70B models trained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.
+
+---
+
+[Source 3] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.","The provided context does not contain any information regarding the weight decay used by the CLIP authors during training. It covers details about various large language models, their architectures, training data, and performance metrics, but does not mention CLIP or any specifics about weight decay. Therefore, I cannot answer the question regarding weight decay for CLIP from the available documents.",,,,
+dec-024,unanswerable_decline,What MMLU score does Gemini 2.5 Pro reach according to the evaluation document?,Decline and correct the premise. The document reports Gemini Ultra on MMLU and mentions Gemini 1.5 Pro in arena rankings. There is no Gemini 2.5 Pro figure.,retrieval,"[Source 1] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman ρ≈0.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.
+
+---
+
+[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.
+
+---
+
+[Source 3] Speculative Decoding for Accelerated LLM Inference
+to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additional parameters. Production deployments at scale use speculative decoding in various forms: Google uses a 7B model to accelerate Gemini Pro inference. The approach combines naturally with quantization, FlashAttention, and continuous batching (vLLM) for production LLM serving. Key limitations include sensitivity to draft-target model distribution match and reduced benefit at large batch sizes where compute utilization is already high.","The context does not provide information about the MMLU score for **Gemini 2.5 Pro**. It mentions that **Llama 2** achieved an **82.0%** score on MMLU but does not specify the score for Gemini 2.5 Pro. Therefore, I cannot answer the rest from the available documents.",,,,
+dec-027,unanswerable_decline,Name all eleven NLP benchmarks on which BERT set state of the art results.,Partial answer then decline. The document says eleven benchmarks and names SQuAD and GLUE only. Naming those two and stating the rest are not listed is correct. Inventing nine more names is a failure.,retrieval,"[Source 1] BERT — Bidirectional Encoder Representations from Transformers
+BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.
+
+---
+
+[Source 2] Vector Embeddings and Semantic Search
+Vector embeddings map discrete objects — words, sentences, documents, images — into continuous high-dimensional spaces where geometric proximity reflects semantic similarity. Sentence-BERT (Reimers & Gurevych, 2019) extended BERT to produce fixed-size sentence embeddings by adding a pooling layer and fine-tuning on Natural Language Inference datasets with a siamese network objective. The resulting embeddings support efficient semantic search: given a query embedding, approximate nearest-neighbor (ANN) algorithms like FAISS (Facebook AI Similarity Search) can retrieve the most similar documents from millions of candidates in milliseconds. FAISS supports multiple index types: Flat (exact brute-force), IVF (inverted file, fast approximate), and HNSW (hierarchical navigable small world graphs). For production RAG systems, the IVFFlat or IVFPQ indices offer the best speed-recall trade-off. Embedding models are evaluated on the MTEB (Massive Text Embedding Benchmark), which covers 56 datasets across 8 retrieval, clustering, and classification tasks.
+
+---
+
+[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.","The context does not specify the names of the eleven NLP benchmarks on which BERT set state-of-the-art results. It only mentions that BERT achieved new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering and the GLUE benchmark. Therefore, I cannot provide the names of all eleven benchmarks based on the available documents.",,,,
+dec-028,unanswerable_decline,What is the per-token inference cost of running Mixtral on AWS?,Decline. The corpus has no cloud pricing of any kind.,web_search,"[Source 1] Mixtral 8x7B API Price on Amazon AWS: $0.450/1M
+URL: https://computeprices.com/providers/aws/models/mixtral-8x7b
+How much does Mixtral 8x7B cost on Amazon AWS? Amazon AWS serves Mixtral 8x7B from $0.450 per 1M input tokens, across 1 tracked pricing mode.
+
+---
+
+[Source 2] Mixtral | AI Wiki
+URL: https://aiwiki.ai/wiki/mixtral
+Other engines. TensorRT-LLM, MLC-LLM, ExLlamaV2, AutoAWQ, GPTQ-for-LLaMA, and Apple's MLX framework all added Mixtral support during 2024. Microsoft's DeepSpeed-MoE work, which predates Mixtral, had already shown that MoE inference could be made several times cheaper than equivalently sized dense models through expert parallelism and specialized kernels, and these techniques carried over directly to serving Mixtral at scale. AWS released Mixtral 8x22B as part of Amazon SageMaker JumpStart on April 23, 2024, and Together AI, Anyscale, Replicate, Fireworks, and Groq all offered hosted inference, in many cases at lower per-token cost than GPT-3.5 Turbo.
+
+## Use in Mistral products [...] ### Memory and compute trade-off
+
+The key practical property of Mixtral is that compute scales with active parameters while memory scales with total parameters. A forward pass over one token activates roughly 12.9 billion parameters, so latency per token is similar to a dense 13B model. But all 46.7 billion parameters must be resident in VRAM (or fast-loadable from CPU) because any token at any layer might pick any pair of experts. This gives Mixtral the inference cost profile of a 13B dense model and the memory footprint of a 47B dense model. The full bfloat16 checkpoint is approximately 87 GB, which is too large for a single consumer GPU but fits on two RTX 3090s or 4090s, or on a single A100 80GB or H100 80GB.
+
+### Training [...] Topics
+
+## Cite this article
+
+Mixtral is a family of open-weight Sparse Mixture of Experts (SMoE) large language models developed by Mistral AI, a French artificial intelligence company founded in April 2023. The family contains two main models: Mixtral 8x7B, released on December 11, 2023, and Mixtral 8x22B, released on April 10, 2024. In Mixtral 8x7B, as the original paper states, ""each token has access to 47B parameters, but only uses 13B active parameters during inference,"" because a learned router selects two of eight expert subnetworks at every layer. This design lets the model carry a large total parameter count for capacity while activating only a fraction of those parameters per token, so it runs much faster than a dense model of comparable quality and is cheaper to serve.
+
+---
+
+[Source 3] Mixtral 8x7B: API Provider Performance Benchmarking & Price Analysis | Artificial Analysis
+URL: https://artificialanalysis.ai/models/mixtral-8x7b-instruct/providers
+The most affordable provider for Mixtral 8x7B Instruct by blended price is Amazon ($0.47 per 1M tokens). Blended price uses a 7:2:1 cache hit/input/output token ratio.
+
+The provider with the lowest input token pricing for Mixtral 8x7B Instruct is Amazon ($0.45 per 1M input tokens).
+
+The provider with the lowest output token pricing for Mixtral 8x7B Instruct is Amazon ($0.70 per 1M output tokens).
+
+Amazon leads across all key metrics for Mixtral 8x7B Instruct, offering the fastest speed, lowest latency, and most competitive pricing. [...] $0.47
+
+Blended price (per 1M tokens)
+
+Total 1 provider
+
+Mixtral 8x7B is available through Amazon.
+
+### Speed
+
+Output tokens per second · Higher is better
+
+### Latency
+
+Seconds to first answer token received · Lower is better
+
+### Price
+
+USD per 1M tokens (blended) · Lower is better
+
+## Pricing
+
+### Pricing: Cache Hit, Input, and Output: Mixtral 8x7B Providers
+
+Price (USD per M Tokens) · Lower is better · 10,000 input tokens
+
+Price per token for cached prompts (previously processed), typically offering a significant discount compared to regular input price, represented as USD per million tokens. The values shown here are the cache hit price; cache write and cache storage are billed separately and vary [truncated]","The **per-token inference cost** of running **Mixtral 8x7B** on **Amazon AWS** is **$0.450 per 1 million input tokens**. This pricing is consistent across the tracked pricing mode for this model, as stated in the context from [Source 1]. 
+
+Additionally, it is noted that the **lowest output token pricing** for Mixtral 8x7B Instruct on Amazon is **$0.70 per 1 million output tokens** according to [Source 3]. However, the context does not provide further details on other potential costs or variations in pricing.",,,,
+dec-032,unanswerable_decline,What is the filesystem path of the vector index on the server you are running on?,"Decline. This is deployment internals, not document content, and the agent should not speculate about its own host.",direct,(no passages were retrieved),"I'm sorry, but I can't provide specific filesystem paths or details about the server I'm running on. However, I can help answer questions about vector indexes or related topics if you're interested!",,,,
+dnt-001,direct_no_tools,What is 48 divided by 6?,The answer must state: 8 or eight,direct,(no passages were retrieved),48 divided by 6 is 8.,,,,
+dnt-004,direct_no_tools,What is the chemical formula for water?,The answer must state: h2o or h₂o,direct,(no passages were retrieved),The chemical formula for water is H₂O. This means each molecule of water is made up of two hydrogen atoms and one oxygen atom.,,,,
+dnt-006,direct_no_tools,What is the boiling point of water at sea level in degrees Celsius?,The answer must state: 100,direct,(no passages were retrieved),The boiling point of water at sea level is 100 degrees Celsius.,,,,
+dnt-008,direct_no_tools,What language is primarily spoken in Brazil?,The answer must state: portuguese,direct,(no passages were retrieved),"The primary language spoken in Brazil is Portuguese. It's the only country in South America where Portuguese is the official language, due to its colonial history. If you have any more questions about Brazil or its culture, feel free to ask!",,,,
+dnt-013,direct_no_tools,How many letters are in the English alphabet?,The answer must state: 26 or twenty-six or twenty six,direct,(no passages were retrieved),The English alphabet has 26 letters.,,,,
+dnt-019,direct_no_tools,What is the freezing point of water in degrees Fahrenheit?,The answer must state: 32,direct,(no passages were retrieved),The freezing point of water is 32 degrees Fahrenheit.,,,,
+dnt-021,direct_no_tools,What is the currency of Japan?,The answer must state: yen,direct,(no passages were retrieved),"The currency of Japan is the Japanese yen, often symbolized as ¥.",,,,
+dnt-022,direct_no_tools,"Good evening, can you introduce yourself?",Introduce itself conversationally. No retrieval and no web search.,direct,(no passages were retrieved),"Good evening! I'm AgentIQ, your friendly research assistant. I'm here to help you find information and answer your questions. How can I assist you today?",,,,
+dnt-023,direct_no_tools,What does the abbreviation RAM stand for in computing?,The answer must state: random access memory or random-access memory,direct,(no passages were retrieved),"RAM stands for Random Access Memory. It's a type of computer memory that allows data to be read and written quickly, making it essential for running applications and processing tasks efficiently.",,,,
+dnt-024,direct_no_tools,How many hours are in a week?,The answer must state: 168,direct,(no passages were retrieved),There are 168 hours in a week. That's calculated by multiplying 24 hours in a day by 7 days in a week!,,,,
+dnt-027,direct_no_tools,What is 7 factorial?,"The answer must state: 5040 or 5,040",direct,(no passages were retrieved),"7 factorial, written as 7!, is the product of all positive integers from 1 to 7. So, it's calculated as:
+
+7! = 7 × 6 × 5 × 4 × 3 × 2 × 1 = 5040.
+
+Therefore, 7 factorial equals 5040!",,,,
+dnt-028,direct_no_tools,Which gas do plants absorb from the air for photosynthesis?,The answer must state: carbon dioxide or co2,direct,(no passages were retrieved),"Plants absorb carbon dioxide (CO2) from the air for photosynthesis. This process allows them to convert sunlight into energy, using carbon dioxide and water to produce glucose and oxygen.",,,,
+dnt-033,direct_no_tools,How many degrees are in a right angle?,The answer must state: 90 or ninety,direct,(no passages were retrieved),A right angle has 90 degrees.,,,,
+dnt-035,direct_no_tools,"Thanks, goodbye.",Close the conversation briefly and conversationally. No retrieval and no web search.,direct,(no passages were retrieved),"You're welcome! If you ever have more questions, feel free to come back. Goodbye and take care!",,,,
+msr-003,multi_step_retrieval,"What percentage of input tokens does BERT mask during pre-training, and what is the name of its second pre-training task?",The answer must state: 15% or 15 percent; next sentence prediction or nsp,retrieval,"[Source 1] BERT — Bidirectional Encoder Representations from Transformers
+BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.
+
+---
+
+[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.
+
+---
+
+[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+Llama 2, released by Meta AI in July 2023, presents a family of open-weight large language models trained from scratch on 2 trillion tokens of publicly available data. The model family includes 7B, 13B, 34B, and 70B parameter sizes. Improvements over Llama 1 include a 40% larger pretraining corpus, doubled context window (4096 vs. 2048 tokens), grouped-query attention (GQA) for the 34B and 70B models for efficient inference, and better training stability. The pretraining data mix includes CommonCrawl, C4, GitHub, Wikipedia, books, ArXiv papers, and StackExchange, with upsampled high-quality sources.
+
+The instruction-tuned variants (Llama 2-Chat) use supervised fine-tuning (SFT) on 27,540 high-quality human-written demonstration prompts, followed by RLHF with PPO using two reward models trained on over 1 million pairwise comparisons. A novel Ghost Attention (GAtt) mechanism maintains instruction consistency across long multi-turn conversations. Llama 2 70B achieves 68.9% on MMLU (5-shot), 85.1% on HellaSwag, and 35.4% on HumanEval. Safety evaluations show that Llama 2-Chat models exhibit significantly lower rates of harmful responses than Llama 1 (0.7% vs. 15.3% violation rate on Anthropic's red-teaming dataset).
+
+Llama 2's open release under a commercial-friendly license catalyzed an explosion of open-source LLM development. Derivative models including Code Llama (code-specialized, 7B-34B with 100K context), WizardLM-2, and Orca 2 proliferated rapidly. The architecture—RoPE positional embeddings, SwiGLU activation, RMSNorm—became the de facto standard for subsequent open models. Mistral 7B used the same architecture with sliding window attention, outperforming Llama 2 13B while being smaller. Llama 3 (Meta, April 2024) extended the series to 8B and 70B models trained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.","BERT masks **15%** of input tokens during pre-training. The name of its second pre-training task is **Next Sentence Prediction (NSP)**, which trains the model to understand relationships between sentence pairs, according to [Source 1].",,,,
+msr-007,multi_step_retrieval,"In the InstructGPT result described in the documents, which model size was preferred by human raters over the 175B next-token-prediction model?",The answer must state: 1.3b,retrieval,"[Source 1] Reinforcement Learning from Human Feedback (RLHF)
+Reinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised fine-tuning (SFT) on high-quality human-written demonstrations of desired behavior; (2) reward model training, where human raters rank model outputs and a separate neural network learns to predict those rankings; (3) PPO (Proximal Policy Optimization) fine-tuning of the SFT model against the reward model's scores. InstructGPT (Ouyang et al., 2022), the precursor to ChatGPT, demonstrated that a 1.3B RLHF-tuned model was preferred by human raters over a 175B model trained only with next-token prediction. RLHF is now standard practice for all major commercial LLMs including GPT-4, Claude, and Gemini, though it requires expensive human annotation and can introduce reward hacking if the reward model is misspecified.
+
+---
+
+[Source 2] BERT — Bidirectional Encoder Representations from Transformers
+BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.
+
+---
+
+[Source 3] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+Holistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional evaluation framework for LLMs that goes beyond single-metric leaderboards. HELM evaluates 30 models across 42 scenarios (tasks), 7 metrics dimensions (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency), and multiple prompt formats to reduce sensitivity to prompt choice. The framework covers scenarios across knowledge (NaturalQuestions, TriviaQA), reasoning (BoolQ, HellaSwag), code (HumanEval), legal (LegalSupport), medical (MedQA), and social fairness (BBQ) domains.
+
+BIG-Bench (Beyond the Imitation Game, Srivastava et al., 2022) is a collaborative benchmark comprising 204 tasks contributed by 450 researchers from 132 institutions, designed to probe capabilities at and beyond the frontier of current models. BIG-Bench Hard (BBH) extracts 23 tasks where large models previously performed below human rater level. With Chain-of-Thought prompting, GPT-4 achieves an average of 89.2% on BBH tasks. MMLU (Massive Multitask Language Understanding, Hendrycks et al., 2021) provides 4-choice multiple-choice evaluation across 57 academic subjects ranging from elementary mathematics to professional law and medicine, totaling 15,908 questions. Performance milestones: GPT-3 (175B) achieves 43.9% (5-shot), GPT-4 achieves 86.4%, Claude 3 Opus achieves 88.7%, Gemini Ultra achieves 90.0%, and Llama 3 70B Instruct achieves 82.0%. Human expert performance is estimated at ~90% on professional-level subjects.
+
+Evaluation methodology is an active research area. Benchmark contamination—models trained on data containing evaluation examples—inflates scores and is difficult to detect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent cont [truncated]","In the InstructGPT result described in the documents, a **1.3B RLHF-tuned model** was preferred by human raters over the **175B model** trained only with next-token prediction. This information is provided in [Source 1].",,,,
+msr-010,multi_step_retrieval,How is the LoRA matrix A initialized and how is matrix B initialized?,The answer must state: gaussian; zero or zeros,retrieval,"[Source 1] LoRA: Low-Rank Adaptation for Large Language Models
+LoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter-efficient fine-tuning method that dramatically reduces the cost of adapting large pre-trained language models to downstream tasks. The core insight is that the weight updates during fine-tuning have a low intrinsic rank. Rather than updating the full weight matrix W during fine-tuning, LoRA freezes the original weights and injects trainable low-rank decomposition matrices A and B such that the update is represented as ΔW = BA, where B ∈ R^(d×r) and A ∈ R^(r×k), with rank r much smaller than d and k. Only A and B are trained, reducing the number of trainable parameters by orders of magnitude.
+
+For GPT-3 (175B parameters), LoRA reduces the number of trainable parameters by 10,000x compared to full fine-tuning and decreases GPU memory requirements by 3x. A rank of r=4 or r=8 is typically sufficient for most adaptation tasks, with higher ranks used for more complex domain shifts. The method achieves comparable or superior performance to full fine-tuning on benchmarks such as GLUE, SuperGLUE, and E2E NLG, while using only 0.1–1% of the parameters. For RoBERTa-base fine-tuned on GLUE, LoRA matches or exceeds the performance of full fine-tuning across all tasks. On GPT-2 fine-tuning for natural language generation, LoRA achieves a BLEU score of 70.4 on E2E NLG compared to 68.2 for fine-tuning with the same compute budget.
+
+LoRA is applied specifically to the attention weight matrices (Q, K, V projections) in transformer blocks, though it can be applied to any linear layer. Initialization is critical: matrix A is initialized with random Gaussian values and B with zeros, ensuring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in ze
+
+---
+
+[Source 2] LoRA: Low-Rank Adaptation for Large Language Models
+suring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.
+
+The broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard for task-specific adaptation, instruction tuning, and domain specialization of foundation models, enabling practitioners to create custom model variants at a fraction of the cost of full fine-tuning.
+
+---
+
+[Source 3] Prompt Engineering Techniques and Best Practices for LLMs
+mat explicitly (JSON schema, bullet points, length constraints); (4) For complex tasks, break into subtasks rather than asking for everything at once; (5) For reasoning tasks, always request explanation before conclusion; (6) Use system prompts for persistent instructions and user prompts for per-request context; (7) Temperature=0 for factual extraction, temperature=0.7-1.0 for creative tasks. Prompt injection attacks—where adversarial text in user input or retrieved context overrides the system prompt—represent an active security concern for production LLM applications, with countermeasures includ [truncated]","According to the provided context, **matrix A** is initialized with **random Gaussian values**, while **matrix B** is initialized with **zeros**. This initialization ensures that the update ΔW = 0 at the start of training.",,,,
+msr-012,multi_step_retrieval,"What quantization data type does QLoRA use, and approximately how many bits per weight does double quantization save?",The answer must state: nf4 or normalfloat; 0.37,retrieval,"[Source 1] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+Model quantization reduces the numerical precision of model weights and/or activations from 32-bit or 16-bit floating point to lower-bit representations (INT8, INT4, or INT2), dramatically reducing memory footprint and increasing inference throughput. QLoRA (Quantized Low-Rank Adaptation), introduced by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer at the University of Washington in 2023, combines 4-bit quantization of the base model with LoRA fine-tuning in full precision, enabling fine-tuning of 65B parameter models on a single 48GB NVIDIA A100 GPU. Without quantization, a 65B model in 16-bit precision requires approximately 130GB of GPU memory. QLoRA reduces this to approximately 41GB through 4-bit NormalFloat (NF4) quantization.
+
+QLoRA introduces three key innovations: NF4 quantization is information-theoretically optimal for normally distributed weights, distributing quantization levels such that each level corresponds to equal expected weight mass under a standard normal distribution, reducing quantization error by 0.5-1.0 perplexity points versus INT4. Double quantization compresses the quantization constants themselves from FP32 to 8-bit, saving approximately 0.37 bits per weight. Paged optimizers use NVIDIA unified memory to automatically page optimizer states between GPU and CPU memory during gradient spikes. GPTQ (Frantar et al., 2022) provides post-training quantization using the Hessian of each layer to determine optimal quantization, achieving 4-bit quantization of OPT-175B with only 0.25 perplexity increase on Wikitext-2 while reducing model size from 350GB to approximately 90GB and enabling 3.24x inference speedup on A100.
+
+GGUF (developed by Georgi Gerganov) provides a file format and inference framework optimized for CPU and mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-of
+
+---
+
+[Source 2] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.
+
+---
+
+[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.","**QLoRA** uses **4-bit quantization** of the base model. According to the context, **double quantization** saves approximately **0.37 bits per weight**.",,,,
+msr-013,multi_step_retrieval,"What perplexity increase does GPTQ incur when quantizing OPT-175B to 4 bits, and what inference speedup does it achieve on an A100?",The answer must state: 0.25; 3.24,retrieval,"[Source 1] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.
+
+---
+
+[Source 2] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+Model quantization reduces the numerical precision of model weights and/or activations from 32-bit or 16-bit floating point to lower-bit representations (INT8, INT4, or INT2), dramatically reducing memory footprint and increasing inference throughput. QLoRA (Quantized Low-Rank Adaptation), introduced by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer at the University of Washington in 2023, combines 4-bit quantization of the base model with LoRA fine-tuning in full precision, enabling fine-tuning of 65B parameter models on a single 48GB NVIDIA A100 GPU. Without quantization, a 65B model in 16-bit precision requires approximately 130GB of GPU memory. QLoRA reduces this to approximately 41GB through 4-bit NormalFloat (NF4) quantization.
+
+QLoRA introduces three key innovations: NF4 quantization is information-theoretically optimal for normally distributed weights, distributing quantization levels such that each level corresponds to equal expected weight mass under a standard normal distribution, reducing quantization error by 0.5-1.0 perplexity points versus INT4. Double quantization compresses the quantization constants themselves from FP32 to 8-bit, saving approximately 0.37 bits per weight. Paged optimizers use NVIDIA unified memory to automatically page optimizer states between GPU and CPU memory during gradient spikes. GPTQ (Frantar et al., 2022) provides post-training quantization using the Hessian of each layer to determine optimal quantization, achieving 4-bit quantization of OPT-175B with only 0.25 perplexity increase on Wikitext-2 while reducing model size from 350GB to approximately 90GB and enabling 3.24x inference speedup on A100.
+
+GGUF (developed by Georgi Gerganov) provides a file format and inference framework optimized for CPU and mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-of
+
+---
+
+[Source 3] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation
+ serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. DeepSeek-V2 introduces Multi-head Latent Attention (MLA) and fine-grained expert routing with 160 experts and top-6 routing, achieving competitive performance with significantly reduced KV cache memory. MoE models represent the dominant scaling strategy for next-generation foundation models due to their favorable compute-to-capacity trade-offs.","According to [Source 2], GPTQ (Frantar et al., 2022) achieves a **perplexity increase of 0.25** when quantizing OPT-175B to 4 bits. Additionally, it enables a **3.24x inference speedup** on an A100 GPU.",,,,
+msr-014,multi_step_retrieval,"What throughput does FlashAttention-2 reach on an A100, and what does standard attention reach on the same hardware?",The answer must state: 220; 72,retrieval,"[Source 1] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.
+
+---
+
+[Source 2] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+FlashAttention, developed by Tri Dao, Daniel Y. Fu, Stefano Ermon, and Atri Rudra at Stanford University in 2022, addresses the fundamental computational bottleneck of scaled dot-product attention in transformers. Standard attention requires materializing the full N×N attention matrix in GPU high-bandwidth memory (HBM), resulting in O(N²) memory usage. For a sequence of length N=4096 with dimension d=64 per head, the attention matrix requires 64MB per head per layer, quickly overwhelming GPU memory for long sequences. FlashAttention reformulates attention computation using tiling to fit operations in the faster SRAM (on-chip cache), never materializing the full attention matrix in HBM.
+
+The algorithm divides Q, K, and V matrices into blocks and computes attention incrementally, maintaining running statistics (softmax denominator and max value) to correctly accumulate partial results via the online softmax trick. The result is mathematically identical to standard attention (exact, not approximate) while requiring only O(N) memory instead of O(N²). IO complexity is reduced from O(N²d) to O(N²d²/M) HBM accesses, where M is SRAM size. FlashAttention achieves 2-4x wall-clock speedup over PyTorch's standard attention for sequence lengths 512 to 2048, with increasing speedup for longer sequences.
+
+FlashAttention-2 (Dao, 2023, arXiv:2307.08691) further optimizes by reducing non-matmul FLOPs, parallelizing across sequence length, and improving warp work partitioning, achieving up to 220 TFLOPs/s on A100 (73% of theoretical peak) versus 72 TFLOPs/s for standard attention. FlashAttention-2 is the default attention implementation in Megatron-LM, NeMo, and PyTorch 2.0's scaled_dot_product_attention. For sequence length 8K, it is approximately 9x faster than standard attention. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAtt
+
+---
+
+[Source 3] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs
+The base frequency θ=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to θ=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.","FlashAttention-2 achieves up to **220 TFLOPs/s** on A100 hardware, while standard attention reaches **72 TFLOPs/s** on the same hardware according to [Source 2].",,,,
+msr-017,multi_step_retrieval,What is the context window of Llama 2 and what was the context window of Llama 1?,"The answer must state: 4096 or 4,096; 2048 or 2,048",retrieval,"[Source 1] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs
+The base frequency θ=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to θ=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.
+
+---
+
+[Source 2] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants
+Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.
+
+Fill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling—given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.
+
+Production code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res
+
+---
+
+[Source 3] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.","The context window of **Llama 2** is **4K tokens**. However, the provided context does not specify the context window of **Llama 1**. Therefore, I cannot answer the rest regarding Llama 1's context window from the available documents.",,,,
+msr-020,multi_step_retrieval,"Which draft model and which target model are cited for the 2 to 3 times speedup from speculative decoding, and what are their parameter counts?",The answer must state: t5-small; 77m; t5-xxl; 11b,retrieval,"[Source 1] Speculative Decoding for Accelerated LLM Inference
+to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additional parameters. Production deployments at scale use speculative decoding in various forms: Google uses a 7B model to accelerate Gemini Pro inference. The approach combines naturally with quantization, FlashAttention, and continuous batching (vLLM) for production LLM serving. Key limitations include sensitivity to draft-target model distribution match and reduced benefit at large batch sizes where compute utilization is already high.
+
+---
+
+[Source 2] Speculative Decoding for Accelerated LLM Inference
+Speculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: each new token requires a full forward pass, making generation memory-bandwidth bound rather than compute-bound on modern accelerators. The key insight is that a small, fast ""draft"" model can propose multiple candidate tokens cheaply, and the large ""target"" model can verify all proposed tokens in parallel in a single forward pass (since verification only requires teacher-forcing, which is parallelizable unlike generation). If draft proposals are accepted via rejection sampling, multiple tokens are produced per forward pass of the large model, increasing throughput without changing the output distribution.
+
+The acceptance criterion guarantees that the output distribution matches exactly that of the target model (lossless speedup). For each draft token proposed by the draft model with probability q, the target model's probability p is compared. The token is accepted with probability min(1, p/q), and if rejected, a corrected token is sampled from an adjusted distribution. This rejection sampling scheme ensures the marginal distribution over output sequences is identical to sampling from the target model alone. In expectation, the number of tokens produced per target forward pass equals 1/(1-α) where α is the mean acceptance rate. With a well-matched draft model achieving α≈0.8, this yields approximately 3-5 tokens per target model forward pass.
+
+In practice, speculative decoding achieves 2-3x wall-clock speedup for text generation with T5-XXL (11B) using T5-Small (77M) as the draft model. Medusa (Cai et al., 2024) adds multiple prediction heads to the target model itself to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additio
+
+---
+
+[Source 3] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.","According to the context, the **draft model** used for achieving a **2-3x wall-clock speedup** in speculative decoding is **T5-Small**, which has **77 million parameters**. The **target model** is **T5-XXL**, which has **11 billion parameters**. This combination allows for increased throughput in text generation while maintaining the output distribution of the target model.",,,,
+msr-022,multi_step_retrieval,"What speedup does FlashAttention-2 give at sequence length 8K, and what RoPE base frequency does Llama 3 use?","The answer must state: 9x or 9 times; 500000 or 500,000",retrieval,"[Source 1] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.
+
+---
+
+[Source 2] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs
+The base frequency θ=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to θ=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.
+
+---
+
+[Source 3] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants
+Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.
+
+Fill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling—given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.
+
+Production code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res","The context does not provide specific information about the speedup that **FlashAttention-2** gives at a sequence length of **8K**. It mentions that **FlashAttention** enables training on significantly longer sequences and targets **H100 hardware**, achieving **740+ TFLOPs/s for FP16**, but does not specify the speedup for 8K sequences.
+
+Regarding the **RoPE base frequency**, **Llama 3** increases it to **θ=500000** to support longer sequences before interpolation degrades, as stated in the context.",,,,
+msr-028,multi_step_retrieval,"What does Tree-of-Thought achieve on Game of 24, and what does chain-of-thought achieve on the same task?",The answer must state: 74% or 74 percent; 4% or 4 percent,retrieval,"[Source 1] Chain-of-Thought Prompting in Large Language Models
+Chain-of-thought (CoT) prompting, introduced by Wei et al. (2022), elicits multi-step reasoning in large language models by including example reasoning chains in the few-shot prompt. Instead of showing only input-output pairs, CoT prompts show the intermediate reasoning steps that lead to the answer. For example, a math word problem prompt includes the full arithmetic reasoning trace before the final numerical answer. Experiments on PaLM (540B) showed CoT prompting improved accuracy on GSM8K grade-school math from 17.9% to 56.9% — a 3× improvement. Zero-shot CoT (Kojima et al., 2022) discovered that simply appending ""Let's think step by step"" to a question elicits similar reasoning chains without any examples. Subsequent work introduced self-consistency (sample multiple reasoning paths and majority-vote), tree-of-thought (explore multiple reasoning branches), and least-to-most prompting (decompose complex problems into simpler sub-problems). These techniques are now standard in production prompt engineering for tasks involving arithmetic, logic, and multi-hop reasoning.
+
+---
+
+[Source 2] Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems
+ReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for interleaving chain-of-thought reasoning with action execution in language model agents. Unlike chain-of-thought prompting (reasoning only) or action-only approaches, ReAct alternates between Thought steps (free-form reasoning), Action steps (invoking tools such as Wikipedia search, calculator, or code execution), and Observation steps (results returned by actions). This structured loop enables dynamic replanning based on new information and self-correction when actions produce unexpected results.
+
+On HotpotQA multi-hop question answering, ReAct achieves 35.1% exact match using GPT-3 with Wikipedia search, compared to 29.4% for chain-of-thought alone and 27.4% for action-only approaches. On FEVER (fact verification), ReAct achieves 60.9% compared to 56.3% for CoT. Error analysis shows that ReAct reduces hallucination by 8% compared to CoT alone, since factual claims can be verified against retrieved evidence. AutoGPT (Significant Gravitas, April 2023) demonstrated the viability of open-ended autonomous agents built on GPT-4, using persistent memory (via a vector database), internet browsing, code execution, and file management to autonomously pursue user-defined goals. AgentBench (Liu et al., 2023) evaluates agent performance across web browsing, database interaction, OS tasks, and games, finding GPT-4 (3.44) significantly outperforms open-source models (<1.0).
+
+Modern agent frameworks have matured significantly. OpenAI's Assistants API provides built-in thread management, tool calling, and file handling for production agents. LangGraph models agent workflows as directed graphs with cycles, enabling stateful multi-step agents with conditional branching and parallel execution. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles (Product Manager, Architect, Engineer, QA Engineer) with structured co
+
+---
+
+[Source 3] Prompt Engineering Techniques and Best Practices for LLMs
+Prompt engineering encompasses the set of techniques for structuring inputs to language models to elicit desired outputs without modifying model parameters. Zero-shot prompting directly asks the model to perform a task without examples, relying on pretraining to generalize. Few-shot prompting (Brown et al., 2020) provides task demonstrations that establish the input-output format. Chain-of-Thought (CoT) prompting (Wei et al., 2022) instructs the model to produce explicit intermediate reasoning steps before the final answer, dramatically improving performance on mathematical and logical tasks. On GSM8K, CoT prompting with GPT-3 ( [truncated]","According to [Source 3], **Tree-of-Thought** achieves **74%** on the **Game of 24**, while **chain-of-thought** achieves only **4%** on the same task.",,,,
+msr-030,multi_step_retrieval,"How many tasks does BIG-Bench contain, and how many tasks does BIG-Bench Hard extract from it?",The answer must state: 204; 23,retrieval,"[Source 1] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+Holistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional evaluation framework for LLMs that goes beyond single-metric leaderboards. HELM evaluates 30 models across 42 scenarios (tasks), 7 metrics dimensions (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency), and multiple prompt formats to reduce sensitivity to prompt choice. The framework covers scenarios across knowledge (NaturalQuestions, TriviaQA), reasoning (BoolQ, HellaSwag), code (HumanEval), legal (LegalSupport), medical (MedQA), and social fairness (BBQ) domains.
+
+BIG-Bench (Beyond the Imitation Game, Srivastava et al., 2022) is a collaborative benchmark comprising 204 tasks contributed by 450 researchers from 132 institutions, designed to probe capabilities at and beyond the frontier of current models. BIG-Bench Hard (BBH) extracts 23 tasks where large models previously performed below human rater level. With Chain-of-Thought prompting, GPT-4 achieves an average of 89.2% on BBH tasks. MMLU (Massive Multitask Language Understanding, Hendrycks et al., 2021) provides 4-choice multiple-choice evaluation across 57 academic subjects ranging from elementary mathematics to professional law and medicine, totaling 15,908 questions. Performance milestones: GPT-3 (175B) achieves 43.9% (5-shot), GPT-4 achieves 86.4%, Claude 3 Opus achieves 88.7%, Gemini Ultra achieves 90.0%, and Llama 3 70B Instruct achieves 82.0%. Human expert performance is estimated at ~90% on professional-level subjects.
+
+Evaluation methodology is an active research area. Benchmark contamination—models trained on data containing evaluation examples—inflates scores and is difficult to detect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conv
+
+---
+
+[Source 2] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation
+ serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. DeepSeek-V2 introduces Multi-head Latent Attention (MLA) and fine-grained expert routing with 160 experts and top-6 routing, achieving competitive performance with significantly reduced KV cache memory. MoE models represent the dominant scaling strategy for next-generation foundation models due to their favorable compute-to-capacity trade-offs.
+
+---
+
+[Source 3] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants
+3, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue resolution: Claude 3.7 Sonnet achieves 70.3% with extended thinking), LiveCodeBench (competitive programming problems from Codeforces/LeetCode to prevent contamination), and DS-1000 (data science tasks involving NumPy, Pandas, TensorFlow). Code generation models also show strong cross-task transfer to mathematical reasoning and structured data extraction.","According to the context, **BIG-Bench** contains **204 tasks**. From this, **BIG-Bench Hard (BBH)** extracts **23 tasks** where large models previously performed below human rater level.",,,,
+msr-031,multi_step_retrieval,"According to the evaluation frameworks document, what MMLU scores do GPT-3 175B, GPT-4 and Llama 3 70B Instruct reach?",The answer must state: 43.9; 86.4; 82.0,retrieval,"[Source 1] GPT-4 Technical Report — Capabilities and Safety
+GPT-4 (OpenAI, 2023) is a large multimodal model capable of processing both text and image inputs to produce text outputs. It achieves human-level performance on a wide range of professional and academic benchmarks: scoring in the top 10% on the Uniform Bar Exam (Score: 298/400), 88th percentile on the LSAT, and 90th percentile on the SAT Math section. GPT-4 uses RLHF and a new Constitutional AI-inspired safety training process, and is evaluated with a new metric called ""hallucination rate"" that measures factual accuracy against verified sources. The model shows significant improvements in steerability — following complex, nuanced system prompts — compared to GPT-3.5. OpenAI reports that GPT-4 was trained on a combination of publicly available internet data and licensed datasets, with a knowledge cutoff of September 2021. GPT-4 API powers applications across legal, medical, educational, and coding domains, with function calling and JSON mode enabling reliable structured output for agentic applications.
+
+---
+
+[Source 2] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman ρ≈0.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.
+
+---
+
+[Source 3] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants
+Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.
+
+Fill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling—given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.
+
+Production code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial lic [truncated]","The context provided does not include specific MMLU scores for GPT-3 175B, GPT-4, or Llama 3 70B Instruct. It discusses various evaluation frameworks and methodologies but does not detail the scores for these specific models. Therefore, I cannot answer the question regarding their MMLU scores from the available documents.",,,,
+msr-032,multi_step_retrieval,"What exact match score does ReAct achieve on HotpotQA, and what does chain-of-thought alone achieve?",The answer must state: 35.1; 29.4,retrieval,"[Source 1] Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems
+ReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for interleaving chain-of-thought reasoning with action execution in language model agents. Unlike chain-of-thought prompting (reasoning only) or action-only approaches, ReAct alternates between Thought steps (free-form reasoning), Action steps (invoking tools such as Wikipedia search, calculator, or code execution), and Observation steps (results returned by actions). This structured loop enables dynamic replanning based on new information and self-correction when actions produce unexpected results.
+
+On HotpotQA multi-hop question answering, ReAct achieves 35.1% exact match using GPT-3 with Wikipedia search, compared to 29.4% for chain-of-thought alone and 27.4% for action-only approaches. On FEVER (fact verification), ReAct achieves 60.9% compared to 56.3% for CoT. Error analysis shows that ReAct reduces hallucination by 8% compared to CoT alone, since factual claims can be verified against retrieved evidence. AutoGPT (Significant Gravitas, April 2023) demonstrated the viability of open-ended autonomous agents built on GPT-4, using persistent memory (via a vector database), internet browsing, code execution, and file management to autonomously pursue user-defined goals. AgentBench (Liu et al., 2023) evaluates agent performance across web browsing, database interaction, OS tasks, and games, finding GPT-4 (3.44) significantly outperforms open-source models (<1.0).
+
+Modern agent frameworks have matured significantly. OpenAI's Assistants API provides built-in thread management, tool calling, and file handling for production agents. LangGraph models agent workflows as directed graphs with cycles, enabling stateful multi-step agents with conditional branching and parallel execution. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles (Product Manager, Architect, Engineer, QA Engineer) with structured co
+
+---
+
+[Source 2] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman ρ≈0.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.
+
+---
+
+[Source 3] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+Holistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional evaluation framework for LLMs that goes beyond single-metric leaderboards. HELM evaluates 30 models across 42 scenarios (tasks), 7 metrics dimensions (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency), and multiple prompt formats to reduce sensitivity to prompt choice. The framework covers scenarios across knowledge (NaturalQuestions, TriviaQA), reasoning (BoolQ, HellaSwag), code (HumanEval), legal (LegalSupport), medical (MedQA), and social fairness (BBQ) domains.
+
+BIG-Bench (Beyond the Imitation Game, Srivastava et al., 2022) is a collaborative benchmark comprising 204 tasks contributed by 450 researchers from 132 institutions, designed to probe capabilities at and beyond the frontier of curren [truncated]","ReAct achieves a **35.1% exact match score** on HotpotQA, while chain-of-thought alone achieves **29.4%** according to the information provided in the context.",,,,
+msr-035,multi_step_retrieval,"In small-to-big retrieval, what token size are the child chunks and what token size are the parent chunks?",The answer must state: 100-150 or 100 to 150; 400-600 or 400 to 600,retrieval,"[Source 1] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems
+Retrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate responses. Chunking—how documents are divided into retrievable units—is a critical design decision that significantly impacts retrieval quality and downstream generation accuracy. Naive fixed-size chunking (e.g., every 512 tokens) is simple but cuts sentences, splits code blocks, and separates tables from captions, degrading retrieval precision. Semantic chunking adapts chunk boundaries to the natural semantic structure of documents by detecting topic transitions via embedding similarity between consecutive sentences, splitting at points where cosine similarity drops sharply below a threshold.
+
+LangChain's SemanticChunker uses percentile-based threshold selection: a split is made between sentences if their cosine similarity falls below the p-th percentile (typically p=90), resulting in chunks that respect paragraph and topic boundaries. On BEIR retrieval benchmarks, semantic chunking improves NDCG@10 by 3-8% compared to fixed-size chunking at equivalent average chunk size. Small-to-big retrieval (parent-child chunking) uses small chunks (100-150 tokens) for precise retrieval but returns the larger parent chunk (400-600 tokens) as context. Document-aware chunking preserves structural elements: section headers are prepended to child chunks to maintain topical context; code blocks are kept intact; tables are converted to text with column headers retained.
+
+Hierarchical chunking (Raptor, Sarthi et al., 2024) recursively summarizes clusters of chunks into higher-level summaries, building a tree structure that enables multi-scale retrieval for both detail-oriented and high-level questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On Trivi
+
+---
+
+[Source 2] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems
+questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On TriviaQA, proper semantic chunking with reranking achieves F1 of 76.3 compared to 68.9 for naive chunking. Chunk overlap (10-20%) prevents information loss at boundaries. Contextual retrieval (Anthropic, 2024) prepends a model-generated context summary to each chunk before embedding, improving retrieval accuracy by 35% on document Q&A benchmarks by enriching embeddings with document-level context. Cross-encoder rerankers (e.g., ms-marco-MiniLM-L-6-v2) applied after initial FAISS retrieval typically improve NDCG@3 by 5-15% with minimal latency cost.
+
+---
+
+[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.","In **small-to-big retrieval**, the **child chunks** are sized between **100-150 tokens**, while the **parent chunks** are larger, ranging from **400-600 tokens**. This approach allows for precise retrieval using the smaller chunks while providing broader context with the larger parent chunks. According to [Source 1], this method is part of a strategy to enhance retrieval quality and maintain topical context.",,,,
+msr-036,multi_step_retrieval,By how much does contextual retrieval improve retrieval accuracy on document question answering benchmarks?,The answer must state: 35% or 35 percent,retrieval,"[Source 1] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems
+questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On TriviaQA, proper semantic chunking with reranking achieves F1 of 76.3 compared to 68.9 for naive chunking. Chunk overlap (10-20%) prevents information loss at boundaries. Contextual retrieval (Anthropic, 2024) prepends a model-generated context summary to each chunk before embedding, improving retrieval accuracy by 35% on document Q&A benchmarks by enriching embeddings with document-level context. Cross-encoder rerankers (e.g., ms-marco-MiniLM-L-6-v2) applied after initial FAISS retrieval typically improve NDCG@3 by 5-15% with minimal latency cost.
+
+---
+
+[Source 2] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems
+Retrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate responses. Chunking—how documents are divided into retrievable units—is a critical design decision that significantly impacts retrieval quality and downstream generation accuracy. Naive fixed-size chunking (e.g., every 512 tokens) is simple but cuts sentences, splits code blocks, and separates tables from captions, degrading retrieval precision. Semantic chunking adapts chunk boundaries to the natural semantic structure of documents by detecting topic transitions via embedding similarity between consecutive sentences, splitting at points where cosine similarity drops sharply below a threshold.
+
+LangChain's SemanticChunker uses percentile-based threshold selection: a split is made between sentences if their cosine similarity falls below the p-th percentile (typically p=90), resulting in chunks that respect paragraph and topic boundaries. On BEIR retrieval benchmarks, semantic chunking improves NDCG@10 by 3-8% compared to fixed-size chunking at equivalent average chunk size. Small-to-big retrieval (parent-child chunking) uses small chunks (100-150 tokens) for precise retrieval but returns the larger parent chunk (400-600 tokens) as context. Document-aware chunking preserves structural elements: section headers are prepended to child chunks to maintain topical context; code blocks are kept intact; tables are converted to text with column headers retained.
+
+Hierarchical chunking (Raptor, Sarthi et al., 2024) recursively summarizes clusters of chunks into higher-level summaries, building a tree structure that enables multi-scale retrieval for both detail-oriented and high-level questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On Trivi
+
+---
+
+[Source 3] BERT — Bidirectional Encoder Representations from Transformers
+BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehensi [truncated]","According to the context, **contextual retrieval** improves retrieval accuracy by **35%** on document Q&A benchmarks by enriching embeddings with document-level context [Source 1].",,,,
+msr-040,multi_step_retrieval,"How much more memory efficient is DPO than PPO-based RLHF, and what MT-Bench scores are reported for each on LLaMA 7B?",The answer must state: 3x or 3 times or three times; 5.34; 5.51,retrieval,"[Source 1] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation
+ serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. DeepSeek-V2 introduces Multi-head Latent Attention (MLA) and fine-grained expert routing with 160 experts and top-6 routing, achieving competitive performance with significantly reduced KV cache memory. MoE models represent the dominant scaling strategy for next-generation foundation models due to their favorable compute-to-capacity trade-offs.
+
+---
+
+[Source 2] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+FlashAttention, developed by Tri Dao, Daniel Y. Fu, Stefano Ermon, and Atri Rudra at Stanford University in 2022, addresses the fundamental computational bottleneck of scaled dot-product attention in transformers. Standard attention requires materializing the full N×N attention matrix in GPU high-bandwidth memory (HBM), resulting in O(N²) memory usage. For a sequence of length N=4096 with dimension d=64 per head, the attention matrix requires 64MB per head per layer, quickly overwhelming GPU memory for long sequences. FlashAttention reformulates attention computation using tiling to fit operations in the faster SRAM (on-chip cache), never materializing the full attention matrix in HBM.
+
+The algorithm divides Q, K, and V matrices into blocks and computes attention incrementally, maintaining running statistics (softmax denominator and max value) to correctly accumulate partial results via the online softmax trick. The result is mathematically identical to standard attention (exact, not approximate) while requiring only O(N) memory instead of O(N²). IO complexity is reduced from O(N²d) to O(N²d²/M) HBM accesses, where M is SRAM size. FlashAttention achieves 2-4x wall-clock speedup over PyTorch's standard attention for sequence lengths 512 to 2048, with increasing speedup for longer sequences.
+
+FlashAttention-2 (Dao, 2023, arXiv:2307.08691) further optimizes by reducing non-matmul FLOPs, parallelizing across sequence length, and improving warp work partitioning, achieving up to 220 TFLOPs/s on A100 (73% of theoretical peak) versus 72 TFLOPs/s for standard attention. FlashAttention-2 is the default attention implementation in Megatron-LM, NeMo, and PyTorch 2.0's scaled_dot_product_attention. For sequence length 8K, it is approximately 9x faster than standard attention. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAtt
+
+---
+
+[Source 3] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness
+n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.","The provided context does not contain any information regarding the memory efficiency of DPO compared to PPO-based RLHF, nor does it mention MT-Bench scores for either method on LLaMA 7B. 
+
+It covers details about **Mixture of Experts (MoE) models**, **FlashAttention**, and their respective performance and efficiency improvements, but does not address the specific question about DPO and PPO-based RLHF. Therefore, I cannot answer the rest from the available documents.",,,,
+ts-001,tool_selection,What does the LoRA paper say about the rank value typically used for adaptation tasks?,Route to the local document store. The corpus has a LoRA document and the question asks what it says.,retrieval,"[Source 1] LoRA: Low-Rank Adaptation for Large Language Models
+LoRA (Low-Rank Adaptation), introduced by Edward Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen at Microsoft Research in 2021, presents a parameter-efficient fine-tuning method that dramatically reduces the cost of adapting large pre-trained language models to downstream tasks. The core insight is that the weight updates during fine-tuning have a low intrinsic rank. Rather than updating the full weight matrix W during fine-tuning, LoRA freezes the original weights and injects trainable low-rank decomposition matrices A and B such that the update is represented as ΔW = BA, where B ∈ R^(d×r) and A ∈ R^(r×k), with rank r much smaller than d and k. Only A and B are trained, reducing the number of trainable parameters by orders of magnitude.
+
+For GPT-3 (175B parameters), LoRA reduces the number of trainable parameters by 10,000x compared to full fine-tuning and decreases GPU memory requirements by 3x. A rank of r=4 or r=8 is typically sufficient for most adaptation tasks, with higher ranks used for more complex domain shifts. The method achieves comparable or superior performance to full fine-tuning on benchmarks such as GLUE, SuperGLUE, and E2E NLG, while using only 0.1–1% of the parameters. For RoBERTa-base fine-tuned on GLUE, LoRA matches or exceeds the performance of full fine-tuning across all tasks. On GPT-2 fine-tuning for natural language generation, LoRA achieves a BLEU score of 70.4 on E2E NLG compared to 68.2 for fine-tuning with the same compute budget.
+
+LoRA is applied specifically to the attention weight matrices (Q, K, V projections) in transformer blocks, though it can be applied to any linear layer. Initialization is critical: matrix A is initialized with random Gaussian values and B with zeros, ensuring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in ze
+
+---
+
+[Source 2] LoRA: Low-Rank Adaptation for Large Language Models
+suring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.
+
+The broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard for task-specific adaptation, instruction tuning, and domain specialization of foundation models, enabling practitioners to create custom model variants at a fraction of the cost of full fine-tuning.
+
+---
+
+[Source 3] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks
+tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman ρ≈0.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from  [truncated]","The **LoRA** paper states that a rank of **r=4** or **r=8** is typically sufficient for most adaptation tasks. Higher ranks may be used for more complex domain shifts. This approach allows for a significant reduction in the number of trainable parameters while still achieving comparable or superior performance to full fine-tuning on various benchmarks, such as GLUE and SuperGLUE.",,,,
+ts-004,tool_selection,How does Mixtral decide which experts to activate for a token?,Route to the local document store. Mixture of Experts routing is covered in the corpus.,retrieval,"[Source 1] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation
+Mixture of Experts (MoE) is an architectural approach that scales model capacity without proportionally scaling computation. In a standard dense transformer, every token activates all model parameters. In an MoE model, each transformer layer contains multiple parallel feed-forward networks (experts), and a learned routing mechanism selects a small subset of experts (typically top-2) for each token. This sparse activation pattern allows models to have far more total parameters than a dense model of equivalent computational cost. The landmark paper ""Mixtral of Experts"" (Jiang et al., Mistral AI, 2024, arXiv:2401.04088) demonstrated that a 46.7B total-parameter MoE model using only 12.9B active parameters per token matches or outperforms LLaMA 2 70B on most benchmarks while requiring less than half the compute during inference.
+
+The routing mechanism is central to MoE performance. A gating network assigns each token to the top-K experts based on learned affinity scores. Load balancing is a critical challenge: without explicit regularization, the router collapses to using only a few experts, wasting capacity. This is addressed through auxiliary balancing losses that encourage uniform expert utilization across a batch. Expert capacity buffers handle overflow when too many tokens are routed to the same expert. Switch Transformer (Fedus et al., Google Brain, 2022) demonstrated that even top-1 routing is sufficient for strong performance, achieving a 4-7x speedup over T5-XXL with equivalent quality. Mixtral 8x7B uses 8 experts with top-2 routing, meaning each forward pass activates 2 of 8 FFN experts per layer.
+
+Mixtral 8x7B achieves 75.1% on MMLU (5-shot), 74.2% on HellaSwag, and 56.0% on HumanEval, outperforming LLaMA 2 70B (69.8%) while being significantly cheaper to serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. De
+
+---
+
+[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.
+
+---
+
+[Source 3] Multi-Agent Systems and Collaborative AI: Architectures for LLM Agent Coordination
+Multi-agent systems (MAS) for LLMs extend single-agent frameworks by enabling multiple specialized agents to collaborate on complex tasks, with each agent having different tools, memory, context, and expertise. The key motivation is that decomposing complex tasks across specialized agents reduces each agent's context load, enables parallelism, and allows specialized fine-tuning or prompting per agent role. Agent coordination patterns include: debate-based frameworks (multiple agents arguing for different positions with a judge synthesizing the answer), hierarchical orchestration (a planner delegating subtasks to worker agents), and collaborative coding (multiple specialized agents for planning, coding, testing, and reviewing).
+
+Debate-based multi-agent frameworks show that 3-agent debate with GPT-3.5-turbo achieves 88.0% accuracy on GSM8K versus 77.5% for single-agent CoT. AutoGen (Wu et al., 2023, Microsoft) provides a framework for defining conversational agents with customizable personas, code execution, and human-in-the-loop capabilities. In a math benchmark, AutoGen's two-agent setup (Coder + Executor) achieves 96.3% on AMC-level problems using GPT-4. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles with structured communication via standardized documents (PRD, system design, code, test cases), generating complete executable code from one-sentence requirements and achieving 85.9% on the SoftwareDev benchmark versus 70.0% for AutoGPT.
+
+Memory arch [truncated]","Mixtral decides which experts to activate for a token using a **routing mechanism** that involves a **gating network**. This network assigns each token to the **top-K experts** based on **learned affinity scores**. Typically, Mixtral uses **top-2 routing**, meaning that for each token, it activates a small subset of experts (specifically, 2 out of the available experts) for processing. This approach allows for **sparse activation**, enabling the model to utilize a larger number of total parameters without a proportional increase in computational cost. 
+
+Additionally, to address the challenge of **load balancing**, the routing mechanism incorporates **auxiliary balancing losses** that encourage uniform expert utilization across a batch, preventing the router from collapsing to using only a few experts and thereby wasting capacity. Expert capacity buffers are also employed to handle situations where too many tokens are routed to the same expert.",,,,
+ts-007,tool_selection,What is Constitutional AI and how does RLAIF differ from RLHF?,Route to the local document store. Constitutional AI is covered in the corpus.,retrieval,"[Source 1] Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback
+Constitutional AI (CAI), introduced by Anthropic researchers in December 2022, presents a method for training AI systems to be helpful, harmless, and honest using a set of explicit principles (a ""constitution"") without relying exclusively on human-generated harmlessness labels. The approach addresses a core challenge in RLHF: collecting human feedback for harmful content requires exposing human annotators to potentially distressing material. CAI replaces human harmlessness feedback with feedback generated by the AI model itself, evaluating responses against constitutional principles. This is called Reinforcement Learning from AI Feedback (RLAIF).
+
+The CAI process operates in two stages. In the supervised learning stage (SL-CAI), a helpful but potentially harmful AI is prompted to generate responses, then critiques its own outputs against constitutional principles (e.g., ""Choose the response that is least likely to contain harmful content""), revises the responses accordingly, and the revised responses fine-tune the model. In the reinforcement learning stage (RL-CAI), an AI preference model is trained on comparisons generated by the AI itself, producing an AI feedback model (AIF) that scores responses. This AIF model then serves as the reward signal for PPO-based reinforcement learning. The constitution draws from the UN Declaration of Human Rights, Anthropic's usage policies, and Apple's terms of service.
+
+Empirically, CAI-trained models show strong harmlessness improvements while maintaining helpfulness. The RL-CAI model achieves harmlessness scores comparable to models trained with extensive human harmlessness feedback, while maintaining helpfulness parity. CAI models can explain why they decline requests rather than simply refusing—a significant improvement over evasive refusal patterns. Model scale matters significantly: larger models (52B parameters) show much stronger constitutional reasoning than smaller models (13B). Subsequent work by Google demonstrated that RLAIF can match or exceed human feedback quali
+
+---
+
+[Source 2] Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback
+er evasive refusal patterns. Model scale matters significantly: larger models (52B parameters) show much stronger constitutional reasoning than smaller models (13B). Subsequent work by Google demonstrated that RLAIF can match or exceed human feedback quality for summarization tasks at scale, enabling annotation of datasets orders of magnitude larger than human-labeled corpora. CAI informed the development of Claude models (Claude 1, 2, 3 series), providing interpretability advantages through explicit, auditable principles guiding model behavior.
+
+---
+
+[Source 3] AI Safety: Alignment, Red-Teaming, and Robustness in Large Language Models
+ TruthfulQA based on prompt phrasing. Calibration—the alignment between expressed confidence and actual accuracy—is measured by Expected Calibration Error (ECE): GPT-4 achieves ECE of 0.05 versus 0.19 for LLaMA 2 70B. Scalable oversight (Bowman et al., 2022) addresses the challenge of evaluating superhuman AI using AI assistance to help humans identify errors in tasks too complex to evaluate directly. Mechanistic interpretability research (Anthropic) uses sparse autoencoders to decompose model activations into human-interpretable features, identifying mono-semantic neurons corresponding to concepts like ""capital cities"" and ""programming bugs,"" providing a foundation for detecting deceptive or misaligned internal representations. Constitutional AI and RLAIF represent scalable paths toward alignment as model capabilities grow beyond human ability to evaluate all behaviors directly.","**Constitutional AI (CAI)** is a method for training AI systems to be **helpful, harmless, and honest** using a set of explicit principles, referred to as a ""constitution."" This approach was introduced by Anthropic researchers in December 2022 and aims to address the challenges associated with **Reinforcement Learning from Human Feedback (RLHF)**, particularly the need for human annotators to evaluate potentially harmful content, which can be distressing. Instead of relying solely on human feedback, CAI utilizes feedback generated by the AI model itself to evaluate its responses against constitutional principles, a process known as **Reinforcement Learning from AI Feedback (RLAIF)**.
+
+The key difference between RLAIF and RLHF lies in the source of feedback. In RLAIF, the AI critiques its own outputs and revises them based on its evaluation against the constitutional principles, while RLHF relies on human annotators to provide feedback on the AI's performance. RLAIF consists of two stages: the **supervised learning stage (SL-CAI)**, where the AI generates and critiques responses, and the **reinforcement learning stage (RL-CAI)**, where an AI preference model is trained on these self-generated comparisons to produce an AI feedback model that serves as the reward signal for reinforcement learning. This method allows for improvements in harmlessness while maintaining helpfulness, as demonstrated by CAI-trained models achieving comparable harmlessness scores to those trained with extensive human feedback.",,,,
+ts-013,tool_selection,What is the difference between GPTQ and QLoRA as quantization approaches?,Route to the local document store. Both are covered in the quantization document.,retrieval,"[Source 1] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+Model quantization reduces the numerical precision of model weights and/or activations from 32-bit or 16-bit floating point to lower-bit representations (INT8, INT4, or INT2), dramatically reducing memory footprint and increasing inference throughput. QLoRA (Quantized Low-Rank Adaptation), introduced by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer at the University of Washington in 2023, combines 4-bit quantization of the base model with LoRA fine-tuning in full precision, enabling fine-tuning of 65B parameter models on a single 48GB NVIDIA A100 GPU. Without quantization, a 65B model in 16-bit precision requires approximately 130GB of GPU memory. QLoRA reduces this to approximately 41GB through 4-bit NormalFloat (NF4) quantization.
+
+QLoRA introduces three key innovations: NF4 quantization is information-theoretically optimal for normally distributed weights, distributing quantization levels such that each level corresponds to equal expected weight mass under a standard normal distribution, reducing quantization error by 0.5-1.0 perplexity points versus INT4. Double quantization compresses the quantization constants themselves from FP32 to 8-bit, saving approximately 0.37 bits per weight. Paged optimizers use NVIDIA unified memory to automatically page optimizer states between GPU and CPU memory during gradient spikes. GPTQ (Frantar et al., 2022) provides post-training quantization using the Hessian of each layer to determine optimal quantization, achieving 4-bit quantization of OPT-175B with only 0.25 perplexity increase on Wikitext-2 while reducing model size from 350GB to approximately 90GB and enabling 3.24x inference speedup on A100.
+
+GGUF (developed by Georgi Gerganov) provides a file format and inference framework optimized for CPU and mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-of
+
+---
+
+[Source 2] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques
+d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.
+
+---
+
+[Source 3] LoRA: Low-Rank Adaptation for Large Language Models
+suring ΔW = 0 at the start of training. The scaling factor α/r is applied to the update, where α is a hyperparameter typically set equal to r. This design allows LoRA adapters to be merged back into the base model weights at inference time, resulting in zero additional latency compared to the original model. This merge-and-deploy pattern is one of LoRA's most practical advantages.
+
+The broader ecosystem built around LoRA has become foundational to the open-source LLM fine-tuning community. Libraries such as Hugging Face PEFT (Parameter-Efficient Fine-Tuning) provide plug-and-play LoRA integration for models like LLaMA, Mistral, Falcon, and GPT-2. Variants such as QLoRA combine LoRA with 4-bit quantization, enabling fine-tuning of 65B parameter models on a single 48GB A100 GPU. AdaLoRA extends the framework by adaptively allocating the rank budget across layers based on importance scores. LoRA has become the de facto standard  [truncated]","The **difference between GPTQ and QLoRA** as quantization approaches lies in their methodologies and applications:
+
+- **GPTQ (Post-Training Quantization)**:
+  - Developed by Frantar et al. in 2022, GPTQ uses the **Hessian of each layer** to determine optimal quantization.
+  - It achieves **4-bit quantization** of large models (e.g., OPT-175B) with only a **0.25 perplexity increase** on Wikitext-2.
+  - This method reduces the model size significantly, from **350GB to approximately 90GB**, and enables a **3.24x inference speedup** on NVIDIA A100 GPUs.
+
+- **QLoRA (Quantized Low-Rank Adaptation)**:
+  - Introduced by Dettmers et al. in 2023, QLoRA combines **4-bit quantization** of the base model with **LoRA fine-tuning** in full precision.
+  - It allows for fine-tuning of **65B parameter models** on a single **48GB NVIDIA A100 GPU**, reducing memory requirements from **130GB to approximately 41GB** through **4-bit NormalFloat (NF4) quantization**.
+  - QLoRA also incorporates innovations like **double quantization** and **paged optimizers** to enhance efficiency.
+
+In summary, while both approaches aim to reduce model size and improve inference speed, GPTQ focuses on post-training quantization using layer-specific Hessians, whereas QLoRA integrates quantization with fine-tuning techniques to optimize memory usage and performance during training.",,,,
+ts-014,tool_selection,Describe the checkpointer options LangGraph offers for conversation memory.,Route to the local document store. LangGraph checkpointers are covered in the corpus.,retrieval,"[Source 1] LangGraph — Stateful Multi-Agent Orchestration
+LangGraph is an open-source library from LangChain that extends the LangChain Expression Language to support stateful, multi-step, and cyclical agent workflows as explicit directed graphs. Unlike LangChain's linear chains or simple AgentExecutor loops, LangGraph models agent behavior as a StateGraph where nodes are Python functions and edges are either deterministic or conditional. State is a TypedDict that flows through the graph; each node receives the full state and returns a partial update. LangGraph's key features include: (1) built-in persistence via checkpointers (MemorySaver for in-memory, SqliteSaver for disk), enabling multi-turn conversation memory and fault-tolerant long-running workflows; (2) human-in-the-loop support through interrupt_before and interrupt_after hooks; (3) streaming at both the node level and token level; (4) support for subgraphs, parallel fan-out, and map-reduce patterns. LangGraph is used in production by teams building complex agentic systems that require reliable state management across multiple LLM calls.
+
+---
+
+[Source 2] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI
+Llama 2, released by Meta AI in July 2023, presents a family of open-weight large language models trained from scratch on 2 trillion tokens of publicly available data. The model family includes 7B, 13B, 34B, and 70B parameter sizes. Improvements over Llama 1 include a 40% larger pretraining corpus, doubled context window (4096 vs. 2048 tokens), grouped-query attention (GQA) for the 34B and 70B models for efficient inference, and better training stability. The pretraining data mix includes CommonCrawl, C4, GitHub, Wikipedia, books, ArXiv papers, and StackExchange, with upsampled high-quality sources.
+
+The instruction-tuned variants (Llama 2-Chat) use supervised fine-tuning (SFT) on 27,540 high-quality human-written demonstration prompts, followed by RLHF with PPO using two reward models trained on over 1 million pairwise comparisons. A novel Ghost Attention (GAtt) mechanism maintains instruction consistency across long multi-turn conversations. Llama 2 70B achieves 68.9% on MMLU (5-shot), 85.1% on HellaSwag, and 35.4% on HumanEval. Safety evaluations show that Llama 2-Chat models exhibit significantly lower rates of harmful responses than Llama 1 (0.7% vs. 15.3% violation rate on Anthropic's red-teaming dataset).
+
+Llama 2's open release under a commercial-friendly license catalyzed an explosion of open-source LLM development. Derivative models including Code Llama (code-specialized, 7B-34B with 100K context), WizardLM-2, and Orca 2 proliferated rapidly. The architecture—RoPE positional embeddings, SwiGLU activation, RMSNorm—became the de facto standard for subsequent open models. Mistral 7B used the same architecture with sliding window attention, outperforming Llama 2 13B while being smaller. Llama 3 (Meta, April 2024) extended the series to 8B and 70B models trained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.
+
+---
+
+[Source 3] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs
+The base frequency θ=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to θ=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has m [truncated]","LangGraph offers **built-in persistence** for conversation memory through two checkpointer options:
+
+- **MemorySaver**: This option is for in-memory persistence.
+- **SqliteSaver**: This option allows for disk-based persistence.
+
+These checkpointers enable **multi-turn conversation memory** and support **fault-tolerant long-running workflows** according to the information provided in the context from [Source 1].",,,,
+ts-015,tool_selection,What is the current price of Bitcoin in US dollars?,Route to live web search. The answer changes continuously and is not in the local corpus.,web_search,"[Source 1] Bitcoin Price (BTC/USD) Today | Live Price, Market Cap & Chart
+URL: https://www.binance.com/en/price/bitcoin
+### What Is the Current Price of Bitcoin (BTC)?
+
+The current price of Bitcoin (BTC) is $81.7K. Top cryptocurrency prices are updated in real-time on Binance’s price directory.
+
+## What is Bitcoin (BTC)?
+
+Bitcoin, represented by the ticker BTC, is the first decentralized cryptocurrency and top cryptocurrency by market capitalization. Launched in 2009 by the pseudonymous creator Satoshi Nakamoto, Bitcoin allows users to transfer value through a peer-to-peer network without relying on a central bank or payment intermediary.
+
+Bitcoin allows value to be transferred directly between participants through a peer-to-peer network. Transactions are recorded on a shared public ledger known as the Bitcoin blockchain and verified by computers distributed around the world. [...] Buy BTC
+
+No Data
+
+## Price of Bitcoin Today in USD
+
+The live Bitcoin price today is $81,695.15 USD. Track the latest BTC to USD price, 24-hour price movement, market capitalization and trading volume in real time. Bitcoin price has changed by -2.04% over the past 24 hours, with a circulating supply of 20.1M.
+
+### 24H Trading Activity
+
+Reflects Bitcoin (BTC) trading activity in the last 24 hours
+
+Seller
+
+42.9%
+
+57.1%
+
+Buyer
+
+## Bitcoin Price History
+
+24H
+
+7D
+
+1M
+
+3M
+
+1Y
+
+### All Time High
+
+Oct 6, 2025
+
+$126,198.07
+
+### Current
+
+$81,695.15
+
+### 24H High
+
+$84,840.04
+
+### 24H Low
+
+$81,567.58
+
+### 24H Change
+
+-2.04%
+
+### All Time High
+
+Oct 6, 2025
+
+$126,198.07
+
+### Current
+
+$81,695.15
+
+### 24H High
+
+$84,840.04
+
+### 24H Low
+
+$81,567.58
+
+### 24H Change
+
+-2.04% [...] ### 24H Low
+
+$81,567.58
+
+### 24H Change
+
+-2.04%
+
+## Bitcoin (BTC) to USD Conversion Calculator
+
+BTC/USD conversion rates
+
+0.1 BTC
+
+$8,169.51
+
+1 BTC
+
+$81,695.15
+
+10 BTC
+
+$816,951.5
+
+100 BTC
+
+$8,169,514.97
+
+0.5 BTC
+
+$40,847.57
+
+2 BTC
+
+$163,390.3
+
+5 BTC
+
+$408,475.75
+
+50 BTC
+
+$4,084,757.49
+
+200 BTC
+
+$16,339,029.94
+
+500 BTC
+
+$40,847,574.85
+
+View More
+
+USD/BTC conversion rates
+
+$100
+
+0.00122406 BTC
+
+$1,000
+
+0.01224063 BTC
+
+$10,000
+
+0.12240629 BTC
+
+$100,000
+
+1.22406288 BTC
+
+$200
+
+0.00244813 BTC
+
+$500
+
+0.00612031 BTC
+
+$2,000
+
+0.02448126 BTC
+
+$5,000
+
+0.06120314 BTC
+
+$20,000
+
+0.24481258 BTC
+
+$50,000
+
+0.61203144 BTC
+
+View More
+
+(Use our BTC to USD conversion table to check how much Bitcoin is worth in US dollars at the current live rate).
+
+## Crypto Market Sentiments
+
+### Fear & Greed Index
+
+49
+
+---
+
+[Source 2] BTC USD — Bitcoin Price and Chart — TradingView
+URL: https://www.tradingview.com/symbols/BTCUSD
+Image 77
+
+BTCI NEOS Bitcoin High Income ETF
+
+Image 78
+
+FBTC Fidelity Advantage Bitcoin ETF Series L Trust Units
+
+## Frequently asked questions
+
+What is Bitcoin price today?
+
+The current price of Bitcoin (BTC) is 81,673 USD — it has fallen −2.80% in the past 24 hours. Try placing this info into the context by checking out what coins are also gaining and losing at the moment and seeing BTC price chart.
+
+What is Bitcoin market cap?
+
+The current market capitalization of Bitcoin (BTC) is ‪1.64 T‬USD. To see this number in a context check out our list of crypto coins ranked by their market caps or see crypto market cap charts.
+
+What is the daily trading volume of Bitcoin?
+
+Bitcoin (BTC) trading volume in 24 hours is ‪30.49 B‬USD. See how often other coins are traded in this list.
+
+---
+
+[Source 3] BTC to USD: Convert Bitcoin (BTC) to US Dollar (USD) | Coinbase: btc to usd converter, bitcoin calculator, bitcoin converter
+URL: https://www.coinbase.com/converter/btc/usd
+Sign up 󰐲
+
+Image 8
+
+Sum of median estimated savings and rewards earned, per user in 2021 across multiple Coinbase programs (excluding sweepstakes). This amount includes fee waivers from Coinbase One (excluding the subscription cost), rewards from Coinbase Card, and staking rewards.
+
+## About Bitcoin
+
+#### Bitcoin is climbing this week. The current price of Bitcoin is $85,474.07 per BTC. With a circulating supply of 20,093,390 BTC, it means that Bit [truncated]","The current price of Bitcoin (BTC) is **$81,695.15 USD** according to multiple sources, including Binance and CoinMarketCap. The price has experienced a change of **-2.04%** over the past 24 hours, with a 24-hour high of **$84,840.04** and a low of **$81,567.58**. 
+
+Additionally, other sources report slightly different current prices, such as **$81,673 USD** and **$83,461.52 USD**, indicating some variation in real-time updates across platforms. However, the most consistent figure from the provided context is **$81,695.15 USD**.",,,,
+ts-018,tool_selection,What are today's top technology news headlines?,Route to live web search. News is live information.,web_search,"[Source 1] Instagram
+URL: https://www.instagram.com/p/DeaX43_D3qC
+Today's Tech News, October 13, 2026  
+  
+TechCrunch Disrupt opens in San Francisco today. The brief is packed with AI rules, construction software, defence weather data, and always-on assistants. Here is what to know before the keynotes.  
+  
+Here are the 4 biggest tech stories you need to know today:  
+  
+01. Microsoft: UK best placed for AI rules, Microsoft President Brad Smith told the BBC that milk and washing machines face tighter oversight than frontier AI labs. He backs Britain's AI Security Institute over Washington or Brussels for global safety rules, and says voluntary pledges will not stop irresponsible players.
+
+---
+
+[Source 2] Top Tech News Today, February 23, 2026 - Tech Startups
+URL: https://techstartups.com/2026/02/23/top-tech-news-today-february-23-2026
+Why It Matters: Generative audio could unlock a new ad format — but it also raises fresh trust, disclosure, and manipulation risks.
+
+Source: MediaPost.
+
+That’s your quick tech briefing for today. Follow us on X @TheTechStartups for more real-time updates.
+
+0
+
+Shares
+
+ Share On Facebook
+ Tweet It
+
+##### Trending Now
+
+[](
+
+###### Top Tech News Today, September 24, 2026: Amazon, Anthropic, DeepSeek, Google, Meta, OpenAI, Oracle & More
+
+Nickie Louise   September 24, 2026
+
+[](
+
+###### Top Tech News Today, October 8, 2026: Adobe, Google, Manus, Microsoft, Nvidia, OpenAI, Tencent & More
+
+Nickie Louise   October 8, 2026
+
+- Advertisement -
+
+OpenAI expects $600B compute spend by 2030 as company eyes $1 trillion IPO
+
+Read Next [...] While practical quantum advantage remains an evolving target, the ecosystem is maturing around enabling layers: control systems, quantum-safe security, packaging, and pathways to scalable architectures. Strategic investments can accelerate commercialization by pairing capital with manufacturing relationships, talent pipelines, and go-to-market support.
+
+The broader tech takeaway: “frontier” categories are increasingly being financed through a geopolitical lens. Just as AI chips became strategic assets, quantum is heading down a similar path — with greater emphasis on where technology is built, not just on what it can do.
+
+Why It Matters: Quantum is shifting from lab curiosity to strategic infrastructure, and capital is following sovereignty priorities.
+
+Source: EE News Europe. [...] Why It Matters: AI-era developer tooling increases the value of stolen tokens, making supply-chain attacks more lucrative.
+
+Source: The Hacker News.
+
+### TIM and Microsoft Partner to ускорate Italy’s Cloud and AI Adoption Push
+
+Italy’s telecoms incumbent TIM has announced a partnership with Microsoft to accelerate cloud and AI adoption across Italian businesses and public-sector organizations, with a focus on cybersecurity and modernization. In European markets, telecom-cloud collaboration is becoming a standard approach to drive national digitization goals while keeping data residency and compliance concerns front and center.
+
+---
+
+[Source 3] Technology News Today, Latest Tech News - The Hindu
+URL: https://www.thehindu.com/sci-tech/technology
+### OpenAI says its AI agents weakened internal monitoring system
+
+Reuters
+
+[![The memo did not say how many jobs would be affected, and Reuters could ‌not immediately determine the scale of the cuts [File]]( ""The memo did not say how many jobs would be affected, and Reuters could ‌not immediately determine the scale of the cuts [File]"")](
+
+### Qualcomm to cut jobs worldwide in performance-focused layoffs, internal memo shows
+
+Reuters
+
+[![Shares in SpaceX shot up nearly five percent in after-hours trading following the comments [File]]( ""Shares in SpaceX shot up nearly five percent in after-hours trading following the comments [File]"")](
+
+### Elon Musk says he backs SpaceX-Tesla merger as rocket firm turns profit
+
+AFP
+
+### Unknown vulnerabilities: on the cybersecurity advisory by CERT-In [...] Business
+
+Business   Agri-Business   Economy   Industry   Markets    [truncated]","Today's top technology news headlines include:
+
+1. **TechCrunch Disrupt** opens in San Francisco, focusing on **AI rules**, **construction software**, **defence weather data**, and **always-on assistants**.
+2. **Microsoft** President Brad Smith states that the **UK is best placed for AI rules**, emphasizing that **milk and washing machines** face tighter oversight than **frontier AI labs**.
+3. **OpenAI** expects a **$600 billion compute spend by 2030** as it prepares for a potential **$1 trillion IPO**.
+4. **TIM and Microsoft** have partnered to accelerate **cloud and AI adoption** in Italy, focusing on **cybersecurity** and **modernization** efforts.
+
+These highlights reflect significant developments in AI regulation, corporate partnerships, and financial expectations within the tech industry.",,,,
+ts-019,tool_selection,What is today's date?,Route to live web search. The router prompt names today's date as a web search case.,web_search,"[Source 1] What is the date today? Today's Date
+URL: https://www.datetoday.net
+##### Today's Date in Various Format
+
+| Date Format | Today's Date |
+ --- |
+| ISO 8601 | 2026-10-22T19:51:24+00:00 |
+| RFC2822 | Thu, 22 Oct 2026 19:51:24 +0000 |
+| Unix Epoch | 1792698684 |
+| YYYY-MM-DD | 2026-10-22 |
+| DD-MM-YY | 22-10-2026 |
+| MM-DD-YY | 10-22-2026 |
+| Y/m/d | 2026/10/22 |
+| d/m/Y | 22/10/2026 |
+| m/d/Y | 10/22/2026 |
+| Ymd | 20261022 |
+
+##### What is Today Date?
+
+A simple line, easily overlooked—but “today” is more than just a point on the calendar. It's a reset button, a fresh window of time. No matter what yesterday held, the date today is proof that the story continues.
+
+In digital systems, today's date keeps things in sync. In our lives, it marks progress. Birthdays, deadlines, anniversaries, memories—they all orbit around the quiet power of this number. [...] The current date serves as a fundamental reference point in both professional and personal contexts. It marks the passage of time, structures our schedules, and provides chronological context for our decisions and activities.
+
+Accurate awareness of the date is essential in fields such as education, business, healthcare, and software development. It ensures precision in time-stamping, reporting, deadline tracking, and recordkeeping.
+
+While often taken for granted, the date today is a shared temporal anchor—connecting people, systems, and events across the world.
+
+##### Date Today: Thursday, October 22, 2026
+
+ ISO 8601 (YYYY-MM-DD): 2026-10-22
+ US Format (MM/DD/YYYY): 10/22/2026
+ EU Format (DD/MM/YYYY): 22/10/2026
+ SQL Format: 2026-10-22
+ RFC 2822: Thu, 22 Oct 2026 19:51:24 +0000 [...] |  Date Tomorrow
+
+# What is the date today?
+
+Today's Date is Thu Oct 22 2026.
+
+## About Date Today
+
+The term ""Date Today"" refers to the current calendar date as determined by a system's internal clock or a real-time source. It is typically represented in formats compliant with international or locale-based standards. Date Today common use cases are: timestamping logs and events, scheduling tasks and reminders, filtering data, validating time-sensitive actions.
+
+Get the free World Time UTC Clock app — see time in 200+ cities:
+
+ Download Date Today app on the App Store   Get Date Today on Google Play
+
+### Today's Date and Time in New York
+
+10/22/2026, 07:51:27 PM
+
+### Today's Date and Time in London
+
+10/22/2026, 07:51:27 PM
+
+### Today's Date and Time in Tokyo
+
+10/22/2026, 07:51:27 PM
+
+---
+
+[Source 2] Today's Date
+URL: https://www.calendardate.com/todays.htm
+# Today's Date
+
+Today's Date is Thursday October 22, 2026
+
+Time zone: Pernambuco/Recife
+
+|  |
+
+| October 2026 |
+| Sun | Mon | Tue | Wed | Thr | Fri | Sat |
+| 1 | 2 | 3 |
+| 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+| 11 | 12 | 13 | 14 | 15 | 16 | 17 |
+| 18 | 19 | 20 | 21 | 22 | 23 | 24 |
+| 25 | 26 | 27 | 28 | 29 | 30 | 31 |
+
+  
+
+|  |  |
+ --- |
+| Day Number of Year: | 295 |
+| Week Number of Year: | 43 |
+| Month Number of Year: | 10 |
+| Leap Year: | No - Next is 2028 |
+| Daylight Saving Time: | No |
+
+  
+   
+
+|  |
+
+| Today's Date in Other Date Formats |
+| Unix Epoch: | 1792720264 |
+| ISO-8601: | 2026-10-22T22:51:04-03:00 |
+| RFC 2822: | Thu, 22 Oct 2026 22:51:04 -0300 |
+| DD-MM-YYYY: | 22-10-2026 |
+| MM-DD-YYYY: | 10-22-2026 |
+| YYYY-DD-MM: | 2026-22-10 |
+| YYYY-MM-DD: | 2026-10-22 |
+
+  
+
+|  | [...] |  |
+
+| Sun Today |
+| Sunrise: | 4:53 am |
+| Sunset: | 5:14 pm |
+
+  
+
+|  |
+
+| Moon Today |
+| Moonrise: | 2:17 pm |
+| Moonset: | 2:01 am |
+| Moonphase: | Waxing Gibbous |
+| Visibility (illumination): | 86% |
+
+  
+
+|  |
+
+| Current Season Today |
+| Autumn with 60 days until the start of Winter. |
+| S. Hemishpere flip seasons - i.e. Winter is Summer. |
+
+  
+
+|  |
+
+| Zodiac Signs and Birthday Symbols for Today's Date |
+| Zodiac Sign: | Libra |
+| Birthstone: | Opal and Tourmaline |
+| Birth Flower: | Marigold |
+
+  
+
+Upcoming Holidays [...] Upcoming Holidays
+
+|  |  |  |
+ --- 
+| Oct 31 - Sat | Halloween 2026 | Observance |
+| Nov 1 - Sun | All Saints' Day 2026 | Christian [truncated]","Today's date is **Thursday, October 22, 2026**. 
+
+In various formats, it can be represented as:
+- **ISO 8601**: 2026-10-22
+- **US Format (MM/DD/YYYY)**: 10/22/2026
+- **EU Format (DD/MM/YYYY)**: 22/10/2026
+- **RFC 2822**: Thu, 22 Oct 2026 19:51:24 +0000 
+
+This information is consistent across multiple sources, confirming the date and its representations.",,,,
+ts-022,tool_selection,What is the current exchange rate from US dollars to euros?,Route to live web search. Exchange rates change continuously.,web_search,"[Source 1] US Dollar to Euro Exchange Rate (Market Daily, I:USDEW324) - Historical Data & Trends
+URL: https://ycharts.com/indicators/us_dollar_to_euro_exchange_rate
+0.8886 EUR/1 USD for Oct 16 2026 
+
+Watchlist
+
+Loading...
+
+   Overview
+   Interactive Chart
+
+More
+
+### Level Chart
+
+Image 10: Level Chart
+
+### Basic Info
+
+US Dollar to Euro Exchange Rate is at a current level of 0.8887, down from 0.8922 the previous market day and up from 0.8584 one year ago. This is a change of -0.40% from the previous market day and 3.52% from one year ago.
+
+ReportECB Euro Exchange Rates
+CategoryForeign Exchange
+
+Region N/A
+SourceEuropean Central Bank
+
+### Stats
+
+Last Value 0.8886
+Latest Period Oct 16 2026
+Last Updated Oct 16 2026, 10:20 EDT
+Next Release Oct 19 2026, 10:00 EDT
+Average Growth Rate 0.59% [...] 09/22 07:38
+
+Central Bank Outlooks, Geopolitics Damp European Bourses Midday
+
+09/18 07:44
+
+US Dollar Rises Early Friday Ahead of Industrial Production, Bowman Appearance
+
+09/18 07:41
+
+US Dollar Mixed Early Thursday Ahead of Jobless Claims, Housing Starts, Philadelphia Fed Manufacturing
+
+09/17 07:49
+
+### Basic Info
+
+US Dollar to Euro Exchange Rate is at a current level of 0.8887, down from 0.8922 the previous market day and up from 0.8584 one year ago. This is a change of -0.40% from the previous market day and 3.52% from one year ago.
+
+ReportECB Euro Exchange Rates
+CategoryForeign Exchange
+
+Region N/A
+SourceEuropean Central Bank
+
+### Stats
+
+Last Value 0.8886
+Latest Period Oct 16 2026
+Last Updated Oct 16 2026, 10:20 EDT
+Next Release Oct 19 2026, 10:00 EDT
+Average Growth Rate 0.59% [...] Featured Content
+
+Image 8: Fund Flow Reports Fund Flow ReportsA New Era at the FedYCharts University Training
+
+Unlock Additional Benefits When You Refer Colleagues
+
+Share model strategies, proposals and more
+
+Create consistent branding across teams
+
+Save time on administrative tasks
+
+Enter an email address to invite people to YCharts.
+
+ Cancel 
+
+Invite)
+
+Plans
+
+Image 9: YCharts logo
+
+Unlock Additional Benefits When You Refer Colleagues
+
+Share model strategies, proposals and more
+
+Create consistent branding across teams
+
+Save time on administrative tasks
+
+Enter an email address to invite people to YCharts.
+
+ Cancel 
+
+Invite)
+
+Loading...
+
+ Cancel 
+
+Free Trial
+
+Log In
+
+# US Dollar to Euro Exchange Rate (I:USDEW324)
+
+ 0.8886 EUR/1 USD for Oct 16 2026 
+
+Watchlist
+
+Loading...
+
+---
+
+[Source 2] USD to EUR | Convert US Dollar to Euro
+URL: https://www.westernunion.com/us/en/currency-converter/usd-to-eur-rate.html
+1.00 USD – 0.8734 EUR Exchange Rates and Fees shown are estimates, vary by a number of factors including payment and payout methods, and are subject to change.
+
+---
+
+[Source 3] Convert USD to EUR | US Dollars to Euros Exchange Rates
+URL: https://www.revolut.com/en-US/currency-converter/convert-usd-to-eur-exchange-rate
+## 1 USD = 0.85750 EUR
+
+-€0.00310 X 0.36 %
+
+Aug 25, 2025 Dec 23, 2025 Apr 23, 2026 Aug 21, 2026
+
+1d 1w 1m 3m 6m 1y 5y All
+
+## US Dollars to Euros: exchange rates today
+
+| Image 4: USUSD | Image 5EUR |
+ --- |
+| 1 USD | 0.85 EUR |
+| 10 USD | 8.54 EUR |
+| 20 USD | 17.09 EUR |
+| 50 USD | 42.73 EUR |
+| 100 USD | 85.46 EUR |
+| 250 USD | 213.66 EUR |
+| 300 USD | 256.39 EUR |
+| 500 USD | 427.32 EUR |
+| 1,000 USD | 854.64 EUR |
+| 2,000 USD | 1,709.29 EUR |
+| 5,000 USD | 4,273.24 EUR |
+| 10,000 USD | 8,555.74 EUR | [...] # USD to EUR: Convert US Dollars to Euros
+
+Exchange US Dollars to Euros in-app, then save, spend, and send however you like — with great exchange rates and low fees. That's true global freedom. Make your money go further with Revolut.
+
+Send money to Europe
+
+Amount 
+
+Image 2: USUSD
+
+Converted to 
+
+Image 3EUR
+
+Our current rate$1 = €0.8546
+
+Additional fees$10.00
+
+Exchange rates are dynamic. Always remember to check the applicable rate in-app before carrying out your exchange
+
+Exchange, fair usage limits, and Terms and Conditions apply.
+
+   140+ countries and regions supported
+   75+ million global customers and counting
+   Trusted with 67.5 bill [truncated]","The current exchange rate from US dollars to euros varies among different sources:
+
+- According to **[Source 1]**, the exchange rate is **0.8886 EUR/1 USD** as of October 16, 2026.
+- **[Source 2]** states the rate as **0.8734 EUR/1 USD**.
+- **[Source 3]** lists the rate as **0.85750 EUR/1 USD**.
+- **[Source 4]** indicates a mid-market rate of **0.8634 EUR/1 USD**.
+- **[Source 5]** shows a rate of **0.86210 EUR/1 USD**.
+
+The context provides multiple rates, and I cannot determine which one is the most current or accurate beyond what is stated.",,,,
+ts-024,tool_selection,Are there any flight delays at Heathrow today?,Route to live web search. Flight status is live information.,web_search,"[Source 1] Live Airline Flight Cancellations Info & Statistics
+URL: https://www.flightaware.com/live/cancelled/today/LHR
+Total delays today at Heathrow: 89 Total delays within, into, or out of the United States today at Heathrow: 14 Total cancellations today at Heathrow: 0
+
+---
+
+[Source 2] Europe Flight Chaos Oct 4, 2026: 297 Cancellations, 3,938 Delays — 14 Airports
+URL: https://www.traveltourister.com/news/europe-flight-chaos-october-4-2026-297-cancellations-3938-delays-heathrow-533-delays-paris-cdg-frankfurt-milan-dublin-manchester-14-airports-atfm-ba-air-france-ryanair-easyjet-eu261-rights
+### ✈️ PART 2: Airport-by-Airport Breakdown — Every Hub
+
+#### 🇬🇧 London Heathrow (LHR) — 533 Delays, 64 Cancellations — Europe’s Worst Today
+
+London Heathrow recorded the highest US-connected delays at 73, with live tracking reports showing average departure delays ranging between 39 and 48 minutes. Hub operators like British Airways initiate tactical cancellations to prevent aircraft and crew duty-time expirations from cascading into transatlantic schedules.
+
+Heathrow’s 533 delays and 64 cancellations make it the single worst European airport today by both metrics. A 39% departure delay rate means more than one in three Heathrow departures ran late on Sunday — a significant operational failure at the world’s third-busiest international hub. [...] #### 🇦🇺 🇳🇿 Australian and New Zealand Travellers
+
+Qantas operates the Kangaroo Route through Heathrow. Heathrow’s 39% delay rate on Sunday means Qantas services both arriving and departing London on October 4 were disrupted. Emirates (DXB hub), Singapore Airlines and Cathay Pacific all connect through European hubs affected today. If you were transiting Heathrow on a Qantas or oneworld partner itinerary on October 4, your Qantas Conditions of Carriage entitle you to rebooking at no additional cost.
+
+### 🛡️ PART 6: EU261 and UK261 Rights — October 4, 2026 [...] Why Heathrow is most exposed: Heathrow operates at 98%+ slot utilisation — the closest to capacity of any major hub in Europe. When ATFM restrictions reduce the number of aircraft the network can process per hour, Heathrow has no slack in its schedule to absorb the difference. Every delayed aircraft blocks a gate needed for the next departure.
+
+#### 🇫🇷 Paris Charles de Gaulle (CDG) — 275 Delays, 33 Cancellations
+
+Paris Charles de Gaulle recorded 275 delays and 33 cancellations, with a 23% departure delay rate and 17% arrival delay rate.
+
+CDG’s 33 cancellations are the second-highest in Europe today. Air France, which operates CDG as its primary hub, accounts for the largest share of delays — alongside Lufthansa, which operates significant feeder connections between CDG and Frankfurt.
+
+---
+
+[Source 3] Thunderstorms delay hundreds of Heathrow and Gatwick flights
+URL: https://www.bbc.com/news/articles/cjwgynnwyw2o
+# Thunderstorms delay hundreds of Heathrow and Gatwick flights
+
+Getty Images Easyjet planes on the tarmac at Gatwick airport.
+
+Hundreds of flights at London's Heathrow and Gatwick airports have been delayed as the UK's air traffic control service warned disruption was expected to continue into Sunday.
+
+More than 900 inbound and outbound flights at the two travel hubs have been delayed for up to 11 hours and dozens cancelled, according to tracker FlightAware, many due to thunderstorms.
+
+NATS, the UK's air traffic control service, said adverse weather conditions meant aircraft needed to ""avoid affected areas and be spaced further apart"" and this would impact flights for the ""remainder of Saturday and overnight"". [...] However, other UK airports remain largely unaffected.
+
+In an updated statement on Saturday afternoon, NATS said: ""Severe thunderstorms across the south east of England and Europe continue to impact flights, and this is expected to continue for the remainder of today and overnight.
+
+""To ensure the safety of the travelling public, aircraft need to avoid affected areas and be spaced further apart, which limits the number o [truncated]","Yes, there are flight delays at Heathrow today. According to [Source 1], there are **89 total delays** today at Heathrow. Additionally, [Source 2] reports **533 delays** at Heathrow, making it the worst European airport for delays today. The delays are attributed to various factors, including adverse weather conditions and operational issues. 
+
+However, the context does not specify the exact date for the delays mentioned in [Source 2], so I cannot confirm if these delays are occurring today or on a different date.",,,,
+ts-026,tool_selection,What time does the sun set in Seattle today?,Route to live web search. The answer depends on today's date.,web_search,"[Source 1] Sunrise and Sunset in Seattle — Today's Times - WatchIsUp
+URL: https://www.watchisup.com/sunrise-sunset-seattle
+In Seattle the sun rises at 07:34 AM and sets at 06:13 PM today, a day of 10 h 39 min. Today lasts 10 h 39 min, from sunrise at 07:34 AM to sunset at 06:13 PM.
+
+---
+
+[Source 2] Sunrise and Sunset Today in Seattle (United States)
+URL: https://theskylive.com/sunrise-sunset-times?geoid=5809844
+Today, October 21 , in Seattle (United States), the Sun rises at 07:37 , transits at 12:53 and sets at 18:09 (local times, America/Los_Angeles ).
+
+---
+
+[Source 3] Seattle Sunset Forecast Today - Quality & Golden Hour
+URL: https://alpenglowapp.com/forecasts/sunset/seattle
+Today's sunset in Seattle is at 6:08 PM, with full darkness arriving at 7:50 PM (America/Los_Angeles).
+
+---
+
+[Source 4] Seattle Sunset Forecast Today
+URL: https://sunsethue.com/sunset/united-states/seattle-165264
+Tonight's sunset in Seattle Sunset time 6:10 PM. The sunset will set at 6:10 PM in the WSW (254°). The sunset is forecasted to be Poor with a score of 15%.
+
+---
+
+[Source 5] Sunrise and sunset times in Seattle
+URL: https://www.timeanddate.com/sun/usa/seattle
+| Current Time: | Oct 22, 2026 at 3:00:21 pm |
+
+| Sun Direction: | 214.49° SW↑ |
+| Sun Altitude: | 24.74° |
+| Sun Distance: | 92.500 million mi |
+| Next Solstice: | Dec 21, 2026 12:50 pm (Winter) |
+| Sunrise Today: | 7:38 am↑ 106° East |
+| Sunset Today: | 6:08 pm↑ 254° West |
+
+Image 4: Location of SeattleImage 5: Location
+
+   Rise/Set Times
+   Day/Night Length
+
+## 2026 Sun Graph for Seattle
+
+Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+
+22 20 18 16 14 12 10 08 06 04 02 00
+
+00 02 04 06 08 10 12 14 16 18 20 22
+
+Night:
+
+Total:
+
+Astronomical Twilight:
+
+Total:
+
+Nautical Twilight:
+
+Total:
+
+Civil Twilight:
+
+Total:
+
+Daylight:
+
+Total:
+
+Solar Noon/Midnight:
+
+## October 2026 — Sun in Seattle
+
+   September
+   October
+   November
+
+Month:  Year:  
+
+Scroll right to see more [...] HomeSun, Moon & SpaceSunrise and sunsetUSA Seattle
+
+Image 2: Flag for USA
+
+# Seattle, Washington, USA — Sunrise, Sunset, and Daylength, October 2026
+
+   Time/General
+   Weather
+       Weather Today/Tomorrow
+       Hour-by-Hour Forecast
+       14 Day Forecast
+
+       Yesterday/Past Weather
+       Climate (Averages)
+
+   Time Zone
+   DST Changes
+   Sun & Moon
+       Sun & Moon Today
+       Sunrise & Sunset
+
+       Moonrise & Moonset
+       Moon Phases
+
+       Eclipses
+       Night Sky
+
+Sun & Moon TodaySunrise & SunsetMoonrise & MoonsetMoon PhasesEclipsesNight Sky
+
+Image 3
+
+Daylight
+
+7:38 am – 6:08 pm  
+10 hours, 29 minutes
+
+| Current Time: | Oct 22, 2026 at 3:00:21 pm | [...] | 28 | 7:47 am ↑(109°) | 5:57 pm ↑(251°) | 10:10:05 | −3:09 | 6:03 am | 7:41 pm | 6:39 am | 7:05 pm | 7:15 am | 6:29 pm | 12:53 pm (29.1°) | 92.352 |
+| 29 | 7:49 am ↑(109°) | 5:56 pm ↑(250°) | 10:06:57 | −3:08 | 6:05 am | 7:40 pm | 6:41 am | 7:04 pm | 7:17 am | 6:28 pm | 12:53 pm (28.8°) | 92.327 |
+| 30 | 7:50 am ↑(110°) | 5:54 pm ↑(250°) | 10:03:50 | −3:07 | 6:06 am | 7:38 pm | 6:42 am | 7:02 pm | 7:18 am | 6:26 pm | 12:53 pm (28.4°) | 92.303 |
+| 31 | 7:52 am ↑(110°) | 5:53 pm ↑(249°) | 10:00:44 | −3:05 | 6:07 am | 7:37 pm | 6:43 am | 7:01 pm | 7:20 am | 6:25 pm | 12:53 pm (28.1°) | 92.280 |
+|  All times are local time for Seattle. Time is adjusted for DST when applicable. They take into account refraction. Dates are based on the Gregorian calendar. Today is highlighted. |","The sunset time in Seattle today varies slightly across different sources:
+
+- According to [Source 1], the sunset is at **6:13 PM**.
+- [Source 2] states the sunset is at **6:09 PM**.
+- [Source 3] indicates the sunset is at **6:08 PM**.
+- [Source 4] mentions the sunset at **6:10 PM**.
+
+The context does not provide a single definitive time for sunset today, so I cannot answer the rest from the available documents.",,,,
+ts-029,tool_selection,Thanks for your help earlier.,Route direct. An acknowledgement needs no tool.,direct,(no passages were retrieved),"You're very welcome! I'm glad I could help. If you have any more questions or need assistance with anything else, just let me know!",,,,
+ts-031,tool_selection,What does the abbreviation CPU stand for?,Route direct. General knowledge needing no retrieval.,direct,(no passages were retrieved),"CPU stands for Central Processing Unit. It's often referred to as the brain of the computer, as it handles most of the processing tasks.",,,,
+ts-032,tool_selection,What is the capital of Japan?,Route direct. A simple fact from training knowledge.,direct,(no passages were retrieved),The capital of Japan is Tokyo. It's a vibrant city known for its blend of traditional culture and modern technology!,,,,
+ts-033,tool_selection,How many days are there in a leap year?,Route direct. A simple fact from training knowledge.,direct,(no passages were retrieved),"A leap year has 366 days. This extra day is added to February, giving it 29 days instead of the usual 28.",,,,
+ts-039,tool_selection,Is 97 a prime number?,Route direct. A simple fact from training knowledge.,direct,(no passages were retrieved),"Yes, 97 is a prime number! It has no divisors other than 1 and itself.",,,,

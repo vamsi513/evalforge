@@ -1,0 +1,55 @@
+{
+  "task_id": "ts-029",
+  "category": "tool_selection",
+  "question": "Thanks for your help earlier.",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-029-d57dc235",
+  "route_decision": "direct",
+  "answer": "You're very welcome! I'm glad I could help. If you have any more questions or need assistance with anything else, just let me know!",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1702.4,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 1036.9
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 658.6
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 251,
+    "output_tokens": 29,
+    "cost_usd": 5.505e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:50:05.345742+00:00"
+}

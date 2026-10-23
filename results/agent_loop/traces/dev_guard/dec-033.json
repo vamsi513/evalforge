@@ -1,0 +1,152 @@
+{
+  "task_id": "dec-033",
+  "category": "unanswerable_decline",
+  "question": "What batch size was used to train GCN on the Cora citation network?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-033-929f0b49",
+  "route_decision": "retrieval",
+  "answer": "**What batch size was used to train GCN?**\n\nThe context provided does not mention anything about the batch size used to train GCN. It covers details about Mixture of Experts (MoE) models, their performance, and various architectural aspects, but does not include information regarding GCN or its training parameters. Therefore, I cannot answer the question about the batch size used to train GCN from the available documents.\n\n**What dataset was used to train GCN?**\n\nThe context does not specify a particular dataset used to train Graph Convolutional Networks (GCN). However, it mentions that GCN achieves classification accuracy on the following citation networks:\n\n- **Citeseer**: 81.5%\n- **Cora**: 79.0%\n- **Pubmed**: 70.3%\n\nThese networks are used for semi-supervised node classification, but the context does not provide details about the training dataset itself. Therefore, I cannot answer the rest from the available documents.\n\n**What is the Cora citation network?**\n\nThe **Cora citation network** is mentioned in the context of **Graph Convolutional Networks (GCN)**, where it is used as a benchmark for evaluating classification accuracy. Specifically, GCN achieved a **79.0% classification accuracy** on the Cora dataset in semi-supervised node classification. This indicates that Cora is a dataset used for testing the performance of graph-based learning methods, particularly in the context of citation networks. \n\nThe context does not provide further details about the Cora citation network itself, such as its structure, size, or specific characteristics. Therefore, I cannot answer the rest of your question regarding additional information about the Cora citation network from the available documents.",
+  "context": "[Source 1] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation\n serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. DeepSeek-V2 introduces Multi-head Latent Attention (MLA) and fine-grained expert routing with 160 experts and top-6 routing, achieving competitive performance with significantly reduced KV cache memory. MoE models represent the dominant scaling strategy for next-generation foundation models due to their favorable compute-to-capacity trade-offs.\n\n---\n\n[Source 2] Graph Neural Networks for Knowledge Reasoning and Relational Learning\nton et al., 2017) with minibatch sampling enables training on graphs with billions of nodes (Pinterest's PinSage generates recommendations for 3B items). Heterogeneous GNNs (HGT, Hu et al., 2020) handle multi-type nodes and edges in enterprise knowledge graphs. Applications span drug discovery (molecular property prediction, protein-protein interaction), social network analysis, financial fraud detection, and recommendation systems\u2014with Pinterest, Alibaba, and Uber reporting production GNN deployments at hundreds of millions of users.\n\n---\n\n[Source 3] Graph Neural Networks for Knowledge Reasoning and Relational Learning\nGraph Convolutional Networks (GCN), introduced by Thomas Kipf and Max Welling at the University of Amsterdam in 2016, establish the foundational framework for applying neural networks to graph-structured data. The key operation is spectral graph convolution approximated in the spatial domain, effectively computing a weighted average of each node's features and its neighbors' features through a normalized adjacency matrix. GCN achieves 81.5% classification accuracy on Citeseer, 79.0% on Cora, and 70.3% on Pubmed citation networks in semi-supervised node classification, surpassing previous methods by 3-8% while using only a small fraction of labeled nodes. Graph Attention Networks (GAT, Veli\u010dkovi\u0107 et al., 2018) extend GCN by replacing uniform neighbor aggregation with learned attention weights, achieving 83.0% on Cora and 97.3% F1 micro on PPI (protein-protein interaction) with multi-head attention.\n\nKnowledge Graph Embeddings extend GNN reasoning to large relational databases. TransE (Bordes et al., 2013) models relations as translations in embedding space: h + r \u2248 t for head, relation, tail triples. RotatE (Sun et al., 2019) models relations as rotations in complex space, achieving 58.0% Hits@10 on FB15k-237. KGQA systems like EmbedKGQA combine KG embeddings with question embeddings to answer multi-hop questions (66.6% Hits@1 on WebQSP). Think-on-Graph (Sun et al., 2024) implements beam search over knowledge graphs guided by LLM scoring, achieving 78.5% on WebQSP compared to 66.7% for standard RAG.\n\nRecent advances address scalability and expressivity. Graph Transformers (Graphormer, Ying et al., 2021, winner of OGB-LSC competition) integrate global attention with structural encodings, achieving state-of-the-art on molecular property prediction. GraphSAGE (Hamilton et al., 2017) with minibatch sampling enables training on graphs with billions of nodes (Pinterest's PinSage generates recommendations for 3B items). Heterogeneous GNNs (HGT, Hu et al., 2020) handle multi-type nodes and edges in enterprise knowledge gr\n\n---",
+  "sources": [
+    {
+      "title": "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+      "url": "https://arxiv.org/abs/2401.04088",
+      "content": " serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total,\u2026",
+      "score": 0.39013510942459106,
+      "type": "retrieval"
+    },
+    {
+      "title": "Graph Neural Networks for Knowledge Reasoning and Relational Learning",
+      "url": "https://arxiv.org/abs/1609.02907",
+      "content": "ton et al., 2017) with minibatch sampling enables training on graphs with billions of nodes (Pinterest's PinSage generates recommendations for 3B items). Heterogeneous GNNs (HGT, Hu et al., 2020) hand\u2026",
+      "score": 0.3655431270599365,
+      "type": "retrieval"
+    },
+    {
+      "title": "Graph Neural Networks for Knowledge Reasoning and Relational Learning",
+      "url": "https://arxiv.org/abs/1609.02907",
+      "content": "Graph Convolutional Networks (GCN), introduced by Thomas Kipf and Max Welling at the University of Amsterdam in 2016, establish the foundational framework for applying neural networks to graph-structu\u2026",
+      "score": 0.35604894161224365,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Graph Neural Networks for Knowledge Reasoning and Relational Learning",
+    "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+    "Retrieval-Augmented Generation (RAG)",
+    "Speculative Decoding for Accelerated LLM Inference"
+  ],
+  "retrieval_score": 0.39013510942459106,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 8726.7,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 626.7
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 49.5
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1167.0
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 9,
+    "input_tokens": 4850,
+    "output_tokens": 426,
+    "cost_usd": 0.0009831,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": true,
+    "reason": "retrieval run reported missing evidence",
+    "sub_questions": [
+      "What batch size was used to train GCN?",
+      "What dataset was used to train GCN?",
+      "What is the Cora citation network?"
+    ],
+    "sub_traces": [
+      {
+        "question": "What batch size was used to train GCN?",
+        "route": "retrieval",
+        "retrieved_titles": [
+          "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+          "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+          "Speculative Decoding for Accelerated LLM Inference"
+        ],
+        "answer": "The context provided does not mention anything about the batch size used to train GCN. It covers details about Mixture of Experts (MoE) models, their performance, and various architectural aspects, but does not include information regarding GCN or its training parameters. Therefore, I cannot answer the question about the batch size used to train GCN from the available documents.",
+        "usage": {
+          "llm_calls": 2,
+          "input_tokens": 1210,
+          "output_tokens": 75,
+          "cost_usd": 0.0002265,
+          "usage_source": "tiktoken_estimate"
+        },
+        "latency_ms": 2096.4
+      },
+      {
+        "question": "What dataset was used to train GCN?",
+        "route": "retrieval",
+        "retrieved_titles": [
+          "Graph Neural Networks for Knowledge Reasoning and Relational Learning",
+          "Graph Neural Networks for Knowledge Reasoning and Relational Learning",
+          "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation"
+        ],
+        "answer": "The context does not specify a particular dataset used to train Graph Convolutional Networks (GCN). However, it mentions that GCN achieves classification accuracy on the following citation networks:\n\n- **Citeseer**: 81.5%\n- **Cora**: 79.0%\n- **Pubmed**: 70.3%\n\nThese networks are used for semi-supervised node classification, but the context does not provide details about the training dataset itself. Therefore, I cannot answer the rest from the available documents.",
+        "usage": {
+          "llm_calls": 2,
+          "input_tokens": 1167,
+          "output_tokens": 108,
+          "cost_usd": 0.00023985,
+          "usage_source": "tiktoken_estimate"
+        },
+        "latency_ms": 2371.9
+      },
+      {
+        "question": "What is the Cora citation network?",
+        "route": "retrieval",
+        "retrieved_titles": [
+          "Graph Neural Networks for Knowledge Reasoning and Relational Learning",
+          "Retrieval-Augmented Generation (RAG)",
+          "Graph Neural Networks for Knowledge Reasoning and Relational Learning"
+        ],
+        "answer": "The **Cora citation network** is mentioned in the context of **Graph Convolutional Networks (GCN)**, where it is used as a benchmark for evaluating classification accuracy. Specifically, GCN achieved a **79.0% classification accuracy** on the Cora dataset in semi-supervised node classification. This indicates that Cora is a dataset used for testing the performance of graph-based learning methods, particularly in the context of citation networks. \n\nThe context does not provide further details about the Cora citation network itself, such as its structure, size, or specific characteristics. Therefore, I cannot answer the rest of your question regarding additional information about the Cora citation network from the available documents.",
+        "usage": {
+          "llm_calls": 2,
+          "input_tokens": 1209,
+          "output_tokens": 142,
+          "cost_usd": 0.00026655,
+          "usage_source": "tiktoken_estimate"
+        },
+        "latency_ms": 2408.4
+      }
+    ],
+    "first_answer": "The context does not provide information about the **batch size** used to train **Graph Convolutional Networks (GCN)** on the **Cora citation network**. It mentions the classification accuracy achieved by GCN but does not specify the batch size. Therefore, I cannot answer the rest of your question regarding the batch size from the available documents."
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:46:32.099993+00:00"
+}

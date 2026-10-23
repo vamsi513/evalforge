@@ -1,0 +1,89 @@
+{
+  "task_id": "msr-014",
+  "category": "multi_step_retrieval",
+  "question": "What throughput does FlashAttention-2 reach on an A100, and what does standard attention reach on the same hardware?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-msr-014-582dbd20",
+  "route_decision": "retrieval",
+  "answer": "According to the context, **FlashAttention-2** achieves up to **220 TFLOPs/s** on **A100** hardware. In contrast, **standard attention** reaches **72 TFLOPs/s** on the same hardware.",
+  "context": "[Source 1] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness\nn. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAttention-3 targets H100 hardware, achieving 740+ TFLOPs/s for FP16.\n\n---\n\n[Source 2] FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness\nFlashAttention, developed by Tri Dao, Daniel Y. Fu, Stefano Ermon, and Atri Rudra at Stanford University in 2022, addresses the fundamental computational bottleneck of scaled dot-product attention in transformers. Standard attention requires materializing the full N\u00d7N attention matrix in GPU high-bandwidth memory (HBM), resulting in O(N\u00b2) memory usage. For a sequence of length N=4096 with dimension d=64 per head, the attention matrix requires 64MB per head per layer, quickly overwhelming GPU memory for long sequences. FlashAttention reformulates attention computation using tiling to fit operations in the faster SRAM (on-chip cache), never materializing the full attention matrix in HBM.\n\nThe algorithm divides Q, K, and V matrices into blocks and computes attention incrementally, maintaining running statistics (softmax denominator and max value) to correctly accumulate partial results via the online softmax trick. The result is mathematically identical to standard attention (exact, not approximate) while requiring only O(N) memory instead of O(N\u00b2). IO complexity is reduced from O(N\u00b2d) to O(N\u00b2d\u00b2/M) HBM accesses, where M is SRAM size. FlashAttention achieves 2-4x wall-clock speedup over PyTorch's standard attention for sequence lengths 512 to 2048, with increasing speedup for longer sequences.\n\nFlashAttention-2 (Dao, 2023, arXiv:2307.08691) further optimizes by reducing non-matmul FLOPs, parallelizing across sequence length, and improving warp work partitioning, achieving up to 220 TFLOPs/s on A100 (73% of theoretical peak) versus 72 TFLOPs/s for standard attention. FlashAttention-2 is the default attention implementation in Megatron-LM, NeMo, and PyTorch 2.0's scaled_dot_product_attention. For sequence length 8K, it is approximately 9x faster than standard attention. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), and Mistral (32K with sliding window attention). FlashAtt\n\n---\n\n[Source 3] Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs\nThe base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Practical long-context applications enabled by RoPE extensions include retrieval-augmented generation over long documents, multi-document reasoning, repository-level code generation, and long-form creative writing. Code Llama achieves 100K context via RoPE scaling, enabling retrieval over entire codebases. Mistral uses sliding window attention (SWA) with a window size of 4096 tokens and rolling buffer cache to achieve effective 32K context without full quadratic attention cost. The combination of FlashAttention-2 and extended RoPE has made 128K+ context windows practical in both training and inference for production LLM applications.",
+  "sources": [
+    {
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+      "url": "https://arxiv.org/abs/2205.14135",
+      "content": "n. By eliminating the memory bottleneck, FlashAttention enables training on significantly longer sequences, instrumental in extending context windows for models like Llama 2 (4K), Code Llama (100K), a\u2026",
+      "score": 0.6257916688919067,
+      "type": "retrieval"
+    },
+    {
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+      "url": "https://arxiv.org/abs/2205.14135",
+      "content": "FlashAttention, developed by Tri Dao, Daniel Y. Fu, Stefano Ermon, and Atri Rudra at Stanford University in 2022, addresses the fundamental computational bottleneck of scaled dot-product attention in \u2026",
+      "score": 0.5947375893592834,
+      "type": "retrieval"
+    },
+    {
+      "title": "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs",
+      "url": "https://arxiv.org/abs/2104.09864",
+      "content": "The base frequency \u03b8=10000 limits effective context to roughly 2-4x the training length. Llama 3 increases the base frequency to \u03b8=500000 to support longer sequences before interpolation degrades. Pra\u2026",
+      "score": 0.39646148681640625,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+    "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+    "Rotary Position Embeddings (RoPE) and Long Context Extension in LLMs"
+  ],
+  "retrieval_score": 0.6257916688919067,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1644.3,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 672.1
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 53.9
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 911.6
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1173,
+    "output_tokens": 50,
+    "cost_usd": 0.00020595,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:47:22.925444+00:00"
+}

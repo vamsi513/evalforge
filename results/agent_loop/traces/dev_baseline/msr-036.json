@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-036",
+  "category": "multi_step_retrieval",
+  "question": "By how much does contextual retrieval improve retrieval accuracy on document question answering benchmarks?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-036-9f00e163",
+  "route_decision": "retrieval",
+  "answer": "According to the context, **contextual retrieval** improves retrieval accuracy by **35%** on document Q&A benchmarks by enriching embeddings with document-level context [Source 1].",
+  "context": "[Source 1] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nquestions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On TriviaQA, proper semantic chunking with reranking achieves F1 of 76.3 compared to 68.9 for naive chunking. Chunk overlap (10-20%) prevents information loss at boundaries. Contextual retrieval (Anthropic, 2024) prepends a model-generated context summary to each chunk before embedding, improving retrieval accuracy by 35% on document Q&A benchmarks by enriching embeddings with document-level context. Cross-encoder rerankers (e.g., ms-marco-MiniLM-L-6-v2) applied after initial FAISS retrieval typically improve NDCG@3 by 5-15% with minimal latency cost.\n\n---\n\n[Source 2] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nRetrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate responses. Chunking\u2014how documents are divided into retrievable units\u2014is a critical design decision that significantly impacts retrieval quality and downstream generation accuracy. Naive fixed-size chunking (e.g., every 512 tokens) is simple but cuts sentences, splits code blocks, and separates tables from captions, degrading retrieval precision. Semantic chunking adapts chunk boundaries to the natural semantic structure of documents by detecting topic transitions via embedding similarity between consecutive sentences, splitting at points where cosine similarity drops sharply below a threshold.\n\nLangChain's SemanticChunker uses percentile-based threshold selection: a split is made between sentences if their cosine similarity falls below the p-th percentile (typically p=90), resulting in chunks that respect paragraph and topic boundaries. On BEIR retrieval benchmarks, semantic chunking improves NDCG@10 by 3-8% compared to fixed-size chunking at equivalent average chunk size. Small-to-big retrieval (parent-child chunking) uses small chunks (100-150 tokens) for precise retrieval but returns the larger parent chunk (400-600 tokens) as context. Document-aware chunking preserves structural elements: section headers are prepended to child chunks to maintain topical context; code blocks are kept intact; tables are converted to text with column headers retained.\n\nHierarchical chunking (Raptor, Sarthi et al., 2024) recursively summarizes clusters of chunks into higher-level summaries, building a tree structure that enables multi-scale retrieval for both detail-oriented and high-level questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On Trivi\n\n---\n\n[Source 3] BERT \u2014 Bidirectional Encoder Representations from Transformers\nBERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) objective: 15% of input tokens are randomly masked, and the model learns to predict them using context from both directions. A second pre-training task, Next Sentence Prediction (NSP), trains the model to understand relationships between sentence pairs. BERT-Base contains 110M parameters (12 layers, 768 hidden size, 12 attention heads); BERT-Large has 340M parameters. Fine-tuned BERT set new state-of-the-art results on 11 NLP benchmarks at publication time, including SQuAD question answering (93.2 F1) and GLUE benchmark (80.5 score). The model's bidirectionality proved especially powerful for tasks requiring full sentence context, such as named entity recognition and reading comprehension.",
+  "sources": [
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer addres\u2026",
+      "score": 0.7282139658927917,
+      "type": "retrieval"
+    },
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "Retrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate response\u2026",
+      "score": 0.5330366492271423,
+      "type": "retrieval"
+    },
+    {
+      "title": "BERT \u2014 Bidirectional Encoder Representations from Transformers",
+      "url": "https://arxiv.org/abs/1810.04805",
+      "content": "BERT (Devlin et al., 2018) introduced bidirectional pre-training for language models, a significant departure from GPT's left-to-right training objective. BERT uses a masked language modeling (MLM) ob\u2026",
+      "score": 0.4906747341156006,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+    "BERT \u2014 Bidirectional Encoder Representations from Transformers"
+  ],
+  "retrieval_score": 0.7282139658927917,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1589.1,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 650.2
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 61.4
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 869.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1208,
+    "output_tokens": 37,
+    "cost_usd": 0.0002034,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:48:45.627387+00:00"
+}

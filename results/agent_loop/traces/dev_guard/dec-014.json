@@ -1,0 +1,89 @@
+{
+  "task_id": "dec-014",
+  "category": "unanswerable_decline",
+  "question": "What percentage of BIG-Bench tasks are chemistry tasks?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-014-067e016d",
+  "route_decision": "retrieval",
+  "answer": "The context does not provide specific information about the percentage of BIG-Bench tasks that are chemistry tasks. It mentions that BIG-Bench comprises 204 tasks but does not categorize these tasks by subject or specify how many are related to chemistry. Therefore, I cannot answer the question regarding the percentage of BIG-Bench tasks that are chemistry tasks based on the available documents.",
+  "context": "[Source 1] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks\nHolistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional evaluation framework for LLMs that goes beyond single-metric leaderboards. HELM evaluates 30 models across 42 scenarios (tasks), 7 metrics dimensions (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency), and multiple prompt formats to reduce sensitivity to prompt choice. The framework covers scenarios across knowledge (NaturalQuestions, TriviaQA), reasoning (BoolQ, HellaSwag), code (HumanEval), legal (LegalSupport), medical (MedQA), and social fairness (BBQ) domains.\n\nBIG-Bench (Beyond the Imitation Game, Srivastava et al., 2022) is a collaborative benchmark comprising 204 tasks contributed by 450 researchers from 132 institutions, designed to probe capabilities at and beyond the frontier of current models. BIG-Bench Hard (BBH) extracts 23 tasks where large models previously performed below human rater level. With Chain-of-Thought prompting, GPT-4 achieves an average of 89.2% on BBH tasks. MMLU (Massive Multitask Language Understanding, Hendrycks et al., 2021) provides 4-choice multiple-choice evaluation across 57 academic subjects ranging from elementary mathematics to professional law and medicine, totaling 15,908 questions. Performance milestones: GPT-3 (175B) achieves 43.9% (5-shot), GPT-4 achieves 86.4%, Claude 3 Opus achieves 88.7%, Gemini Ultra achieves 90.0%, and Llama 3 70B Instruct achieves 82.0%. Human expert performance is estimated at ~90% on professional-level subjects.\n\nEvaluation methodology is an active research area. Benchmark contamination\u2014models trained on data containing evaluation examples\u2014inflates scores and is difficult to detect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conv\n\n---\n\n[Source 2] Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation\n serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total, 21B active per token) push the MoE paradigm further. DeepSeek-V2 introduces Multi-head Latent Attention (MLA) and fine-grained expert routing with 160 experts and top-6 routing, achieving competitive performance with significantly reduced KV cache memory. MoE models represent the dominant scaling strategy for next-generation foundation models due to their favorable compute-to-capacity trade-offs.\n\n---\n\n[Source 3] In-Context Learning in Large Language Models: Mechanisms and Emergent Behavior\nto 56% without CoT. Zero-shot CoT (\"Let's think step by step\", Kojima et al., 2022) achieves similar effects without demonstrations. Self-Consistency (Wang et al., 2022) improves CoT by sampling multiple reasoning paths and majority-voting, reducing variance by 5-15%. Instruction tuning, where models are fine-tuned on diverse task-instruction pairs, reduces sensitivity to demonstration format and enables robust zero-shot generalization, bridging the gap between ICL and fine-tuning. Practical limitations include context length bounds on demonstrations, degraded performance on highly specialized tasks, and order sensitivity (up to 40% accuracy variation from ordering demonstrations differently).",
+  "sources": [
+    {
+      "title": "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "content": "Holistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional eval\u2026",
+      "score": 0.4239380955696106,
+      "type": "retrieval"
+    },
+    {
+      "title": "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+      "url": "https://arxiv.org/abs/2401.04088",
+      "content": " serve. Mistral's instruction-tuned variant achieves an MT-Bench score of 8.30, surpassing GPT-3.5 in several evaluations. At scale, Google's GLaM (137B total, 8% active), and DeepSeek-V2 (236B total,\u2026",
+      "score": 0.3341201841831207,
+      "type": "retrieval"
+    },
+    {
+      "title": "In-Context Learning in Large Language Models: Mechanisms and Emergent Behavior",
+      "url": "https://arxiv.org/abs/2301.00234",
+      "content": "to 56% without CoT. Zero-shot CoT (\"Let's think step by step\", Kojima et al., 2022) achieves similar effects without demonstrations. Self-Consistency (Wang et al., 2022) improves CoT by sampling multi\u2026",
+      "score": 0.3109198212623596,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+    "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation",
+    "In-Context Learning in Large Language Models: Mechanisms and Emergent Behavior"
+  ],
+  "retrieval_score": 0.4239380955696106,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1734.2,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 656.5
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 47.9
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1023.2
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1200,
+    "output_tokens": 74,
+    "cost_usd": 0.0002244,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "question did not decompose"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:45:38.687231+00:00"
+}

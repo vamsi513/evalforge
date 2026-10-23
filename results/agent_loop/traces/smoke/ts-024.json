@@ -1,0 +1,84 @@
+{
+  "task_id": "ts-024",
+  "category": "tool_selection",
+  "question": "Are there any flight delays at Heathrow today?",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-024-c9a1fd24",
+  "route_decision": "web_search",
+  "answer": "This is a mocked answer produced during load testing.",
+  "context": "[Source 1] Mock result for Are there any flight delays at Heathrow \nURL: https://example.com/mock\nMocked search content for load testing.",
+  "sources": [
+    {
+      "title": "Mock result for Are there any flight delays at Heathrow ",
+      "url": "https://example.com/mock",
+      "content": "Mocked search content for load testing.\u2026",
+      "score": 0.9,
+      "type": "web_search"
+    }
+  ],
+  "retrieved_titles": [
+    "Mock result for Are there any flight delays at Heathrow "
+  ],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 92.6,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 37.6
+    },
+    {
+      "stage": "web_search",
+      "duration_ms": 0.9
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 45.9
+    }
+  ],
+  "tool_calls": [
+    {
+      "event": "tool_call",
+      "tool": "web_search",
+      "args": {
+        "positional": [
+          "Are there any flight delays at Heathrow today?"
+        ],
+        "keyword": {}
+      },
+      "duration_ms": 0.5,
+      "outcome": "ok",
+      "ts": "2026-10-23T02:29:10.646Z",
+      "run_id": null
+    }
+  ],
+  "usage": {
+    "llm_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": 0.0,
+    "usage_source": "provider_reported"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": true,
+    "mock_tavily": true
+  },
+  "label": "smoke",
+  "run_at": "2026-10-23T02:29:10.695286+00:00"
+}

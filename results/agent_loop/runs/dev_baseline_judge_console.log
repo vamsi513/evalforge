@@ -1,0 +1,142 @@
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+loaded 3 credentials: ANTHROPIC_API_KEY, OPENAI_API_KEY, TAVILY_API_KEY
+scoring 90 traces from dev_baseline
+
+LAYER 1, RULES
+  overall 83/90 = 92.2%
+    direct_no_tools        20/21    95.2%
+    multi_step_retrieval   18/24    75.0%
+    tool_selection         24/24   100.0%
+    unanswerable_decline   21/21   100.0%
+  failure tags: {'answer': 7}
+  per check:
+    answer     36/43    83.7%
+    decline    21/21   100.0%
+    error      90/90   100.0%
+    latency    90/90   100.0%
+    route      69/69   100.0%
+
+ledger before judging: $0.0491 of $1.50
+  [  1/90] dec-001  pass  score=0.95  $0.00420
+  [  2/90] dec-003  pass  score=0.95  $0.00411
+  [  3/90] dec-005  pass  score=0.92  $0.00456
+  [  4/90] dec-006  pass  score=0.95  $0.00460
+  [  5/90] dec-007  pass  score=0.95  $0.00438
+  [  6/90] dec-009  pass  score=0.92  $0.00361
+  [  7/90] dec-010  pass  score=0.95  $0.00410
+  [  8/90] dec-012  pass  score=0.92  $0.00468
+  [  9/90] dec-014  pass  score=0.92  $0.00423
+  [ 10/90] dec-017  pass  score=0.85  $0.00335
+  [ 11/90] dec-019  pass  score=0.92  $0.00479
+  [ 12/90] dec-021  pass  score=0.92  $0.00489
+  [ 13/90] dec-022  pass  score=0.95  $0.00435
+  [ 14/90] dec-024  pass  score=0.92  $0.00441
+  [ 15/90] dec-027  pass  score=0.95  $0.00421
+  [ 16/90] dec-028  FAIL  score=0.15  $0.00467
+  [ 17/90] dec-029  pass  score=0.95  $0.00454
+  [ 18/90] dec-030  pass  score=0.95  $0.00438
+  [ 19/90] dec-032  pass  score=0.92  $0.00343
+  [ 20/90] dec-033  pass  score=0.92  $0.00427
+  [ 21/90] dec-034  pass  score=0.95  $0.00413
+  [ 22/90] dnt-001  pass  score=1.00  $0.00279
+  [ 23/90] dnt-003  pass  score=1.00  $0.00297
+  [ 24/90] dnt-004  pass  score=0.85  $0.00310
+  [ 25/90] dnt-006  FAIL  score=0.50  $0.00330
+  [ 26/90] dnt-007  FAIL  score=0.50  $0.00342
+  [ 27/90] dnt-008  FAIL  score=0.50  $0.00331
+  [ 28/90] dnt-013  FAIL  score=0.50  $0.00325
+  [ 29/90] dnt-016  pass  score=0.95  $0.00334
+  [ 30/90] dnt-019  FAIL  score=0.75  $0.00331
+  [ 31/90] dnt-021  pass  score=0.85  $0.00338
+  [ 32/90] dnt-022  pass  score=0.85  $0.00321
+  [ 33/90] dnt-023  pass  score=0.95  $0.00310
+  [ 34/90] dnt-024  pass  score=0.75  $0.00342
+  [ 35/90] dnt-026  FAIL  score=0.00  $0.00329
+  [ 36/90] dnt-027  pass  score=0.95  $0.00350
+  [ 37/90] dnt-028  pass  score=0.85  $0.00335
+  [ 38/90] dnt-029  pass  score=1.00  $0.00308
+  [ 39/90] dnt-030  pass  score=0.90  $0.00328
+  [ 40/90] dnt-033  pass  score=1.00  $0.00292
+  [ 41/90] dnt-034  FAIL  score=0.70  $0.00326
+  [ 42/90] dnt-035  pass  score=0.85  $0.00323
+  [ 43/90] msr-003  pass  score=1.00  $0.00385
+  [ 44/90] msr-006  pass  score=1.00  $0.00417
+  [ 45/90] msr-007  pass  score=1.00  $0.00390
+  [ 46/90] msr-010  pass  score=0.95  $0.00379
+  [ 47/90] msr-011  pass  score=0.95  $0.00431
+  [ 48/90] msr-012  pass  score=0.95  $0.00431
+  [ 49/90] msr-013  FAIL  score=0.15  $0.00445
+  [ 50/90] msr-014  FAIL  score=0.45  $0.00454
+  [ 51/90] msr-015  pass  score=0.95  $0.00406
+  [ 52/90] msr-017  FAIL  score=0.35  $0.00476
+  [ 53/90] msr-019  pass  score=0.95  $0.00435
+  [ 54/90] msr-020  FAIL  score=0.15  $0.00439
+  [ 55/90] msr-022  FAIL  score=0.25  $0.00477
+  [ 56/90] msr-025  pass  score=0.75  $0.00432
+  [ 57/90] msr-027  pass  score=1.00  $0.00407
+  [ 58/90] msr-028  FAIL  score=0.35  $0.00429
+  [ 59/90] msr-030  pass  score=1.00  $0.00377
+  [ 60/90] msr-031  FAIL  score=0.00  $0.00413
+  [ 61/90] msr-032  pass  score=1.00  $0.00408
+  [ 62/90] msr-033  pass  score=1.00  $0.00362
+  [ 63/90] msr-035  pass  score=0.95  $0.00377
+  [ 64/90] msr-036  pass  score=1.00  $0.00362
+  [ 65/90] msr-039  pass  score=0.85  $0.00404
+  [ 66/90] msr-040  FAIL  score=0.00  $0.00449
+  [ 67/90] ts-001   pass  score=0.95  $0.00419
+  [ 68/90] ts-002   pass  score=0.82  $0.00498
+  [ 69/90] ts-004   pass  score=0.92  $0.00426
+  [ 70/90] ts-007   FAIL  score=0.78  $0.00518
+  [ 71/90] ts-008   pass  score=0.88  $0.00477
+  [ 72/90] ts-013   pass  score=0.92  $0.00525
+  [ 73/90] ts-014   pass  score=0.95  $0.00417
+  [ 74/90] ts-015   FAIL  score=0.75  $0.00477
+  [ 75/90] ts-016   FAIL  score=0.30  $0.00464
+  [ 76/90] ts-018   pass  score=0.75  $0.00464
+  [ 77/90] ts-019   pass  score=0.95  $0.00461
+  [ 78/90] ts-022   FAIL  score=0.35  $0.00434
+  [ 79/90] ts-024   FAIL  score=0.65  $0.00477
+  [ 80/90] ts-025   pass  score=0.95  $0.00447
+  [ 81/90] ts-026   FAIL  score=0.35  $0.00507
+  [ 82/90] ts-027   pass  score=0.95  $0.00474
+  [ 83/90] ts-029   pass  score=0.85  $0.00309
+  [ 84/90] ts-030   pass  score=0.75  $0.00356
+  [ 85/90] ts-031   pass  score=0.85  $0.00307
+  [ 86/90] ts-032   FAIL  score=0.75  $0.00324
+  [ 87/90] ts-033   FAIL  score=0.65  $0.00344
+  [ 88/90] ts-038   pass  score=0.85  $0.00313
+  [ 89/90] ts-039   pass  score=0.85  $0.00332
+  [ 90/90] ts-040   FAIL  score=0.75  $0.00319
+
+LAYER 2, JUDGE
+  model claude-haiku-4-5 via anthropic
+  overall 65/90 = 72.2%
+    direct_no_tools        14/21    66.7%
+    multi_step_retrieval   16/24    66.7%
+    tool_selection         15/24    62.5%
+    unanswerable_decline   20/21    95.2%
+  references truncated to fit the sample cap: 56
+  judge cost $0.3584; ledger now $0.4075

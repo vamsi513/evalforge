@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-035",
+  "category": "multi_step_retrieval",
+  "question": "In small-to-big retrieval, what token size are the child chunks and what token size are the parent chunks?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-msr-035-2993d15a",
+  "route_decision": "retrieval",
+  "answer": "In **small-to-big retrieval**, the **child chunks** are sized between **100-150 tokens**, while the **parent chunks** are larger, ranging from **400-600 tokens**. This approach allows for precise retrieval using the smaller chunks while providing broader context with the larger parent chunks.",
+  "context": "[Source 1] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nRetrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate responses. Chunking\u2014how documents are divided into retrievable units\u2014is a critical design decision that significantly impacts retrieval quality and downstream generation accuracy. Naive fixed-size chunking (e.g., every 512 tokens) is simple but cuts sentences, splits code blocks, and separates tables from captions, degrading retrieval precision. Semantic chunking adapts chunk boundaries to the natural semantic structure of documents by detecting topic transitions via embedding similarity between consecutive sentences, splitting at points where cosine similarity drops sharply below a threshold.\n\nLangChain's SemanticChunker uses percentile-based threshold selection: a split is made between sentences if their cosine similarity falls below the p-th percentile (typically p=90), resulting in chunks that respect paragraph and topic boundaries. On BEIR retrieval benchmarks, semantic chunking improves NDCG@10 by 3-8% compared to fixed-size chunking at equivalent average chunk size. Small-to-big retrieval (parent-child chunking) uses small chunks (100-150 tokens) for precise retrieval but returns the larger parent chunk (400-600 tokens) as context. Document-aware chunking preserves structural elements: section headers are prepended to child chunks to maintain topical context; code blocks are kept intact; tables are converted to text with column headers retained.\n\nHierarchical chunking (Raptor, Sarthi et al., 2024) recursively summarizes clusters of chunks into higher-level summaries, building a tree structure that enables multi-scale retrieval for both detail-oriented and high-level questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On Trivi\n\n---\n\n[Source 2] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nquestions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On TriviaQA, proper semantic chunking with reranking achieves F1 of 76.3 compared to 68.9 for naive chunking. Chunk overlap (10-20%) prevents information loss at boundaries. Contextual retrieval (Anthropic, 2024) prepends a model-generated context summary to each chunk before embedding, improving retrieval accuracy by 35% on document Q&A benchmarks by enriching embeddings with document-level context. Cross-encoder rerankers (e.g., ms-marco-MiniLM-L-6-v2) applied after initial FAISS retrieval typically improve NDCG@3 by 5-15% with minimal latency cost.\n\n---\n\n[Source 3] Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI\nained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.",
+  "sources": [
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "Retrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate response\u2026",
+      "score": 0.5420851707458496,
+      "type": "retrieval"
+    },
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer addres\u2026",
+      "score": 0.4460724890232086,
+      "type": "retrieval"
+    },
+    {
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI",
+      "url": "https://arxiv.org/abs/2307.09288",
+      "content": "ained on 15 trillion tokens with a 128K vocabulary tokenizer, achieving 82.0% on MMLU and setting new open-source performance standards across reasoning, coding, and multilingual tasks.\u2026",
+      "score": 0.406856507062912,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+    "Llama 2: Open Foundation and Fine-Tuned Chat Models from Meta AI"
+  ],
+  "retrieval_score": 0.5420851707458496,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2857.3,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 735.7
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 1094.6
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1020.0
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 3,
+    "input_tokens": 1139,
+    "output_tokens": 112,
+    "cost_usd": 0.00023805,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:38:33.862022+00:00"
+}

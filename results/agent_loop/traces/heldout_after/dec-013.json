@@ -1,0 +1,133 @@
+{
+  "task_id": "dec-013",
+  "category": "unanswerable_decline",
+  "question": "How many parameters does GPT-5 have according to the documents?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-013-32d167a6",
+  "route_decision": "retrieval",
+  "answer": "**How many parameters does GPT-5 have?**\n\nThe context provided does not contain any information about the number of parameters in GPT-5. It only discusses GPT-4 and its capabilities, training, and function calling features. Therefore, I cannot answer the question regarding the number of parameters in GPT-5 from the available documents.\n\n**What do the documents say about GPT-5's parameters?**\n\nThe provided context does not contain any information about **GPT-5's parameters**. It discusses **GPT-4** and its capabilities, function calling, and other models but does not mention anything regarding **GPT-5**. Therefore, I cannot answer the question about GPT-5's parameters from the available documents.",
+  "context": "[Source 1] GPT-4 Technical Report \u2014 Capabilities and Safety\nGPT-4 (OpenAI, 2023) is a large multimodal model capable of processing both text and image inputs to produce text outputs. It achieves human-level performance on a wide range of professional and academic benchmarks: scoring in the top 10% on the Uniform Bar Exam (Score: 298/400), 88th percentile on the LSAT, and 90th percentile on the SAT Math section. GPT-4 uses RLHF and a new Constitutional AI-inspired safety training process, and is evaluated with a new metric called \"hallucination rate\" that measures factual accuracy against verified sources. The model shows significant improvements in steerability \u2014 following complex, nuanced system prompts \u2014 compared to GPT-3.5. OpenAI reports that GPT-4 was trained on a combination of publicly available internet data and licensed datasets, with a knowledge cutoff of September 2021. GPT-4 API powers applications across legal, medical, educational, and coding domains, with function calling and JSON mode enabling reliable structured output for agentic applications.\n\n---\n\n[Source 2] Function Calling and Tool Use in Large Language Models\nFunction calling, introduced by OpenAI for GPT-4 and GPT-3.5-turbo in June 2023, enables language models to reliably generate structured JSON outputs that represent calls to user-defined functions. The mechanism allows developers to describe available functions (with names, descriptions, and JSON Schema-typed parameters) in the API request. The model decides when to invoke a function, generates a conformant JSON call, and the application executes the function and returns the result for incorporation into the response. This creates a clean separation between language model reasoning and deterministic code execution, enabling reliable data extraction, API integration, and multi-step tool use.\n\nOpenAI's function calling uses JSON Schema for parameter specification, supporting types (string, number, boolean, array, object), enumerations, required fields, and nested objects. GPT-4's function calling achieves significantly higher JSON schema compliance than prompt engineering approaches alone, with error rates below 2% on well-specified schemas compared to 15-25% for prompted JSON generation. Parallel function calling (introduced November 2023) allows invoking multiple functions simultaneously in a single response, reducing latency for multi-tool workflows. The ReAct framework (Yao et al., 2022) established the academic foundation: models interleave Thought (reasoning), Action (tool invocation), and Observation (result) steps in a loop. On HotpotQA, ReAct with Wikipedia search achieves 35.1% EM versus 29.4% for chain-of-thought alone.\n\nAnthropic's Claude implements tool use with a JSON protocol, explicitly trained to reason about tool selection and handle errors gracefully. Toolformer (Schick et al., 2023) demonstrated that models can learn when and how to use tools via self-supervised training, inserting API calls into existing text with a perplexity-based selection criterion. The practical ecosystem built around function calling includes OpenAI Assistants API (with built-in code interpreter, file search, and DALL-E),\n\n---\n\n[Source 3] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants\nCode Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.\n\nFill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling\u2014given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.\n\nProduction code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res\n\n---",
+  "sources": [
+    {
+      "title": "GPT-4 Technical Report \u2014 Capabilities and Safety",
+      "url": "https://arxiv.org/abs/2303.08774",
+      "content": "GPT-4 (OpenAI, 2023) is a large multimodal model capable of processing both text and image inputs to produce text outputs. It achieves human-level performance on a wide range of professional and acade\u2026",
+      "score": 0.4373053014278412,
+      "type": "retrieval"
+    },
+    {
+      "title": "Function Calling and Tool Use in Large Language Models",
+      "url": "https://openai.com/blog/function-calling",
+      "content": "Function calling, introduced by OpenAI for GPT-4 and GPT-3.5-turbo in June 2023, enables language models to reliably generate structured JSON outputs that represent calls to user-defined functions. Th\u2026",
+      "score": 0.359508216381073,
+      "type": "retrieval"
+    },
+    {
+      "title": "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+      "url": "https://arxiv.org/abs/2308.12950",
+      "content": "Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context f\u2026",
+      "score": 0.2711416482925415,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+    "Function Calling and Tool Use in Large Language Models",
+    "GPT-4 Technical Report \u2014 Capabilities and Safety",
+    "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation"
+  ],
+  "retrieval_score": 0.4373053014278412,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 5695.1,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 751.3
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 34.8
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 963.0
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 7,
+    "input_tokens": 4022,
+    "output_tokens": 201,
+    "cost_usd": 0.0007239,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": true,
+    "reason": "retrieval run reported missing evidence",
+    "sub_questions": [
+      "How many parameters does GPT-5 have?",
+      "What do the documents say about GPT-5's parameters?"
+    ],
+    "sub_traces": [
+      {
+        "question": "How many parameters does GPT-5 have?",
+        "route": "retrieval",
+        "retrieved_titles": [
+          "GPT-4 Technical Report \u2014 Capabilities and Safety",
+          "Function Calling and Tool Use in Large Language Models",
+          "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation"
+        ],
+        "answer": "The context provided does not contain any information about the number of parameters in GPT-5. It only discusses GPT-4 and its capabilities, training, and function calling features. Therefore, I cannot answer the question regarding the number of parameters in GPT-5 from the available documents.",
+        "usage": {
+          "llm_calls": 2,
+          "input_tokens": 1185,
+          "output_tokens": 58,
+          "cost_usd": 0.00021255,
+          "usage_source": "tiktoken_estimate"
+        },
+        "latency_ms": 1766.6
+      },
+      {
+        "question": "What do the documents say about GPT-5's parameters?",
+        "route": "retrieval",
+        "retrieved_titles": [
+          "GPT-4 Technical Report \u2014 Capabilities and Safety",
+          "Function Calling and Tool Use in Large Language Models",
+          "Mixture of Experts (MoE) Models: Scaling LLMs with Sparse Activation"
+        ],
+        "answer": "The provided context does not contain any information about **GPT-5's parameters**. It discusses **GPT-4** and its capabilities, function calling, and other models but does not mention anything regarding **GPT-5**. Therefore, I cannot answer the question about GPT-5's parameters from the available documents.",
+        "usage": {
+          "llm_calls": 2,
+          "input_tokens": 1191,
+          "output_tokens": 66,
+          "cost_usd": 0.00021825,
+          "usage_source": "tiktoken_estimate"
+        },
+        "latency_ms": 2172.2
+      }
+    ],
+    "first_answer": "The context provided does not mention GPT-5 or the number of parameters it has. It only discusses GPT-4 and other models like Code Llama and Codex. Therefore, I cannot answer the question regarding GPT-5's parameters based on the available documents."
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:52:58.791424+00:00"
+}

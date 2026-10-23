@@ -1,0 +1,1183 @@
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in EvalRunResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in PairwiseEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalCreate has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/Users/vamsi/portfolio-audit/agentiq/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in JudgeEvalResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+AgentIQ graph compiled (checkpointer=None)
+stage_timing stage=security duration_ms=1.0
+Router classifying query: According to the local documents, what was the total training cost in US dollars
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=1273.1
+Retriever querying FAISS for: According to the local documents, what was the total training cost in US dollars
+Loading faiss.
+Successfully loaded faiss.
+Loading existing FAISS index from disk.
+FAISS index loaded from /Users/vamsi/portfolio-audit/agentiq/faiss_index (50 vectors)
+Loading embedding model: all-MiniLM-L6-v2
+No device provided, using mps
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json?%2Fsentence-transformers%2Fall-MiniLM-L6-v2%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json?%2Fsentence-transformers%2Fall-MiniLM-L6-v2%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22fd1b291129c607e5d49799f87cb219b27f98acdf%22 "HTTP/1.1 200 OK"
+Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2.
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json?%2Fsentence-transformers%2Fall-MiniLM-L6-v2%2Fresolve%2Fmain%2Fconfig_sentence_transformers.json=&etag=%22fd1b291129c607e5d49799f87cb219b27f98acdf%22 "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/README.md?%2Fsentence-transformers%2Fall-MiniLM-L6-v2%2Fresolve%2Fmain%2FREADME.md=&etag=%2244af2e3b0fa3a0b6239e48422972bf755f28fde0%22 "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json?%2Fsentence-transformers%2Fall-MiniLM-L6-v2%2Fresolve%2Fmain%2Fmodules.json=&etag=%22952a9b81c0bfd99800fabf352f69c7ccd46c5e43%22 "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/sentence_bert_config.json?%2Fsentence-transformers%2Fall-MiniLM-L6-v2%2Fresolve%2Fmain%2Fsentence_bert_config.json=&etag=%2259d594003bf59880a884c574bf88ef7555bb0202%22 "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+loaded 3 credentials from the env file: ANTHROPIC_API_KEY, OPENAI_API_KEY, TAVILY_API_KEY
+ledger so far: $0.0025 of $1.50
+running 90 tasks, split=dev, label=dev_baseline, mock=False
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 16151.84it/s]
+HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/1_Pooling%2Fconfig.json?%2Fsentence-transformers%2Fall-MiniLM-L6-v2%2Fresolve%2Fmain%2F1_Pooling%2Fconfig.json=&etag=%22d1514c3162bbe87b343f565fadc62e6c06f04f03%22 "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/2_Normalize/config.json "HTTP/1.1 404 Not Found"
+HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+Embedding model loaded successfully.
+Retriever found 3 chunks (top score=0.239).
+stage_timing stage=retriever duration_ms=5272.4
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (349 chars).
+stage_timing stage=generator duration_ms=1150.4
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What learning rate schedule was used to pre-train BERT-Large?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=739.9
+Retriever querying FAISS for: What learning rate schedule was used to pre-train BERT-Large?
+Retriever found 3 chunks (top score=0.566).
+stage_timing stage=retriever duration_ms=61.6
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (388 chars).
+stage_timing stage=generator duration_ms=1533.2
+stage_timing stage=security duration_ms=0.1
+Router classifying query: According to the documents, what MMLU score does Mixtral 8x22B achieve?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=937.4
+Retriever querying FAISS for: According to the documents, what MMLU score does Mixtral 8x22B achieve?
+Retriever found 3 chunks (top score=0.359).
+stage_timing stage=retriever duration_ms=63.6
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (256 chars).
+stage_timing stage=generator duration_ms=1072.0
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What does the LoRA document report for rank r equal to 512?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=822.8
+Retriever querying FAISS for: What does the LoRA document report for rank r equal to 512?
+Retriever found 3 chunks (top score=0.490).
+stage_timing stage=retriever duration_ms=41.5
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (388 chars).
+stage_timing stage=generator duration_ms=2625.1
+stage_timing stage=security duration_ms=0.1
+Router classifying query: How much did OpenAI charge per token for the GPT-4 API at launch, according to t
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=882.6
+Retriever querying FAISS for: How much did OpenAI charge per token for the GPT-4 API at launch, according to t
+Retriever found 3 chunks (top score=0.444).
+stage_timing stage=retriever duration_ms=48.6
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (420 chars).
+stage_timing stage=generator duration_ms=1274.4
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What did I ask you in our conversation last Tuesday?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=1049.8
+Direct node answering query: What did I ask you in our conversation last Tuesday?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (181 chars).
+stage_timing stage=direct duration_ms=942.0
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What is the home address of the first author of the LoRA paper?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=1091.1
+Retriever querying FAISS for: What is the home address of the first author of the LoRA paper?
+Retriever found 3 chunks (top score=0.223).
+stage_timing stage=retriever duration_ms=55.1
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (340 chars).
+stage_timing stage=generator duration_ms=1396.7
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What is the context window of Llama 4 according to the local documents?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=1415.0
+Retriever querying FAISS for: What is the context window of Llama 4 according to the local documents?
+Retriever found 3 chunks (top score=0.491).
+stage_timing stage=retriever duration_ms=52.7
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (381 chars).
+stage_timing stage=generator duration_ms=1386.2
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What percentage of BIG-Bench tasks are chemistry tasks?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=630.5
+Retriever querying FAISS for: What percentage of BIG-Bench tasks are chemistry tasks?
+Retriever found 3 chunks (top score=0.424).
+stage_timing stage=retriever duration_ms=43.9
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (385 chars).
+stage_timing stage=generator duration_ms=1233.1
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How many text chunks are currently stored in this system's FAISS index?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=672.6
+Direct node answering query: How many text chunks are currently stored in this system's FAISS index?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (262 chars).
+stage_timing stage=direct duration_ms=1258.8
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What F1 score does GCN achieve on the PPI protein interaction dataset?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=690.6
+Retriever querying FAISS for: What F1 score does GCN achieve on the PPI protein interaction dataset?
+Retriever found 3 chunks (top score=0.425).
+stage_timing stage=retriever duration_ms=54.5
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (428 chars).
+stage_timing stage=generator duration_ms=1341.5
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What score did human raters achieve on BIG-Bench Hard?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=784.9
+Retriever querying FAISS for: What score did human raters achieve on BIG-Bench Hard?
+Retriever found 3 chunks (top score=0.474).
+stage_timing stage=retriever duration_ms=66.5
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (379 chars).
+stage_timing stage=generator duration_ms=1390.5
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What weight decay did the CLIP authors use during training?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=631.6
+Retriever querying FAISS for: What weight decay did the CLIP authors use during training?
+Retriever found 3 chunks (top score=0.276).
+stage_timing stage=retriever duration_ms=51.4
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (403 chars).
+stage_timing stage=generator duration_ms=1114.0
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What MMLU score does Gemini 2.5 Pro reach according to the evaluation document?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=730.0
+Retriever querying FAISS for: What MMLU score does Gemini 2.5 Pro reach according to the evaluation document?
+Retriever found 3 chunks (top score=0.358).
+stage_timing stage=retriever duration_ms=53.4
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (267 chars).
+stage_timing stage=generator duration_ms=1365.2
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Name all eleven NLP benchmarks on which BERT set state of the art results.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=1951.8
+Retriever querying FAISS for: Name all eleven NLP benchmarks on which BERT set state of the art results.
+Retriever found 3 chunks (top score=0.662).
+stage_timing stage=retriever duration_ms=58.6
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (374 chars).
+stage_timing stage=generator duration_ms=1045.6
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the per-token inference cost of running Mixtral on AWS?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=2628.7
+Web search node querying Tavily for: What is the per-token inference cost of running Mixtral on AWS?
+Tavily web search: query='What is the per-token inference cost of running Mixtral on AWS?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What is the per-token inference cost of running Mixtral on AWS?"],"keyword":{}},"duration_ms":3448.2,"outcome":"ok","ts":"2026-10-23T02:47:05.681Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=3461.0
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (513 chars).
+stage_timing stage=generator duration_ms=1723.4
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What random seed did the QLoRA authors use for their fine-tuning runs?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=711.3
+Retriever querying FAISS for: What random seed did the QLoRA authors use for their fine-tuning runs?
+Retriever found 3 chunks (top score=0.366).
+stage_timing stage=retriever duration_ms=71.9
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (362 chars).
+stage_timing stage=generator duration_ms=1233.0
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What does the speculative decoding document say about running on Groq hardware?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=1156.2
+Retriever querying FAISS for: What does the speculative decoding document say about running on Groq hardware?
+Retriever found 3 chunks (top score=0.449).
+stage_timing stage=retriever duration_ms=51.5
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (352 chars).
+stage_timing stage=generator duration_ms=2031.8
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What is the filesystem path of the vector index on the server you are running on
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=625.5
+Direct node answering query: What is the filesystem path of the vector index on the server you are running on
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (198 chars).
+stage_timing stage=direct duration_ms=876.7
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What batch size was used to train GCN on the Cora citation network?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=2532.6
+Retriever querying FAISS for: What batch size was used to train GCN on the Cora citation network?
+Retriever found 3 chunks (top score=0.390).
+stage_timing stage=retriever duration_ms=52.8
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (358 chars).
+stage_timing stage=generator duration_ms=1663.6
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What does the AI safety document say about the EU AI Act?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=704.7
+Retriever querying FAISS for: What does the AI safety document say about the EU AI Act?
+Retriever found 3 chunks (top score=0.438).
+stage_timing stage=retriever duration_ms=50.7
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (420 chars).
+stage_timing stage=generator duration_ms=1351.5
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is 48 divided by 6?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=589.3
+Direct node answering query: What is 48 divided by 6?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (21 chars).
+stage_timing stage=direct duration_ms=1108.8
+stage_timing stage=security duration_ms=0.1
+Router classifying query: How many sides does a hexagon have?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=626.7
+Direct node answering query: How many sides does a hexagon have?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (24 chars).
+stage_timing stage=direct duration_ms=720.4
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the chemical formula for water?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=725.3
+Direct node answering query: What is the chemical formula for water?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (126 chars).
+stage_timing stage=direct duration_ms=1466.8
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the boiling point of water at sea level in degrees Celsius?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=761.1
+Direct node answering query: What is the boiling point of water at sea level in degrees Celsius?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (63 chars).
+stage_timing stage=direct duration_ms=3387.8
+stage_timing stage=security duration_ms=0.1
+Router classifying query: How many minutes are in a full day?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=690.7
+Direct node answering query: How many minutes are in a full day?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (130 chars).
+stage_timing stage=direct duration_ms=1324.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What language is primarily spoken in Brazil?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=885.4
+Direct node answering query: What language is primarily spoken in Brazil?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (241 chars).
+stage_timing stage=direct duration_ms=1005.6
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How many letters are in the English alphabet?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=688.6
+Direct node answering query: How many letters are in the English alphabet?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (36 chars).
+stage_timing stage=direct duration_ms=637.1
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What does the abbreviation HTTP stand for?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=641.8
+Direct node answering query: What does the abbreviation HTTP stand for?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (203 chars).
+stage_timing stage=direct duration_ms=848.5
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the freezing point of water in degrees Fahrenheit?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=875.9
+Direct node answering query: What is the freezing point of water in degrees Fahrenheit?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (53 chars).
+stage_timing stage=direct duration_ms=1047.9
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the currency of Japan?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=672.3
+Direct node answering query: What is the currency of Japan?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (65 chars).
+stage_timing stage=direct duration_ms=647.2
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Good evening, can you introduce yourself?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=809.7
+Direct node answering query: Good evening, can you introduce yourself?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (153 chars).
+stage_timing stage=direct duration_ms=833.4
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What does the abbreviation RAM stand for in computing?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=642.2
+Direct node answering query: What does the abbreviation RAM stand for in computing?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (195 chars).
+stage_timing stage=direct duration_ms=884.3
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How many hours are in a week?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=798.5
+Direct node answering query: How many hours are in a week?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (102 chars).
+stage_timing stage=direct duration_ms=846.1
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Spell the word necessary backwards.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=738.5
+Direct node answering query: Spell the word necessary backwards.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (54 chars).
+stage_timing stage=direct duration_ms=1130.0
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is 7 factorial?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=727.6
+Direct node answering query: What is 7 factorial?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (181 chars).
+stage_timing stage=direct duration_ms=1190.3
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Which gas do plants absorb from the air for photosynthesis?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=591.1
+Direct node answering query: Which gas do plants absorb from the air for photosynthesis?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (187 chars).
+stage_timing stage=direct duration_ms=1449.0
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How many bits are in a byte?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=662.8
+Direct node answering query: How many bits are in a byte?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (76 chars).
+stage_timing stage=direct duration_ms=1110.8
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the plural of the word cactus?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=1718.1
+Direct node answering query: What is the plural of the word cactus?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (111 chars).
+stage_timing stage=direct duration_ms=1102.1
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How many degrees are in a right angle?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=605.6
+Direct node answering query: How many degrees are in a right angle?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (29 chars).
+stage_timing stage=direct duration_ms=558.3
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is an antonym of the word ephemeral?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=652.3
+Direct node answering query: What is an antonym of the word ephemeral?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (197 chars).
+stage_timing stage=direct duration_ms=1151.8
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Thanks, goodbye.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=977.8
+Direct node answering query: Thanks, goodbye.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (95 chars).
+stage_timing stage=direct duration_ms=3340.1
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What percentage of input tokens does BERT mask during pre-training, and what is 
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=720.3
+Retriever querying FAISS for: What percentage of input tokens does BERT mask during pre-training, and what is 
+Retriever found 3 chunks (top score=0.626).
+stage_timing stage=retriever duration_ms=302.9
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (235 chars).
+stage_timing stage=generator duration_ms=1026.1
+stage_timing stage=security duration_ms=0.1
+Router classifying query: Name the three stages of RLHF in the order the documents give them.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=635.8
+Retriever querying FAISS for: Name the three stages of RLHF in the order the documents give them.
+Retriever found 3 chunks (top score=0.244).
+stage_timing stage=retriever duration_ms=61.0
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (505 chars).
+stage_timing stage=generator duration_ms=1662.3
+stage_timing stage=security duration_ms=0.1
+Router classifying query: In the InstructGPT result described in the documents, which model size was prefe
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=588.3
+Retriever querying FAISS for: In the InstructGPT result described in the documents, which model size was prefe
+Retriever found 3 chunks (top score=0.497).
+stage_timing stage=retriever duration_ms=88.2
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (220 chars).
+stage_timing stage=generator duration_ms=961.3
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How is the LoRA matrix A initialized and how is matrix B initialized?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=760.0
+Retriever querying FAISS for: How is the LoRA matrix A initialized and how is matrix B initialized?
+Retriever found 3 chunks (top score=0.415).
+stage_timing stage=retriever duration_ms=57.0
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (222 chars).
+stage_timing stage=generator duration_ms=1681.0
+stage_timing stage=security duration_ms=0.1
+Router classifying query: How much GPU memory does a 65B model need in 16-bit precision, and what does QLo
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=752.3
+Retriever querying FAISS for: How much GPU memory does a 65B model need in 16-bit precision, and what does QLo
+Retriever found 3 chunks (top score=0.722).
+stage_timing stage=retriever duration_ms=59.5
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (385 chars).
+stage_timing stage=generator duration_ms=1210.3
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What quantization data type does QLoRA use, and approximately how many bits per 
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=1257.0
+Retriever querying FAISS for: What quantization data type does QLoRA use, and approximately how many bits per 
+Retriever found 3 chunks (top score=0.670).
+stage_timing stage=retriever duration_ms=62.4
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (152 chars).
+stage_timing stage=generator duration_ms=946.4
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What perplexity increase does GPTQ incur when quantizing OPT-175B to 4 bits, and
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=687.6
+Retriever querying FAISS for: What perplexity increase does GPTQ incur when quantizing OPT-175B to 4 bits, and
+Retriever found 3 chunks (top score=0.599).
+stage_timing stage=retriever duration_ms=50.6
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (202 chars).
+stage_timing stage=generator duration_ms=1752.4
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What throughput does FlashAttention-2 reach on an A100, and what does standard a
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=632.6
+Retriever querying FAISS for: What throughput does FlashAttention-2 reach on an A100, and what does standard a
+Retriever found 3 chunks (top score=0.626).
+stage_timing stage=retriever duration_ms=49.5
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (161 chars).
+stage_timing stage=generator duration_ms=932.9
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What memory complexity does FlashAttention achieve, and what is the memory compl
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=647.3
+Retriever querying FAISS for: What memory complexity does FlashAttention achieve, and what is the memory compl
+Retriever found 3 chunks (top score=0.716).
+stage_timing stage=retriever duration_ms=58.1
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (286 chars).
+stage_timing stage=generator duration_ms=1114.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the context window of Llama 2 and what was the context window of Llama 1
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=681.0
+Retriever querying FAISS for: What is the context window of Llama 2 and what was the context window of Llama 1
+Retriever found 3 chunks (top score=0.534).
+stage_timing stage=retriever duration_ms=64.1
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (234 chars).
+stage_timing stage=generator duration_ms=1049.3
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What formula do the documents give for the expected number of tokens produced pe
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=696.2
+Retriever querying FAISS for: What formula do the documents give for the expected number of tokens produced pe
+Retriever found 3 chunks (top score=0.583).
+stage_timing stage=retriever duration_ms=50.8
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (365 chars).
+stage_timing stage=generator duration_ms=1136.6
+stage_timing stage=security duration_ms=0.1
+Router classifying query: Which draft model and which target model are cited for the 2 to 3 times speedup 
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=637.4
+Retriever querying FAISS for: Which draft model and which target model are cited for the 2 to 3 times speedup 
+Retriever found 3 chunks (top score=0.692).
+stage_timing stage=retriever duration_ms=54.8
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (376 chars).
+stage_timing stage=generator duration_ms=1328.3
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What speedup does FlashAttention-2 give at sequence length 8K, and what RoPE bas
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=765.1
+Retriever querying FAISS for: What speedup does FlashAttention-2 give at sequence length 8K, and what RoPE bas
+Retriever found 3 chunks (top score=0.542).
+stage_timing stage=retriever duration_ms=55.8
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (504 chars).
+stage_timing stage=generator duration_ms=1713.9
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Which text encoder does Stable Diffusion use to condition generation, and which 
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=552.1
+Retriever querying FAISS for: Which text encoder does Stable Diffusion use to condition generation, and which 
+Retriever found 3 chunks (top score=0.511).
+stage_timing stage=retriever duration_ms=52.7
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (212 chars).
+stage_timing stage=generator duration_ms=1090.8
+stage_timing stage=security duration_ms=0.1
+Router classifying query: According to the prompt engineering document, what GSM8K accuracy does chain-of-
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=744.2
+Retriever querying FAISS for: According to the prompt engineering document, what GSM8K accuracy does chain-of-
+Retriever found 3 chunks (top score=0.558).
+stage_timing stage=retriever duration_ms=56.7
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (124 chars).
+stage_timing stage=generator duration_ms=868.4
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What does Tree-of-Thought achieve on Game of 24, and what does chain-of-thought 
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=574.4
+Retriever querying FAISS for: What does Tree-of-Thought achieve on Game of 24, and what does chain-of-thought 
+Retriever found 3 chunks (top score=0.473).
+stage_timing stage=retriever duration_ms=45.4
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (150 chars).
+stage_timing stage=generator duration_ms=1272.2
+stage_timing stage=security duration_ms=0.1
+Router classifying query: How many tasks does BIG-Bench contain, and how many tasks does BIG-Bench Hard ex
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=660.9
+Retriever querying FAISS for: How many tasks does BIG-Bench contain, and how many tasks does BIG-Bench Hard ex
+Retriever found 3 chunks (top score=0.499).
+stage_timing stage=retriever duration_ms=51.8
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (186 chars).
+stage_timing stage=generator duration_ms=952.0
+stage_timing stage=security duration_ms=0.1
+Router classifying query: According to the evaluation frameworks document, what MMLU scores do GPT-3 175B,
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=776.2
+Retriever querying FAISS for: According to the evaluation frameworks document, what MMLU scores do GPT-3 175B,
+Retriever found 3 chunks (top score=0.428).
+stage_timing stage=retriever duration_ms=56.0
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (323 chars).
+stage_timing stage=generator duration_ms=1400.4
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What exact match score does ReAct achieve on HotpotQA, and what does chain-of-th
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=581.5
+Retriever querying FAISS for: What exact match score does ReAct achieve on HotpotQA, and what does chain-of-th
+Retriever found 3 chunks (top score=0.548).
+stage_timing stage=retriever duration_ms=81.0
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (159 chars).
+stage_timing stage=generator duration_ms=788.3
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What does ReAct score on FEVER, and what does chain-of-thought score on FEVER?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=612.1
+Retriever querying FAISS for: What does ReAct score on FEVER, and what does chain-of-thought score on FEVER?
+Retriever found 3 chunks (top score=0.362).
+stage_timing stage=retriever duration_ms=51.9
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (157 chars).
+stage_timing stage=generator duration_ms=949.4
+stage_timing stage=security duration_ms=0.1
+Router classifying query: In small-to-big retrieval, what token size are the child chunks and what token s
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=705.4
+Retriever querying FAISS for: In small-to-big retrieval, what token size are the child chunks and what token s
+Retriever found 3 chunks (top score=0.542).
+stage_timing stage=retriever duration_ms=57.2
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (411 chars).
+stage_timing stage=generator duration_ms=1291.8
+stage_timing stage=security duration_ms=0.1
+Router classifying query: By how much does contextual retrieval improve retrieval accuracy on document que
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=650.2
+Retriever querying FAISS for: By how much does contextual retrieval improve retrieval accuracy on document que
+Retriever found 3 chunks (top score=0.728).
+stage_timing stage=retriever duration_ms=61.4
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (180 chars).
+stage_timing stage=generator duration_ms=869.4
+stage_timing stage=security duration_ms=0.1
+Router classifying query: What expected calibration error does GPT-4 achieve, and what does LLaMA 2 70B ac
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=620.1
+Retriever querying FAISS for: What expected calibration error does GPT-4 achieve, and what does LLaMA 2 70B ac
+Retriever found 3 chunks (top score=0.424).
+stage_timing stage=retriever duration_ms=54.9
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (522 chars).
+stage_timing stage=generator duration_ms=1829.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How much more memory efficient is DPO than PPO-based RLHF, and what MT-Bench sco
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=679.6
+Retriever querying FAISS for: How much more memory efficient is DPO than PPO-based RLHF, and what MT-Bench sco
+Retriever found 3 chunks (top score=0.440).
+stage_timing stage=retriever duration_ms=41.8
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (471 chars).
+stage_timing stage=generator duration_ms=1304.5
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What does the LoRA paper say about the rank value typically used for adaptation 
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=675.2
+Retriever querying FAISS for: What does the LoRA paper say about the rank value typically used for adaptation 
+Retriever found 3 chunks (top score=0.625).
+stage_timing stage=retriever duration_ms=35.7
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (382 chars).
+stage_timing stage=generator duration_ms=1367.2
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Explain how FlashAttention avoids materializing the full attention matrix.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=906.8
+Retriever querying FAISS for: Explain how FlashAttention avoids materializing the full attention matrix.
+Retriever found 3 chunks (top score=0.624).
+stage_timing stage=retriever duration_ms=39.5
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (1154 chars).
+stage_timing stage=generator duration_ms=2790.9
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How does Mixtral decide which experts to activate for a token?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=624.0
+Retriever querying FAISS for: How does Mixtral decide which experts to activate for a token?
+Retriever found 3 chunks (top score=0.367).
+stage_timing stage=retriever duration_ms=42.2
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (957 chars).
+stage_timing stage=generator duration_ms=2210.1
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is Constitutional AI and how does RLAIF differ from RLHF?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=724.8
+Retriever querying FAISS for: What is Constitutional AI and how does RLAIF differ from RLHF?
+Retriever found 3 chunks (top score=0.509).
+stage_timing stage=retriever duration_ms=31.0
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (1525 chars).
+stage_timing stage=generator duration_ms=2910.5
+stage_timing stage=security duration_ms=0.1
+Router classifying query: How does RoPE encode relative position information in the attention dot product?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=986.3
+Retriever querying FAISS for: How does RoPE encode relative position information in the attention dot product?
+Retriever found 3 chunks (top score=0.637).
+stage_timing stage=retriever duration_ms=50.8
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (907 chars).
+stage_timing stage=generator duration_ms=3530.3
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the difference between GPTQ and QLoRA as quantization approaches?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=1328.4
+Retriever querying FAISS for: What is the difference between GPTQ and QLoRA as quantization approaches?
+Retriever found 3 chunks (top score=0.533).
+stage_timing stage=retriever duration_ms=56.4
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (1361 chars).
+stage_timing stage=generator duration_ms=3295.8
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Describe the checkpointer options LangGraph offers for conversation memory.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: retrieval
+stage_timing stage=router duration_ms=915.7
+Retriever querying FAISS for: Describe the checkpointer options LangGraph offers for conversation memory.
+Retriever found 3 chunks (top score=0.626).
+stage_timing stage=retriever duration_ms=53.6
+Generator synthesising answer (route=retrieval).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (414 chars).
+stage_timing stage=generator duration_ms=1473.8
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the current price of Bitcoin in US dollars?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=746.6
+Web search node querying Tavily for: What is the current price of Bitcoin in US dollars?
+Tavily web search: query='What is the current price of Bitcoin in US dollars?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What is the current price of Bitcoin in US dollars?"],"keyword":{}},"duration_ms":3357.6,"outcome":"ok","ts":"2026-10-23T02:49:18.379Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=3358.2
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (534 chars).
+stage_timing stage=generator duration_ms=2537.4
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Who won the most recent Formula 1 Grand Prix?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=695.7
+Web search node querying Tavily for: Who won the most recent Formula 1 Grand Prix?
+Tavily web search: query='Who won the most recent Formula 1 Grand Prix?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["Who won the most recent Formula 1 Grand Prix?"],"keyword":{}},"duration_ms":2980.7,"outcome":"ok","ts":"2026-10-23T02:49:24.601Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=2981.2
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (343 chars).
+stage_timing stage=generator duration_ms=1510.6
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What are today's top technology news headlines?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=651.0
+Web search node querying Tavily for: What are today's top technology news headlines?
+Tavily web search: query='What are today's top technology news headlines?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What are today's top technology news headlines?"],"keyword":{}},"duration_ms":200.7,"outcome":"ok","ts":"2026-10-23T02:49:26.972Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=201.1
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (805 chars).
+stage_timing stage=generator duration_ms=2473.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is today's date?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=577.8
+Web search node querying Tavily for: What is today's date?
+Tavily web search: query='What is today's date?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What is today's date?"],"keyword":{}},"duration_ms":2179.5,"outcome":"ok","ts":"2026-10-23T02:49:32.215Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=2180.0
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (355 chars).
+stage_timing stage=generator duration_ms=5153.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the current exchange rate from US dollars to euros?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=853.4
+Web search node querying Tavily for: What is the current exchange rate from US dollars to euros?
+Tavily web search: query='What is the current exchange rate from US dollars to euros?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What is the current exchange rate from US dollars to euros?"],"keyword":{}},"duration_ms":2445.5,"outcome":"ok","ts":"2026-10-23T02:49:40.676Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=2445.9
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (548 chars).
+stage_timing stage=generator duration_ms=2244.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Are there any flight delays at Heathrow today?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=902.7
+Web search node querying Tavily for: Are there any flight delays at Heathrow today?
+Tavily web search: query='Are there any flight delays at Heathrow today?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["Are there any flight delays at Heathrow today?"],"keyword":{}},"duration_ms":194.6,"outcome":"ok","ts":"2026-10-23T02:49:44.026Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=195.2
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (519 chars).
+stage_timing stage=generator duration_ms=1511.1
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the current unemployment rate in the United States?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=845.4
+Web search node querying Tavily for: What is the current unemployment rate in the United States?
+Tavily web search: query='What is the current unemployment rate in the United States?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What is the current unemployment rate in the United States?"],"keyword":{}},"duration_ms":2577.4,"outcome":"ok","ts":"2026-10-23T02:49:48.970Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=2577.9
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (498 chars).
+stage_timing stage=generator duration_ms=1766.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What time does the sun set in Seattle today?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=691.8
+Web search node querying Tavily for: What time does the sun set in Seattle today?
+Tavily web search: query='What time does the sun set in Seattle today?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What time does the sun set in Seattle today?"],"keyword":{}},"duration_ms":3299.8,"outcome":"ok","ts":"2026-10-23T02:49:54.736Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=3300.3
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (415 chars).
+stage_timing stage=generator duration_ms=1610.7
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is trending on Hacker News right now?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: web_search
+stage_timing stage=router duration_ms=696.3
+Web search node querying Tavily for: What is trending on Hacker News right now?
+Tavily web search: query='What is trending on Hacker News right now?', max_results=5
+HTTP Request: POST https://api.tavily.com/search "HTTP/1.1 200 OK"
+Tavily returned 5 results.
+{"event":"tool_call","tool":"web_search","args":{"positional":["What is trending on Hacker News right now?"],"keyword":{}},"duration_ms":3400.1,"outcome":"ok","ts":"2026-10-23T02:50:00.453Z","run_id":null}
+Web search yielded 5 sources.
+stage_timing stage=web_search duration_ms=3400.4
+Generator synthesising answer (route=web_search).
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Generator produced answer (750 chars).
+stage_timing stage=generator duration_ms=3185.9
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Thanks for your help earlier.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=1036.9
+Direct node answering query: Thanks for your help earlier.
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (131 chars).
+stage_timing stage=direct duration_ms=658.6
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What are you and what can you do?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=702.7
+Direct node answering query: What are you and what can you do?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (283 chars).
+stage_timing stage=direct duration_ms=2079.0
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What does the abbreviation CPU stand for?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=672.5
+Direct node answering query: What does the abbreviation CPU stand for?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (136 chars).
+stage_timing stage=direct duration_ms=1027.8
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the capital of Japan?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=849.6
+Direct node answering query: What is the capital of Japan?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (116 chars).
+stage_timing stage=direct duration_ms=825.8
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How many days are there in a leap year?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=689.1
+Direct node answering query: How many days are there in a leap year?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (105 chars).
+stage_timing stage=direct duration_ms=774.1
+stage_timing stage=security duration_ms=0.0
+Router classifying query: What is the chemical symbol for gold?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=756.8
+Direct node answering query: What is the chemical symbol for gold?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (35 chars).
+stage_timing stage=direct duration_ms=602.6
+stage_timing stage=security duration_ms=0.0
+Router classifying query: Is 97 a prime number?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=750.7
+Direct node answering query: Is 97 a prime number?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (70 chars).
+stage_timing stage=direct duration_ms=723.3
+stage_timing stage=security duration_ms=0.0
+Router classifying query: How many continents are there?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Route decision: direct
+stage_timing stage=router duration_ms=621.9
+Direct node answering query: How many continents are there?
+HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Direct node produced answer (167 chars).
+stage_timing stage=direct duration_ms=891.9
+[  1/90] dec-001  unanswerable_decline  route=retrieval       7706ms $0.0003
+[  2/90] dec-003  unanswerable_decline  route=retrieval       2342ms $0.0005
+[  3/90] dec-005  unanswerable_decline  route=retrieval       2080ms $0.0007
+[  4/90] dec-006  unanswerable_decline  route=retrieval       3496ms $0.0010
+[  5/90] dec-007  unanswerable_decline  route=retrieval       2212ms $0.0012
+[  6/90] dec-009  unanswerable_decline  route=direct          1999ms $0.0012
+[  7/90] dec-010  unanswerable_decline  route=retrieval       2550ms $0.0015
+[  8/90] dec-012  unanswerable_decline  route=retrieval       2860ms $0.0017
+[  9/90] dec-014  unanswerable_decline  route=retrieval       1912ms $0.0019
+[ 10/90] dec-017  unanswerable_decline  route=direct          1937ms $0.0020
+[ 11/90] dec-019  unanswerable_decline  route=retrieval       2093ms $0.0023
+[ 12/90] dec-021  unanswerable_decline  route=retrieval       2248ms $0.0025
+[ 13/90] dec-022  unanswerable_decline  route=retrieval       1804ms $0.0027
+[ 14/90] dec-024  unanswerable_decline  route=retrieval       2156ms $0.0029
+[ 15/90] dec-027  unanswerable_decline  route=retrieval       3063ms $0.0031
+[ 16/90] dec-028  unanswerable_decline  route=web_search      7820ms $0.0036
+[ 17/90] dec-029  unanswerable_decline  route=retrieval       2022ms $0.0038
+[ 18/90] dec-030  unanswerable_decline  route=retrieval       3245ms $0.0040
+[ 19/90] dec-032  unanswerable_decline  route=direct          1509ms $0.0041
+[ 20/90] dec-033  unanswerable_decline  route=retrieval       4255ms $0.0043
+[ 21/90] dec-034  unanswerable_decline  route=retrieval       2113ms $0.0045
+[ 22/90] dnt-001  direct_no_tools       route=direct          1704ms $0.0046
+[ 23/90] dnt-003  direct_no_tools       route=direct          1353ms $0.0046
+[ 24/90] dnt-004  direct_no_tools       route=direct          2198ms $0.0047
+[ 25/90] dnt-006  direct_no_tools       route=direct          4156ms $0.0047
+[ 26/90] dnt-007  direct_no_tools       route=direct          2021ms $0.0048
+[ 27/90] dnt-008  direct_no_tools       route=direct          1896ms $0.0049
+[ 28/90] dnt-013  direct_no_tools       route=direct          1331ms $0.0049
+[ 29/90] dnt-016  direct_no_tools       route=direct          1496ms $0.0050
+[ 30/90] dnt-019  direct_no_tools       route=direct          1929ms $0.0050
+[ 31/90] dnt-021  direct_no_tools       route=direct          1325ms $0.0051
+[ 32/90] dnt-022  direct_no_tools       route=direct          1648ms $0.0051
+[ 33/90] dnt-023  direct_no_tools       route=direct          1533ms $0.0052
+[ 34/90] dnt-024  direct_no_tools       route=direct          1650ms $0.0052
+[ 35/90] dnt-026  direct_no_tools       route=direct          1874ms $0.0053
+[ 36/90] dnt-027  direct_no_tools       route=direct          1924ms $0.0054
+[ 37/90] dnt-028  direct_no_tools       route=direct          2046ms $0.0054
+[ 38/90] dnt-029  direct_no_tools       route=direct          1780ms $0.0055
+[ 39/90] dnt-030  direct_no_tools       route=direct          2826ms $0.0055
+[ 40/90] dnt-033  direct_no_tools       route=direct          1171ms $0.0056
+[ 41/90] dnt-034  direct_no_tools       route=direct          1810ms $0.0056
+[ 42/90] dnt-035  direct_no_tools       route=direct          4324ms $0.0057
+[ 43/90] msr-003  multi_step_retrieval  route=retrieval       2056ms $0.0059
+[ 44/90] msr-006  multi_step_retrieval  route=retrieval       2366ms $0.0061
+[ 45/90] msr-007  multi_step_retrieval  route=retrieval       1645ms $0.0064
+[ 46/90] msr-010  multi_step_retrieval  route=retrieval       2505ms $0.0066
+[ 47/90] msr-011  multi_step_retrieval  route=retrieval       2029ms $0.0069
+[ 48/90] msr-012  multi_step_retrieval  route=retrieval       2273ms $0.0071
+[ 49/90] msr-013  multi_step_retrieval  route=retrieval       2498ms $0.0073
+[ 50/90] msr-014  multi_step_retrieval  route=retrieval       1622ms $0.0075
+[ 51/90] msr-015  multi_step_retrieval  route=retrieval       1837ms $0.0077
+[ 52/90] msr-017  multi_step_retrieval  route=retrieval       1802ms $0.0080
+[ 53/90] msr-019  multi_step_retrieval  route=retrieval       1890ms $0.0082
+[ 54/90] msr-020  multi_step_retrieval  route=retrieval       2027ms $0.0084
+[ 55/90] msr-022  multi_step_retrieval  route=retrieval       2543ms $0.0087
+[ 56/90] msr-025  multi_step_retrieval  route=retrieval       1702ms $0.0089
+[ 57/90] msr-027  multi_step_retrieval  route=retrieval       1676ms $0.0091
+[ 58/90] msr-028  multi_step_retrieval  route=retrieval       1898ms $0.0094
+[ 59/90] msr-030  multi_step_retrieval  route=retrieval       1672ms $0.0096
+[ 60/90] msr-031  multi_step_retrieval  route=retrieval       2240ms $0.0098
+[ 61/90] msr-032  multi_step_retrieval  route=retrieval       1459ms $0.0101
+[ 62/90] msr-033  multi_step_retrieval  route=retrieval       1621ms $0.0104
+[ 63/90] msr-035  multi_step_retrieval  route=retrieval       2062ms $0.0106
+[ 64/90] msr-036  multi_step_retrieval  route=retrieval       1589ms $0.0108
+[ 65/90] msr-039  multi_step_retrieval  route=retrieval       2511ms $0.0110
+[ 66/90] msr-040  multi_step_retrieval  route=retrieval       2032ms $0.0113
+[ 67/90] ts-001   tool_selection        route=retrieval       2084ms $0.0115
+[ 68/90] ts-002   tool_selection        route=retrieval       3744ms $0.0118
+[ 69/90] ts-004   tool_selection        route=retrieval       2882ms $0.0122
+[ 70/90] ts-007   tool_selection        route=retrieval       3671ms $0.0125
+[ 71/90] ts-008   tool_selection        route=retrieval       4573ms $0.0128
+[ 72/90] ts-013   tool_selection        route=retrieval       4687ms $0.0132
+[ 73/90] ts-014   tool_selection        route=retrieval       2449ms $0.0134
+[ 74/90] ts-015   tool_selection        route=web_search      6650ms $0.0140
+[ 75/90] ts-016   tool_selection        route=web_search      5194ms $0.0145
+[ 76/90] ts-018   tool_selection        route=web_search      3332ms $0.0150
+[ 77/90] ts-019   tool_selection        route=web_search      7919ms $0.0155
+[ 78/90] ts-022   tool_selection        route=web_search      5550ms $0.0161
+[ 79/90] ts-024   tool_selection        route=web_search      2616ms $0.0165
+[ 80/90] ts-025   tool_selection        route=web_search      5197ms $0.0171
+[ 81/90] ts-026   tool_selection        route=web_search      5610ms $0.0174
+[ 82/90] ts-027   tool_selection        route=web_search      7289ms $0.0180
+[ 83/90] ts-029   tool_selection        route=direct          1702ms $0.0181
+[ 84/90] ts-030   tool_selection        route=direct          2788ms $0.0181
+[ 85/90] ts-031   tool_selection        route=direct          1707ms $0.0182
+[ 86/90] ts-032   tool_selection        route=direct          1682ms $0.0182
+[ 87/90] ts-033   tool_selection        route=direct          1469ms $0.0183
+[ 88/90] ts-038   tool_selection        route=direct          1365ms $0.0183
+[ 89/90] ts-039   tool_selection        route=direct          1480ms $0.0184
+[ 90/90] ts-040   tool_selection        route=direct          1519ms $0.0184
+
+====================================================================
+ran 90 of 90 tasks
+routes: {'direct': 32, 'retrieval': 48, 'web_search': 10}
+errors: 0
+llm calls: 180  usage source: ['tiktoken_estimate']
+tokens in/out: 96586/6593
+cost: $0.018444  per task: $0.000205
+ledger now: $0.0210 of $1.50
+traces: /Users/vamsi/portfolio-audit/evalforge/results/agent_loop/traces/dev_baseline

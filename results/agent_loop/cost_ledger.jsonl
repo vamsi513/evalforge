@@ -1,0 +1,14 @@
+{"label": "usage_probe", "run_at": "2026-10-23T02:29:59.844522+00:00", "tasks_run": 1, "cost_usd": 0.0002046, "usage_source": ["tiktoken_estimate"]}
+{"label": "pilot", "run_at": "2026-10-23T02:31:16.618799+00:00", "tasks_run": 10, "cost_usd": 0.00231105, "usage_source": ["tiktoken_estimate"]}
+{"label": "dev_baseline", "run_at": "2026-10-23T02:50:17.364991+00:00", "tasks_run": 90, "cost_usd": 0.0184437, "usage_source": ["tiktoken_estimate"]}
+{"label": "dev_baseline_judgeprobe", "run_at": "2026-10-23T03:01:22.323152+00:00", "tasks_run": 3, "cost_usd": 0.0, "usage_source": ["provider_reported"]}
+{"label": "dev_baseline_judgeprobe", "run_at": "2026-10-23T03:10:55.312593+00:00", "tasks_run": 3, "cost_usd": 0.012653, "usage_source": ["provider_reported"]}
+{"label": "dev_baseline_judgeprobe2", "run_at": "2026-10-23T03:13:08.039928+00:00", "tasks_run": 4, "cost_usd": 0.015457, "usage_source": ["provider_reported"]}
+{"label": "dev_baseline_judge", "run_at": "2026-10-23T03:21:13.271341+00:00", "tasks_run": 90, "cost_usd": 0.358412, "usage_source": ["provider_reported"]}
+{"label": "dev_fix", "run_at": "2026-10-23T03:40:14.763259+00:00", "tasks_run": 90, "cost_usd": 0.02019075, "usage_source": ["tiktoken_estimate"]}
+{"label": "guardcheck", "run_at": "2026-10-23T03:44:33.049946+00:00", "tasks_run": 3, "cost_usd": 0.00300015, "usage_source": ["tiktoken_estimate"]}
+{"label": "dev_guard", "run_at": "2026-10-23T03:49:27.228460+00:00", "tasks_run": 90, "cost_usd": 0.025698, "usage_source": ["tiktoken_estimate"]}
+{"label": "heldout_before", "run_at": "2026-10-23T03:52:30.890633+00:00", "tasks_run": 60, "cost_usd": 0.0122631, "usage_source": ["tiktoken_estimate"]}
+{"label": "heldout_after", "run_at": "2026-10-23T03:55:31.724184+00:00", "tasks_run": 60, "cost_usd": 0.01684065, "usage_source": ["tiktoken_estimate"]}
+{"label": "heldout_before_judge", "run_at": "2026-10-23T04:01:00.849128+00:00", "tasks_run": 60, "cost_usd": 0.239649, "usage_source": ["provider_reported"]}
+{"label": "heldout_after_judge", "run_at": "2026-10-23T04:05:53.479794+00:00", "tasks_run": 60, "cost_usd": 0.241516, "usage_source": ["provider_reported"]}

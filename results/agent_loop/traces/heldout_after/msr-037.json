@@ -1,0 +1,89 @@
+{
+  "task_id": "msr-037",
+  "category": "multi_step_retrieval",
+  "question": "Which evaluation dimensions does RAGAS measure according to the chunking document?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-msr-037-c98e0d99",
+  "route_decision": "retrieval",
+  "answer": "According to the context, RAGAS measures the following evaluation dimensions:\n\n- **Faithfulness**: This assesses whether the answer is supported by the retrieved context.\n- **Answer Relevance**: This evaluates if the answer addresses the question.\n- **Context Precision/Recall**: This measures the precision and recall of the context used in generating the answer.\n\nThese dimensions are part of an LLM-based automated evaluation framework as described in the context from [Source 1].",
+  "context": "[Source 1] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nquestions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On TriviaQA, proper semantic chunking with reranking achieves F1 of 76.3 compared to 68.9 for naive chunking. Chunk overlap (10-20%) prevents information loss at boundaries. Contextual retrieval (Anthropic, 2024) prepends a model-generated context summary to each chunk before embedding, improving retrieval accuracy by 35% on document Q&A benchmarks by enriching embeddings with document-level context. Cross-encoder rerankers (e.g., ms-marco-MiniLM-L-6-v2) applied after initial FAISS retrieval typically improve NDCG@3 by 5-15% with minimal latency cost.\n\n---\n\n[Source 2] Semantic Chunking Strategies for Retrieval-Augmented Generation Systems\nRetrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate responses. Chunking\u2014how documents are divided into retrievable units\u2014is a critical design decision that significantly impacts retrieval quality and downstream generation accuracy. Naive fixed-size chunking (e.g., every 512 tokens) is simple but cuts sentences, splits code blocks, and separates tables from captions, degrading retrieval precision. Semantic chunking adapts chunk boundaries to the natural semantic structure of documents by detecting topic transitions via embedding similarity between consecutive sentences, splitting at points where cosine similarity drops sharply below a threshold.\n\nLangChain's SemanticChunker uses percentile-based threshold selection: a split is made between sentences if their cosine similarity falls below the p-th percentile (typically p=90), resulting in chunks that respect paragraph and topic boundaries. On BEIR retrieval benchmarks, semantic chunking improves NDCG@10 by 3-8% compared to fixed-size chunking at equivalent average chunk size. Small-to-big retrieval (parent-child chunking) uses small chunks (100-150 tokens) for precise retrieval but returns the larger parent chunk (400-600 tokens) as context. Document-aware chunking preserves structural elements: section headers are prepended to child chunks to maintain topical context; code blocks are kept intact; tables are converted to text with column headers retained.\n\nHierarchical chunking (Raptor, Sarthi et al., 2024) recursively summarizes clusters of chunks into higher-level summaries, building a tree structure that enables multi-scale retrieval for both detail-oriented and high-level questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer address the question?), and Context Precision/Recall. On Trivi\n\n---\n\n[Source 3] Retrieval-Augmented Generation (RAG)\nRetrieval-Augmented Generation (RAG), introduced by Lewis et al. (2020), combines parametric knowledge stored in LLM weights with non-parametric knowledge retrieved from an external document store. The architecture has two components: a dense retriever (typically DPR \u2014 Dense Passage Retrieval) that encodes queries and documents into a shared embedding space, and a generative model (originally BART) that conditions its output on both the query and the retrieved passages. RAG addresses a critical limitation of standalone LLMs: their knowledge is frozen at training time and they cannot access proprietary, recent, or domain-specific information. On open-domain QA benchmarks, RAG outperformed both pure parametric models and traditional IR systems. Modern RAG systems use vector databases (FAISS, Pinecone, Weaviate) for scalable similarity search and decoder-only LLMs (GPT-4, Llama) for generation, enabling real-time grounding with citations.",
+  "sources": [
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "questions. RAGAS (Es et al., 2023) provides an LLM-based automated evaluation framework measuring Faithfulness (is the answer supported by retrieved context?), Answer Relevance (does the answer addres\u2026",
+      "score": 0.4350361227989197,
+      "type": "retrieval"
+    },
+    {
+      "title": "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2312.06648",
+      "content": "Retrieval-Augmented Generation (RAG) systems combine a retrieval component (fetching relevant documents from a corpus) with a generative language model to produce grounded, factually accurate response\u2026",
+      "score": 0.41513681411743164,
+      "type": "retrieval"
+    },
+    {
+      "title": "Retrieval-Augmented Generation (RAG)",
+      "url": "https://arxiv.org/abs/2005.11401",
+      "content": "Retrieval-Augmented Generation (RAG), introduced by Lewis et al. (2020), combines parametric knowledge stored in LLM weights with non-parametric knowledge retrieved from an external document store. Th\u2026",
+      "score": 0.2996339797973633,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+    "Semantic Chunking Strategies for Retrieval-Augmented Generation Systems",
+    "Retrieval-Augmented Generation (RAG)"
+  ],
+  "retrieval_score": 0.4350361227989197,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2573.5,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 1166.5
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 42.3
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1357.7
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1203,
+    "output_tokens": 96,
+    "cost_usd": 0.00023805,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:54:43.390200+00:00"
+}

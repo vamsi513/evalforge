@@ -1,0 +1,85 @@
+{
+  "task_id": "ts-010",
+  "category": "tool_selection",
+  "question": "Explain speculative decoding and the role of the draft model.",
+  "variant": "baseline",
+  "session_id": "agentloop-ts-010-c1c3e690",
+  "route_decision": "retrieval",
+  "answer": "**Speculative decoding** is a technique designed to enhance the efficiency of autoregressive language model generation by addressing the inference bottleneck associated with generating each new token. This method was introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022. The core idea is to utilize a small, fast **draft model** that can propose multiple candidate tokens quickly. The larger **target model** then verifies these proposed tokens in parallel during a single forward pass, which is feasible because verification only requires teacher-forcing, a process that is parallelizable.\n\nThe **draft model** plays a crucial role in this process by generating token proposals at a lower computational cost. When a draft token is proposed, its probability \\( q \\) is compared to the target model's probability \\( p \\). The token is accepted based on a rejection sampling criterion, ensuring that the output distribution remains consistent with that of the target model. This mechanism allows for an increase in throughput, as multiple tokens can be produced per forward pass of the target model. With a well-matched draft model, the expected number of tokens generated per target forward pass can reach approximately 3-5 tokens, significantly speeding up the text generation process (2-3x speedup observed with T5-XXL using T5-Small as the draft model) [Source 1].",
+  "context": "[Source 1] Speculative Decoding for Accelerated LLM Inference\nSpeculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: each new token requires a full forward pass, making generation memory-bandwidth bound rather than compute-bound on modern accelerators. The key insight is that a small, fast \"draft\" model can propose multiple candidate tokens cheaply, and the large \"target\" model can verify all proposed tokens in parallel in a single forward pass (since verification only requires teacher-forcing, which is parallelizable unlike generation). If draft proposals are accepted via rejection sampling, multiple tokens are produced per forward pass of the large model, increasing throughput without changing the output distribution.\n\nThe acceptance criterion guarantees that the output distribution matches exactly that of the target model (lossless speedup). For each draft token proposed by the draft model with probability q, the target model's probability p is compared. The token is accepted with probability min(1, p/q), and if rejected, a corrected token is sampled from an adjusted distribution. This rejection sampling scheme ensures the marginal distribution over output sequences is identical to sampling from the target model alone. In expectation, the number of tokens produced per target forward pass equals 1/(1-\u03b1) where \u03b1 is the mean acceptance rate. With a well-matched draft model achieving \u03b1\u22480.8, this yields approximately 3-5 tokens per target model forward pass.\n\nIn practice, speculative decoding achieves 2-3x wall-clock speedup for text generation with T5-XXL (11B) using T5-Small (77M) as the draft model. Medusa (Cai et al., 2024) adds multiple prediction heads to the target model itself to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additio\n\n---\n\n[Source 2] Speculative Decoding for Accelerated LLM Inference\nto serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additional parameters. Production deployments at scale use speculative decoding in various forms: Google uses a 7B model to accelerate Gemini Pro inference. The approach combines naturally with quantization, FlashAttention, and continuous batching (vLLM) for production LLM serving. Key limitations include sensitivity to draft-target model distribution match and reduced benefit at large batch sizes where compute utilization is already high.\n\n---\n\n[Source 3] Large Language Models and Emergent Capabilities\nLarge language models (LLMs) exhibit emergent capabilities \u2014 abilities that appear suddenly at certain scale thresholds and were not present in smaller models. Wei et al. (2022) documented over 130 such emergent abilities across models ranging from GPT-3 (175B) to PaLM (540B). Notable emergent capabilities include multi-step arithmetic reasoning, chain-of-thought problem solving, code generation, and few-shot learning from in-context examples. The scaling hypothesis suggests these capabilities arise from the model internalizing more complex statistical patterns as parameter count and training data increase. However, emergent capabilities introduce unpredictability: developers cannot reliably anticipate which capabilities will appear at which scale. This has prompted new evaluation paradigms such as BIG-Bench, which includes 200+ tasks specifically designed to probe capabilities that benchmark saturation renders invisible in standard evaluations.",
+  "sources": [
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "Speculative decoding, introduced by Yaniv Leviathan, Matan Kalman, and Yonatan Matias at Google in 2022, addresses the fundamental inference bottleneck of autoregressive language model generation: eac\u2026",
+      "score": 0.6271610260009766,
+      "type": "retrieval"
+    },
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate dr\u2026",
+      "score": 0.5971581935882568,
+      "type": "retrieval"
+    },
+    {
+      "title": "Large Language Models and Emergent Capabilities",
+      "url": "https://arxiv.org/abs/2206.07682",
+      "content": "Large language models (LLMs) exhibit emergent capabilities \u2014 abilities that appear suddenly at certain scale thresholds and were not present in smaller models. Wei et al. (2022) documented over 130 su\u2026",
+      "score": 0.33812659978866577,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Speculative Decoding for Accelerated LLM Inference",
+    "Speculative Decoding for Accelerated LLM Inference",
+    "Large Language Models and Emergent Capabilities"
+  ],
+  "retrieval_score": 0.6271610260009766,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 4260.5,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 680.4
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 57.3
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 3515.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1171,
+    "output_tokens": 278,
+    "cost_usd": 0.00034245,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:51:54.941200+00:00"
+}

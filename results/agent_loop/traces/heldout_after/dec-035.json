@@ -1,0 +1,59 @@
+{
+  "task_id": "dec-035",
+  "category": "unanswerable_decline",
+  "question": "What is my name?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-dec-035-aac48418",
+  "route_decision": "direct",
+  "answer": "I\u2019m not sure what your name is! But I\u2019d love to know if you\u2019d like to share it. How can I assist you today?",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 2312.0,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 1459.3
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 846.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 249,
+    "output_tokens": 31,
+    "cost_usd": 5.595e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:53:38.498381+00:00"
+}

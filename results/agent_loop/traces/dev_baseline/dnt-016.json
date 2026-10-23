@@ -1,0 +1,55 @@
+{
+  "task_id": "dnt-016",
+  "category": "direct_no_tools",
+  "question": "What does the abbreviation HTTP stand for?",
+  "variant": "baseline",
+  "session_id": "agentloop-dnt-016-42a7759f",
+  "route_decision": "direct",
+  "answer": "HTTP stands for Hypertext Transfer Protocol. It's the foundation of data communication on the web, allowing browsers and servers to communicate. If you have any more questions about it, feel free to ask!",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1495.5,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 641.8
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 848.5
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 255,
+    "output_tokens": 40,
+    "cost_usd": 6.225e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:47:36.723283+00:00"
+}

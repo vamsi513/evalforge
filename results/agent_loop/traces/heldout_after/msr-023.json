@@ -1,0 +1,89 @@
+{
+  "task_id": "msr-023",
+  "category": "multi_step_retrieval",
+  "question": "What FID score does DDPM achieve on CIFAR-10, and what FID does Stable Diffusion achieve on MS-COCO?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-msr-023-873c7ace",
+  "route_decision": "retrieval",
+  "answer": "According to the context, **DDPM** achieves an **FID score of 3.17** on **CIFAR-10**. In contrast, **Stable Diffusion** achieves an **FID of 12.63** on **MS-COCO**.",
+  "context": "[Source 1] Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion\nDenoising Diffusion Probabilistic Models (DDPM), introduced by Jonathan Ho, Ajay Jain, and Pieter Abbeel at UC Berkeley in 2020, establish the theoretical foundation for modern diffusion-based image generation. The forward process gradually corrupts an image by adding Gaussian noise over T timesteps (typically T=1000), and the reverse process, parameterized by a U-Net neural network, learns to denoise iteratively. At inference, starting from pure Gaussian noise, the model iteratively denoises to generate novel images. DDPM achieves an FID score of 3.17 on CIFAR-10 and 3.85 on LSUN Bedrooms (256\u00d7256), surpassing GANs on sample quality metrics.\n\nDDIM (Denoising Diffusion Implicit Models, Song et al., 2020) provides critical inference acceleration. DDPM requires 1000 sequential denoising steps (~20 seconds per image on a V100 GPU). DDIM reformulates the process as non-Markovian, enabling high-quality generation with as few as 10-50 steps (50x speedup). Latent Diffusion Models (LDM, Rombach et al., arXiv:2112.10752) shift diffusion to a compressed latent space, reducing computational complexity by a factor proportional to the compression ratio squared. An autoencoder compresses images from pixel space (512\u00d7512\u00d73) to latent space (64\u00d764\u00d74), and diffusion operates on these compact representations. Stable Diffusion, built on LDM and trained by Stability AI on LAION-5B (5 billion image-text pairs), uses a CLIP text encoder to condition generation via cross-attention layers, achieving an FID of 12.63 on MS-COCO.\n\nThe practical impact of diffusion models has been extraordinary. Stable Diffusion, Midjourney (v3-v6), DALL-E 2 and 3, Imagen (Google Brain), and Adobe Firefly are all built on diffusion principles. Classifier-Free Guidance (Ho & Salimans, 2022) enables strong conditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with structural conditioning (depth maps, edge maps, poses) fo\n\n---\n\n[Source 2] Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion\nonditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with structural conditioning (depth maps, edge maps, poses) for precise spatial control. SDXL introduces a two-stage pipeline with a 3.5B parameter base model and 6.6B parameter refiner. Modern diffusion models with flow matching objectives (Stable Diffusion 3, Flux) further improve sample efficiency and quality across text-to-image, video, and 3D generation tasks.\n\n---\n\n[Source 3] Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques\nd mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for critical layers), providing the best quality-size trade-off. llama.cpp achieves 30-50 tokens/second on Apple M2 Pro for Llama 3 8B in Q4_K_M quantization. AWQ (Activation-aware Weight Quantization, Lin et al., 2023) identifies salient weight channels corresponding to large-magnitude activations and applies higher precision only to those channels, achieving 4-bit quality closer to FP16 than GPTQ. LLM.int8() (Dettmers et al., 2022) handles outlier activations via mixed-precision decomposition, enabling 8-bit inference with negligible quality loss for models up to 175B parameters.",
+  "sources": [
+    {
+      "title": "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+      "url": "https://arxiv.org/abs/2006.11239",
+      "content": "Denoising Diffusion Probabilistic Models (DDPM), introduced by Jonathan Ho, Ajay Jain, and Pieter Abbeel at UC Berkeley in 2020, establish the theoretical foundation for modern diffusion-based image g\u2026",
+      "score": 0.4575467109680176,
+      "type": "retrieval"
+    },
+    {
+      "title": "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+      "url": "https://arxiv.org/abs/2006.11239",
+      "content": "onditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with s\u2026",
+      "score": 0.32669875025749207,
+      "type": "retrieval"
+    },
+    {
+      "title": "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "content": "d mixed CPU/GPU inference, enabling quantized LLaMA models to run on Apple Silicon, consumer gaming GPUs, and CPUs. Supported quantization types include Q4_K_M (4-bit with mixed 6-bit precision for cr\u2026",
+      "score": 0.32471710443496704,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+    "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+    "Quantization for LLMs: GPTQ, QLoRA, and INT8 Inference Techniques"
+  ],
+  "retrieval_score": 0.4575467109680176,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1777.8,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 736.8
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 41.2
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 994.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1286,
+    "output_tokens": 57,
+    "cost_usd": 0.0002271,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "heldout_after",
+  "run_at": "2026-10-23T03:54:22.746871+00:00"
+}

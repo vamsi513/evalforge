@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-038",
+  "category": "multi_step_retrieval",
+  "question": "What harmful behavior rate does GCG achieve on Llama-2-7B-Chat, and what success rate does it transfer at to GPT-4?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-038-78274367",
+  "route_decision": "retrieval",
+  "answer": "The provided context does not mention the harmful behavior rate that GCG achieves on Llama-2-7B-Chat or the success rate it transfers to GPT-4. Therefore, I cannot answer the question regarding those specific rates. The context covers various aspects of LLM evaluation frameworks, reinforcement learning from human feedback, and code generation with LLMs, but does not include the information needed to answer your question.",
+  "context": "[Source 1] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks\ntect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman \u03c1\u22480.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.\n\n---\n\n[Source 2] Reinforcement Learning from Human Feedback (RLHF)\nReinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised fine-tuning (SFT) on high-quality human-written demonstrations of desired behavior; (2) reward model training, where human raters rank model outputs and a separate neural network learns to predict those rankings; (3) PPO (Proximal Policy Optimization) fine-tuning of the SFT model against the reward model's scores. InstructGPT (Ouyang et al., 2022), the precursor to ChatGPT, demonstrated that a 1.3B RLHF-tuned model was preferred by human raters over a 175B model trained only with next-token prediction. RLHF is now standard practice for all major commercial LLMs including GPT-4, Claude, and Gemini, though it requires expensive human annotation and can introduce reward hacking if the reward model is misspecified.\n\n---\n\n[Source 3] Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants\nCode Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context fine-tuning (LCFT) phase that extends the context window from 4K to 100K tokens via position interpolation. The model family includes base models (7B, 13B, 34B), instruction-following variants (Code Llama Instruct), and Python-specialized variants (Code Llama Python). The 34B model achieves 53.7% pass@1 on HumanEval and 56.2% on MBPP. Codex (Chen et al., OpenAI, 2021) established the benchmark by fine-tuning GPT-3 on 159GB of Python code from GitHub, achieving 28.8% pass@1 on HumanEval. GPT-4 later achieved 67.0% pass@1 on HumanEval.\n\nFill-in-the-Middle (FIM) training is a key capability in Code Llama. By rearranging 50% of training examples as prefix-suffix-middle, the model learns bidirectional code infilling\u2014given surrounding code context, generate the missing middle section. This enables intelligent code completion (as opposed to left-to-right generation), the primary use case in IDE integrations. Code Llama achieves 74.0% on the MultiLine Infilling benchmark. Long context handling (up to 100K tokens) enables repository-level code understanding: retrieving relevant function definitions, class hierarchies, and usage patterns from large codebases before generating new code. DeepSeek-Coder (Guo et al., 2024), trained on 2T tokens from 87 programming languages with 16K context, achieves 79.3% pass@1 on HumanEval for the 33B model, surpassing GPT-4.\n\nProduction code generation systems such as GitHub Copilot report that 46% of code in supported languages is now written by AI (GitHub, 2023), with developers reporting 55% faster task completion. StarCoder (Li et al., 2023, BigCode) provides a 15.5B code model trained on The Stack (6.4TB of permissively licensed code from 358 programming languages), achieving 40.8% on HumanEval with commercial licensing. Evaluation beyond HumanEval includes SWE-bench (real GitHub issue res",
+  "sources": [
+    {
+      "title": "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "content": "tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et a\u2026",
+      "score": 0.4406610131263733,
+      "type": "retrieval"
+    },
+    {
+      "title": "Reinforcement Learning from Human Feedback (RLHF)",
+      "url": "https://arxiv.org/abs/2203.02155",
+      "content": "Reinforcement Learning from Human Feedback (RLHF) is the alignment technique that transformed raw pre-trained LLMs into instruction-following assistants. The process has three stages: (1) supervised f\u2026",
+      "score": 0.381911963224411,
+      "type": "retrieval"
+    },
+    {
+      "title": "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants",
+      "url": "https://arxiv.org/abs/2308.12950",
+      "content": "Code Llama, released by Meta AI in August 2023, presents a family of code-specialized language models based on Llama 2. Code Llama is fine-tuned on 500B tokens of code-heavy data with a long-context f\u2026",
+      "score": 0.3776468336582184,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+    "Reinforcement Learning from Human Feedback (RLHF)",
+    "Code Generation with LLMs: Codex, CodeLlama, and Programming Assistants"
+  ],
+  "retrieval_score": 0.4406610131263733,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1968.6,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 640.2
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 45.1
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1276.4
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1384,
+    "output_tokens": 86,
+    "cost_usd": 0.0002592,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "heldout_before",
+  "run_at": "2026-10-23T03:51:39.340253+00:00"
+}

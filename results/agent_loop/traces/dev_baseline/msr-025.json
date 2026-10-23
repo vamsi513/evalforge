@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-025",
+  "category": "multi_step_retrieval",
+  "question": "Which text encoder does Stable Diffusion use to condition generation, and which dataset was Stable Diffusion trained on?",
+  "variant": "baseline",
+  "session_id": "agentloop-msr-025-8cff4ee5",
+  "route_decision": "retrieval",
+  "answer": "Stable Diffusion uses a **CLIP text encoder** to condition generation via cross-attention layers. It was trained on the **LAION-5B** dataset, which consists of 5 billion image-text pairs, according to [Source 3].",
+  "context": "[Source 1] Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion\nonditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with structural conditioning (depth maps, edge maps, poses) for precise spatial control. SDXL introduces a two-stage pipeline with a 3.5B parameter base model and 6.6B parameter refiner. Modern diffusion models with flow matching objectives (Stable Diffusion 3, Flux) further improve sample efficiency and quality across text-to-image, video, and 3D generation tasks.\n\n---\n\n[Source 2] CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision\nas the vision backbone for DALL-E 2, Stable Diffusion (via CLIP text encoder), and numerous image retrieval systems. Extensions include ALIGN (Jia et al., Google, trained on 1.8B image-text pairs), SigLIP (Zhai et al., 2023, using sigmoid loss), and OpenCLIP (Schuhmann et al., LAION, trained on LAION-5B). The model established that language-supervised visual learning at scale is a viable alternative to supervised pretraining with fixed label taxonomies.\n\n---\n\n[Source 3] Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion\nDenoising Diffusion Probabilistic Models (DDPM), introduced by Jonathan Ho, Ajay Jain, and Pieter Abbeel at UC Berkeley in 2020, establish the theoretical foundation for modern diffusion-based image generation. The forward process gradually corrupts an image by adding Gaussian noise over T timesteps (typically T=1000), and the reverse process, parameterized by a U-Net neural network, learns to denoise iteratively. At inference, starting from pure Gaussian noise, the model iteratively denoises to generate novel images. DDPM achieves an FID score of 3.17 on CIFAR-10 and 3.85 on LSUN Bedrooms (256\u00d7256), surpassing GANs on sample quality metrics.\n\nDDIM (Denoising Diffusion Implicit Models, Song et al., 2020) provides critical inference acceleration. DDPM requires 1000 sequential denoising steps (~20 seconds per image on a V100 GPU). DDIM reformulates the process as non-Markovian, enabling high-quality generation with as few as 10-50 steps (50x speedup). Latent Diffusion Models (LDM, Rombach et al., arXiv:2112.10752) shift diffusion to a compressed latent space, reducing computational complexity by a factor proportional to the compression ratio squared. An autoencoder compresses images from pixel space (512\u00d7512\u00d73) to latent space (64\u00d764\u00d74), and diffusion operates on these compact representations. Stable Diffusion, built on LDM and trained by Stability AI on LAION-5B (5 billion image-text pairs), uses a CLIP text encoder to condition generation via cross-attention layers, achieving an FID of 12.63 on MS-COCO.\n\nThe practical impact of diffusion models has been extraordinary. Stable Diffusion, Midjourney (v3-v6), DALL-E 2 and 3, Imagen (Google Brain), and Adobe Firefly are all built on diffusion principles. Classifier-Free Guidance (Ho & Salimans, 2022) enables strong conditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with structural conditioning (depth maps, edge maps, poses) fo",
+  "sources": [
+    {
+      "title": "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+      "url": "https://arxiv.org/abs/2006.11239",
+      "content": "onditional generation by training the model with and without conditioning and interpolating at inference (guidance scale typically 7.5). ControlNet (Zhang et al., 2023) extends Stable Diffusion with s\u2026",
+      "score": 0.5109134316444397,
+      "type": "retrieval"
+    },
+    {
+      "title": "CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision",
+      "url": "https://arxiv.org/abs/2103.00020",
+      "content": "as the vision backbone for DALL-E 2, Stable Diffusion (via CLIP text encoder), and numerous image retrieval systems. Extensions include ALIGN (Jia et al., Google, trained on 1.8B image-text pairs), Si\u2026",
+      "score": 0.4502860903739929,
+      "type": "retrieval"
+    },
+    {
+      "title": "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+      "url": "https://arxiv.org/abs/2006.11239",
+      "content": "Denoising Diffusion Probabilistic Models (DDPM), introduced by Jonathan Ho, Ajay Jain, and Pieter Abbeel at UC Berkeley in 2020, establish the theoretical foundation for modern diffusion-based image g\u2026",
+      "score": 0.39511895179748535,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion",
+    "CLIP: Contrastive Language-Image Pretraining for Zero-Shot Vision",
+    "Diffusion Models for Image Generation: DDPM, DDIM, and Stable Diffusion"
+  ],
+  "retrieval_score": 0.5109134316444397,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1701.9,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 552.1
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 52.7
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1090.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1197,
+    "output_tokens": 53,
+    "cost_usd": 0.00021135,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:48:31.395081+00:00"
+}

@@ -1,0 +1,55 @@
+{
+  "task_id": "dec-017",
+  "category": "unanswerable_decline",
+  "question": "How many text chunks are currently stored in this system's FAISS index?",
+  "variant": "baseline",
+  "session_id": "agentloop-dec-017-c02ac2fe",
+  "route_decision": "direct",
+  "answer": "I'm sorry, but I don't have access to specific system data or the current state of the FAISS index. If you need information about the number of text chunks stored, you might want to check the system's documentation or reach out to the technical team managing it.",
+  "context": "",
+  "sources": [],
+  "retrieved_titles": [],
+  "retrieval_score": 0.0,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1937.0,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.0
+    },
+    {
+      "stage": "router",
+      "duration_ms": 672.6
+    },
+    {
+      "stage": "direct",
+      "duration_ms": 1258.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 269,
+    "output_tokens": 54,
+    "cost_usd": 7.275e-05,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_baseline",
+  "run_at": "2026-10-23T02:46:48.213322+00:00"
+}

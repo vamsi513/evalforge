@@ -1,0 +1,89 @@
+{
+  "task_id": "msr-032",
+  "category": "multi_step_retrieval",
+  "question": "What exact match score does ReAct achieve on HotpotQA, and what does chain-of-thought alone achieve?",
+  "variant": "subquestion_guard",
+  "session_id": "agentloop-msr-032-370065e9",
+  "route_decision": "retrieval",
+  "answer": "ReAct achieves a **35.1% exact match score** on HotpotQA, while chain-of-thought alone achieves **29.4%** exact match score according to [Source 1].",
+  "context": "[Source 1] Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems\nReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for interleaving chain-of-thought reasoning with action execution in language model agents. Unlike chain-of-thought prompting (reasoning only) or action-only approaches, ReAct alternates between Thought steps (free-form reasoning), Action steps (invoking tools such as Wikipedia search, calculator, or code execution), and Observation steps (results returned by actions). This structured loop enables dynamic replanning based on new information and self-correction when actions produce unexpected results.\n\nOn HotpotQA multi-hop question answering, ReAct achieves 35.1% exact match using GPT-3 with Wikipedia search, compared to 29.4% for chain-of-thought alone and 27.4% for action-only approaches. On FEVER (fact verification), ReAct achieves 60.9% compared to 56.3% for CoT. Error analysis shows that ReAct reduces hallucination by 8% compared to CoT alone, since factual claims can be verified against retrieved evidence. AutoGPT (Significant Gravitas, April 2023) demonstrated the viability of open-ended autonomous agents built on GPT-4, using persistent memory (via a vector database), internet browsing, code execution, and file management to autonomously pursue user-defined goals. AgentBench (Liu et al., 2023) evaluates agent performance across web browsing, database interaction, OS tasks, and games, finding GPT-4 (3.44) significantly outperforms open-source models (<1.0).\n\nModern agent frameworks have matured significantly. OpenAI's Assistants API provides built-in thread management, tool calling, and file handling for production agents. LangGraph models agent workflows as directed graphs with cycles, enabling stateful multi-step agents with conditional branching and parallel execution. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles (Product Manager, Architect, Engineer, QA Engineer) with structured co\n\n---\n\n[Source 2] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks\ntect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conversation quality across writing, roleplay, extraction, reasoning, math, coding, and STEM domains (scores 1-10). LLM-as-judge approaches show high correlation with human preferences (Spearman \u03c1\u22480.9) but suffer from position bias (favoring first responses) and verbosity bias. Arena-style evaluation (Chatbot Arena, LMSYS) uses Elo ratings from millions of blind pairwise human preference votes, providing contamination-resistant evaluation at scale, with GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro consistently at the top.\n\n---\n\n[Source 3] LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks\nHolistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional evaluation framework for LLMs that goes beyond single-metric leaderboards. HELM evaluates 30 models across 42 scenarios (tasks), 7 metrics dimensions (accuracy, calibration, robustness, fairness, bias, toxicity, efficiency), and multiple prompt formats to reduce sensitivity to prompt choice. The framework covers scenarios across knowledge (NaturalQuestions, TriviaQA), reasoning (BoolQ, HellaSwag), code (HumanEval), legal (LegalSupport), medical (MedQA), and social fairness (BBQ) domains.\n\nBIG-Bench (Beyond the Imitation Game, Srivastava et al., 2022) is a collaborative benchmark comprising 204 tasks contributed by 450 researchers from 132 institutions, designed to probe capabilities at and beyond the frontier of current models. BIG-Bench Hard (BBH) extracts 23 tasks where large models previously performed below human rater level. With Chain-of-Thought prompting, GPT-4 achieves an average of 89.2% on BBH tasks. MMLU (Massive Multitask Language Understanding, Hendrycks et al., 2021) provides 4-choice multiple-choice evaluation across 57 academic subjects ranging from elementary mathematics to professional law and medicine, totaling 15,908 questions. Performance milestones: GPT-3 (175B) achieves 43.9% (5-shot), GPT-4 achieves 86.4%, Claude 3 Opus achieves 88.7%, Gemini Ultra achieves 90.0%, and Llama 3 70B Instruct achieves 82.0%. Human expert performance is estimated at ~90% on professional-level subjects.\n\nEvaluation methodology is an active research area. Benchmark contamination\u2014models trained on data containing evaluation examples\u2014inflates scores and is difficult to detect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et al., 2023) uses GPT-4 as a judge to score multi-turn conv",
+  "sources": [
+    {
+      "title": "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems",
+      "url": "https://arxiv.org/abs/2210.03629",
+      "content": "ReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for int\u2026",
+      "score": 0.5484600067138672,
+      "type": "retrieval"
+    },
+    {
+      "title": "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "content": "tect. Dynamic benchmarks such as LiveBench (White et al., 2024) use freshly generated questions (math competitions, coding contests post-training-cutoff) to prevent contamination. MT-Bench (Zheng et a\u2026",
+      "score": 0.43508392572402954,
+      "type": "retrieval"
+    },
+    {
+      "title": "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+      "url": "https://arxiv.org/abs/2211.09110",
+      "content": "Holistic Evaluation of Language Models (HELM), introduced by Percy Liang, Rishi Bommasani, Tony Lee, and over 30 collaborators at Stanford CRFM in 2022, provides a comprehensive multi-dimensional eval\u2026",
+      "score": 0.43081632256507874,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems",
+    "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks",
+    "LLM Evaluation Frameworks: HELM, BIG-Bench, and MMLU Benchmarks"
+  ],
+  "retrieval_score": 0.5484600067138672,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 1752.9,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 815.9
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 34.0
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 897.8
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 2,
+    "input_tokens": 1571,
+    "output_tokens": 43,
+    "cost_usd": 0.00026145,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "guard": {
+    "triggered": false,
+    "reason": "answer did not report missing evidence"
+  },
+  "label": "dev_guard",
+  "run_at": "2026-10-23T03:48:00.472892+00:00"
+}

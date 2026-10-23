@@ -1,0 +1,85 @@
+{
+  "task_id": "msr-033",
+  "category": "multi_step_retrieval",
+  "question": "What does ReAct score on FEVER, and what does chain-of-thought score on FEVER?",
+  "variant": "query_expansion",
+  "session_id": "agentloop-msr-033-d0911236",
+  "route_decision": "retrieval",
+  "answer": "ReAct achieves a score of **60.9%** on the FEVER (fact verification) task. In comparison, chain-of-thought (CoT) scores **56.3%** on the same task, according to the information provided in the context.",
+  "context": "[Source 1] Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems\nReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for interleaving chain-of-thought reasoning with action execution in language model agents. Unlike chain-of-thought prompting (reasoning only) or action-only approaches, ReAct alternates between Thought steps (free-form reasoning), Action steps (invoking tools such as Wikipedia search, calculator, or code execution), and Observation steps (results returned by actions). This structured loop enables dynamic replanning based on new information and self-correction when actions produce unexpected results.\n\nOn HotpotQA multi-hop question answering, ReAct achieves 35.1% exact match using GPT-3 with Wikipedia search, compared to 29.4% for chain-of-thought alone and 27.4% for action-only approaches. On FEVER (fact verification), ReAct achieves 60.9% compared to 56.3% for CoT. Error analysis shows that ReAct reduces hallucination by 8% compared to CoT alone, since factual claims can be verified against retrieved evidence. AutoGPT (Significant Gravitas, April 2023) demonstrated the viability of open-ended autonomous agents built on GPT-4, using persistent memory (via a vector database), internet browsing, code execution, and file management to autonomously pursue user-defined goals. AgentBench (Liu et al., 2023) evaluates agent performance across web browsing, database interaction, OS tasks, and games, finding GPT-4 (3.44) significantly outperforms open-source models (<1.0).\n\nModern agent frameworks have matured significantly. OpenAI's Assistants API provides built-in thread management, tool calling, and file handling for production agents. LangGraph models agent workflows as directed graphs with cycles, enabling stateful multi-step agents with conditional branching and parallel execution. MetaGPT (Hong et al., 2023) assigns LLM agents to software engineering roles (Product Manager, Architect, Engineer, QA Engineer) with structured co\n\n---\n\n[Source 2] Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback\ner evasive refusal patterns. Model scale matters significantly: larger models (52B parameters) show much stronger constitutional reasoning than smaller models (13B). Subsequent work by Google demonstrated that RLAIF can match or exceed human feedback quality for summarization tasks at scale, enabling annotation of datasets orders of magnitude larger than human-labeled corpora. CAI informed the development of Claude models (Claude 1, 2, 3 series), providing interpretability advantages through explicit, auditable principles guiding model behavior.\n\n---\n\n[Source 3] Speculative Decoding for Accelerated LLM Inference\nto serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate draft tokens, achieving 1.4-1.8x speedup with zero additional parameters. Production deployments at scale use speculative decoding in various forms: Google uses a 7B model to accelerate Gemini Pro inference. The approach combines naturally with quantization, FlashAttention, and continuous batching (vLLM) for production LLM serving. Key limitations include sensitivity to draft-target model distribution match and reduced benefit at large batch sizes where compute utilization is already high.",
+  "sources": [
+    {
+      "title": "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems",
+      "url": "https://arxiv.org/abs/2210.03629",
+      "content": "ReAct (Reasoning + Acting), introduced by Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao at Princeton and Google Brain in 2022, presents a framework for int\u2026",
+      "score": 0.3623807430267334,
+      "type": "retrieval"
+    },
+    {
+      "title": "Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback",
+      "url": "https://arxiv.org/abs/2212.08073",
+      "content": "er evasive refusal patterns. Model scale matters significantly: larger models (52B parameters) show much stronger constitutional reasoning than smaller models (13B). Subsequent work by Google demonstr\u2026",
+      "score": 0.2532362937927246,
+      "type": "retrieval"
+    },
+    {
+      "title": "Speculative Decoding for Accelerated LLM Inference",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "content": "to serve as the draft mechanism, eliminating the need for a separate model and achieving 2.8x speedup on Vicuna-7B/13B. Self-speculative decoding uses earlier layers of the target model to generate dr\u2026",
+      "score": 0.24892638623714447,
+      "type": "retrieval"
+    }
+  ],
+  "retrieved_titles": [
+    "Autonomous Agents: AutoGPT, ReAct Framework, and LLM-Based Agent Systems",
+    "Constitutional AI and RLAIF: Reinforcement Learning from AI Feedback",
+    "Speculative Decoding for Accelerated LLM Inference"
+  ],
+  "retrieval_score": 0.3623807430267334,
+  "turn_count": 1,
+  "state_error": null,
+  "invoke_exception": null,
+  "metadata": {},
+  "latency_ms": 3132.7,
+  "stage_timings": [
+    {
+      "stage": "security",
+      "duration_ms": 0.1
+    },
+    {
+      "stage": "router",
+      "duration_ms": 972.8
+    },
+    {
+      "stage": "retriever",
+      "duration_ms": 869.6
+    },
+    {
+      "stage": "generator",
+      "duration_ms": 1282.5
+    }
+  ],
+  "tool_calls": [],
+  "usage": {
+    "llm_calls": 3,
+    "input_tokens": 1214,
+    "output_tokens": 99,
+    "cost_usd": 0.0002415,
+    "usage_source": "tiktoken_estimate"
+  },
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": true,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": false,
+    "mock_tavily": false
+  },
+  "label": "dev_fix",
+  "run_at": "2026-10-23T03:38:31.003391+00:00"
+}

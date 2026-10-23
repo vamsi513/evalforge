@@ -1,0 +1,38 @@
+{
+  "label": "smoke",
+  "variant": "baseline",
+  "split": "dev",
+  "mock": true,
+  "run_at": "2026-10-23T02:29:10.807787+00:00",
+  "tasks_requested": 8,
+  "tasks_run": 8,
+  "aborted": null,
+  "cost_usd": 0.0,
+  "cost_per_task_usd": 0.0,
+  "usage_source": [
+    "provider_reported"
+  ],
+  "llm_calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "routes": {
+    "direct": 6,
+    "web_search": 2
+  },
+  "errors": 0,
+  "settings": {
+    "openai_model": "gpt-4o-mini",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "temperature": 0.2,
+    "max_tokens": 1024,
+    "top_k_retrieval": 5,
+    "max_web_results": 5,
+    "enable_query_rewriting": false,
+    "budgets_enabled": false,
+    "audit_log_enabled": true,
+    "mock_llm": true,
+    "mock_tavily": true
+  },
+  "ledger_before_usd": 0.0,
+  "ledger_after_usd": 0.0
+}
