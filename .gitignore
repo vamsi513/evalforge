@@ -14,8 +14,20 @@ evalforge.db
 *.egg-info/
 mlruns/
 mlflow.db
+
 # generated full-text reading aids for the review queues; regenerate with
 # analyze_privacy_results.py --review-markdown
 evaluation/results/privacy_review_transcript*.md
 # local safety copies written by the review tooling; the tracked CSV and git history are the durable record
 evaluation/results/*.csv.bak-*
+
+# Playwright end-to-end suite
+test-results/
+playwright-report/
+playwright/.cache/
+frontend/test-results/
+frontend/playwright-report/
+
+# The e2e suite keeps its SQLite files in a temp directory, not here. These
+# entries only guard against an older config or a stray manual run.
+e2e*.db

@@ -1,0 +1,55 @@
+{
+  "pages": [
+    { "path": "/",            "navLabel": "Overview",      "heading": "Overview" },
+    { "path": "/runs",        "navLabel": "Eval Runs",     "heading": "Eval Runs" },
+    { "path": "/datasets",    "navLabel": "Datasets",      "heading": "Datasets" },
+    { "path": "/experiments", "navLabel": "Experiments",   "heading": "Experiments" },
+    { "path": "/gates",       "navLabel": "Release Gates", "heading": "Release Gates" }
+  ],
+  "metricLabels": [
+    "Avg Quality Score",
+    "Pass Rate",
+    "Total Eval Runs",
+    "Avg Latency",
+    "Compute Cost"
+  ],
+  "demoScenarios": [
+    { "key": "general", "label": "General Knowledge" },
+    { "key": "support", "label": "Customer Support" },
+    { "key": "code",    "label": "Code & Tech" }
+  ],
+  "mobileViewport": { "width": 375, "height": 812 },
+  "api": {
+    "validEval": {
+      "dataset_name": "e2e-api-dataset",
+      "experiment_name": "e2e-api-experiment",
+      "model_name": "heuristic-demo",
+      "prompt_version": "e2e-v1",
+      "evaluator_profile": "balanced",
+      "samples": [
+        {
+          "prompt": "What is the capital of France?",
+          "expected_keyword": "Paris",
+          "candidate_output": "The capital of France is Paris, known for the Eiffel Tower.",
+          "reference_answer": "Paris is the capital and largest city of France.",
+          "scenario": "factual",
+          "slice_name": "geography",
+          "severity": "medium",
+          "required_json_fields": [],
+          "rubric": []
+        }
+      ]
+    },
+    "validDataset": {
+      "name": "e2e-api-dataset",
+      "description": "Dataset created by the end-to-end API tests.",
+      "owner": "e2e-suite"
+    },
+    "datasetWithShortDescription": {
+      "name": "e2e-too-short",
+      "description": "nope",
+      "owner": "e2e-suite"
+    },
+    "missingJobId": "00000000-0000-0000-0000-000000000000"
+  }
+}
