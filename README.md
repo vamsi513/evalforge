@@ -287,6 +287,44 @@ SSH on the host is locked to a single home IP, not open to the internet. Since t
 
 Required GitHub Secrets: `EC2_HOST`, `EC2_SSH_KEY`, `DEPLOY_AWS_ACCESS_KEY_ID`, `DEPLOY_AWS_SECRET_ACCESS_KEY`
 
+## Testing
+
+Backend: `pytest tests/` — 171 tests covering the eval engine, judge adapters, release
+gates, auth roles, rate limiting, and the privacy probe scorer.
+
+Frontend: a Playwright end-to-end suite under `frontend/tests/e2e/`. It drives the real
+Next.js app against a real FastAPI backend — no request mocking, no stubbed API — and
+needs **no API keys**. Scoring runs through the in-process deterministic heuristic
+evaluators, so a run costs nothing and calls no provider.
+
+```bash
+cd frontend
+npm install
+npx playwright install chromium
+
+npm run test:e2e        # headless, HTML report in playwright-report/
+npm run test:e2e:ui     # Playwright UI mode
+```
+
+Both scripts build the app first, because the suite serves three frontend instances
+from one build.
+
+**11 tests, 7 UI and 4 API, in four Playwright projects:**
+
+| Project | Covers |
+|---|---|
+| `ui` | Dashboard renders with navigation and all five metric cards · the primary flow (run an evaluation, see the scored cases) · scenario switching · navigating all five pages · the mobile drawer at 375px |
+| `api` | `GET /api/v1/evals` shape · `POST /api/v1/evals` returns a scored run · a validation error (422) on a too-short dataset description · 404 for an unknown async job |
+| `empty-state` | The runs page empty state, against its own freshly created SQLite file |
+| `error-state` | The dashboard's API-unreachable path, against a frontend pointed at a dead port |
+
+The last two run as separate projects with their own servers so no test depends on
+another's data. `global-setup.ts` deletes the suite's SQLite files before every run.
+
+CI runs the suite on every push and pull request (`.github/workflows/e2e.yml`) with
+Node and Python set up side by side, and uploads `playwright-report/` as an artifact
+whether the run passes or fails.
+
 ## Infrastructure
 
 The EC2 host, its security group, and its Elastic IP are managed as Terraform under `infra/` (`aws_instance`, `aws_security_group`, `aws_eip`). The host was originally provisioned by hand, so this was built by importing the real, running resources into Terraform state (`terraform import`) rather than standing up new ones — `terraform plan` against it returns no changes.
